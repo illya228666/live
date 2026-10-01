@@ -1,0 +1,27 @@
+name: build-and-test
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: windows-2025
+    timeout-minutes: 15
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
+        with:
+          global-json-file: global.json
+      - name: Restore pinned dependencies
+        run: dotnet restore ArtificialLife.sln --locked-mode
+      - name: Build domain, CLI, tests and Godot C# adapter
+        run: dotnet build ArtificialLife.sln -c Release --no-restore
+      - name: Tests including short learning experiment
+        run: dotnet test tests/ArtificialLife.Tests -c Release --no-build --logger "trx;LogFileName=tests.trx"

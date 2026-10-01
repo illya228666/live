@@ -1,0 +1,148 @@
+{
+  "CreatedUtc": "2026-10-01T22:25:15.911664+00:00",
+  "TrainingSteps": 100000,
+  "TrainingSeconds": 44.5391433,
+  "Random": {
+    "Steps": 8000,
+    "MeanAbsoluteError": 9.089298577341783,
+    "ComfortPercent": 5.3875,
+    "MeanReward": -0.5524710646585639,
+    "MeanBodyTemperature": 34.22741371230567
+  },
+  "Untrained": {
+    "Steps": 8000,
+    "MeanAbsoluteError": 14.746606188005927,
+    "ComfortPercent": 0.475,
+    "MeanReward": -0.9368619496583421,
+    "MeanBodyTemperature": 22.272516399967035
+  },
+  "Trained": {
+    "Steps": 8000,
+    "MeanAbsoluteError": 0.32747596330401163,
+    "ComfortPercent": 96.5375,
+    "MeanReward": 0.9148622877758323,
+    "MeanBodyTemperature": 36.63047967115904
+  },
+  "Seeds": [
+    {
+      "Seed": 1001,
+      "Random": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 12.199653678380871,
+        "ComfortPercent": 0,
+        "MeanReward": -0.8039651515485186,
+        "MeanBodyTemperature": 37.28863374465224
+      },
+      "Untrained": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 14.88890855228356,
+        "ComfortPercent": 0.25,
+        "MeanReward": -0.9454390267223819,
+        "MeanBodyTemperature": 22.116568585417735
+      },
+      "Trained": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 0.47325453557440333,
+        "ComfortPercent": 94.625,
+        "MeanReward": 0.8935668566104333,
+        "MeanBodyTemperature": 36.66946159025506
+      }
+    },
+    {
+      "Seed": 2002,
+      "Random": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 6.510937091060312,
+        "ComfortPercent": 6.125,
+        "MeanReward": -0.37199971057347947,
+        "MeanBodyTemperature": 32.8532534623489
+      },
+      "Untrained": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 14.6171540357903,
+        "ComfortPercent": 0.3125,
+        "MeanReward": -0.9318166203182178,
+        "MeanBodyTemperature": 21.983592075297235
+      },
+      "Trained": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 0.15736478297090797,
+        "ComfortPercent": 98.6875,
+        "MeanReward": 0.9493650276136791,
+        "MeanBodyTemperature": 36.53647559372493
+      }
+    },
+    {
+      "Seed": 3003,
+      "Random": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 11.789790384882947,
+        "ComfortPercent": 3.4375,
+        "MeanReward": -0.7129680560043746,
+        "MeanBodyTemperature": 38.65731187130473
+      },
+      "Untrained": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 14.680320596541137,
+        "ComfortPercent": 0.625,
+        "MeanReward": -0.9212256673024366,
+        "MeanBodyTemperature": 23.599848578902655
+      },
+      "Trained": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 0.5906308898769014,
+        "ComfortPercent": 94.8125,
+        "MeanReward": 0.8552766864522157,
+        "MeanBodyTemperature": 36.931233663823015
+      }
+    },
+    {
+      "Seed": 4004,
+      "Random": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 6.471531969200081,
+        "ComfortPercent": 9.75,
+        "MeanReward": -0.3623986536512853,
+        "MeanBodyTemperature": 33.09866749450205
+      },
+      "Untrained": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 14.704288140565371,
+        "ComfortPercent": 0.8125,
+        "MeanReward": -0.9368401967692158,
+        "MeanBodyTemperature": 21.90279890482947
+      },
+      "Trained": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 0.16527491465970912,
+        "ComfortPercent": 97.625,
+        "MeanReward": 0.9488918876191279,
+        "MeanBodyTemperature": 36.5865747589889
+      }
+    },
+    {
+      "Seed": 5005,
+      "Random": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 8.474579763184677,
+        "ComfortPercent": 7.625,
+        "MeanReward": -0.5110237515151759,
+        "MeanBodyTemperature": 29.23920198872096
+      },
+      "Untrained": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 14.842359614849421,
+        "ComfortPercent": 0.375,
+        "MeanReward": -0.9489882371794569,
+        "MeanBodyTemperature": 21.759773855387913
+      },
+      "Trained": {
+        "Steps": 1600,
+        "MeanAbsoluteError": 0.25085469343813754,
+        "ComfortPercent": 96.9375,
+        "MeanReward": 0.9272109805837103,
+        "MeanBodyTemperature": 36.428652749003405
+      }
+    }
+  ]
+}

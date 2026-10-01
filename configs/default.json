@@ -1,0 +1,16 @@
+{
+  "world": { "width": 100, "height": 100, "timeStep": 1, "movementSpeed": 1.5, "episodeSteps": 400 },
+  "temperature": {
+    "ambient": 18, "fireStrength": 40, "fireRadius": 24, "oscillationPeriod": 180,
+    "oscillationAmplitude": 0.3, "heatProduction": 0.3, "heatTransfer": 0.12,
+    "target": 36.6, "sensorDistance": 3, "driveScale": 6, "comfortHalfWidth": 1
+  },
+  "reward": { "improvementWeight": 0.2, "maximumDriveWeight": 10 },
+  "network": { "observationCapacity": 256, "actionCapacity": 256, "featureWidth": 4, "typeEmbeddingSize": 8, "stateSize": 32, "hiddenSize": 64 },
+  "learning": {
+    "learningRate": 0.001, "gamma": 0.97, "epsilonStart": 1, "epsilonEnd": 0.05,
+    "epsilonDecaySteps": 50000, "batchSize": 64, "replayCapacity": 50000, "warmupSteps": 1000,
+    "trainEvery": 4, "targetSyncInterval": 500, "gradientClip": 5, "trainingSteps": 100000, "logEvery": 5000, "seed": 42
+  },
+  "evaluation": { "seeds": [1001, 2002, 3003, 4004, 5005], "episodesPerSeed": 4 }
+}

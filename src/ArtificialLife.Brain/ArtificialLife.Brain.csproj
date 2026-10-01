@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../ArtificialLife.Core/ArtificialLife.Core.csproj" />
+    <PackageReference Include="TorchSharp" />
+    <PackageReference Include="libtorch-cpu-win-x64" Condition="$([MSBuild]::IsOsPlatform('Windows'))" />
+    <PackageReference Include="libtorch-cpu-linux-x64" Condition="$([MSBuild]::IsOsPlatform('Linux'))" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup><ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally></PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="TorchSharp" Version="0.107.0" />
+    <PackageVersion Include="libtorch-cpu-win-x64" Version="2.10.0" />
+    <PackageVersion Include="libtorch-cpu-linux-x64" Version="2.10.0" />
+    <PackageVersion Include="xunit.v3" Version="4.0.1" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+  </ItemGroup>
+</Project>
