@@ -10,13 +10,17 @@ public sealed record CheckpointManifest(int FormatVersion, ExperimentOptions Opt
 /// <summary>Weights plus schema/configuration identity; refuses silent registry remapping.</summary>
 public static class Checkpoint
 {
-    public static void Save(string directory, SimulationSession session, DqnBrain brain)
+    public static void Save(string directory, SimulationSession session, DqnBrain brain, int? trainingSteps = null)
     {
+        if (trainingSteps < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(trainingSteps));
+        }
         Directory.CreateDirectory(directory);
         string temporary = Path.Combine(directory, "weights.tmp");
         brain.Save(temporary);
         string hash = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(temporary)));
-        var manifest = new CheckpointManifest(1, session.Options, session.Observations.Keys.ToArray(), session.Actions.Keys.ToArray(), hash, session.Options.Learning.TrainingSteps);
+        var manifest = new CheckpointManifest(1, session.Options, session.Observations.Keys.ToArray(), session.Actions.Keys.ToArray(), hash, trainingSteps ?? session.Options.Learning.TrainingSteps);
         File.WriteAllText(Path.Combine(directory, "manifest.tmp"), JsonSerializer.Serialize(manifest, ExperimentOptions.Json));
         File.Move(temporary, Path.Combine(directory, "weights.bin"), overwrite: true);
         File.Move(Path.Combine(directory, "manifest.tmp"), Path.Combine(directory, "manifest.json"), overwrite: true);

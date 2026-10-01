@@ -19,12 +19,12 @@ public sealed class MetricAccumulator(TemperatureOptions options)
 
     public void Add(double body, double stepReward)
     {
-        double deviation = Math.Abs(body - options.Target);
+        ThermalMetricSample sample = ThermalMetricSample.Measure(options, body, stepReward);
         count++;
-        error += deviation;
+        error += sample.Error;
         reward += stepReward;
         bodySum += body;
-        if (deviation <= options.ComfortHalfWidth)
+        if (sample.Comfortable)
         {
             comfortable++;
         }

@@ -94,6 +94,40 @@ Training advances fixed simulation timesteps as fast as the CPU allows; it never
 
 Godot loads the same checkpoint and consumes neutral snapshots. It advances simulation time at 12× by default. **Space** pauses, **+ / −** changes speed and **R** restarts the world. The view runs continuously beyond the trainer's episode length. If launched from the editor without a checkpoint, it displays the training command.
 
+## Watching learning live
+
+Start a fresh network and watch real simulation, replay and optimizer updates in Godot:
+
+```powershell
+./tools/run-godot.ps1 -Train
+./tools/run-godot.ps1 -Train -TrainingSpeed Max
+./tools/run-godot.ps1 -Train -Config configs/default.json -VisualConfig configs/live-training.json
+./tools/run-godot.ps1 -Train -Smoke       # optimize 1,000 steps, save, exit
+```
+
+Live Training starts with newly initialized weights; it does not load or play back trained checkpoints. The original `./tools/run-godot.ps1` still displays a saved policy, and `train.ps1` / `evaluate.ps1` retain their existing behavior. Headless training remains the fastest route; live training trades throughput for observing actual trajectories and episode boundaries.
+
+| Key | Live Training action |
+| --- | --- |
+| Space | Pause / resume simulation and training |
+| + / − (including numpad) | Switch between 1×, 10×, 100× and Max |
+| E | Freeze learning and observe ε = 0 in a separate world; press again to resume |
+| S | Save the current policy using the existing checkpoint format |
+| Ctrl + Shift + R | Reset weights, optimizer, replay, counters and histories completely |
+
+Default rates are 60, 600 and 6,000 requested training steps/s. Max requests up to 256 steps per frame; every preset also has an 8 ms cooperative work budget. Actual throughput depends on the PC and is displayed in the HUD. Work returns to Godot between complete training steps; the physics timestep is unchanged. The displayed world and short trail show actual positions, while the two small graphs show body temperature against its target and absolute body error. Metrics use the most recent 1,000 steps. Trails reset at episode boundaries rather than drawing a teleport line across the world.
+
+Settings live in `configs/live-training.json`, separately from DQN/physics configuration. Live learning continues until paused or closed; `learning.trainingSteps` remains the budget for the headless command. The HUD counts completed training steps and current episode/episode step. The frozen evaluation world neither appends replay nor consumes the training RNG; resuming restores the suspended training world exactly.
+
+**S** saves to `artifacts/checkpoints/live-thermal` by default, leaving the original thermal checkpoint intact. Use `-Checkpoint PATH` to choose a different destination. `-Train -Smoke` also saves there before exiting. Load a live policy through the existing pipeline:
+
+```powershell
+./tools/evaluate.ps1 -Checkpoint artifacts/checkpoints/live-thermal
+./tools/run-godot.ps1 -Checkpoint artifacts/checkpoints/live-thermal
+```
+
+Saves record the actual completed step count and remain inference checkpoints; they do not resume optimizer/replay state. Full reset intentionally restarts the configured deterministic seed. Application owns the single synchronous training engine; Godot only requests bounded work and draws copied read-only snapshots. See [live-training notes](docs/live-training.md) for validation and limitations.
+
 ## Measured experiment
 
 The default 100,000-step run is compared with uniform random legal actions and an initialized neural policy. Evaluation uses ε = 0 for both neural policies, five independent initial-state seeds and four 400-step episodes per seed. All 8,000 evaluation steps count, including initial recovery; there is no discarded warm-up.
@@ -154,7 +188,7 @@ Adding a module requires registration in the composition root and training with 
 
 ## Tests and CI
 
-Tests cover legal movement, world bounds, seeded trajectories, thermal equations and changing fields, registries, normalized sensory tokens, reward bounds, permutation invariance, variable observation/action counts, new type slots, managed replay and checkpoint round-trips/corruption. The learning test requires substantial improvement on separate seeds rather than a decrease in loss.
+Tests cover legal movement, world bounds, seeded trajectories, thermal equations and changing fields, registries, normalized sensory tokens, reward bounds, permutation invariance, variable observation/action counts, new type slots, managed replay and checkpoint round-trips/corruption. Nine live-session tests additionally cover incremental equivalence, complete reset, counters, bounded snapshots, rolling metrics, saving and frozen evaluation. The learning test requires substantial improvement on separate seeds rather than a decrease in loss.
 
 GitHub Actions restores locked packages, builds every C# project including the Godot adapter, and runs tests. Actions are pinned by commit. The workflow does not download or launch the editor; the Godot runtime smoke command is available locally.
 

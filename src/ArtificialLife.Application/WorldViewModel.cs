@@ -44,6 +44,16 @@ public sealed class VisualizationSession : IDisposable
 
     public WorldViewModel Snapshot()
     {
+        return WorldSnapshots.Create(session, totalSteps, "Evaluation · ε = 0");
+    }
+
+    public void Dispose() => brain.Dispose();
+}
+
+internal static class WorldSnapshots
+{
+    internal static WorldViewModel Create(SimulationSession session, long steps, string mode)
+    {
         Simulation simulation = session.Simulation;
         Position source = session.Temperature.Source(simulation.World);
         return new WorldViewModel(session.Options.World.Width, session.Options.World.Height,
@@ -51,8 +61,6 @@ public sealed class VisualizationSession : IDisposable
                 session.Temperature.EnvironmentAt(simulation.World, simulation.Agent.Position)),
             new HeatSourceViewModel(source.X, source.Y, session.Temperature.Strength(simulation.World.Time), session.Options.Temperature.FireRadius, session.Options.Temperature.Ambient),
             session.Options.Temperature.Target, session.Options.Temperature.ComfortHalfWidth, simulation.LastReward,
-            totalSteps, simulation.World.Time, "Evaluation · ε = 0");
+            steps, simulation.World.Time, mode);
     }
-
-    public void Dispose() => brain.Dispose();
 }

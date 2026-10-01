@@ -18,6 +18,8 @@ public sealed class DqnBrain : IDisposable
 
     public ReplayBuffer Replay { get; }
     public double LastLoss { get; private set; }
+    /// <summary>Number of completed optimizer steps, independent of world-step count.</summary>
+    public int OptimizationUpdates => updates;
 
     public DqnBrain(NetworkOptions networkOptions, LearningOptions learning)
     {
@@ -47,6 +49,16 @@ public sealed class DqnBrain : IDisposable
         if (random.NextDouble() < epsilon)
         {
             return actions[random.Next(actions.Length)];
+        }
+        return ChooseGreedy(state, actions);
+    }
+
+    /// <summary>Frozen-policy selection without consuming the training exploration/replay RNG.</summary>
+    public ActionCandidate ChooseGreedy(ObservationToken[] state, ActionCandidate[] actions)
+    {
+        if (actions.Length == 0)
+        {
+            throw new ArgumentException("At least one legal action is required.");
         }
         float[] scores = Scores(state, actions);
         int best = 0;

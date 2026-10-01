@@ -16,6 +16,7 @@ public partial class Main : Node2D
     private string? error;
     private string checkpoint = "";
     private string? capture;
+    private bool captureScheduled;
     private int frames;
     private int smokeSteps;
     private readonly Rect2 worldRect = new(40, 92, 700, 700);
@@ -26,19 +27,15 @@ public partial class Main : Node2D
     public override void _Ready()
     {
         string root = System.IO.Path.GetFullPath(System.IO.Path.Combine(ProjectSettings.GlobalizePath("res://"), "../.."));
-        checkpoint = System.IO.Path.Combine(root, "artifacts/checkpoints/thermal");
-        string[] arguments = OS.GetCmdlineUserArgs();
-        for (int index = 0; index + 1 < arguments.Length; index += 2)
-        {
-            switch (arguments[index])
-            {
-                case "--checkpoint": checkpoint = arguments[index + 1]; break;
-                case "--capture": capture = arguments[index + 1]; break;
-                case "--smoke-steps": smokeSteps = int.Parse(arguments[index + 1], System.Globalization.CultureInfo.InvariantCulture); break;
-            }
-        }
         try
         {
+            ParseLaunchArguments(root);
+            if (trainMode)
+            {
+                StartLiveTraining();
+                QueueRedraw();
+                return;
+            }
             session = new VisualizationSession(checkpoint);
             snapshot = session.Snapshot();
             if (smokeSteps > 0)
@@ -58,7 +55,7 @@ public partial class Main : Node2D
         {
             error = exception.Message;
             GD.PushError(error);
-            if (smokeSteps > 0)
+            if (smokeSteps > 0 || trainingSmokeSteps > 0)
             {
                 GetTree().Quit(1);
             }
@@ -68,7 +65,26 @@ public partial class Main : Node2D
 
     public override void _Process(double delta)
     {
-        if (session is not null && !paused)
+        if (trainingSession is not null)
+        {
+            try
+            {
+                ProcessTraining(delta);
+            }
+            catch (Exception exception)
+            {
+                error = exception.Message;
+                paused = true;
+                trainingSession.Dispose();
+                trainingSession = null;
+                GD.PushError(error);
+                if (trainingSmokeSteps > 0)
+                {
+                    GetTree().Quit(1);
+                }
+            }
+        }
+        else if (session is not null && !paused)
         {
             accumulator += delta * speed;
             int budget = 120;
@@ -80,8 +96,9 @@ public partial class Main : Node2D
             QueueRedraw();
         }
         frames++;
-        if (capture is not null && frames == 4)
+        if (capture is not null && !captureScheduled && frames >= 4 && (!trainMode || trainingSmokeSteps == 0 || trainingSmokeFinished))
         {
+            captureScheduled = true;
             string path = capture;
             RenderingServer.FramePostDraw += SaveCapture;
             void SaveCapture()
@@ -116,6 +133,12 @@ public partial class Main : Node2D
         {
             return;
         }
+        if (trainMode)
+        {
+            HandleTrainingKey(key);
+            QueueRedraw();
+            return;
+        }
         switch (key.Keycode)
         {
             case Key.Space: paused = !paused; break;
@@ -135,7 +158,7 @@ public partial class Main : Node2D
     {
         Label("ArtificialLife", 40, 40, 28, TextColor);
         Label("A creature learning to stay in balance", 40, 66, 15, Muted);
-        Label("LOCAL NEURAL POLICY  /  CPU", 830, 44, 14, Accent);
+        Label(trainMode ? "LIVE DQN TRAINING  /  CPU" : "LOCAL NEURAL POLICY  / CPU", 830, 44, 14, Accent);
         DrawRect(worldRect, new Color("101b29"));
         DrawRect(worldRect, new Color("304356"), filled: false, width: 1);
         if (snapshot is null)
@@ -163,7 +186,9 @@ public partial class Main : Node2D
         }
         DrawCircle(center, 11, new Color("ff9d52"));
         DrawArc(center, 17, 0, Mathf.Tau, 64, new Color(1, 0.6f, 0.3f, 0.45f), 1, antialiased: true);
-        Vector2[] points = trail.ToArray();
+        Vector2[] points = liveSnapshot is null ? trail.ToArray() : liveSnapshot.Trail
+            .Where(sample => liveSnapshot.Training.Evaluating || sample.Episode == liveSnapshot.Training.Episode)
+            .Select(sample => ToScreen(sample.X, sample.Y)).ToArray();
         for (int index = 1; index < points.Length; index++)
         {
             DrawLine(points[index - 1], points[index], new Color(0.4f, 0.87f, 0.74f, 0.6f * index / points.Length), 2, antialiased: true);
@@ -172,6 +197,11 @@ public partial class Main : Node2D
         DrawCircle(agent, 8, Accent);
         DrawArc(agent, 12, 0, Mathf.Tau, 40, new Color(0.4f, 0.87f, 0.74f, 0.35f), 1, antialiased: true);
         Label($"{state.Width:0} × {state.Height:0} simulation units", 58, 772, 13, Muted);
+        if (liveSnapshot is not null)
+        {
+            DrawTrainingHud(state);
+            return;
+        }
         Label("THERMAL HOMEOSTASIS", 786, 122, 15, Muted);
         Label($"{state.Agent.BodyTemperature:F2} °C", 786, 183, 42,
             Math.Abs(state.Agent.BodyTemperature - state.TargetTemperature) <= state.ComfortHalfWidth ? Accent : new Color("ffb16c"));
@@ -215,5 +245,9 @@ public partial class Main : Node2D
         Label(value, 1040, y, 17, TextColor);
     }
     private void Label(string text, float x, float y, int size, Color color) => DrawString(ThemeDB.FallbackFont, new Vector2(x, y), text, fontSize: size, modulate: color);
-    public override void _ExitTree() => session?.Dispose();
+    public override void _ExitTree()
+    {
+        trainingSession?.Dispose();
+        session?.Dispose();
+    }
 }

@@ -64,7 +64,8 @@ try
     {
         perSeed.Add(new SeedEvaluation(seed, Evaluator.Run(session, null, [seed]), Evaluator.Run(session, fresh, [seed]), Evaluator.Run(session, brain, [seed])));
     }
-    var report = new EvaluationReport(DateTimeOffset.UtcNow, options.Learning.TrainingSteps, seconds, random, untrained, trained, perSeed.ToArray());
+    int completedTrainingSteps = command == "evaluate" ? Checkpoint.Read(checkpointPath).TrainingSteps : options.Learning.TrainingSteps;
+    var report = new EvaluationReport(DateTimeOffset.UtcNow, completedTrainingSteps, seconds, random, untrained, trained, perSeed.ToArray());
     Directory.CreateDirectory(checkpointPath);
     File.WriteAllText(Path.Combine(checkpointPath, command == "train" ? "evaluation.json" : "reevaluation.json"), JsonSerializer.Serialize(report, ExperimentOptions.Json));
     Console.WriteLine($"Checkpoint: {checkpointPath}");

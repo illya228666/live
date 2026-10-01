@@ -1,0 +1,11 @@
+{
+  "trainingStepsPerVisualTick": 2,
+  "visualTicksPerSecond": 30,
+  "historyLength": 240,
+  "trailLength": 180,
+  "historySampleInterval": 2,
+  "rollingMetricWindow": 1000,
+  "defaultTrainingSpeed": "TenTimes",
+  "maxBatchSize": 256,
+  "frameBudgetMilliseconds": 8
+}
