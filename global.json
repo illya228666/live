@@ -1,9 +1,0 @@
-{
-  "sdk": {
-    "version": "8.0.425",
-    "rollForward": "disable",
-    "allowPrerelease": false,
-    "paths": [ ".tools/dotnet", "$host$" ],
-    "errorMessage": "ArtificialLife requires SDK 8.0.425. Run ./tools/bootstrap.ps1 to install it locally; older .NET hosts should use ./tools/build.ps1."
-  }
-}
