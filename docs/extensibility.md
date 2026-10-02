@@ -1,6 +1,6 @@
 # Extending the experiment
 
-The existing temperature module demonstrates four narrow Core contracts:
+The existing modules use four narrow Core contracts:
 
 | Contract | Purpose |
 | --- | --- |
@@ -9,21 +9,21 @@ The existing temperature module demonstrates four narrow Core contracts:
 | `IActionProvider` | Generate executable candidates and perform its action types |
 | `IDriveProvider` | Report a scaled internal need |
 
-A module need not implement all four. Movement is a Core action provider; temperature has no special action type.
+A module need not implement all four. Movement is a Core action provider; temperature and hunger have no special action types.
 
-## Hypothetical Fruit + Hunger module — not implemented
+## Hunger and apples — implemented
 
-A future module could add fruit entities to `WorldState.Entities` and a `HungerBody` component attached to `AgentState`. Its world system would increase hunger over time and update its fruit state.
+`Modules.Hunger` attaches `HungerState` to the agent, grows its level with simulation time, emits a normalized token and reports a target-zero drive. The existing reward aggregator combines hunger and temperature without module-specific reward logic.
 
-Fruit entities could carry neutral `VisualAppearance` components, using the existing Vision provider without exposing fruit semantics or world coordinates. A hunger observation could use another reserved slot. Each token still fits the existing feature width. More visible objects increase token count, not network dimensions.
+The composition root creates four ordinary apple entities with independent `VisualAppearance(Diamond)` and `Nutrition(0.20)` components. Fire uses `Disc`. Vision observes both through the same backend and relative contract; appearance contains no apple/food semantics or absolute coordinates.
 
-Its drive provider could report hunger, its target, a domain-appropriate normalization scale and weight. Core would combine it with the temperature drive. The module would not reward eating directly with an unbounded scalar.
+Hunger consumes any entity with nutrition inside the eating radius and removes it from the world. Another food entity needs only a nutrition component; Hunger does not know about apples, their positions or their visual types.
 
-If eating is possible, an action provider could register `fruit.eat.v1`. It would produce candidates only for reachable fruit and execute the selected candidate. The generic Q scorer would evaluate those candidates alongside movement. Stable candidate parameters would identify/describe a reachable fruit using a documented normalized encoding; array position must not become a hidden semantic identifier.
+Eating is automatic at contact, subtracting percentage points rather than multiplying hunger. No eating action or separate food bonus is registered. Food does not respawn during a continuous life. Explicit episode reset restores the initial entity membership so independent benchmark episodes start with food.
 
-The composition root would register the providers and pass their collections into `Simulation`. Fruit-specific presentation DTOs could be added at the Application boundary. Godot and future frontends would render them independently.
+The composition root passes Temperature and Hunger as world systems/drives, and Temperature, Vision and Hunger as observation providers. All observations still fit the existing feature width. Food disappearing changes the token count, not the network dimensions.
 
-This requires new module/state/provider code and a new learning experiment. It does not require rewriting the Deep Sets encoder or adding Q output neurons. Type slots and feature width are finite: exhausting either requires a deliberate new architecture/checkpoint version.
+The Deep Sets encoder and Q scorer are unchanged. Type slots and feature width remain finite: exhausting either requires a deliberate new architecture/checkpoint version. The next learning experiment can measure balancing the two needs; the existing regression and live smoke verify that training still runs.
 
 ## Registry and checkpoint discipline
 

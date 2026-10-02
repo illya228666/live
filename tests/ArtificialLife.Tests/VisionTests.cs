@@ -60,7 +60,7 @@ public sealed class VisionTests
         IObservationProvider vision = new VisionModule(new FixedBackend(), registry);
         ObservationToken token = Assert.Single(vision.Observe(new WorldState(new WorldOptions()),
             new AgentState { Position = new Position(999, -999), OrientationRadians = 2 }));
-        Assert.Equal(new[] { "vision.appearance.disc.v1" }, registry.Keys);
+        Assert.Equal(new[] { "vision.appearance.disc.v1", "vision.appearance.diamond.v1" }, registry.Keys);
         Assert.Equal(0, token.Type);
         Assert.Equal(4, token.Features.Length);
         Assert.Equal(0f, token.Features[0], 6);
@@ -75,13 +75,14 @@ public sealed class VisionTests
     {
         var session = new SimulationSession(new ExperimentOptions());
         WorldState world = session.Simulation.World;
-        Assert.Same(session.Fire, Assert.Single(world.Entities));
+        Assert.Contains(session.Fire, world.Entities);
+        world.Entities.RemoveAll(entity => entity != session.Fire);
         HeatEmitter emitter = session.Fire.Get<HeatEmitter>();
         Assert.Equal(AppearanceType.Disc, session.Fire.Get<VisualAppearance>().Type);
         Assert.Equal(session.Options.Temperature.Ambient + emitter.Strength(world.Time),
             session.Temperature.EnvironmentAt(world, session.Fire.Position), 10);
         Assert.Single(session.Vision.Observe(world, session.Simulation.Agent));
-        Assert.Equal(7, session.Simulation.Observe().Length);
+        Assert.Equal(8, session.Simulation.Observe().Length);
 
         session.Fire.Position = new Position(0, 0);
         Assert.Equal(session.Options.Temperature.Ambient + emitter.Strength(world.Time),
@@ -90,7 +91,7 @@ public sealed class VisionTests
             new VisionObserver(new Position(3, 4), 0)));
         Assert.Equal(5, sighting.Distance);
         session.Simulation.Reset(42);
-        Assert.Same(session.Fire, Assert.Single(world.Entities));
+        Assert.Contains(session.Fire, world.Entities);
 
         // The same silhouette can be cold: visual type carries no heat semantics.
         world.Entities.Clear();

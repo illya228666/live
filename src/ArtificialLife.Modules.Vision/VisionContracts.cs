@@ -3,7 +3,7 @@ using ArtificialLife.Core;
 namespace ArtificialLife.Modules.Vision;
 
 /// <summary>Neutral visible shape, not an object's purpose or physical effect.</summary>
-public enum AppearanceType { Disc }
+public enum AppearanceType { Disc, Diamond }
 
 public sealed record VisualAppearance
 {

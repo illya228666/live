@@ -3,6 +3,7 @@ using ArtificialLife.Brain;
 using ArtificialLife.Core;
 using ArtificialLife.Modules.Temperature;
 using ArtificialLife.Modules.Vision;
+using ArtificialLife.Modules.Hunger;
 
 namespace ArtificialLife.Application;
 
@@ -16,6 +17,7 @@ public sealed record ExperimentOptions
 {
     public WorldOptions World { get; init; } = new();
     public TemperatureOptions Temperature { get; init; } = new();
+    public HungerOptions Hunger { get; init; } = new();
     public RewardOptions Reward { get; init; } = new();
     public NetworkOptions Network { get; init; } = new();
     public LearningOptions Learning { get; init; } = new();
@@ -34,6 +36,7 @@ public sealed record ExperimentOptions
     {
         World.Validate();
         Temperature.Validate();
+        Hunger.Validate();
         Network.Validate();
         Learning.Validate();
         if (Evaluation.Seeds.Length == 0 || Evaluation.EpisodesPerSeed < 1 || !double.IsFinite(Reward.ImprovementWeight) ||
@@ -51,6 +54,7 @@ public sealed class SimulationSession
     public TypeRegistry Actions { get; }
     public TemperatureModule Temperature { get; }
     public VisionModule Vision { get; }
+    public HungerModule Hunger { get; }
     public Entity Fire { get; }
     public Simulation Simulation { get; }
     public ExperimentOptions Options { get; }
@@ -63,13 +67,22 @@ public sealed class SimulationSession
         Actions = new TypeRegistry(options.Network.ActionCapacity);
         Temperature = new TemperatureModule(options.Temperature, Observations);
         Vision = new VisionModule(new DirectGeometryVisionBackend(), Observations);
+        Hunger = new HungerModule(options.Hunger, Observations);
         Fire = new Entity { Position = new Position(options.World.Width / 2, options.World.Height / 2) };
         Fire.Set(new HeatEmitter(options.Temperature.FireStrength, options.Temperature.FireRadius,
             options.Temperature.OscillationPeriod, options.Temperature.OscillationAmplitude));
         Fire.Set(new VisualAppearance(AppearanceType.Disc, diameter: 4));
+        List<Entity> entities = [Fire];
+        foreach (Position fraction in new Position[] { new(0.3, 0.3), new(0.7, 0.3), new(0.3, 0.7), new(0.7, 0.7) })
+        {
+            var apple = new Entity { Position = new Position(fraction.X * options.World.Width, fraction.Y * options.World.Height) };
+            apple.Set(new VisualAppearance(AppearanceType.Diamond, diameter: 2));
+            apple.Set(new Nutrition(0.20));
+            entities.Add(apple);
+        }
         var movement = new MovementProvider(Actions);
-        Simulation = new Simulation(options.World, options.Reward, [Temperature], [Temperature, Vision], [movement], [Temperature], lifecycle);
-        Simulation.World.Entities.Add(Fire);
+        Simulation = new Simulation(options.World, options.Reward, [Temperature, Hunger], [Temperature, Vision, Hunger],
+            [movement], [Temperature, Hunger], lifecycle, entities);
         Simulation.Reset(options.Learning.Seed);
     }
 }

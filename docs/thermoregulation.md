@@ -41,7 +41,7 @@ The model approximates heat exchange, not human physiology. There is no death th
 | North / east / south / west thermal samples | `(sample - 30) / 40`, offset X, offset Y |
 | Visual disc | `cos(relative bearing)`, `sin(relative bearing)`, `distance / (1 + distance)`, `angular diameter / pi` |
 
-Thermal values are clamped to [-1, 1]; vision features are normalized to the same range. Cardinal thermal sensors sample three simulation units away and clamp their sampling position at world edges. Sensor offsets distinguish direction while all five samples share one type slot. The complete default state has seven tokens: six thermal and one visual. Absolute agent/object coordinates are never observation features. Visual bearing uses the observer's orientation, currently fixed to zero; it has no north/east contract. Appearance carries no fire/heat label.
+Thermal values are clamped to [-1, 1]; vision features are normalized to the same range. Cardinal thermal sensors sample three simulation units away and clamp their sampling position at world edges. Sensor offsets distinguish direction while all five samples share one type slot. The initial complete default state has twelve tokens: six thermal, five visual (fire and four apples) and one hunger. Absolute agent/object coordinates are never observation features. Visual bearing uses the observer's orientation, currently fixed to zero; it has no north/east contract. Appearance carries no fire/food label.
 
 These are measurements; no ideal-position distance, best movement or comfortable-zone vector is exposed.
 

@@ -13,6 +13,7 @@ The experiment asks one question: **can a fixed neural architecture learn homeos
 - One seedable, bounded 100 × 100 world, one circular agent and one central heat source.
 - A smoothly changing temperature field and body temperature with thermal inertia.
 - Component-based world objects and egocentric direct-geometry vision behind a replaceable backend.
+- Bounded hunger, four edible apple entities and automatic feeding at contact, using the shared drive reward.
 - Variable observation tokens, trainable type embeddings and a Deep Sets state encoder.
 - Shared scalar Q scoring for variable sets of legal action candidates.
 - CPU Double DQN with replay, Adam, Huber loss, gradient clipping and a target network.
@@ -155,12 +156,14 @@ flowchart LR
     Application --> Brain[TorchSharp Brain]
     Application --> Temperature[Temperature module]
     Application --> Vision[Vision module]
+    Application --> Hunger[Hunger module]
     Brain --> Core
     Temperature --> Core
     Vision --> Core
+    Hunger --> Core
 ```
 
-`Core`, `Brain`, `Temperature`, `Vision` and `Application` contain no Godot references. Simulation coordinates are ordinary numbers. The Godot adapter alone uses `Node2D`, rendering APIs and engine vectors. Another frontend could consume `WorldViewModel` without changing physics or learning code.
+`Core`, `Brain`, `Temperature`, `Vision`, `Hunger` and `Application` contain no Godot references. Simulation coordinates are ordinary numbers. The Godot adapter alone uses `Node2D`, rendering APIs and engine vectors. Another frontend could consume `WorldViewModel` without changing physics or learning code.
 
 ```text
 src/
@@ -168,6 +171,7 @@ src/
   ArtificialLife.Brain/                neural encoder, candidate Q scorer, Double DQN
   ArtificialLife.Modules.Temperature/  field, body dynamics, senses and drive
   ArtificialLife.Modules.Vision/       appearance, replaceable backend, egocentric sensory tokens
+  ArtificialLife.Modules.Hunger/       hunger dynamics, nutrition/contact feeding, sense and drive
   ArtificialLife.Application/          composition, trainer, evaluator, checkpoints, snapshots
   ArtificialLife.Cli/                  train/evaluate commands
   ArtificialLife.Godot/                scene and rendering/input adapter
@@ -202,11 +206,10 @@ This is a controlled numerical experiment, not a biologically realistic organism
 
 The following are **future milestones, not implemented**:
 
-- Fruit / Hunger module and a second competing homeostatic drive.
 - New runtime action types, runtime plugin loading and continual learning.
 - Multiple agents and a persistent long-running world.
 - LLM director and LLM-generated modules.
 - Remote server execution, a web frontend and WebSocket streaming.
 - Sharing worlds with other people.
 
-The next experiment is to add Fruit + Hunger through the same module contracts and measure whether this fixed encoder/scorer can learn to balance two needs. That module is deliberately absent from this MVP.
+Hunger and apples now use the same module contracts. The next experiment is to measure whether the fixed encoder/scorer learns to balance both needs. Apples have no respawn during a continuous life; a full episode reset restores the initial objects. Existing thermal-only benchmark numbers above describe the earlier experiment. Policies saved before Hunger require retraining for the added observation keys.

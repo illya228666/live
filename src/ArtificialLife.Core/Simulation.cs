@@ -12,6 +12,7 @@ public sealed class Simulation
     private readonly IActionProvider[] actions;
     private readonly IDriveProvider[] drives;
     private readonly RewardAggregator rewards;
+    private readonly Entity[] initialEntities;
 
     public WorldState World { get; }
     public SimulationLifecycle Lifecycle { get; }
@@ -20,12 +21,13 @@ public sealed class Simulation
 
     public Simulation(WorldOptions options, RewardOptions rewardOptions, IEnumerable<IWorldSystem> systems,
         IEnumerable<IObservationProvider> observations, IEnumerable<IActionProvider> actions, IEnumerable<IDriveProvider> drives,
-        SimulationLifecycle lifecycle = SimulationLifecycle.Episodic)
+        SimulationLifecycle lifecycle = SimulationLifecycle.Episodic, IEnumerable<Entity>? entities = null)
     {
         options.Validate();
         if (!Enum.IsDefined(lifecycle)) throw new ArgumentOutOfRangeException(nameof(lifecycle));
         Lifecycle = lifecycle;
         World = new WorldState(options);
+        initialEntities = entities?.ToArray() ?? [];
         this.systems = systems.ToArray();
         this.observations = observations.ToArray();
         this.actions = actions.ToArray();
@@ -39,6 +41,8 @@ public sealed class Simulation
         World.Time = random.NextDouble() * 600;
         World.Step = 0;
         LastReward = 0;
+        World.Entities.Clear();
+        World.Entities.AddRange(initialEntities);
         Agent.Position = new Position(random.NextDouble() * World.Options.Width, random.NextDouble() * World.Options.Height);
         Agent.OrientationRadians = 0;
         foreach (IWorldSystem system in systems)

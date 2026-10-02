@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Godot", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Modules.Vision", "src\ArtificialLife.Modules.Vision\ArtificialLife.Modules.Vision.csproj", "{3FAA75AC-F45F-4CCE-88F8-9BE21B411235}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Modules.Hunger", "src\ArtificialLife.Modules.Hunger\ArtificialLife.Modules.Hunger.csproj", "{47B5D43B-C965-4942-814A-DD7791D4B144}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{3FAA75AC-F45F-4CCE-88F8-9BE21B411235}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FAA75AC-F45F-4CCE-88F8-9BE21B411235}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FAA75AC-F45F-4CCE-88F8-9BE21B411235}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47B5D43B-C965-4942-814A-DD7791D4B144}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47B5D43B-C965-4942-814A-DD7791D4B144}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47B5D43B-C965-4942-814A-DD7791D4B144}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47B5D43B-C965-4942-814A-DD7791D4B144}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6272856E-8FA6-48A6-9C4C-51119E6C38A6} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
@@ -74,5 +80,6 @@ Global
 		{0A93AED5-38B8-4244-8294-3ED0369D5654} = {F08BA196-4BE7-4449-8E15-DE72607945D7}
 		{05E7451C-C8D9-46F3-8D90-693CDC1793B3} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 		{3FAA75AC-F45F-4CCE-88F8-9BE21B411235} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
+		{47B5D43B-C965-4942-814A-DD7791D4B144} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 	EndGlobalSection
 EndGlobal
