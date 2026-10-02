@@ -63,8 +63,10 @@ public sealed class TemperatureTests
     public void ThermalTokensAreLocalNormalizedAndDriveIsModuleOwned()
     {
         var session = new SimulationSession(new ExperimentOptions());
-        ObservationToken[] tokens = session.Temperature.Observe(session.Simulation.World, session.Simulation.Agent).ToArray();
+        ObservationToken[] tokens = session.Simulation.Observe();
+        int[] thermalTypes = [session.Observations.Register("temperature.body.v1"), session.Observations.Register("temperature.sensor.v1")];
         Assert.Equal(6, tokens.Length);
+        Assert.Equal(thermalTypes, tokens.Select(token => token.Type).Distinct());
         Assert.Single(tokens[0].Features);
         Assert.All(tokens, token => Assert.All(token.Features, value => Assert.InRange(value, -1, 1)));
         Assert.Equal(new[] { 0f, -1f }, tokens[2].Features.Skip(1));

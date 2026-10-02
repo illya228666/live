@@ -59,9 +59,8 @@ public sealed class SimulationSession
         Observations = new TypeRegistry(options.Network.ObservationCapacity);
         Actions = new TypeRegistry(options.Network.ActionCapacity);
         Temperature = new TemperatureModule(options.Temperature, Observations);
-        var position = new PositionObservationProvider(Observations);
         var movement = new MovementProvider(Actions);
-        Simulation = new Simulation(options.World, options.Reward, [Temperature], [Temperature, position], [movement], [Temperature], lifecycle);
+        Simulation = new Simulation(options.World, options.Reward, [Temperature], [Temperature], [movement], [Temperature], lifecycle);
         Simulation.Reset(options.Learning.Seed);
     }
 }

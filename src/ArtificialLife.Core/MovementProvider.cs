@@ -40,13 +40,3 @@ public sealed class MovementProvider(TypeRegistry registry) : IActionProvider
         return new Position(agent.Position.X + action.Parameters[0] * distance, agent.Position.Y + action.Parameters[1] * distance);
     }
 }
-
-public sealed class PositionObservationProvider(TypeRegistry registry) : IObservationProvider
-{
-    private readonly int type = registry.Register("core.position.v1");
-    public IEnumerable<ObservationToken> Observe(WorldState world, AgentState agent)
-    {
-        yield return new ObservationToken(type,
-            [(float)(2 * agent.Position.X / world.Options.Width - 1), (float)(2 * agent.Position.Y / world.Options.Height - 1)]);
-    }
-}
