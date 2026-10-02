@@ -49,14 +49,17 @@ public sealed class TemperatureModule : IWorldSystem, IObservationProvider, IDri
         sensorType = registry.Register("temperature.sensor.v1");
     }
 
-    public Position Source(WorldState world) => new(world.Options.Width / 2, world.Options.Height / 2);
-    public double Strength(double time) => Options.FireStrength * (1 + Options.OscillationAmplitude * Math.Sin(2 * Math.PI * time / Options.OscillationPeriod));
-
     public double EnvironmentAt(WorldState world, Position position)
     {
-        double distance = position.DistanceTo(Source(world));
-        // Гладкое гауссово поле; вдали температура стремится к фоновому значению.
-        return Options.Ambient + Strength(world.Time) * Math.Exp(-distance * distance / (2 * Options.FireRadius * Options.FireRadius));
+        double temperature = Options.Ambient;
+        foreach (Entity entity in world.Entities)
+        {
+            if (!entity.TryGet<HeatEmitter>(out var emitter)) continue;
+            double distance = position.DistanceTo(entity.Position);
+            // Гладкое гауссово поле каждого источника; вдали остаётся фоновая температура.
+            temperature += emitter.Strength(world.Time) * Math.Exp(-distance * distance / (2 * emitter.Radius * emitter.Radius));
+        }
+        return temperature;
     }
 
     public void Reset(WorldState world, AgentState agent, Random random)

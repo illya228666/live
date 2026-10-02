@@ -12,7 +12,7 @@ public sealed class TemperatureTests
     {
         var session = new SimulationSession(new ExperimentOptions());
         WorldState world = session.Simulation.World;
-        Position source = session.Temperature.Source(world);
+        Position source = session.Fire.Position;
         double center = session.Temperature.EnvironmentAt(world, source);
         double nearby = session.Temperature.EnvironmentAt(world, new Position(source.X + 10, source.Y));
         double far = session.Temperature.EnvironmentAt(world, new Position(source.X + 1000, source.Y));
@@ -27,9 +27,10 @@ public sealed class TemperatureTests
     {
         var session = new SimulationSession(new ExperimentOptions());
         double period = session.Options.Temperature.OscillationPeriod;
-        Assert.NotEqual(session.Temperature.Strength(0), session.Temperature.Strength(period / 4));
-        Assert.Equal(session.Temperature.Strength(0), session.Temperature.Strength(period), 9);
-        Assert.InRange(Math.Abs(session.Temperature.Strength(1) - session.Temperature.Strength(0)), 0, 1);
+        HeatEmitter emitter = session.Fire.Get<HeatEmitter>();
+        Assert.NotEqual(emitter.Strength(0), emitter.Strength(period / 4));
+        Assert.Equal(emitter.Strength(0), emitter.Strength(period), 9);
+        Assert.InRange(Math.Abs(emitter.Strength(1) - emitter.Strength(0)), 0, 1);
     }
 
     [Fact]
@@ -63,7 +64,7 @@ public sealed class TemperatureTests
     public void ThermalTokensAreLocalNormalizedAndDriveIsModuleOwned()
     {
         var session = new SimulationSession(new ExperimentOptions());
-        ObservationToken[] tokens = session.Simulation.Observe();
+        ObservationToken[] tokens = session.Temperature.Observe(session.Simulation.World, session.Simulation.Agent).ToArray();
         int[] thermalTypes = [session.Observations.Register("temperature.body.v1"), session.Observations.Register("temperature.sensor.v1")];
         Assert.Equal(6, tokens.Length);
         Assert.Equal(thermalTypes, tokens.Select(token => token.Type).Distinct());

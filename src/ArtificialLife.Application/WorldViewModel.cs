@@ -55,11 +55,12 @@ internal static class WorldSnapshots
     internal static WorldViewModel Create(SimulationSession session, long steps, string mode)
     {
         Simulation simulation = session.Simulation;
-        Position source = session.Temperature.Source(simulation.World);
+        Position source = session.Fire.Position;
+        HeatEmitter emitter = session.Fire.Get<HeatEmitter>();
         return new WorldViewModel(session.Options.World.Width, session.Options.World.Height,
             new AgentViewModel(simulation.Agent.Position.X, simulation.Agent.Position.Y, simulation.Agent.Get<ThermalBody>().Temperature,
                 session.Temperature.EnvironmentAt(simulation.World, simulation.Agent.Position)),
-            new HeatSourceViewModel(source.X, source.Y, session.Temperature.Strength(simulation.World.Time), session.Options.Temperature.FireRadius, session.Options.Temperature.Ambient),
+            new HeatSourceViewModel(source.X, source.Y, emitter.Strength(simulation.World.Time), emitter.Radius, session.Options.Temperature.Ambient),
             session.Options.Temperature.Target, session.Options.Temperature.ComfortHalfWidth, simulation.LastReward,
             steps, simulation.World.Time, mode);
     }

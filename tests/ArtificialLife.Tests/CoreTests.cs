@@ -2,6 +2,7 @@ using ArtificialLife.Application;
 using ArtificialLife.Brain;
 using ArtificialLife.Core;
 using ArtificialLife.Modules.Temperature;
+using ArtificialLife.Modules.Vision;
 using Xunit;
 
 namespace ArtificialLife.Tests;
@@ -102,7 +103,7 @@ public sealed class CoreTests
     [Fact]
     public void DomainProjectsNeverReferenceGodot()
     {
-        foreach (var assembly in new[] { typeof(Simulation).Assembly, typeof(DqnBrain).Assembly, typeof(TemperatureModule).Assembly, typeof(WorldViewModel).Assembly })
+        foreach (var assembly in new[] { typeof(Simulation).Assembly, typeof(DqnBrain).Assembly, typeof(TemperatureModule).Assembly, typeof(VisionModule).Assembly, typeof(WorldViewModel).Assembly })
         {
             Assert.DoesNotContain(assembly.GetReferencedAssemblies(), reference => reference.Name!.Contains("Godot", StringComparison.Ordinal));
         }

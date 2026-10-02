@@ -2,7 +2,7 @@
 
 ## Environment
 
-The source stays at the center of the rectangular world. At distance r and simulation time t:
+The composition root creates a central fire entity with `HeatEmitter` and neutral `VisualAppearance(Disc)` components. Temperature uses the emitter's entity position; vision uses the independent appearance. At distance r and simulation time t, `configs/default.json` specifies:
 
 ```text
 strength(t) = 40 × (1 + 0.3 × sin(2πt / 180))
@@ -39,9 +39,9 @@ The model approximates heat exchange, not human physiology. There is no death th
 | Body | `(body - target) / 20` |
 | Local thermal sensor | `(local environment - 30) / 40`, 0, 0 |
 | North / east / south / west thermal samples | `(sample - 30) / 40`, offset X, offset Y |
-| Core position | `2X / width - 1`, `2Y / height - 1` |
+| Visual disc | `cos(relative bearing)`, `sin(relative bearing)`, `distance / (1 + distance)`, `angular diameter / pi` |
 
-Values are clamped to [-1, 1]. Cardinal sensors sample three simulation units away and clamp their sampling position at world edges. Sensor offsets distinguish direction while all five samples share one type slot. The complete default state has seven tokens.
+Thermal values are clamped to [-1, 1]; vision features are normalized to the same range. Cardinal thermal sensors sample three simulation units away and clamp their sampling position at world edges. Sensor offsets distinguish direction while all five samples share one type slot. The complete default state has seven tokens: six thermal and one visual. Absolute agent/object coordinates are never observation features. Visual bearing uses the observer's orientation, currently fixed to zero; it has no north/east contract. Appearance carries no fire/heat label.
 
 These are measurements; no ideal-position distance, best movement or comfortable-zone vector is exposed.
 

@@ -13,9 +13,9 @@ A module need not implement all four. Movement is a Core action provider; temper
 
 ## Hypothetical Fruit + Hunger module — not implemented
 
-A future module could contain a fruit entity collection and a `HungerBody` component attached to `AgentState`. Its world system would increase hunger over time and update its fruit state.
+A future module could add fruit entities to `WorldState.Entities` and a `HungerBody` component attached to `AgentState`. Its world system would increase hunger over time and update its fruit state.
 
-Its observation provider could register `fruit.sighting.v1`, then emit zero or more tokens with relative X/Y, ripeness and visibility values. A hunger observation could use another reserved slot. Each token still fits the existing feature width. Nearby fruit sightings increase token count, not network dimensions.
+Fruit entities could carry neutral `VisualAppearance` components, using the existing Vision provider without exposing fruit semantics or world coordinates. A hunger observation could use another reserved slot. Each token still fits the existing feature width. More visible objects increase token count, not network dimensions.
 
 Its drive provider could report hunger, its target, a domain-appropriate normalization scale and weight. Core would combine it with the temperature drive. The module would not reward eating directly with an unbounded scalar.
 

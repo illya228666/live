@@ -219,7 +219,8 @@
         "dependencies": {
           "ArtificialLife.Brain": "[1.0.0, )",
           "ArtificialLife.Core": "[1.0.0, )",
-          "ArtificialLife.Modules.Temperature": "[1.0.0, )"
+          "ArtificialLife.Modules.Temperature": "[1.0.0, )",
+          "ArtificialLife.Modules.Vision": "[1.0.0, )"
         }
       },
       "artificiallife.brain": {
@@ -234,6 +235,12 @@
         "type": "Project"
       },
       "artificiallife.modules.temperature": {
+        "type": "Project",
+        "dependencies": {
+          "ArtificialLife.Core": "[1.0.0, )"
+        }
+      },
+      "artificiallife.modules.vision": {
         "type": "Project",
         "dependencies": {
           "ArtificialLife.Core": "[1.0.0, )"

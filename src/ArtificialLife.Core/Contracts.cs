@@ -6,20 +6,32 @@ public readonly record struct Position(double X, double Y)
     public double DistanceTo(Position other) => Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2));
 }
 
-/// <summary>Module-owned state attached to one entity.</summary>
-public sealed class AgentState
+/// <summary>A positioned world object with module-owned components.</summary>
+public class Entity
 {
     private readonly Dictionary<Type, object> components = new();
     public Position Position { get; set; }
 
     public void Set<T>(T component) where T : class => components[typeof(T)] = component;
     public T Get<T>() where T : class => (T)components[typeof(T)];
+    public bool TryGet<T>([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] out T? component) where T : class
+    {
+        component = components.GetValueOrDefault(typeof(T)) as T;
+        return component is not null;
+    }
 }
 
-/// <summary>Only spatial and temporal information shared by all systems.</summary>
+public sealed class AgentState : Entity
+{
+    /// <summary>Observer heading in radians. Movement does not rotate the body yet.</summary>
+    public double OrientationRadians { get; set; }
+}
+
+/// <summary>Spatial and temporal information and shared world objects.</summary>
 public sealed class WorldState(WorldOptions options)
 {
     public WorldOptions Options { get; } = options;
+    public List<Entity> Entities { get; } = [];
     public double Time { get; internal set; }
     public long Step { get; internal set; }
     public bool Contains(Position point) => point.X >= 0 && point.X <= Options.Width && point.Y >= 0 && point.Y <= Options.Height;

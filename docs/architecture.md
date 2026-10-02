@@ -8,14 +8,32 @@ The simulation can run without Godot. A future server would use the same `Simula
 | --- | --- | --- |
 | Core | Spatial world, entity component storage, contracts, legal movement, reward | BCL |
 | Modules.Temperature | Thermal body/field, sensory tokens and drive | Core |
+| Modules.Vision | Visual appearance, replaceable backend, relative perceptions and sensory tokens | Core |
 | Brain | Generic tensors, Q model, replay and learning | Core, TorchSharp/LibTorch |
-| Application | Composition, configuration, training/evaluation, checkpoint schema, snapshots | Core, Brain, Temperature |
+| Application | Composition, configuration, training/evaluation, checkpoint schema, snapshots | Core, Brain, Temperature, Vision |
 | Cli | Command parsing and console diagnostics | Application |
 | Godot | Rendering, input and human-speed stepping | Application, Godot SDK |
 
 There is no service container, event bus or runtime DLL loader. The composition root is `SimulationSession`. A module can implement the contracts it actually needs; it need not be a monolithic plugin object.
 
-`AgentState` stores module-owned components by CLR type. `ThermalBody` belongs to the temperature module, so Core has no body-temperature field. `WorldState` contains spatial limits and a clock. Providers receive this small context and the relevant entity, not an all-purpose service locator.
+`Entity` stores a position and module-owned components by CLR type. `AgentState` extends it with an observer orientation in radians; movement does not rotate the body. `ThermalBody` belongs to the temperature module, so Core has no body-temperature field. `WorldState` contains spatial limits, a clock and an entity collection. Providers receive this context and the relevant agent.
+
+`SimulationSession` creates one fire entity with independent `HeatEmitter` and `VisualAppearance(Disc)` components. Temperature sums the fields of all heat emitters at their entity positions. It creates no fire and assumes no source location. Snapshots read the same entity. World entities persist across episode resets; the agent orientation resets to zero.
+
+## Vision boundary
+
+```text
+World entity -> VisualAppearance -> IVisionBackend -> VisualPerception -> VisionModule -> ObservationToken[] -> Brain
+             -> HeatEmitter      -> Temperature
+```
+
+`IVisionBackend.Perceive` receives world state and `VisionObserver` (position and heading), and returns only neutral appearance type, bearing relative to the observer's forward axis, distance and apparent angular diameter. The output contains no absolute position, entity reference, identity or heat semantics. A raycasting backend can implement the same interface without changing Vision's observation encoding or Brain.
+
+The first backend uses direct geometry and considers every entity with a visual appearance visible. It transforms displacement into the observer frame and computes `atan2(lateral, forward)` and `2 * atan2(diameter / 2, distance)`. At coincident positions the bearing is zero and apparent size is pi. There is no occlusion, field of view, range filter or turning action.
+
+Appearance selects the neutral registry key `vision.appearance.disc.v1`; four numeric features are `cos(bearing)`, `sin(bearing)`, `distance / (1 + distance)` and `angularDiameter / pi`. They fit the existing network width and stay within [-1, 1]. Direction is continuous across the angle wrap; distance normalization uses no world size or global coordinate. The default state contains six thermal tokens and one visual token. Brain consumes only generic tokens and candidates, and references no module.
+
+The new observation key requires retraining older policies: checkpoint registry validation deliberately rejects pre-vision checkpoints. New saves and loads use the existing format. The episodic CLI benchmark, seeds, physics, reward and network dimensions remain available; earlier measured results describe the earlier observation set.
 
 ## One simulation step
 

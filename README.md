@@ -12,6 +12,7 @@ The experiment asks one question: **can a fixed neural architecture learn homeos
 
 - One seedable, bounded 100 × 100 world, one circular agent and one central heat source.
 - A smoothly changing temperature field and body temperature with thermal inertia.
+- Component-based world objects and egocentric direct-geometry vision behind a replaceable backend.
 - Variable observation tokens, trainable type embeddings and a Deep Sets state encoder.
 - Shared scalar Q scoring for variable sets of legal action candidates.
 - CPU Double DQN with replay, Adam, Huber loss, gradient clipping and a target network.
@@ -153,17 +154,20 @@ flowchart LR
     Application --> Core[Simulation Core]
     Application --> Brain[TorchSharp Brain]
     Application --> Temperature[Temperature module]
+    Application --> Vision[Vision module]
     Brain --> Core
     Temperature --> Core
+    Vision --> Core
 ```
 
-`Core`, `Brain`, `Temperature` and `Application` contain no Godot references. Simulation coordinates are ordinary numbers. The Godot adapter alone uses `Node2D`, rendering APIs and engine vectors. Another frontend could consume `WorldViewModel` without changing physics or learning code.
+`Core`, `Brain`, `Temperature`, `Vision` and `Application` contain no Godot references. Simulation coordinates are ordinary numbers. The Godot adapter alone uses `Node2D`, rendering APIs and engine vectors. Another frontend could consume `WorldViewModel` without changing physics or learning code.
 
 ```text
 src/
   ArtificialLife.Core/                 world, movement, contracts, registries, reward
   ArtificialLife.Brain/                neural encoder, candidate Q scorer, Double DQN
   ArtificialLife.Modules.Temperature/  field, body dynamics, senses and drive
+  ArtificialLife.Modules.Vision/       appearance, replaceable backend, egocentric sensory tokens
   ArtificialLife.Application/          composition, trainer, evaluator, checkpoints, snapshots
   ArtificialLife.Cli/                  train/evaluate commands
   ArtificialLife.Godot/                scene and rendering/input adapter

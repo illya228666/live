@@ -3,5 +3,6 @@
     <ProjectReference Include="../ArtificialLife.Core/ArtificialLife.Core.csproj" />
     <ProjectReference Include="../ArtificialLife.Brain/ArtificialLife.Brain.csproj" />
     <ProjectReference Include="../ArtificialLife.Modules.Temperature/ArtificialLife.Modules.Temperature.csproj" />
+    <ProjectReference Include="../ArtificialLife.Modules.Vision/ArtificialLife.Modules.Vision.csproj" />
   </ItemGroup>
 </Project>

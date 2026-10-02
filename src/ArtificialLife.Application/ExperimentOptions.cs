@@ -2,6 +2,7 @@ using System.Text.Json;
 using ArtificialLife.Brain;
 using ArtificialLife.Core;
 using ArtificialLife.Modules.Temperature;
+using ArtificialLife.Modules.Vision;
 
 namespace ArtificialLife.Application;
 
@@ -49,6 +50,8 @@ public sealed class SimulationSession
     public TypeRegistry Observations { get; }
     public TypeRegistry Actions { get; }
     public TemperatureModule Temperature { get; }
+    public VisionModule Vision { get; }
+    public Entity Fire { get; }
     public Simulation Simulation { get; }
     public ExperimentOptions Options { get; }
 
@@ -59,8 +62,14 @@ public sealed class SimulationSession
         Observations = new TypeRegistry(options.Network.ObservationCapacity);
         Actions = new TypeRegistry(options.Network.ActionCapacity);
         Temperature = new TemperatureModule(options.Temperature, Observations);
+        Vision = new VisionModule(new DirectGeometryVisionBackend(), Observations);
+        Fire = new Entity { Position = new Position(options.World.Width / 2, options.World.Height / 2) };
+        Fire.Set(new HeatEmitter(options.Temperature.FireStrength, options.Temperature.FireRadius,
+            options.Temperature.OscillationPeriod, options.Temperature.OscillationAmplitude));
+        Fire.Set(new VisualAppearance(AppearanceType.Disc, diameter: 4));
         var movement = new MovementProvider(Actions);
-        Simulation = new Simulation(options.World, options.Reward, [Temperature], [Temperature], [movement], [Temperature], lifecycle);
+        Simulation = new Simulation(options.World, options.Reward, [Temperature], [Temperature, Vision], [movement], [Temperature], lifecycle);
+        Simulation.World.Entities.Add(Fire);
         Simulation.Reset(options.Learning.Seed);
     }
 }

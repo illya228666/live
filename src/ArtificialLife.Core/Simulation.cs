@@ -40,6 +40,7 @@ public sealed class Simulation
         World.Step = 0;
         LastReward = 0;
         Agent.Position = new Position(random.NextDouble() * World.Options.Width, random.NextDouble() * World.Options.Height);
+        Agent.OrientationRadians = 0;
         foreach (IWorldSystem system in systems)
         {
             system.Reset(World, Agent, random);
