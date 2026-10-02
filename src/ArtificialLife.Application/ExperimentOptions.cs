@@ -52,7 +52,7 @@ public sealed class SimulationSession
     public Simulation Simulation { get; }
     public ExperimentOptions Options { get; }
 
-    public SimulationSession(ExperimentOptions options)
+    public SimulationSession(ExperimentOptions options, SimulationLifecycle lifecycle = SimulationLifecycle.Episodic)
     {
         options.Validate();
         Options = options;
@@ -61,7 +61,7 @@ public sealed class SimulationSession
         Temperature = new TemperatureModule(options.Temperature, Observations);
         var position = new PositionObservationProvider(Observations);
         var movement = new MovementProvider(Actions);
-        Simulation = new Simulation(options.World, options.Reward, [Temperature], [Temperature, position], [movement], [Temperature]);
+        Simulation = new Simulation(options.World, options.Reward, [Temperature], [Temperature, position], [movement], [Temperature], lifecycle);
         Simulation.Reset(options.Learning.Seed);
     }
 }

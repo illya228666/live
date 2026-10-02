@@ -7,7 +7,7 @@ using ArtificialLife.Modules.Temperature;
 namespace ArtificialLife.Application;
 
 /// <summary>Safe values copied from the single mutable training owner.</summary>
-public sealed record TrainingViewModel(int Step, int Episode, int EpisodeStep, int EpisodeLength,
+public sealed record TrainingViewModel(int Step, int Life, long Age,
     double Epsilon, double LastLoss, int OptimizationUpdates, int ReplayCount, int ReplayCapacity,
     EvaluationMetrics RecentMetrics, bool Evaluating);
 
@@ -30,6 +30,7 @@ public sealed class TrainingVisualizationSession : IDisposable
     private readonly Queue<TrainingSample> history = new();
     private readonly Queue<TrainingSample> trail = new();
     private bool disposed;
+    private int life;
 
     public bool Evaluating => evaluation is not null;
 
@@ -108,7 +109,7 @@ public sealed class TrainingVisualizationSession : IDisposable
         }
         else
         {
-            evaluation = new SimulationSession(options);
+            evaluation = new SimulationSession(options, SimulationLifecycle.Continuous);
             evaluation.Simulation.Reset(options.Evaluation.Seeds[0]);
             evaluationMetrics = new RollingMetricAccumulator(options.Temperature, visualOptions.RollingMetricWindow);
             evaluationStep = 0;
@@ -122,9 +123,10 @@ public sealed class TrainingVisualizationSession : IDisposable
     {
         ObjectDisposedException.ThrowIf(disposed, this);
         brain?.Dispose();
-        session = new SimulationSession(options);
+        session = new SimulationSession(options, SimulationLifecycle.Continuous);
         brain = new DqnBrain(options.Network, options.Learning);
         engine = new TrainingEngine(session, brain);
+        life++;
         metrics = new RollingMetricAccumulator(options.Temperature, visualOptions.RollingMetricWindow);
         evaluation = null;
         evaluationMetrics = null;
@@ -137,7 +139,7 @@ public sealed class TrainingVisualizationSession : IDisposable
     {
         ObjectDisposedException.ThrowIf(disposed, this);
         SimulationSession displayed = evaluation ?? session;
-        var training = new TrainingViewModel(engine.Step, engine.Episode, engine.EpisodeStep, options.World.EpisodeSteps,
+        var training = new TrainingViewModel(engine.Step, life, session.Simulation.World.Step,
             Evaluating ? 0 : brain.Epsilon(engine.Step), brain.LastLoss, brain.OptimizationUpdates,
             brain.Replay.Count, options.Learning.ReplayCapacity, (evaluationMetrics ?? metrics).Metrics(), Evaluating);
         WorldViewModel world = WorldSnapshots.Create(displayed, Evaluating ? evaluationStep : engine.Step,
@@ -153,11 +155,6 @@ public sealed class TrainingVisualizationSession : IDisposable
 
     private void Record(TrainingSample sample)
     {
-        // Не соединяем телепортацию reset с движением; очищаем след лишь при смене эпизода/режима.
-        if (trail.Count > 0 && trail.Peek().Episode != sample.Episode)
-        {
-            trail.Clear();
-        }
         trail.Enqueue(sample);
         if (trail.Count > visualOptions.TrailLength)
         {

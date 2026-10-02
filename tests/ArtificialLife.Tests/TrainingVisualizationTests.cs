@@ -1,5 +1,7 @@
 using ArtificialLife.Application;
 using ArtificialLife.Brain;
+using ArtificialLife.Core;
+using ArtificialLife.Modules.Temperature;
 using Xunit;
 
 namespace ArtificialLife.Tests;
@@ -11,6 +13,70 @@ public sealed class TrainingVisualizationTests
         World = new() { EpisodeSteps = 40 },
         Learning = new() { WarmupSteps = 64, BatchSize = 16, ReplayCapacity = 512, TrainingSteps = 1000, EpsilonDecaySteps = 1000 }
     };
+
+    [Fact]
+    public void ContinuousLifeCrossesThreeEpisodeBoundariesWithoutResetOrTerminalReplay()
+    {
+        ExperimentOptions options = Options() with
+        {
+            World = new() { EpisodeSteps = 400 },
+            Learning = Options().Learning with { ReplayCapacity = 2048 }
+        };
+        var session = new SimulationSession(options, SimulationLifecycle.Continuous);
+        Simulation simulation = session.Simulation;
+        ThermalBody body = simulation.Agent.Get<ThermalBody>();
+        double initialTime = simulation.World.Time;
+        using var brain = new DqnBrain(options.Network, options.Learning);
+        var engine = new TrainingEngine(session, brain);
+        Assert.Same(body, simulation.Agent.Get<ThermalBody>()); // Engine must not initialize a second body.
+        for (int step = 1; step <= 1201; step++)
+        {
+            double oldTime = simulation.World.Time;
+            Position oldPosition = simulation.Agent.Position;
+            double oldBody = body.Temperature;
+            TrainingSample sample = engine.AdvanceOne();
+            Assert.False(sample.Terminal);
+            Assert.Equal(1, engine.Episode);
+            Assert.Equal(step, simulation.World.Step);
+            Assert.Equal(initialTime + step * options.World.TimeStep, simulation.World.Time, 9);
+            Assert.Equal(oldTime + options.World.TimeStep, simulation.World.Time, 9);
+            Assert.Same(body, simulation.Agent.Get<ThermalBody>());
+            Assert.True(oldPosition.DistanceTo(simulation.Agent.Position) <= options.World.MovementSpeed * options.World.TimeStep + 1e-9);
+            double equilibrium = session.Temperature.EnvironmentAt(simulation.World, simulation.Agent.Position)
+                + options.Temperature.HeatProduction / options.Temperature.HeatTransfer;
+            double expectedBody = equilibrium + (oldBody - equilibrium) * Math.Exp(-options.Temperature.HeatTransfer * options.World.TimeStep);
+            Assert.Equal(expectedBody, body.Temperature, 10);
+            Assert.Equal(body.Temperature, sample.BodyTemperature);
+            Assert.Equal(step, brain.Replay.Count);
+        }
+        // Read every slot through the existing sampler, including all former terminal boundaries.
+        Assert.All(brain.Replay.Sample(1201, new SequentialRandom()), experience => Assert.False(experience.Terminal));
+        Assert.Equal(285, brain.OptimizationUpdates); // 64,68,...,1200; no restarts at 400/800/1200.
+        Assert.Equal(options.Learning.EpsilonEnd, brain.Epsilon(engine.Step));
+    }
+
+    private sealed class SequentialRandom : Random
+    {
+        private int index;
+        public override int Next(int maxValue) => index++ % maxValue;
+    }
+
+    [Fact]
+    public void LiveHistoriesRetainSamplesAcrossFormerEpisodeBoundaries()
+    {
+        using var live = new TrainingVisualizationSession(Options(), new()
+        {
+            HistoryLength = 200, TrailLength = 200, HistorySampleInterval = 1
+        });
+        live.AdvanceTraining(121);
+        TrainingVisualizationSnapshot snapshot = live.Snapshot();
+        Assert.Equal(121, snapshot.History.Count);
+        Assert.Equal(121, snapshot.Trail.Count);
+        Assert.Equal(Enumerable.Range(1, 121), snapshot.Trail.Select(sample => sample.Step));
+        Assert.All(snapshot.History, sample => Assert.False(sample.Terminal));
+        Assert.Equal(1, snapshot.Training.Life);
+        Assert.Equal(121, snapshot.Training.Age);
+    }
 
     [Fact]
     public void IncrementalBatchBoundariesDoNotChangeLearning()
@@ -46,7 +112,7 @@ public sealed class TrainingVisualizationTests
     }
 
     [Fact]
-    public void LiveAndHeadlessUseExactlyTheSameStepLogic()
+    public void HeadlessRetainsOriginalEpisodicLearning()
     {
         ExperimentOptions options = Options();
         string directory = TemporaryDirectory();
@@ -59,37 +125,60 @@ public sealed class TrainingVisualizationTests
                 Trainer.Run(session, brain);
                 Checkpoint.Save(headlessPath, session, brain);
             }
-            using var live = new TrainingVisualizationSession(options);
-            live.AdvanceTraining(options.Learning.TrainingSteps);
-            string livePath = Path.Combine(directory, "live");
-            live.SaveCheckpoint(livePath);
-            Assert.Equal(Checkpoint.Read(headlessPath).WeightSha256, Checkpoint.Read(livePath).WeightSha256);
+            var reference = new SimulationSession(options);
+            using var referenceBrain = new DqnBrain(options.Network, options.Learning);
+            ObservationToken[] state = reference.Simulation.Observe();
+            ActionCandidate[] actions = reference.Simulation.LegalActions();
+            int episode = 0;
+            for (int step = 1; step <= options.Learning.TrainingSteps; step++)
+            {
+                ActionCandidate action = referenceBrain.Choose(state, actions, referenceBrain.Epsilon(step));
+                StepResult result = reference.Simulation.Step(action);
+                referenceBrain.Replay.Add(new Experience(state, action, (float)result.Reward, result.Observations, result.Actions, result.Terminal));
+                referenceBrain.Learn(step);
+                state = result.Observations;
+                actions = result.Actions;
+                Assert.Equal(step % options.World.EpisodeSteps == 0, result.Terminal);
+                if (result.Terminal)
+                {
+                    reference.Simulation.Reset(options.Learning.Seed + ++episode);
+                    state = reference.Simulation.Observe();
+                    actions = reference.Simulation.LegalActions();
+                }
+            }
+            Assert.Equal(25, episode);
+            Assert.Equal(0, session.Simulation.World.Step);
+            Assert.Equal(reference.Simulation.World.Time, session.Simulation.World.Time);
+            Assert.Equal(reference.Simulation.Agent.Position, session.Simulation.Agent.Position);
+            string referencePath = Path.Combine(directory, "reference");
+            Checkpoint.Save(referencePath, reference, referenceBrain);
+            Assert.Equal(Checkpoint.Read(headlessPath).WeightSha256, Checkpoint.Read(referencePath).WeightSha256);
         }
         finally { Directory.Delete(directory, recursive: true); }
     }
 
     [Fact]
-    public void CountersEpsilonReplayAndTerminalSamplesAreCorrect()
+    public void ContinuousCountersEpsilonReplayAndNonterminalSamplesAreCorrect()
     {
         using var session = new TrainingVisualizationSession(Options(), new() { HistorySampleInterval = 1 });
         session.AdvanceTraining(39);
         TrainingVisualizationSnapshot before = session.Snapshot();
-        Assert.Equal(1, before.Training.Episode);
-        Assert.Equal(39, before.Training.EpisodeStep);
+        Assert.Equal(1, before.Training.Life);
+        Assert.Equal(39, before.Training.Age);
         session.AdvanceTraining(1);
         TrainingVisualizationSnapshot boundary = session.Snapshot();
         Assert.Equal(40, boundary.Training.Step);
-        Assert.Equal(2, boundary.Training.Episode);
-        Assert.Equal(0, boundary.Training.EpisodeStep);
+        Assert.Equal(1, boundary.Training.Life);
+        Assert.Equal(40, boundary.Training.Age);
         Assert.Equal(40, boundary.Training.ReplayCount);
-        Assert.True(boundary.History[^1].Terminal);
+        Assert.False(boundary.History[^1].Terminal);
         Assert.Equal(1, boundary.History[^1].Episode);
         Assert.Equal(40, boundary.History[^1].EpisodeStep);
         session.AdvanceTraining(81);
         TrainingViewModel status = session.Snapshot().Training;
         Assert.Equal(121, status.Step);
-        Assert.Equal(4, status.Episode);
-        Assert.Equal(1, status.EpisodeStep);
+        Assert.Equal(1, status.Life);
+        Assert.Equal(121, status.Age);
         Assert.Equal(121, status.ReplayCount);
         Assert.Equal(1 - 0.95 * 121 / 1000, status.Epsilon, 10);
         Assert.Equal(15, status.OptimizationUpdates); // updates at steps 64,68,...,120
@@ -102,6 +191,7 @@ public sealed class TrainingVisualizationTests
         try
         {
             using var session = new TrainingVisualizationSession(Options());
+            TrainingVisualizationSnapshot initial = session.Snapshot();
             string initialPath = Path.Combine(directory, "initial");
             session.SaveCheckpoint(initialPath);
             session.AdvanceTraining(300);
@@ -111,8 +201,9 @@ public sealed class TrainingVisualizationTests
             session.ResetTraining();
             TrainingVisualizationSnapshot reset = session.Snapshot();
             Assert.Equal(0, reset.Training.Step);
-            Assert.Equal(1, reset.Training.Episode);
-            Assert.Equal(0, reset.Training.EpisodeStep);
+            Assert.Equal(2, reset.Training.Life);
+            Assert.Equal(0, reset.Training.Age);
+            Assert.Equal(initial.World, reset.World);
             Assert.Equal(0, reset.Training.ReplayCount);
             Assert.Equal(0, reset.Training.OptimizationUpdates);
             Assert.Equal(0, reset.Training.LastLoss);
@@ -197,7 +288,7 @@ public sealed class TrainingVisualizationTests
         live.AdvanceTraining(25);
         Assert.Equal(history, first.History.ToArray());
         Assert.Equal(100, first.Training.Step);
-        Assert.All(live.Snapshot().Trail, sample => Assert.Equal(4, sample.Episode));
+        Assert.All(live.Snapshot().Trail, sample => Assert.Equal(1, sample.Episode));
     }
 
     [Fact]

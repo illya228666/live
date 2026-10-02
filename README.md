@@ -105,7 +105,7 @@ Start a fresh network and watch real simulation, replay and optimizer updates in
 ./tools/run-godot.ps1 -Train -Smoke       # optimize 1,000 steps, save, exit
 ```
 
-Live Training starts with newly initialized weights; it does not load or play back trained checkpoints. The original `./tools/run-godot.ps1` still displays a saved policy, and `train.ps1` / `evaluate.ps1` retain their existing behavior. Headless training remains the fastest route; live training trades throughput for observing actual trajectories and episode boundaries.
+Live Training starts a single continuous life with newly initialized weights. Position, body temperature, world time, fire phase, optimizer, replay and epsilon progression continue across the configured `EpisodeSteps` boundaries; those boundaries produce no terminal transitions or resets. The original `./tools/run-godot.ps1` still displays a saved policy. Headless `train.ps1` remains episodic and `evaluate.ps1` retains its existing behavior.
 
 | Key | Live Training action |
 | --- | --- |
@@ -113,11 +113,11 @@ Live Training starts with newly initialized weights; it does not load or play ba
 | + / − (including numpad) | Switch between 1×, 10×, 100× and Max |
 | E | Freeze learning and observe ε = 0 in a separate world; press again to resume |
 | S | Save the current policy using the existing checkpoint format |
-| Ctrl + Shift + R | Reset weights, optimizer, replay, counters and histories completely |
+| Ctrl + Shift + R | Start a new life: fresh weights, optimizer, replay, body, world, counters and histories |
 
-Default rates are 60, 600 and 6,000 requested training steps/s. Max requests up to 256 steps per frame; every preset also has an 8 ms cooperative work budget. Actual throughput depends on the PC and is displayed in the HUD. Work returns to Godot between complete training steps; the physics timestep is unchanged. The displayed world and short trail show actual positions, while the two small graphs show body temperature against its target and absolute body error. Metrics use the most recent 1,000 steps. Trails reset at episode boundaries rather than drawing a teleport line across the world.
+Default rates are 60, 600 and 6,000 requested training steps/s. Max requests up to 256 steps per frame; every preset also has an 8 ms cooperative work budget. Actual throughput depends on the PC and is displayed in the HUD. Work returns to Godot between complete training steps; the physics timestep is unchanged. The displayed world and short trail show actual positions, while the two small graphs show body temperature against its target and absolute body error. Metrics use the most recent 1,000 steps. Trails and graphs remain bounded, evicting old samples without clearing at former episode boundaries.
 
-Settings live in `configs/live-training.json`, separately from DQN/physics configuration. Live learning continues until paused or closed; `learning.trainingSteps` remains the budget for the headless command. The HUD counts completed training steps and current episode/episode step. The frozen evaluation world neither appends replay nor consumes the training RNG; resuming restores the suspended training world exactly.
+Settings live in `configs/live-training.json`, separately from DQN/physics configuration. Live learning continues until paused or closed; `learning.trainingSteps` remains the budget for the headless command. The HUD shows Life, Age (physical steps in the training life) and TrainingStep. Ctrl + Shift + R increments the life number and resets age and training counters using the configured deterministic seed. The frozen evaluation world neither appends replay nor consumes the training RNG; resuming restores the suspended training world exactly. Histories clear on evaluation mode switches to avoid joining separate worlds.
 
 **S** saves to `artifacts/checkpoints/live-thermal` by default, leaving the original thermal checkpoint intact. Use `-Checkpoint PATH` to choose a different destination. `-Train -Smoke` also saves there before exiting. Load a live policy through the existing pipeline:
 

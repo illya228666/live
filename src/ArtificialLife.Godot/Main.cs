@@ -188,7 +188,6 @@ public partial class Main : Node2D
         DrawCircle(center, 11, new Color("ff9d52"));
         DrawArc(center, 17, 0, Mathf.Tau, 64, new Color(1, 0.6f, 0.3f, 0.45f), 1, antialiased: true);
         Vector2[] points = liveSnapshot is null ? trail.ToArray() : liveSnapshot.Trail
-            .Where(sample => liveSnapshot.Training.Evaluating || sample.Episode == liveSnapshot.Training.Episode)
             .Select(sample => ToScreen(sample.X, sample.Y)).ToArray();
         for (int index = 1; index < points.Length; index++)
         {

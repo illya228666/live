@@ -25,7 +25,11 @@ public sealed class TrainingEngine
     {
         this.session = session;
         this.brain = brain;
-        session.Simulation.Reset(session.Options.Learning.Seed);
+        // Continuous sessions are already initialized once by the composition root.
+        if (session.Simulation.Lifecycle == SimulationLifecycle.Episodic)
+        {
+            session.Simulation.Reset(session.Options.Learning.Seed);
+        }
         state = session.Simulation.Observe();
         actions = session.Simulation.LegalActions();
     }

@@ -29,7 +29,7 @@ There is no service container, event bus or runtime DLL loader. The composition 
 
 Diagonal movement is normalized to the same speed as cardinal movement. Boundary-crossing candidates are omitted instead of clamped into duplicate actions. Stay is always legal. Public `Simulation.Step` rejects fabricated candidates as well as invalid boundary moves.
 
-Training uses 400-step episodes, randomized starting positions, body temperatures and field phases. Replay receives the final state and terminal flag before the next reset. Time-limit transitions intentionally do not bootstrap. Frozen checkpoint visualization runs continuously; Live Training preserves the trainer's episode resets.
+Headless training uses 400-step episodes, randomized starting positions, body temperatures and field phases. Replay receives the final state and terminal flag before the next reset. Those benchmark time-limit transitions intentionally do not bootstrap. Godot Live Training uses a continuous lifecycle, so these limits produce neither terminal transitions nor resets. Frozen checkpoint visualization also runs continuously.
 
 ## Presentation boundary
 
@@ -39,11 +39,11 @@ The Godot adapter advances fixed simulation steps using a wall-clock accumulator
 
 ## Incremental live training
 
-`TrainingEngine.AdvanceOne` now contains the original CLI transition logic: epsilon selection, simulation step, replay insertion, DQN update and deterministic episode reset. `Trainer.Run` retains its loop/logging but delegates each transition to that engine. `TrainingVisualizationSession` owns a brain and the same engine, supplies rolling metrics, bounded histories and copied read-only snapshots, and exposes incremental batches, complete reset, checkpoint save and frozen evaluation.
+`TrainingEngine.AdvanceOne` contains the shared transition logic: epsilon selection, simulation step, replay insertion, DQN update and reset on terminal. `SimulationLifecycle` explicitly distinguishes `Episodic` (the default for CLI training) from `Continuous` (selected by `TrainingVisualizationSession`). Only episodic simulations produce terminal transitions at `EpisodeSteps`. Continuous simulations initialize once in `SimulationSession`; the engine neither initializes a second body nor resets at the old boundaries. `Trainer.Run` retains its loop/logging. Live training uses the same engine, with rolling metrics, bounded histories and copied read-only snapshots.
 
 Godot can request many training steps without changing the physical timestep. It caps each batch and checks a time budget between complete steps, then returns to input/render processing. All mutable brain/world state has one synchronous owner on the Godot thread; rendering receives primitive records, not tensor aliases or mutable simulation references. Closing the node disposes the Application session and its brain.
 
-Terminal samples are recorded before reset. The snapshot may show the new episode at step zero, while the graph retains actual previous transition samples. The trail filters episode identity so a reset never becomes a movement line. Frozen evaluation uses a separate simulation and a greedy scorer that does not consume the training exploration/replay RNG; training state is suspended intact.
+Episodic terminal samples are recorded before reset. Live training has no automatic terminal/reset boundary: world time, position, body temperature, fire phase, brain, optimizer, replay and epsilon progression continue through the entire life. Its HUD shows Life, Age and TrainingStep; histories evict old samples without clearing at `EpisodeSteps`. Ctrl + Shift + R disposes the old brain/optimizer and creates a new seeded brain, replay, body and world, resets training counters and increments the life number. Frozen evaluation uses a separate continuous simulation and a greedy scorer that does not consume the training exploration/replay RNG; training state is suspended intact. Histories clear on mode switches and new life.
 
 The checkpoint schema stays at version 1. Its existing `TrainingSteps` metadata now accepts an explicit completed count when live training saves; the configured headless step budget remains in the original configuration. CLI evaluation reads the completed count from that metadata instead of reporting a planned training budget as completed work.
 

@@ -1,5 +1,7 @@
 namespace ArtificialLife.Core;
 
+public enum SimulationLifecycle { Episodic, Continuous }
+
 public sealed record StepResult(ObservationToken[] Observations, ActionCandidate[] Actions, double Reward, bool Terminal);
 
 /// <summary>Presentation-independent orchestrator. Modules own their state and physical equations.</summary>
@@ -10,16 +12,19 @@ public sealed class Simulation
     private readonly IActionProvider[] actions;
     private readonly IDriveProvider[] drives;
     private readonly RewardAggregator rewards;
-    private int episodeStep;
 
     public WorldState World { get; }
+    public SimulationLifecycle Lifecycle { get; }
     public AgentState Agent { get; } = new();
     public double LastReward { get; private set; }
 
     public Simulation(WorldOptions options, RewardOptions rewardOptions, IEnumerable<IWorldSystem> systems,
-        IEnumerable<IObservationProvider> observations, IEnumerable<IActionProvider> actions, IEnumerable<IDriveProvider> drives)
+        IEnumerable<IObservationProvider> observations, IEnumerable<IActionProvider> actions, IEnumerable<IDriveProvider> drives,
+        SimulationLifecycle lifecycle = SimulationLifecycle.Episodic)
     {
         options.Validate();
+        if (!Enum.IsDefined(lifecycle)) throw new ArgumentOutOfRangeException(nameof(lifecycle));
+        Lifecycle = lifecycle;
         World = new WorldState(options);
         this.systems = systems.ToArray();
         this.observations = observations.ToArray();
@@ -33,7 +38,6 @@ public sealed class Simulation
         var random = new Random(seed);
         World.Time = random.NextDouble() * 600;
         World.Step = 0;
-        episodeStep = 0;
         LastReward = 0;
         Agent.Position = new Position(random.NextDouble() * World.Options.Width, random.NextDouble() * World.Options.Height);
         foreach (IWorldSystem system in systems)
@@ -55,13 +59,13 @@ public sealed class Simulation
         actions.Single(provider => provider.Handles(action.Type)).Execute(World, Agent, action);
         World.Time += World.Options.TimeStep;
         World.Step++;
-        episodeStep++;
         foreach (IWorldSystem system in systems)
         {
             system.Update(World, Agent, World.Options.TimeStep);
         }
         double error = rewards.Error(drives.SelectMany(provider => provider.GetDrives(Agent)));
         LastReward = rewards.Reward(previousError, error);
-        return new StepResult(Observe(), LegalActions(), LastReward, episodeStep >= World.Options.EpisodeSteps);
+        return new StepResult(Observe(), LegalActions(), LastReward,
+            Lifecycle == SimulationLifecycle.Episodic && World.Step >= World.Options.EpisodeSteps);
     }
 }
