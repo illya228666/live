@@ -175,8 +175,9 @@ public partial class Main : Node2D
         {
             float radius = ring * 8;
             float distance = radius / worldRect.Size.X * (float)state.Width;
-            float warmth = (float)(state.HeatSource.Strength * Math.Exp(-distance * distance / (2 * state.HeatSource.Radius * state.HeatSource.Radius)) / 52);
-            DrawCircle(center, radius, new Color(0.96f, 0.38f, 0.15f, warmth * 0.022f));
+            float warmth = (float)(state.HeatSource.Strength * Math.Exp(-distance * distance / (2 * state.HeatSource.Radius * state.HeatSource.Radius)) /
+                (state.HeatSource.Ambient + state.HeatSource.Strength));
+            DrawCircle(center, radius, new Color(0.96f, 0.38f, 0.15f, warmth * 0.11f));
         }
         for (int line = 1; line < 10; line++)
         {

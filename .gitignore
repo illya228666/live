@@ -8,3 +8,4 @@ artifacts/
 TestResults/
 *.user
 *.tmp
+/.codebase-memory

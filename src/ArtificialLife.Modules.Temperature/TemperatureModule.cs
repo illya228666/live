@@ -5,11 +5,11 @@ namespace ArtificialLife.Modules.Temperature;
 public sealed record TemperatureOptions
 {
     public double Ambient { get; init; } = 18;
-    public double FireStrength { get; init; } = 40;
-    public double FireRadius { get; init; } = 24;
+    public double FireStrength { get; init; } = 26;
+    public double FireRadius { get; init; } = 18;
     public double OscillationPeriod { get; init; } = 180;
-    public double OscillationAmplitude { get; init; } = 0.3;
-    public double HeatProduction { get; init; } = 0.3;
+    public double OscillationAmplitude { get; init; } = 0.23;
+    public double HeatProduction { get; init; } = 0.2;
     public double HeatTransfer { get; init; } = 0.12;
     public double Target { get; init; } = 36.6;
     public double SensorDistance { get; init; } = 3;
