@@ -30,7 +30,7 @@ public sealed class HungerState
 }
 
 /// <summary>Hunger dynamics and automatic contact feeding; reward is aggregated by Core.</summary>
-public sealed class HungerModule : IWorldSystem, IObservationProvider, IDriveProvider
+public sealed class HungerModule : IWorldSystem, IObservationProvider, IDriveProvider, IDriveDescriptorProvider
 {
     private readonly int hungerType;
     public HungerOptions Options { get; }
@@ -62,6 +62,8 @@ public sealed class HungerModule : IWorldSystem, IObservationProvider, IDrivePro
 
     public IEnumerable<ObservationToken> Observe(WorldState world, AgentState agent) =>
         [new(hungerType, [(float)agent.Get<HungerState>().Level])];
+
+    public IEnumerable<DriveDescriptor> GetDriveDescriptors() => [new("hunger", "Hunger", "")];
 
     public IEnumerable<DriveState> GetDrives(AgentState agent) =>
         [new("hunger", agent.Get<HungerState>().Level, 0, 1, 1)];

@@ -1,12 +1,11 @@
 using ArtificialLife.Brain;
 using ArtificialLife.Core;
-using ArtificialLife.Modules.Temperature;
 
 namespace ArtificialLife.Application;
 
 /// <summary>An actual completed transition, captured before an episode reset.</summary>
 public sealed record TrainingSample(int Step, int Episode, int EpisodeStep, double X, double Y,
-    double BodyTemperature, double AbsoluteError, double Reward, bool Terminal);
+    HomeostasisReport Homeostasis, double Reward, bool Terminal);
 
 /// <summary>One incremental training loop shared by the CLI and presentation sessions.</summary>
 /// <remarks>The caller owns the supplied brain. This engine must have one synchronous owner.</remarks>
@@ -45,9 +44,8 @@ public sealed class TrainingEngine
         state = result.Observations;
         actions = result.Actions;
         Simulation simulation = session.Simulation;
-        double body = simulation.Agent.Get<ThermalBody>().Temperature;
         var sample = new TrainingSample(Step, Episode, EpisodeStep, simulation.Agent.Position.X, simulation.Agent.Position.Y,
-            body, Math.Abs(body - session.Options.Temperature.Target), result.Reward, result.Terminal);
+            HomeostasisReport.Capture(simulation), result.Reward, result.Terminal);
         if (result.Terminal)
         {
             // Терминальное состояние уже записано в replay и sample; reset не смешивает эпизоды.

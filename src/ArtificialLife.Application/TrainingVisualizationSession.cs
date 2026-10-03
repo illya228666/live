@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using ArtificialLife.Brain;
 using ArtificialLife.Core;
-using ArtificialLife.Modules.Temperature;
 
 namespace ArtificialLife.Application;
 
@@ -57,7 +56,7 @@ public sealed class TrainingVisualizationSession : IDisposable
         while (completed < numberOfSteps)
         {
             TrainingSample sample = engine.AdvanceOne();
-            metrics.Add(sample.BodyTemperature, sample.Reward);
+            metrics.Add(sample.Homeostasis, sample.Reward);
             Record(sample);
             completed++;
             // Бюджет проверяется между полными переходами: оптимизация никогда не прерывается посередине.
@@ -85,11 +84,11 @@ public sealed class TrainingVisualizationSession : IDisposable
             Simulation simulation = evaluation.Simulation;
             ActionCandidate action = brain.ChooseGreedy(simulation.Observe(), simulation.LegalActions());
             StepResult result = simulation.Step(action);
-            double body = simulation.Agent.Get<ThermalBody>().Temperature;
+            HomeostasisReport report = HomeostasisReport.Capture(simulation);
             evaluationStep++;
-            evaluationMetrics!.Add(body, result.Reward);
+            evaluationMetrics!.Add(report, result.Reward);
             Record(new TrainingSample(evaluationStep, 0, evaluationStep, simulation.Agent.Position.X,
-                simulation.Agent.Position.Y, body, Math.Abs(body - options.Temperature.Target), result.Reward, false));
+                simulation.Agent.Position.Y, report, result.Reward, false));
             completed++;
             if (stopwatch is not null && stopwatch.Elapsed >= timeBudget!.Value)
             {
@@ -111,7 +110,7 @@ public sealed class TrainingVisualizationSession : IDisposable
         {
             evaluation = new SimulationSession(options, SimulationLifecycle.Continuous);
             evaluation.Simulation.Reset(options.Evaluation.Seeds[0]);
-            evaluationMetrics = new RollingMetricAccumulator(options.Temperature, visualOptions.RollingMetricWindow);
+            evaluationMetrics = new RollingMetricAccumulator(visualOptions.RollingMetricWindow);
             evaluationStep = 0;
         }
         history.Clear();
@@ -127,7 +126,7 @@ public sealed class TrainingVisualizationSession : IDisposable
         brain = new DqnBrain(options.Network, options.Learning);
         engine = new TrainingEngine(session, brain);
         life++;
-        metrics = new RollingMetricAccumulator(options.Temperature, visualOptions.RollingMetricWindow);
+        metrics = new RollingMetricAccumulator(visualOptions.RollingMetricWindow);
         evaluation = null;
         evaluationMetrics = null;
         evaluationStep = 0;

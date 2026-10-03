@@ -49,7 +49,7 @@ try
         Print("Random", random);
         Print("Untrained", untrained);
         seconds = Trainer.Run(session, brain, progress => Console.WriteLine(
-            $"step={progress.Step,7} ε={progress.Epsilon:F3} reward={progress.Metrics.MeanReward:F3} loss={progress.Loss:F4} body={progress.Metrics.MeanBodyTemperature:F2}°C error={progress.Metrics.MeanAbsoluteError:F2}°C comfort={progress.Metrics.ComfortPercent:F1}% replay={progress.ReplaySize} elapsed={progress.Seconds:F1}s"));
+            $"step={progress.Step,7} epsilon={progress.Epsilon:F3} balance={progress.Metrics.MeanBalance:P1} reward={progress.Metrics.MeanReward:F3} needs=[{Needs(progress.Metrics)}] loss={progress.Loss:F4} replay={progress.ReplaySize} elapsed={progress.Seconds:F1}s"));
         Checkpoint.Save(checkpointPath, session, brain);
     }
     else
@@ -77,4 +77,6 @@ catch (Exception exception)
     return 1;
 }
 
-static void Print(string label, EvaluationMetrics metrics) => Console.WriteLine($"{label,-10} MAE={metrics.MeanAbsoluteError:F3}°C comfort={metrics.ComfortPercent:F2}% reward={metrics.MeanReward:F4}");
+static void Print(string label, EvaluationMetrics metrics) => Console.WriteLine($"{label,-10} balance={metrics.MeanBalance:P1} reward={metrics.MeanReward:F4} needs=[{Needs(metrics)}]");
+
+static string Needs(EvaluationMetrics metrics) => string.Join(", ", metrics.Drives.Select(pair => $"{pair.Key}={pair.Value.MeanSatisfaction:P1}"));

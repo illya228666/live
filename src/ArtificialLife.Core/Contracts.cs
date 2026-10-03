@@ -46,6 +46,13 @@ public sealed record ActionCandidate(int Type, float[] Parameters);
 /// <summary>A bounded, scale-normalized homeostatic need; reward belongs to the core.</summary>
 public sealed record DriveState(string Key, double Current, double Target, double Scale, double Weight);
 
+/// <summary>Optional presentation hints; never used by reward or drive physics.</summary>
+public sealed record DriveDescriptor(string Key, string Name, string Unit = "");
+public interface IDriveDescriptorProvider
+{
+    IEnumerable<DriveDescriptor> GetDriveDescriptors();
+}
+
 /// <summary>Updates module-owned state after an action.</summary>
 public interface IWorldSystem
 {

@@ -53,6 +53,9 @@ public sealed class Simulation
 
     public ObservationToken[] Observe() => observations.SelectMany(provider => provider.Observe(World, Agent)).ToArray();
     public ActionCandidate[] LegalActions() => actions.SelectMany(provider => provider.GetLegalActions(World, Agent)).ToArray();
+    public DriveState[] GetDrives() => drives.SelectMany(provider => provider.GetDrives(Agent)).ToArray();
+    public IEnumerable<DriveDescriptor> GetDriveDescriptors() => drives.OfType<IDriveDescriptorProvider>()
+        .SelectMany(provider => provider.GetDriveDescriptors());
 
     public StepResult Step(ActionCandidate action)
     {

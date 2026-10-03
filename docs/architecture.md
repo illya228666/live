@@ -33,6 +33,10 @@ World snapshots copy every existing apple into an immutable value collection and
 
 Hunger emits `hunger.body.v1` with one normalized level feature, and reports a drive with target 0, scale 1 and weight 1. The unchanged `RewardAggregator` averages its normalized error with the temperature drive. Feeding affects reward only through the resulting drive state. Brain/DQN still consumes generic observation tokens and action candidates, with no references to any module.
 
+## Reporting boundary
+
+Core exposes the active providers' `DriveState` values and optional `IDriveDescriptorProvider` metadata separately. Application copies them into `HomeostasisReport`, computes per-key normalized error/satisfaction and weighted overall balance, and routes that immutable report into training samples, rolling/evaluation metrics and world snapshots. The HUD and logs iterate actual keys rather than module names. Metadata never participates in reward. See [homeostasis reporting](homeostasis-reporting.md) for formulas and missing-key history semantics.
+
 ## Vision boundary
 
 ```text

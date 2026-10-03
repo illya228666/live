@@ -18,7 +18,7 @@ The experiment asks one question: **can a fixed neural architecture learn homeos
 - Shared scalar Q scoring for variable sets of legal action candidates.
 - CPU Double DQN with replay, Adam, Huber loss, gradient clipping and a target network.
 - Fast headless training, frozen-policy evaluation and verified checkpoint loading.
-- A Godot .NET view with a heat field, movement trail, thermal history and debug HUD.
+- A Godot .NET view with a heat field, movement trail, generic homeostasis history and a dynamic needs HUD.
 
 No LLM, external AI service, sprite assets or additional game mechanics are involved.
 
@@ -84,7 +84,7 @@ The project includes conditional Linux x64 LibTorch support. Linux is not part o
 
 ## Training and visualization
 
-Training advances fixed simulation timesteps as fast as the CPU allows; it never waits for wall-clock time or opens Godot. Every 5,000 steps it reports exploration, rolling reward, loss, body temperature, absolute error, comfort percentage and replay size.
+Training advances fixed simulation timesteps as fast as the CPU allows; it never waits for wall-clock time or opens Godot. Every 5,000 steps it reports exploration, mean balance, mean reward, per-drive satisfaction, loss and replay size.
 
 `train.ps1` saves these files under `artifacts/checkpoints/thermal/`:
 
@@ -117,7 +117,7 @@ Live Training starts a single continuous life with newly initialized weights. Po
 | S | Save the current policy using the existing checkpoint format |
 | Ctrl + Shift + R | Start a new life: fresh weights, optimizer, replay, body, world, counters and histories |
 
-Default rates are 60, 600 and 6,000 requested training steps/s. Max requests up to 256 steps per frame; every preset also has an 8 ms cooperative work budget. Actual throughput depends on the PC and is displayed in the HUD. Work returns to Godot between complete training steps; the physics timestep is unchanged. The displayed world and short trail show actual positions, while the two small graphs show body temperature against its target and absolute body error. Metrics use the most recent 1,000 steps. Trails and graphs remain bounded, evicting old samples without clearing at former episode boundaries.
+Default rates are 60, 600 and 6,000 requested training steps/s. Max requests up to 256 steps per frame; every preset also has an 8 ms cooperative work budget. Actual throughput depends on the PC and is displayed in the HUD. Work returns to Godot between complete training steps; the physics timestep is unchanged. The displayed world and short trail show actual positions, while the graphs show overall balance and reward, with satisfaction histories for each active need. Metrics use the most recent 1,000 steps. Trails and graphs remain bounded, evicting old samples without clearing at former episode boundaries.
 
 Settings live in `configs/live-training.json`, separately from DQN/physics configuration. Live learning continues until paused or closed; `learning.trainingSteps` remains the budget for the headless command. The HUD shows Life, Age (physical steps in the training life) and TrainingStep. Ctrl + Shift + R increments the life number and resets age and training counters using the configured deterministic seed. The frozen evaluation world neither appends replay nor consumes the training RNG; resuming restores the suspended training world exactly. Histories clear on evaluation mode switches to avoid joining separate worlds.
 

@@ -9,7 +9,7 @@ public partial class Main : Node2D
     private VisualizationSession? session;
     private WorldViewModel? snapshot;
     private readonly Queue<Vector2> trail = new();
-    private readonly Queue<double> history = new();
+    private readonly Queue<TrainingSample> history = new();
     private double accumulator;
     private double speed = 12;
     private bool paused;
@@ -44,7 +44,7 @@ public partial class Main : Node2D
                 {
                     Advance();
                 }
-                GD.Print($"ARTIFICIALLIFE_SMOKE_OK steps={snapshot!.Step} body={snapshot.Agent.BodyTemperature:F3}");
+                GD.Print($"ARTIFICIALLIFE_SMOKE_OK steps={snapshot!.Step} balance={snapshot.Homeostasis.Balance:P1}");
                 if (capture is null)
                 {
                     GetTree().Quit();
@@ -116,7 +116,8 @@ public partial class Main : Node2D
         session!.Advance();
         snapshot = session.Snapshot();
         trail.Enqueue(ToScreen(snapshot.Agent.X, snapshot.Agent.Y));
-        history.Enqueue(snapshot.Agent.BodyTemperature);
+        history.Enqueue(new TrainingSample((int)snapshot.Step, 1, (int)snapshot.Step, snapshot.Agent.X, snapshot.Agent.Y,
+            snapshot.Homeostasis, snapshot.Reward, false));
         if (trail.Count > 160)
         {
             trail.Dequeue();
@@ -203,46 +204,23 @@ public partial class Main : Node2D
         Vector2 agent = ToScreen(state.Agent.X, state.Agent.Y);
         DrawCircle(agent, 8, Accent);
         DrawArc(agent, 12, 0, Mathf.Tau, 40, new Color(0.4f, 0.87f, 0.74f, 0.35f), 1, antialiased: true);
-        Label($"{state.Width:0} × {state.Height:0} · apples {state.Apples.Count} · hunger {state.Agent.Hunger:P0}", 58, 772, 13, Muted);
+        Label($"{state.Width:0} x {state.Height:0} / apples {state.Apples.Count} / debug body {state.Agent.BodyTemperature:F1} C / env {state.Agent.LocalTemperature:F1} C", 58, 772, 12, Muted);
         if (liveSnapshot is not null)
         {
             DrawTrainingHud(state);
             return;
         }
-        Label("THERMAL HOMEOSTASIS", 786, 122, 15, Muted);
-        Label($"{state.Agent.BodyTemperature:F2} °C", 786, 183, 42,
-            Math.Abs(state.Agent.BodyTemperature - state.TargetTemperature) <= state.ComfortHalfWidth ? Accent : new Color("ffb16c"));
-        Label($"Body temperature · target {state.TargetTemperature:F1} °C", 786, 213, 15, Muted);
-        DrawLine(new Vector2(786, 244), new Vector2(1180, 244), new Color("304356"));
-        Metric("Local environment", $"{state.Agent.LocalTemperature:F2} °C", 284);
-        Metric("Current reward", $"{state.Reward:+0.000;-0.000;0.000}", 326);
-        Metric("Simulation step", state.Step.ToString(System.Globalization.CultureInfo.InvariantCulture), 368);
-        Metric("Elapsed world time", $"{state.SimulationTime:F0} s", 410);
-        Label("BODY TEMPERATURE HISTORY", 786, 464, 13, Muted);
-        DrawHistory(state);
-        Label(state.Mode, 786, 635, 16, Accent);
-        Label(paused ? "Paused" : $"Running at {speed:0.##}× simulated time", 786, 667, 15, TextColor);
-        Label("Space   pause / resume", 786, 721, 14, Muted);
-        Label("+ / −     change speed", 786, 748, 14, Muted);
-        Label("R            restart world", 786, 775, 14, Muted);
+        DrawHomeostasisHud(state);
     }
 
-    private void DrawHistory(WorldViewModel state)
+    public override void _UnhandledInput(InputEvent @event)
     {
-        var rect = new Rect2(786, 486, 394, 110);
-        DrawRect(rect, new Color("101b29"));
-        float Y(double temperature) => rect.Position.Y + rect.Size.Y / 2 - (float)(temperature - state.TargetTemperature) * 12;
-        DrawRect(new Rect2(786, Y(state.TargetTemperature + state.ComfortHalfWidth), 394, (float)state.ComfortHalfWidth * 24), new Color(0.4f, 0.87f, 0.74f, 0.1f));
-        DrawLine(new Vector2(786, Y(state.TargetTemperature)), new Vector2(1180, Y(state.TargetTemperature)), new Color(0.4f, 0.87f, 0.74f, 0.35f));
-        double[] temperatures = history.ToArray();
-        for (int index = 1; index < temperatures.Length; index++)
+        if (@event is InputEventMouseButton { Pressed: true } mouse && mouse.Position.X >= 760)
         {
-            float x1 = 786 + (index - 1) * 394f / 179;
-            float x2 = 786 + index * 394f / 179;
-            DrawLine(new Vector2(x1, Math.Clamp(Y(temperatures[index - 1]), 486, 596)),
-                new Vector2(x2, Math.Clamp(Y(temperatures[index]), 486, 596)), Accent, 2, antialiased: true);
+            if (mouse.ButtonIndex == MouseButton.WheelDown) needsOffset++;
+            if (mouse.ButtonIndex == MouseButton.WheelUp) needsOffset = Math.Max(0, needsOffset - 1);
+            QueueRedraw();
         }
-        Label($"{state.TargetTemperature:0.0} ± {state.ComfortHalfWidth:0.#} °C comfort band", 786, 615, 12, Muted);
     }
 
     private Vector2 ToScreen(double x, double y) => worldRect.Position + new Vector2((float)(x / snapshot!.Width), (float)(y / snapshot.Height)) * worldRect.Size;

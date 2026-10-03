@@ -112,7 +112,7 @@ public partial class Main
             smokeOptions = options;
             initialSmokeWorld = liveSnapshot!.World;
             previousSmokeSample = new TrainingSample(0, 1, 0, initialSmokeWorld.Agent.X, initialSmokeWorld.Agent.Y,
-                initialSmokeWorld.Agent.BodyTemperature, 0, 0, false);
+                initialSmokeWorld.Homeostasis, 0, false);
         }
         trainingWallClock.Start();
         ShowNotice($"Fresh weights · warm-up {options.Learning.WarmupSteps:N0} steps", 6);
@@ -212,12 +212,12 @@ public partial class Main
     {
         TrainingViewModel state = liveSnapshot!.Training;
         if (state.OptimizationUpdates == 0 || state.ReplayCount == 0 || !double.IsFinite(state.LastLoss) ||
-            !double.IsFinite(snapshot!.Agent.BodyTemperature) || !double.IsFinite(state.RecentMetrics.MeanAbsoluteError))
+            !double.IsFinite(snapshot!.Homeostasis.Balance) || !double.IsFinite(state.RecentMetrics.MeanBalance))
         {
             throw new InvalidOperationException("Live training smoke did not produce valid optimized state.");
         }
         trainingSession!.SaveCheckpoint(checkpoint);
-        GD.Print($"ARTIFICIALLIFE_TRAINING_SMOKE_OK life={state.Life} age={state.Age} steps={state.Step} updates={state.OptimizationUpdates} replay={state.ReplayCount} loss={state.LastLoss:F4} apples={snapshot.Apples.Count} spawned={snapshot.TotalApplesSpawned} eaten={snapshot.TotalApplesSpawned - snapshot.Apples.Count} hunger={snapshot.Agent.Hunger:F3} continuity=verified");
+        GD.Print($"ARTIFICIALLIFE_TRAINING_SMOKE_OK life={state.Life} age={state.Age} steps={state.Step} updates={state.OptimizationUpdates} replay={state.ReplayCount} loss={state.LastLoss:F4} apples={snapshot.Apples.Count} spawned={snapshot.TotalApplesSpawned} eaten={snapshot.TotalApplesSpawned - snapshot.Apples.Count} balance={snapshot.Homeostasis.Balance:P1} needs=[{FormatNeeds(snapshot.Homeostasis)}] continuity=verified");
         trainingSmokeFinished = true;
         paused = true;
         ShowNotice($"Saved at step {state.Step:N0}", 10);
@@ -246,15 +246,9 @@ public partial class Main
             TrainingSample previous = previousSmokeSample!;
             if (sample.Step <= previous.Step) continue;
             double distance = Math.Sqrt(Math.Pow(sample.X - previous.X, 2) + Math.Pow(sample.Y - previous.Y, 2));
-            double time = initialSmokeWorld!.SimulationTime + sample.Step * options.World.TimeStep;
-            double strength = options.Temperature.FireStrength * (1 + options.Temperature.OscillationAmplitude *
-                Math.Sin(2 * Math.PI * time / options.Temperature.OscillationPeriod));
-            double radiusSquared = Math.Pow(sample.X - options.World.Width / 2, 2) + Math.Pow(sample.Y - options.World.Height / 2, 2);
-            double equilibrium = options.Temperature.Ambient + strength * Math.Exp(-radiusSquared / (2 * Math.Pow(options.Temperature.FireRadius, 2)))
-                + options.Temperature.HeatProduction / options.Temperature.HeatTransfer;
-            double body = equilibrium + (previous.BodyTemperature - equilibrium) * Math.Exp(-options.Temperature.HeatTransfer * options.World.TimeStep);
             if (sample.Step != previous.Step + 1 || sample.Terminal || sample.Episode != 1 ||
-                distance > options.World.MovementSpeed * options.World.TimeStep + 1e-6 || Math.Abs(sample.BodyTemperature - body) > 1e-6)
+                distance > options.World.MovementSpeed * options.World.TimeStep + 1e-6 ||
+                !double.IsFinite(sample.Homeostasis.Balance))
                 throw new InvalidOperationException($"Continuous life broke at step {sample.Step}.");
             previousSmokeSample = sample;
         }
@@ -332,33 +326,56 @@ public partial class Main
         _ => throw new ArgumentOutOfRangeException(nameof(value))
     };
 
-    private void DrawTrainingHud(WorldViewModel world)
+    private int needsOffset;
+    private void DrawTrainingHud(WorldViewModel world) => DrawHomeostasisHud(world);
+
+    private void DrawHomeostasisHud(WorldViewModel world)
     {
-        TrainingViewModel state = liveSnapshot!.Training;
-        EvaluationMetrics recent = state.RecentMetrics;
-        Label(state.Evaluating ? "EVALUATION · FROZEN POLICY" : "LIVE TRAINING", 786, 115, 15, Accent);
-        Label($"{world.Agent.BodyTemperature:F2} °C", 786, 163, 36,
-            Math.Abs(world.Agent.BodyTemperature - world.TargetTemperature) <= world.ComfortHalfWidth ? Accent : new Color("ffb16c"));
-        Label($"Body temperature · target {world.TargetTemperature:F1} °C", 786, 190, 15, Muted);
-        Label($"Life {state.Life:N0} · Age {state.Age:N0} · TrainingStep {state.Step:N0}", 786, 218, 15, TextColor);
-        Label($"Environment {world.Agent.LocalTemperature:F2} °C   ·   Reward {world.Reward:+0.000;-0.000;0.000}", 786, 246, 14, Muted);
-        DrawLine(new Vector2(786, 263), new Vector2(1180, 263), new Color("304356"));
-        TrainingMetric("Recent mean error", $"{recent.MeanAbsoluteError:F3} °C", 289, Accent);
-        TrainingMetric("Comfort time", $"{recent.ComfortPercent:F1}%", 317, Accent);
-        TrainingMetric("Recent mean reward", $"{recent.MeanReward:+0.000;-0.000;0.000}", 345, TextColor);
-        TrainingMetric("Epsilon", $"{state.Epsilon:F3}", 373, TextColor);
-        TrainingMetric("Last loss", state.OptimizationUpdates == 0 ? "warm-up" : $"{state.LastLoss:F4}", 401, TextColor);
-        TrainingMetric("Replay", $"{state.ReplayCount:N0} / {state.ReplayCapacity:N0}", 429, TextColor);
-        Label($"BODY TEMPERATURE · {recent.Steps:N0}-step metric window", 786, 456, 12, Muted);
-        DrawTrainingGraphs(world);
-        Label($"{(paused ? "Paused" : "Running")} · {SpeedLabel(trainingSpeed)} · {actualStepsPerSecond:N0} steps/s", 786, 680, 15, TextColor);
-        Label("Space  pause / resume    + / −  speed", 786, 711, 14, Muted);
-        Label("E  frozen evaluation       S  save checkpoint", 786, 738, 14, Muted);
-        Label("Ctrl + Shift + R  start a new life", 786, 765, 14, Muted);
+        var report = world.Homeostasis;
+        Label("OVERALL BALANCE", 786, 120, 15, Muted);
+        Label($"{report.Balance:P0}", 786, 168, 38, Accent);
+        TrainingMetric("Reward", $"{world.Reward:+0.000;-0.000;0.000}", 198, TextColor);
+        Label("NEEDS", 786, 237, 14, Muted);
+        var drives = report.Drives.Values.ToArray();
+        const int visibleRows = 3;
+        needsOffset = Math.Clamp(needsOffset, 0, Math.Max(0, drives.Length - visibleRows));
+        TrainingSample[] samples = liveSnapshot?.History.ToArray() ?? history.ToArray();
+        for (int index = needsOffset; index < Math.Min(drives.Length, needsOffset + visibleRows); index++)
+        {
+            DriveReport drive = drives[index];
+            float y = 264 + (index - needsOffset) * 46;
+            TrainingMetric(drive.Name, $"{drive.Satisfaction:P0}", y, Accent);
+            Label($"{drive.Current:0.##} / {drive.Target:0.##} {drive.Unit}", 786, y + 18, 12, Muted);
+            DrawGraph(samples, new Rect2(991, y + 5, 189, 25), 0, 1,
+                sample => sample.Homeostasis.Drives.TryGetValue(drive.Key, out var value) ? value.Satisfaction : null);
+        }
+        if (drives.Length == 0) Label("No active drives", 786, 274, 14, Muted);
+        if (drives.Length > visibleRows)
+            Label($"{needsOffset + 1}-{Math.Min(drives.Length, needsOffset + visibleRows)} / {drives.Length} - mouse wheel to scroll", 786, 408, 12, Muted);
+        if (liveSnapshot is not null)
+        {
+            TrainingViewModel learning = liveSnapshot.Training;
+            Label(learning.Evaluating ? "LEARNING / FROZEN EVALUATION" : "LEARNING", 786, 432, 14, Muted);
+            TrainingMetric("Epsilon / loss", $"{learning.Epsilon:F3} / {(learning.OptimizationUpdates == 0 ? "warm-up" : learning.LastLoss.ToString("F4"))}", 457, TextColor);
+            TrainingMetric("Replay / steps", $"{learning.ReplayCount:N0} / {learning.Step:N0}", 482, TextColor);
+            Label($"Life {learning.Life} / Age {learning.Age:N0} / window balance {learning.RecentMetrics.MeanBalance:P0}", 786, 507, 13, Muted);
+        }
+        else
+        {
+            Label(world.Mode, 786, 457, 15, Accent);
+            TrainingMetric("Steps", world.Step.ToString("N0"), 482, TextColor);
+        }
+        Label("BALANCE HISTORY", 786, 540, 12, Muted);
+        DrawGraph(samples, new Rect2(786, 550, 394, 58), 0, 1, sample => sample.Homeostasis.Balance);
+        Label("REWARD HISTORY", 786, 631, 12, Muted);
+        DrawGraph(samples, new Rect2(786, 641, 394, 51), -1, 1, sample => sample.Reward);
+        Label($"{(paused ? "Paused" : "Running")} / {(trainMode ? SpeedLabel(trainingSpeed) : speed.ToString("0.##") + "x")} / {actualStepsPerSecond:N0} steps/s", 786, 719, 14, TextColor);
+        Label("Space  pause / resume    + / -  speed", 786, 744, 13, Muted);
+        Label(trainMode ? "E  evaluation / S  save / Ctrl+Shift+R  new life" : "R  restart world", 786, 769, 13, Muted);
         if (error is not null || noticeSeconds > 0)
         {
             string message = error ?? notice;
-            Label(message[..Math.Min(message.Length, 58)], 786, 792, 12, error is null ? Accent : new Color("ffb16c"));
+            Label(message[..Math.Min(message.Length, 58)], 786, 795, 11, error is null ? Accent : new Color("ffb16c"));
         }
     }
 
@@ -369,44 +386,30 @@ public partial class Main
         Label(value, 1180 - width, y, 16, color);
     }
 
-    private void DrawTrainingGraphs(WorldViewModel world)
-    {
-        TrainingSample[] samples = liveSnapshot!.History.ToArray();
-        double span = samples.Length == 0 ? 2 : Math.Max(2, samples.Max(sample => sample.AbsoluteError) * 1.15);
-        var bodyRect = new Rect2(786, 466, 394, 81);
-        DrawGraph(samples, bodyRect, world.TargetTemperature - span, world.TargetTemperature + span,
-            sample => sample.BodyTemperature, world.TargetTemperature, world.ComfortHalfWidth);
-        Label("ABSOLUTE BODY ERROR · °C", 786, 575, 12, Muted);
-        var errorRect = new Rect2(786, 585, 394, 70);
-        DrawGraph(samples, errorRect, 0, Math.Max(1.5, span), sample => sample.AbsoluteError, 0, world.ComfortHalfWidth);
-    }
-
     private void DrawGraph(TrainingSample[] samples, Rect2 rect, double minimum, double maximum,
-        Func<TrainingSample, double> value, double target, double band)
+        Func<TrainingSample, double?> value)
     {
         DrawRect(rect, new Color("101b29"));
         float Y(double number) => rect.End.Y - (float)((Math.Clamp(number, minimum, maximum) - minimum) / (maximum - minimum)) * rect.Size.Y;
-        float bandTop = Y(target + band);
-        float bandBottom = Y(target - band);
-        DrawRect(new Rect2(rect.Position.X, bandTop, rect.Size.X, bandBottom - bandTop), new Color(0.4f, 0.87f, 0.74f, 0.1f));
-        DrawLine(new Vector2(rect.Position.X, Y(target)), new Vector2(rect.End.X, Y(target)), new Color(0.4f, 0.87f, 0.74f, 0.5f));
         for (int index = 1; index < samples.Length; index++)
         {
-            float x1 = rect.Position.X + (index - 1) * rect.Size.X / (visualOptions.HistoryLength - 1);
-            float x2 = rect.Position.X + index * rect.Size.X / (visualOptions.HistoryLength - 1);
-            DrawLine(new Vector2(x1, Y(value(samples[index - 1]))), new Vector2(x2, Y(value(samples[index]))), Accent, 1.5f, antialiased: true);
+            // Missing keys leave gaps; a new drive has no invented pre-activation history.
+            if (value(samples[index - 1]) is not double previous || value(samples[index]) is not double current) continue;
+            float x1 = rect.Position.X + (index - 1) * rect.Size.X / Math.Max(1, samples.Length - 1);
+            float x2 = rect.Position.X + index * rect.Size.X / Math.Max(1, samples.Length - 1);
+            DrawLine(new Vector2(x1, Y(previous)), new Vector2(x2, Y(current)), Accent, 1.5f, antialiased: true);
         }
-        Label($"{maximum:F1}", rect.Position.X + 4, rect.Position.Y + 12, 10, Muted);
-        Label($"{minimum:F1}", rect.Position.X + 4, rect.End.Y - 3, 10, Muted);
     }
 
-    // Диагностика smoke снимает настоящий viewport в нескольких точках одного непрерывного обучения.
+    private static string FormatNeeds(HomeostasisReport report) => string.Join(", ",
+        report.Drives.Values.Select(drive => $"{drive.Key}={drive.Satisfaction:P1}"));
+
     private void ObserveTrainingProgress()
     {
         TrainingViewModel state = liveSnapshot!.Training;
         if (state.Step >= nextTrainingLog)
         {
-            GD.Print($"LIVE life={state.Life} age={state.Age} step={state.Step} epsilon={state.Epsilon:F3} error={state.RecentMetrics.MeanAbsoluteError:F3} comfort={state.RecentMetrics.ComfortPercent:F1}% loss={state.LastLoss:F4} apples={liveSnapshot!.World.Apples.Count} spawned={liveSnapshot.World.TotalApplesSpawned} eaten={liveSnapshot.World.TotalApplesSpawned - liveSnapshot.World.Apples.Count} hunger={liveSnapshot.World.Agent.Hunger:F3}");
+            GD.Print($"LIVE life={state.Life} age={state.Age} step={state.Step} epsilon={state.Epsilon:F3} balance={liveSnapshot.World.Homeostasis.Balance:P1} reward={liveSnapshot.World.Reward:F3} needs=[{FormatNeeds(liveSnapshot.World.Homeostasis)}] windowBalance={state.RecentMetrics.MeanBalance:P1} windowReward={state.RecentMetrics.MeanReward:F3} loss={state.LastLoss:F4} apples={liveSnapshot.World.Apples.Count} spawned={liveSnapshot.World.TotalApplesSpawned} eaten={liveSnapshot.World.TotalApplesSpawned - liveSnapshot.World.Apples.Count}");
             nextTrainingLog = state.Step + 5000;
         }
         if (progressCaptureDirectory is null) return;

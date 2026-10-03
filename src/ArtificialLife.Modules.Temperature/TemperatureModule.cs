@@ -35,7 +35,7 @@ public sealed class ThermalBody
 }
 
 /// <summary>First independent homeostasis module; the brain never references it.</summary>
-public sealed class TemperatureModule : IWorldSystem, IObservationProvider, IDriveProvider
+public sealed class TemperatureModule : IWorldSystem, IObservationProvider, IDriveProvider, IDriveDescriptorProvider
 {
     private readonly int bodyType;
     private readonly int sensorType;
@@ -87,6 +87,8 @@ public sealed class TemperatureModule : IWorldSystem, IObservationProvider, IDri
             yield return new ObservationToken(sensorType, [Normalize(EnvironmentAt(world, sample), 30, 40), x, y]);
         }
     }
+
+    public IEnumerable<DriveDescriptor> GetDriveDescriptors() => [new("temperature", "Temperature", "°C")];
 
     public IEnumerable<DriveState> GetDrives(AgentState agent)
     {

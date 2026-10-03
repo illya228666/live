@@ -20,10 +20,10 @@ public sealed class LearningTests
         EvaluationMetrics random = Evaluator.Run(session, null, options.Evaluation.Seeds);
         Trainer.Run(session, brain);
         EvaluationMetrics trained = Evaluator.Run(session, brain, options.Evaluation.Seeds);
-        Assert.True(trained.MeanAbsoluteError < random.MeanAbsoluteError * 0.5,
-            $"Trained MAE {trained.MeanAbsoluteError:F3} must be < half random {random.MeanAbsoluteError:F3}.");
-        Assert.True(trained.ComfortPercent > random.ComfortPercent + 30,
-            $"Comfort trained={trained.ComfortPercent:F1}%, random={random.ComfortPercent:F1}%.");
+        Assert.True(trained.Drives["temperature"].MeanNormalizedError < random.Drives["temperature"].MeanNormalizedError * 0.5,
+            $"Trained temperature error {trained.Drives["temperature"].MeanNormalizedError:F3} must be < half random {random.Drives["temperature"].MeanNormalizedError:F3}.");
+        Assert.True(trained.MeanBalance > random.MeanBalance + 0.2,
+            $"Balance trained={trained.MeanBalance:P1}, random={random.MeanBalance:P1}.");
         Assert.True(trained.MeanReward > random.MeanReward + 0.3);
     }
 }

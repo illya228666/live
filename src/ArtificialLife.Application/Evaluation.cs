@@ -1,43 +1,62 @@
 using ArtificialLife.Brain;
 using ArtificialLife.Core;
-using ArtificialLife.Modules.Temperature;
 
 namespace ArtificialLife.Application;
 
-public sealed record EvaluationMetrics(int Steps, double MeanAbsoluteError, double ComfortPercent, double MeanReward, double MeanBodyTemperature);
+public sealed record DriveMetrics(int Samples, double MeanCurrent, double MeanTarget, double MeanNormalizedError,
+    double MeanSatisfaction, double MeanWeight);
+public sealed record EvaluationMetrics(int Steps, double MeanBalance, double MeanReward, ReportValues<DriveMetrics> Drives);
 public sealed record SeedEvaluation(int Seed, EvaluationMetrics Random, EvaluationMetrics Untrained, EvaluationMetrics Trained);
 public sealed record EvaluationReport(DateTimeOffset CreatedUtc, int TrainingSteps, double TrainingSeconds,
     EvaluationMetrics Random, EvaluationMetrics Untrained, EvaluationMetrics Trained, SeedEvaluation[] Seeds);
 
-public sealed class MetricAccumulator(TemperatureOptions options)
+/// <summary>Per-key means use only samples where that drive exists; absent drives are not zeroes.</summary>
+public sealed class MetricAccumulator
 {
-    private int count;
-    private double error;
-    private double reward;
-    private double bodySum;
-    private int comfortable;
-
-    public void Add(double body, double stepReward)
+    private sealed class DriveSum
     {
-        ThermalMetricSample sample = ThermalMetricSample.Measure(options, body, stepReward);
-        count++;
-        error += sample.Error;
-        reward += stepReward;
-        bodySum += body;
-        if (sample.Comfortable)
+        public int Count;
+        public double Current, Target, Error, Satisfaction, Weight;
+    }
+    private readonly Dictionary<string, DriveSum> drives = new(StringComparer.Ordinal);
+    private int count;
+    private double balance, reward;
+
+    public void Add(HomeostasisReport report, double stepReward) => Accumulate(report, stepReward, 1);
+    internal void Remove(HomeostasisReport report, double stepReward) => Accumulate(report, stepReward, -1);
+
+    private void Accumulate(HomeostasisReport report, double stepReward, int sign)
+    {
+        count += sign;
+        balance += sign * report.Balance;
+        reward += sign * stepReward;
+        foreach (var drive in report.Drives.Values)
         {
-            comfortable++;
+            if (!drives.TryGetValue(drive.Key, out var sum)) drives.Add(drive.Key, sum = new());
+            sum.Count += sign;
+            sum.Current += sign * drive.Current;
+            sum.Target += sign * drive.Target;
+            sum.Error += sign * drive.NormalizedError;
+            sum.Satisfaction += sign * drive.Satisfaction;
+            sum.Weight += sign * drive.Weight;
+            if (sum.Count == 0) drives.Remove(drive.Key);
         }
     }
 
-    public EvaluationMetrics Metrics() => count == 0 ? new(0, 0, 0, 0, 0) : new(count, error / count, 100.0 * comfortable / count, reward / count, bodySum / count);
+    public EvaluationMetrics Metrics() => new(count, count == 0 ? 0 : Math.Clamp(balance / count, 0, 1),
+        count == 0 ? 0 : reward / count, new(drives.Select(pair =>
+        {
+            var sum = pair.Value;
+            return KeyValuePair.Create(pair.Key, new DriveMetrics(sum.Count, sum.Current / sum.Count,
+                sum.Target / sum.Count, Math.Max(0, sum.Error / sum.Count), Math.Clamp(sum.Satisfaction / sum.Count, 0, 1), sum.Weight / sum.Count));
+        })));
 }
 
 public static class Evaluator
 {
     public static EvaluationMetrics Run(SimulationSession session, DqnBrain? brain, int[] seeds)
     {
-        var metrics = new MetricAccumulator(session.Options.Temperature);
+        var metrics = new MetricAccumulator();
         foreach (int seed in seeds)
         {
             var random = new Random(seed);
@@ -49,7 +68,7 @@ public static class Evaluator
                     ActionCandidate[] actions = session.Simulation.LegalActions();
                     ActionCandidate action = brain is null ? actions[random.Next(actions.Length)] : brain.Choose(session.Simulation.Observe(), actions);
                     StepResult result = session.Simulation.Step(action);
-                    metrics.Add(session.Simulation.Agent.Get<ThermalBody>().Temperature, result.Reward);
+                    metrics.Add(HomeostasisReport.Capture(session.Simulation), result.Reward);
                 }
             }
         }

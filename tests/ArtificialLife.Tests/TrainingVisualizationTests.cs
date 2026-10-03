@@ -46,7 +46,7 @@ public sealed class TrainingVisualizationTests
                 + options.Temperature.HeatProduction / options.Temperature.HeatTransfer;
             double expectedBody = equilibrium + (oldBody - equilibrium) * Math.Exp(-options.Temperature.HeatTransfer * options.World.TimeStep);
             Assert.Equal(expectedBody, body.Temperature, 10);
-            Assert.Equal(body.Temperature, sample.BodyTemperature);
+            Assert.Equal(body.Temperature, sample.Homeostasis.Drives["temperature"].Current);
             Assert.Equal(step, brain.Replay.Count);
         }
         // Read every slot through the existing sampler, including all former terminal boundaries.
@@ -240,7 +240,7 @@ public sealed class TrainingVisualizationTests
             Checkpoint.Load(directory, session, brain);
             EvaluationMetrics result = Evaluator.Run(session, brain, [606]);
             Assert.Equal(160, result.Steps);
-            Assert.True(double.IsFinite(result.MeanAbsoluteError));
+            Assert.True(double.IsFinite(result.MeanBalance));
         }
         finally { Directory.Delete(directory, recursive: true); }
     }
@@ -294,16 +294,16 @@ public sealed class TrainingVisualizationTests
     [Fact]
     public void RollingMetricsEvictOldSamplesAndUseEvaluationDefinitions()
     {
-        var temperature = new ArtificialLife.Modules.Temperature.TemperatureOptions { Target = 36, ComfortHalfWidth = 1 };
-        var rolling = new RollingMetricAccumulator(temperature, 3);
-        rolling.Add(100, -1);
-        rolling.Add(36, 1);
-        rolling.Add(37, 0.5);
-        rolling.Add(40, -0.5);
-        var expected = new MetricAccumulator(temperature);
-        expected.Add(36, 1);
-        expected.Add(37, 0.5);
-        expected.Add(40, -0.5);
+        HomeostasisReport Report(double current) => HomeostasisReport.Measure([new("test", current, 0, 10, 1)]);
+        var rolling = new RollingMetricAccumulator(3);
+        rolling.Add(Report(100), -1);
+        rolling.Add(Report(0), 1);
+        rolling.Add(Report(1), 0.5);
+        rolling.Add(Report(4), -0.5);
+        var expected = new MetricAccumulator();
+        expected.Add(Report(0), 1);
+        expected.Add(Report(1), 0.5);
+        expected.Add(Report(4), -0.5);
         Assert.Equal(expected.Metrics(), rolling.Metrics());
     }
 

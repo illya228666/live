@@ -1,60 +1,28 @@
-using ArtificialLife.Modules.Temperature;
-
 namespace ArtificialLife.Application;
 
-internal readonly record struct ThermalMetricSample(double Error, double Reward, double Body, bool Comfortable)
-{
-    internal static ThermalMetricSample Measure(TemperatureOptions options, double body, double reward)
-    {
-        double error = Math.Abs(body - options.Target);
-        return new ThermalMetricSample(error, reward, body, error <= options.ComfortHalfWidth);
-    }
-}
-
-/// <summary>O(1) rolling statistics with the same error/comfort definitions as evaluation.</summary>
+/// <summary>Bounded rolling homeostasis statistics, sharing evaluation definitions.</summary>
 public sealed class RollingMetricAccumulator
 {
-    private readonly TemperatureOptions options;
-    private readonly Queue<ThermalMetricSample> samples = new();
+    private readonly Queue<(HomeostasisReport Report, double Reward)> samples = new();
+    private readonly MetricAccumulator metrics = new();
     private readonly int capacity;
-    private double error;
-    private double reward;
-    private double body;
-    private int comfortable;
 
-    public RollingMetricAccumulator(TemperatureOptions options, int capacity)
+    public RollingMetricAccumulator(int capacity)
     {
-        if (capacity < 1)
-        {
-            throw new ArgumentOutOfRangeException(nameof(capacity));
-        }
-        this.options = options;
+        if (capacity < 1) throw new ArgumentOutOfRangeException(nameof(capacity));
         this.capacity = capacity;
     }
 
-    public void Add(double bodyTemperature, double stepReward)
+    public void Add(HomeostasisReport report, double reward)
     {
-        ThermalMetricSample sample = ThermalMetricSample.Measure(options, bodyTemperature, stepReward);
-        samples.Enqueue(sample);
-        Accumulate(sample, 1);
+        samples.Enqueue((report, reward));
+        metrics.Add(report, reward);
         if (samples.Count > capacity)
         {
-            Accumulate(samples.Dequeue(), -1);
+            var old = samples.Dequeue();
+            metrics.Remove(old.Report, old.Reward);
         }
     }
 
-    public EvaluationMetrics Metrics()
-    {
-        int count = samples.Count;
-        return count == 0 ? new(0, 0, 0, 0, 0) : new(count, Math.Max(0, error / count),
-            100.0 * comfortable / count, reward / count, body / count);
-    }
-
-    private void Accumulate(ThermalMetricSample sample, int sign)
-    {
-        error += sign * sample.Error;
-        reward += sign * sample.Reward;
-        body += sign * sample.Body;
-        comfortable += sample.Comfortable ? sign : 0;
-    }
+    public EvaluationMetrics Metrics() => metrics.Metrics();
 }
