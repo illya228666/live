@@ -187,6 +187,13 @@ public partial class Main : Node2D
         }
         DrawCircle(center, 11, new Color("ff9d52"));
         DrawArc(center, 17, 0, Mathf.Tau, 64, new Color(1, 0.6f, 0.3f, 0.45f), 1, antialiased: true);
+        foreach (AppleViewModel apple in state.Apples)
+        {
+            Vector2 at = ToScreen(apple.X, apple.Y);
+            DrawColoredPolygon([at + new Vector2(0, -7), at + new Vector2(7, 0),
+                at + new Vector2(0, 7), at + new Vector2(-7, 0)], new Color("ef6672"));
+            DrawLine(at + new Vector2(0, -7), at + new Vector2(3, -10), Accent, 2);
+        }
         Vector2[] points = liveSnapshot is null ? trail.ToArray() : liveSnapshot.Trail
             .Select(sample => ToScreen(sample.X, sample.Y)).ToArray();
         for (int index = 1; index < points.Length; index++)
@@ -196,7 +203,7 @@ public partial class Main : Node2D
         Vector2 agent = ToScreen(state.Agent.X, state.Agent.Y);
         DrawCircle(agent, 8, Accent);
         DrawArc(agent, 12, 0, Mathf.Tau, 40, new Color(0.4f, 0.87f, 0.74f, 0.35f), 1, antialiased: true);
-        Label($"{state.Width:0} × {state.Height:0} simulation units", 58, 772, 13, Muted);
+        Label($"{state.Width:0} × {state.Height:0} · apples {state.Apples.Count} · hunger {state.Agent.Hunger:P0}", 58, 772, 13, Muted);
         if (liveSnapshot is not null)
         {
             DrawTrainingHud(state);

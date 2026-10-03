@@ -15,13 +15,13 @@ A module need not implement all four. Movement is a Core action provider; temper
 
 `Modules.Hunger` attaches `HungerState` to the agent, grows its level with simulation time, emits a normalized token and reports a target-zero drive. The existing reward aggregator combines hunger and temperature without module-specific reward logic.
 
-The composition root creates four ordinary apple entities with independent `VisualAppearance(Diamond)` and `Nutrition(0.20)` components. Fire uses `Disc`. Vision observes both through the same backend and relative contract; appearance contains no apple/food semantics or absolute coordinates.
+The independent FoodSpawner world system creates apple entities during world life with independent `VisualAppearance(Diamond)` and `Nutrition(0.20)` components. Fire uses `Disc`. Vision observes both through the same backend and relative contract; appearance contains no apple/food semantics or absolute coordinates.
 
 Hunger consumes any entity with nutrition inside the eating radius and removes it from the world. Another food entity needs only a nutrition component; Hunger does not know about apples, their positions or their visual types.
 
-Eating is automatic at contact, subtracting percentage points rather than multiplying hunger. No eating action or separate food bonus is registered. Food does not respawn during a continuous life. Explicit episode reset restores the initial entity membership so independent benchmark episodes start with food.
+Eating is automatic at contact, subtracting percentage points rather than multiplying hunger. No eating action or separate food bonus is registered. Food spawns on a global interval with a population cap, seeded random positions and minimum agent distance. Reset starts an empty food population and a fresh schedule.
 
-The composition root passes Temperature and Hunger as world systems/drives, and Temperature, Vision and Hunger as observation providers. All observations still fit the existing feature width. Food disappearing changes the token count, not the network dimensions.
+The composition root passes Temperature, Hunger and FoodSpawner as world systems, Temperature and Hunger as drives, and Temperature, Vision and Hunger as observation providers. All observations still fit the existing feature width. Food disappearing changes the token count, not the network dimensions.
 
 The Deep Sets encoder and Q scorer are unchanged. Type slots and feature width remain finite: exhausting either requires a deliberate new architecture/checkpoint version. The next learning experiment can measure balancing the two needs; the existing regression and live smoke verify that training still runs.
 

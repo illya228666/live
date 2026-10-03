@@ -51,6 +51,7 @@ public sealed class HungerTests
     {
         var session = new SimulationSession(new ExperimentOptions());
         WorldState world = session.Simulation.World;
+        FoodSpawnerTests.Advance(session, 200);
         Entity apple = world.Entities.First(entity => entity.TryGet<Nutrition>(out _));
         world.Entities.RemoveAll(entity => entity != apple);
         session.Simulation.Agent.Position = new Position(apple.Position.X + distance, apple.Position.Y);
@@ -82,6 +83,7 @@ public sealed class HungerTests
         var options = new ExperimentOptions();
         var session = new SimulationSession(options);
         Simulation simulation = session.Simulation;
+        FoodSpawnerTests.Advance(session, 200);
         Entity apple = simulation.World.Entities.First(entity => entity.TryGet<Nutrition>(out _));
         simulation.Agent.Position = apple.Position;
         simulation.Agent.Get<ThermalBody>().Temperature = options.Temperature.Target;
@@ -106,6 +108,7 @@ public sealed class HungerTests
     public void VisionDistinguishesNeutralAppearancesAndBrainAcceptsOnlyGenericTokens()
     {
         var session = new SimulationSession(new ExperimentOptions());
+        FoodSpawnerTests.Advance(session, 800);
         Entity[] apples = session.Simulation.World.Entities.Where(entity => entity.TryGet<Nutrition>(out _)).ToArray();
         Assert.Equal(4, apples.Length);
         Assert.All(apples, apple =>
@@ -132,19 +135,4 @@ public sealed class HungerTests
         Assert.Equal(9, brain.Scores(session.Simulation.Observe(), session.Simulation.LegalActions()).Length);
     }
 
-    [Fact]
-    public void ContinuousLifeDoesNotRespawnFoodButExplicitResetStartsANewWorld()
-    {
-        var session = new SimulationSession(new ExperimentOptions { World = new() { EpisodeSteps = 2 } },
-            SimulationLifecycle.Continuous);
-        Entity apple = session.Simulation.World.Entities.First(entity => entity.TryGet<Nutrition>(out _));
-        session.Simulation.Agent.Position = apple.Position;
-        ActionCandidate stay = session.Simulation.LegalActions().Single(action => action.Parameters.SequenceEqual(new float[] { 0, 0 }));
-        for (int step = 0; step < 5; step++) Assert.False(session.Simulation.Step(stay).Terminal);
-        Assert.DoesNotContain(apple, session.Simulation.World.Entities);
-        Assert.Equal(3, session.Simulation.World.Entities.Count(entity => entity.TryGet<Nutrition>(out _)));
-        session.Simulation.Reset(42);
-        Assert.Equal(0, session.Simulation.Agent.Get<HungerState>().Level);
-        Assert.Equal(4, session.Simulation.World.Entities.Count(entity => entity.TryGet<Nutrition>(out _)));
-    }
 }

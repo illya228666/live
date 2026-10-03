@@ -13,7 +13,7 @@ The experiment asks one question: **can a fixed neural architecture learn homeos
 - One seedable, bounded 100 × 100 world, one circular agent and one central heat source.
 - A smoothly changing temperature field and body temperature with thermal inertia.
 - Component-based world objects and egocentric direct-geometry vision behind a replaceable backend.
-- Bounded hunger, four edible apple entities and automatic feeding at contact, using the shared drive reward.
+- Bounded hunger, a continuous seeded supply of edible apple entities and automatic feeding at contact, using the shared drive reward.
 - Variable observation tokens, trainable type embeddings and a Deep Sets state encoder.
 - Shared scalar Q scoring for variable sets of legal action candidates.
 - CPU Double DQN with replay, Adam, Huber loss, gradient clipping and a target network.
@@ -212,4 +212,4 @@ The following are **future milestones, not implemented**:
 - Remote server execution, a web frontend and WebSocket streaming.
 - Sharing worlds with other people.
 
-Hunger and apples now use the same module contracts. The next experiment is to measure whether the fixed encoder/scorer learns to balance both needs. Apples have no respawn during a continuous life; a full episode reset restores the initial objects. Existing thermal-only benchmark numbers above describe the earlier experiment. Policies saved before Hunger require retraining for the added observation keys.
+Hunger and apples now use the same module contracts. The next experiment is to measure whether the fixed encoder/scorer learns to balance both needs. FoodSpawner creates one apple every 200 ticks, up to eight at once, at least ten units from the agent. Eating frees capacity; reset clears food and restarts the independent schedule. Existing thermal-only benchmark numbers above describe the earlier experiment. Policies saved before Hunger require retraining for the added observation keys.

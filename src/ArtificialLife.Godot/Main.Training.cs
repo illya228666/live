@@ -195,7 +195,7 @@ public partial class Main
         {
             FinishTrainingSmoke();
         }
-        if (progressCaptureDirectory is not null)
+        if (progressCaptureDirectory is not null || trainingSmokeSteps > 0)
         {
             ObserveTrainingProgress();
         }
@@ -217,7 +217,7 @@ public partial class Main
             throw new InvalidOperationException("Live training smoke did not produce valid optimized state.");
         }
         trainingSession!.SaveCheckpoint(checkpoint);
-        GD.Print($"ARTIFICIALLIFE_TRAINING_SMOKE_OK life={state.Life} age={state.Age} steps={state.Step} updates={state.OptimizationUpdates} replay={state.ReplayCount} loss={state.LastLoss:F4} continuity=verified");
+        GD.Print($"ARTIFICIALLIFE_TRAINING_SMOKE_OK life={state.Life} age={state.Age} steps={state.Step} updates={state.OptimizationUpdates} replay={state.ReplayCount} loss={state.LastLoss:F4} apples={snapshot.Apples.Count} spawned={snapshot.TotalApplesSpawned} eaten={snapshot.TotalApplesSpawned - snapshot.Apples.Count} hunger={snapshot.Agent.Hunger:F3} continuity=verified");
         trainingSmokeFinished = true;
         paused = true;
         ShowNotice($"Saved at step {state.Step:N0}", 10);
@@ -406,9 +406,10 @@ public partial class Main
         TrainingViewModel state = liveSnapshot!.Training;
         if (state.Step >= nextTrainingLog)
         {
-            GD.Print($"LIVE life={state.Life} age={state.Age} step={state.Step} epsilon={state.Epsilon:F3} error={state.RecentMetrics.MeanAbsoluteError:F3} comfort={state.RecentMetrics.ComfortPercent:F1}% loss={state.LastLoss:F4}");
+            GD.Print($"LIVE life={state.Life} age={state.Age} step={state.Step} epsilon={state.Epsilon:F3} error={state.RecentMetrics.MeanAbsoluteError:F3} comfort={state.RecentMetrics.ComfortPercent:F1}% loss={state.LastLoss:F4} apples={liveSnapshot!.World.Apples.Count} spawned={liveSnapshot.World.TotalApplesSpawned} eaten={liveSnapshot.World.TotalApplesSpawned - liveSnapshot.World.Apples.Count} hunger={liveSnapshot.World.Agent.Hunger:F3}");
             nextTrainingLog = state.Step + 5000;
         }
+        if (progressCaptureDirectory is null) return;
         if (captureStages.TryPeek(out int stage) && state.Step == stage)
         {
             captureStages.Dequeue();

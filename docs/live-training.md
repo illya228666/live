@@ -2,7 +2,7 @@
 
 `./tools/run-godot.ps1 -Train` starts one continuous life. The agent, thermal body and world initialize once. Position, body temperature, world time and fire phase continue through every former `EpisodeSteps` boundary. The brain, optimizer, replay and epsilon schedule also continue; transitions at those boundaries are nonterminal.
 
-Headless `./tools/train.ps1` remains episodic. Its configuration, deterministic episode seeds, replay/learning order and measured benchmark are unchanged. `EpisodeSteps` remains a real benchmark setting, rather than being replaced with an artificial large limit.
+Headless `./tools/train.ps1` remains episodic, with deterministic episode seeds and the same replay/learning order. `EpisodeSteps` remains a real benchmark setting. The food lifecycle described below changes the environment in both modes; earlier thermal benchmark figures are historical measurements, not results for the new food configuration.
 
 ## Lifecycle and ownership
 
@@ -11,6 +11,10 @@ Headless `./tools/train.ps1` remains episodic. Its configuration, deterministic 
 `TrainingVisualizationSession` selects `Continuous` and owns the model, optimizer, replay, simulation and histories on the Godot thread. Godot requests bounded batches and renders copied immutable snapshots. Closing the node disposes the session and native brain.
 
 The HUD shows Life, Age and TrainingStep. Age counts physical steps of the training life; training counters remain visible while frozen evaluation displays its independent world. Life starts at 1 and increments on manual restart. Age, training step, epsilon progression, optimizer counters and rolling metrics restart with each new life.
+
+`FoodSpawner` owns food creation as an independent `IWorldSystem`. Typed `ExperimentOptions.FoodSpawner` defaults to one apple every 200 ticks, a maximum of eight apples, and minimum spawn distance ten units from the current agent. The first apple arrives at tick 200, with random positions drawn from the simulation's seeded RNG. Full capacity skips an interval; eating simply removes entities and frees capacity for a future global interval. There are no per-apple respawn timers or spawn/eat reward bonuses. Up to 256 placement attempts bound the work for restrictive worlds; an unsuccessful interval is skipped.
+
+Snapshots copy all current apples, total spawned count and hunger. Godot draws the collection every frame and shows apple count and hunger; it has no direct Simulation access. Removed apples disappear on the next snapshot. Explicit restart clears food and restarts the schedule. Frozen evaluation uses its own seeded spawner without disturbing training.
 
 ## Controls and rates
 
@@ -32,7 +36,13 @@ Live training continues until paused or closed. `Learning.TrainingSteps` remains
 
 ## Verification
 
-All 37 tests pass. Lifecycle checks cover:
+All 70 tests pass after the food lifecycle change. Food checks cover interval timing, capacity, world bounds, minimum distance from a moving agent, seeded reproducibility, capacity freed by eating, reset, invalid config, and impossible placement. A 20,001-tick continuous simulation ate and replaced 100 apples, demonstrating supply at late ages. A separate 20,000-tick live snapshot test observed actual feeding removals and checked population accounting on every tick. Full solution build has no warnings or errors.
+
+Godot headless Live Training completed 100,000 ticks in Life 1 with 24,751 optimizer updates and 50,000 retained replay entries. It created 13 apples, consumed 5, and retained 8 at the end; continuity and explicit new-life reset checks passed. Food was replenished after consumption around tick 50,000, then later intervals correctly skipped spawning at capacity. Hunger ended at 1.0 despite available food. This confirms the original finite-food failure is removed, but does not establish a learned feeding policy. Brain and reward remain unchanged.
+
+Rendered Godot Live Training also completed 100,000 ticks in Life 1 with the same food counts and verified continuity. Viewport captures and timing observations are saved under `artifacts/food-lifecycle/`, and validation weights use separate checkpoint directories `food-lifecycle-validation` and `food-lifecycle-rendered`. Captures at 1,000, 50,100 and 100,000 visibly show all five, eight and eight snapshot apples respectively, plus hunger and population in the HUD. At 100,000 the recent thermal comfort window was 100%, while hunger remained maximal; the agent learned temperature regulation but did not demonstrate sustained feeding.
+
+The following measurements predate the food lifecycle change. Lifecycle checks cover:
 
 - 1,201 continuous transitions across boundaries 400, 800 and 1,200, with no terminal transition in either samples or any replay slot.
 - One thermal body instance, exact time progression, movement bounded by speed and exact thermal recurrence on every step.

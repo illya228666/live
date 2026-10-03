@@ -7,6 +7,7 @@
   },
   "reward": { "improvementWeight": 0.2, "maximumDriveWeight": 10 },
   "hunger": { "growthPerSecond": 0.001, "eatRadius": 2 },
+  "foodSpawner": { "spawnIntervalTicks": 200, "maxApples": 8, "minSpawnDistanceFromAgent": 10 },
   "network": { "observationCapacity": 256, "actionCapacity": 256, "featureWidth": 4, "typeEmbeddingSize": 8, "stateSize": 32, "hiddenSize": 64 },
   "learning": {
     "learningRate": 0.001, "gamma": 0.97, "epsilonStart": 1, "epsilonEnd": 0.05,
