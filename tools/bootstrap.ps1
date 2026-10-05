@@ -71,7 +71,7 @@ if (!$Headless) {
     if ($LASTEXITCODE -ne 0 -or $version -notlike "$($ToolVersions.godot.version).stable.mono.*") { throw 'Godot version verification failed.' }
     Write-Host "Godot: $version"
 }
-Invoke-Dotnet restore ArtificialLife.sln --locked-mode
+Invoke-Dotnet restore ArtificialLife.sln
 # Check the native tensor backend, not just NuGet restore.
 Invoke-Dotnet test tests/ArtificialLife.Tests -c Release --filter 'FullyQualifiedName~EncoderAndScorerAcceptVariableSets' --verbosity minimal
 Write-Host "Ready: SDK $($ToolVersions.dotnet.version). No global software was installed."
