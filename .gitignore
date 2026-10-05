@@ -9,4 +9,3 @@ TestResults/
 *.user
 *.tmp
 /.codebase-memory
-/global.json
