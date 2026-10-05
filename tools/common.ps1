@@ -5,7 +5,11 @@ $ToolVersions = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'versions.json
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = '1'
 $env:DOTNET_NOLOGO = '1'
-$env:NUGET_PACKAGES = Join-Path $RepoRoot '.tools/nuget'
+$nugetRoot = Join-Path $RepoRoot '.tools/nuget'
+$env:NUGET_PACKAGES = Join-Path $nugetRoot 'packages'
+$env:NUGET_HTTP_CACHE_PATH = Join-Path $nugetRoot 'http-cache'
+$env:NUGET_PLUGINS_CACHE_PATH = Join-Path $nugetRoot 'plugins-cache'
+$env:NUGET_SCRATCH = Join-Path $nugetRoot 'scratch'
 
 function Initialize-Dotnet {
     $local = Join-Path $RepoRoot '.tools/dotnet/dotnet.exe'
