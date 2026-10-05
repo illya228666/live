@@ -38,14 +38,6 @@ function Install-Archive($pin, [string]$fileName, [string]$destination) {
     Expand-Archive -LiteralPath $archive -DestinationPath $destination -Force
 }
 
-$globalSdk = $false
-if (!$ForceLocal) {
-    $command = Get-Command dotnet -ErrorAction SilentlyContinue
-    if ($null -ne $command) {
-        $sdks = & $command.Source --list-sdks
-        $globalSdk = @($sdks | Where-Object { $_ -match "^$([regex]::Escape($ToolVersions.dotnet.version)) " }).Count -gt 0
-    }
-}
 $localDotnet = Join-Path $RepoRoot '.tools/dotnet/dotnet.exe'
 $validLocal = $false
 if (Test-Path -LiteralPath $localDotnet) {
@@ -53,7 +45,8 @@ if (Test-Path -LiteralPath $localDotnet) {
     try { $validLocal = (& $localDotnet --version) -eq $ToolVersions.dotnet.version -and $LASTEXITCODE -eq 0 }
     finally { Pop-Location }
 }
-if (!$validLocal -and ((Test-Path -LiteralPath $localDotnet) -or !$globalSdk -or $ForceLocal)) {
+if (!$validLocal) {
+    Write-Host "Installing repository-local .NET SDK $($ToolVersions.dotnet.version)..."
     Install-Archive $ToolVersions.dotnet 'dotnet.zip' (Join-Path $RepoRoot '.tools/dotnet')
 }
 Initialize-Dotnet
