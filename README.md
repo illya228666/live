@@ -40,9 +40,9 @@ If Windows blocks an unsigned script, use a process-only policy override; organi
 powershell -NoProfile -ExecutionPolicy Bypass -File ./tools/bootstrap.ps1
 ```
 
-Bootstrap detects the architecture, reuses the **exact pinned SDK** and compatible pinned Godot .NET executable if available, or downloads official ZIP distributions into `.tools/`. SHA512 hashes are checked before extraction. NuGet packages also live in `.tools/nuget`. Nothing is installed globally. Bootstrap restores locked dependencies and executes three neural shape tests to exercise the native Torch backend.
+Bootstrap detects the architecture, reuses the **exact pinned SDK** and compatible pinned Godot .NET executable if available, or downloads official ZIP distributions into `.tools/`. SHA512 hashes are checked before extraction. NuGet packages also live in `.tools/nuget`. Nothing is installed globally. Bootstrap restores centrally pinned dependencies from the repository-defined NuGet source and executes three neural shape tests to exercise the native Torch backend.
 
-`global.json` also directs .NET 10 hosts to search `.tools/dotnet` before their global installation. After bootstrap, a normal `dotnet` command or a current Visual Studio SDK resolver can therefore find the local pinned SDK even when only .NET 10 is installed globally. Older hosts do not understand this search-path option: use the repository scripts, which explicitly launch the local SDK, or start your IDE from a shell configured with that SDK. If Visual Studio already displayed an SDK-resolution error, reload the solution after bootstrap. See [Microsoft's SDK search-path documentation](https://learn.microsoft.com/en-us/dotnet/core/tools/global-json#paths).
+`global.json` pins the repository to the exact .NET SDK 8.0.425 for normal CLI and IDE resolution. The repository scripts explicitly prefer the downloaded `.tools/dotnet` SDK when it is present, so bootstrap remains self-contained even when that SDK was not installed globally. If Visual Studio already displayed an SDK-resolution error, reload the solution after bootstrap.
 
 Windows ARM64 and x86 are explicitly rejected: the upstream LibTorch CPU dependency selected for this MVP has Windows x64 binaries only. The script does not pretend that installing an ARM64 Godot editor would solve that limitation.
 
@@ -58,7 +58,7 @@ Downloads are several hundred MB, mostly the SDK and LibTorch. They are ignored 
 | xUnit v3 / Visual Studio runner | 4.0.1 / 4.0.0 |
 | Microsoft.NET.Test.Sdk | 18.10.1 |
 
-Pins are in `global.json`, `tools/versions.json`, the Godot project and `Directory.Packages.props`; resolved transitive dependencies are committed in `packages.lock.json`. .NET 8 was selected as the conservative common target for Godot and TorchSharp. It approaches its support deadline in November 2026; upgrading the framework is an early maintenance task.
+Pins are in `global.json`, `tools/versions.json`, the Godot project and `Directory.Packages.props`. The repository-local `NuGet.config` clears machine-wide package sources and restores these dependencies from nuget.org. .NET 8 was selected as the conservative common target for Godot and TorchSharp. It approaches its support deadline in November 2026; upgrading the framework is an early maintenance task.
 
 Official references: [.NET releases](https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json), [Godot 4.7.2](https://github.com/godotengine/godot/releases/tag/4.7.2-stable), [TorchSharp](https://www.nuget.org/packages/TorchSharp/0.107.0), [xUnit v3](https://www.nuget.org/packages/xunit.v3/4.0.1).
 
@@ -80,7 +80,7 @@ dotnet run --project src/ArtificialLife.Cli -c Release -- train --config configs
 dotnet run --project src/ArtificialLife.Cli -c Release -- evaluate --checkpoint artifacts/checkpoints/thermal
 ```
 
-The project includes conditional Linux x64 LibTorch support. Linux is not part of the verified bootstrap workflow: install SDK 8.0.425, run `dotnet restore` to resolve Linux packages, then build/run the CLI. Windows lock files cannot be used with `--locked-mode` for that first platform change. CI verifies Windows x64.
+The project includes conditional Linux x64 LibTorch support. Linux is not part of the verified bootstrap workflow: install SDK 8.0.425, run `dotnet restore` to resolve Linux packages, then build/run the CLI. CI verifies Windows x64.
 
 ## Training and visualization
 
@@ -198,7 +198,7 @@ Adding a module requires registration in the composition root and training with 
 
 Tests cover legal movement, world bounds, seeded trajectories, thermal equations and changing fields, registries, normalized sensory tokens, reward bounds, permutation invariance, variable observation/action counts, new type slots, managed replay and checkpoint round-trips/corruption. Nine live-session tests additionally cover incremental equivalence, complete reset, counters, bounded snapshots, rolling metrics, saving and frozen evaluation. The learning test requires substantial improvement on separate seeds rather than a decrease in loss.
 
-GitHub Actions restores locked packages, builds every C# project including the Godot adapter, and runs tests. Actions are pinned by commit. The workflow does not download or launch the editor; the Godot runtime smoke command is available locally.
+GitHub Actions restores the centrally pinned packages, builds every C# project including the Godot adapter, and runs tests. Actions are pinned by commit. The workflow does not download or launch the editor; the Godot runtime smoke command is available locally.
 
 ## Limitations and future work
 

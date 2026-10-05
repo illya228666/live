@@ -9,8 +9,3 @@ TestResults/
 *.user
 *.tmp
 /.codebase-memory
-/src/ArtificialLife.Application/packages.lock.json
-/src/ArtificialLife.Brain/packages.lock.json
-/src/ArtificialLife.Cli/packages.lock.json
-/src/ArtificialLife.Godot/packages.lock.json
-/global.json

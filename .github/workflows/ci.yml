@@ -19,8 +19,8 @@ jobs:
       - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
         with:
           global-json-file: global.json
-      - name: Restore pinned dependencies
-        run: dotnet restore ArtificialLife.sln --locked-mode
+      - name: Restore dependencies
+        run: dotnet restore ArtificialLife.sln
       - name: Build domain, CLI, tests and Godot C# adapter
         run: dotnet build ArtificialLife.sln -c Release --no-restore
       - name: Tests including short learning experiment
