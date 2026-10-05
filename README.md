@@ -40,13 +40,13 @@ If Windows blocks an unsigned script, use a process-only policy override; organi
 powershell -NoProfile -ExecutionPolicy Bypass -File ./tools/bootstrap.ps1
 ```
 
-Bootstrap detects the architecture, reuses the **exact pinned SDK** and compatible pinned Godot .NET executable if available, or downloads official ZIP distributions into `.tools/`. SHA512 hashes are checked before extraction. NuGet packages also live in `.tools/nuget`. Nothing is installed globally. Bootstrap restores centrally pinned dependencies from the repository-defined NuGet source and executes three neural shape tests to exercise the native Torch backend.
+Bootstrap detects the architecture and always uses the **exact pinned .NET SDK** from `.tools/dotnet`. If that repository-local SDK is missing or has the wrong version, bootstrap downloads the official SDK ZIP automatically. A compatible Godot .NET executable is reused when available or downloaded into `.tools/`. SHA512 hashes are checked before extraction. NuGet packages also live in `.tools/nuget`. Nothing is installed globally. Bootstrap restores centrally pinned dependencies from the repository-defined NuGet source and executes three neural shape tests to exercise the native Torch backend.
 
-`global.json` pins the repository to the exact .NET SDK 8.0.425 for normal CLI and IDE resolution. The repository scripts explicitly prefer the downloaded `.tools/dotnet` SDK when it is present, so bootstrap remains self-contained even when that SDK was not installed globally. If Visual Studio already displayed an SDK-resolution error, reload the solution after bootstrap.
+`global.json` pins the repository to the exact .NET SDK 8.0.425 for normal CLI and IDE resolution. Bootstrap guarantees that the same SDK exists under `.tools/dotnet`, and repository scripts use that local copy, so no system-wide .NET SDK installation is required. If Visual Studio already displayed an SDK-resolution error, reload the solution after bootstrap.
 
 Windows ARM64 and x86 are explicitly rejected: the upstream LibTorch CPU dependency selected for this MVP has Windows x64 binaries only. The script does not pretend that installing an ARM64 Godot editor would solve that limitation.
 
-Downloads are several hundred MB, mostly the SDK and LibTorch. They are ignored by Git. Bootstrap is repeatable and accepts `-ForceLocal` to bypass global tool reuse, or `-Headless` to skip downloading the Godot editor. Building the Godot C# project itself requires only its NuGet SDK.
+Downloads are several hundred MB, mostly the SDK and LibTorch. They are ignored by Git. Bootstrap is repeatable and accepts `-Headless` to skip downloading the Godot editor. The .NET SDK is always repository-local; `-ForceLocal` remains accepted for compatibility and only affects Godot reuse. Building the Godot C# project itself requires only its NuGet SDK.
 
 ### Pinned environment
 
