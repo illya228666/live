@@ -38,14 +38,6 @@ function Install-Archive($pin, [string]$fileName, [string]$destination) {
     Expand-Archive -LiteralPath $archive -DestinationPath $destination -Force
 }
 
-$globalSdk = $false
-if (!$ForceLocal) {
-    $command = Get-Command dotnet -ErrorAction SilentlyContinue
-    if ($null -ne $command) {
-        $sdks = & $command.Source --list-sdks
-        $globalSdk = @($sdks | Where-Object { $_ -match "^$([regex]::Escape($ToolVersions.dotnet.version)) " }).Count -gt 0
-    }
-}
 $localDotnet = Join-Path $RepoRoot '.tools/dotnet/dotnet.exe'
 $validLocal = $false
 if (Test-Path -LiteralPath $localDotnet) {
@@ -53,7 +45,8 @@ if (Test-Path -LiteralPath $localDotnet) {
     try { $validLocal = (& $localDotnet --version) -eq $ToolVersions.dotnet.version -and $LASTEXITCODE -eq 0 }
     finally { Pop-Location }
 }
-if (!$validLocal -and ((Test-Path -LiteralPath $localDotnet) -or !$globalSdk -or $ForceLocal)) {
+if (!$validLocal) {
+    Write-Host "Installing repository-local .NET SDK $($ToolVersions.dotnet.version)..."
     Install-Archive $ToolVersions.dotnet 'dotnet.zip' (Join-Path $RepoRoot '.tools/dotnet')
 }
 Initialize-Dotnet
@@ -71,7 +64,7 @@ if (!$Headless) {
     if ($LASTEXITCODE -ne 0 -or $version -notlike "$($ToolVersions.godot.version).stable.mono.*") { throw 'Godot version verification failed.' }
     Write-Host "Godot: $version"
 }
-Invoke-Dotnet restore ArtificialLife.sln --locked-mode
+Invoke-Dotnet restore ArtificialLife.sln --force
 # Check the native tensor backend, not just NuGet restore.
 Invoke-Dotnet test tests/ArtificialLife.Tests -c Release --filter 'FullyQualifiedName~EncoderAndScorerAcceptVariableSets' --verbosity minimal
 Write-Host "Ready: SDK $($ToolVersions.dotnet.version). No global software was installed."

@@ -5,25 +5,25 @@ $ToolVersions = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'versions.json
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = '1'
 $env:DOTNET_NOLOGO = '1'
-$env:NUGET_PACKAGES = Join-Path $RepoRoot '.tools/nuget'
+$nugetRoot = Join-Path $RepoRoot '.tools/nuget'
+$env:NUGET_PACKAGES = Join-Path $nugetRoot 'packages'
+$env:NUGET_HTTP_CACHE_PATH = Join-Path $nugetRoot 'http-cache'
+$env:NUGET_PLUGINS_CACHE_PATH = Join-Path $nugetRoot 'plugins-cache'
+$env:NUGET_SCRATCH = Join-Path $nugetRoot 'scratch'
 
 function Initialize-Dotnet {
     $local = Join-Path $RepoRoot '.tools/dotnet/dotnet.exe'
-    if (Test-Path -LiteralPath $local) {
-        $script:Dotnet = $local
-        $env:DOTNET_ROOT = Split-Path $local
-        $env:PATH = "$env:DOTNET_ROOT;$env:PATH"
+    if (!(Test-Path -LiteralPath $local)) {
+        throw "Run ./tools/bootstrap.ps1 first: repository-local .NET SDK $($ToolVersions.dotnet.version) is missing."
     }
-    else {
-        $command = Get-Command dotnet -ErrorAction SilentlyContinue
-        if ($null -eq $command) { throw 'Run ./tools/bootstrap.ps1 first: .NET SDK is missing.' }
-        $script:Dotnet = $command.Source
-    }
+    $script:Dotnet = $local
+    $env:DOTNET_ROOT = Split-Path $local
+    $env:PATH = "$env:DOTNET_ROOT;$env:PATH"
     Push-Location $RepoRoot
     try {
         $version = & $script:Dotnet --version
         if ($LASTEXITCODE -ne 0 -or $version -ne $ToolVersions.dotnet.version) {
-            throw "Run ./tools/bootstrap.ps1 first: exact SDK $($ToolVersions.dotnet.version) is required."
+            throw "Run ./tools/bootstrap.ps1 first: repository-local SDK $($ToolVersions.dotnet.version) is required."
         }
     }
     finally { Pop-Location }
