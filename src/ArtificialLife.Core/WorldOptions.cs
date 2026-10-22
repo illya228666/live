@@ -24,7 +24,7 @@ public sealed record RewardOptions
     public double MaximumDriveWeight { get; init; } = 10;
 }
 
-/// <summary>Weighted normalized error, plus bounded improvement. Comfort retains a positive reward.</summary>
+/// <summary>Weighted normalized error, plus bounded improvement. The comfort penalty spans -1 to +1.</summary>
 public sealed class RewardAggregator(RewardOptions options)
 {
     public double Error(IEnumerable<DriveState> drives)
@@ -48,6 +48,6 @@ public sealed class RewardAggregator(RewardOptions options)
     public double Reward(double previousError, double error)
     {
         // Сигнал сохраняется у цели; улучшение не может заменить длительный комфорт.
-        return Math.Clamp(1 - 2 * Math.Tanh(error) + options.ImprovementWeight * (previousError - error), -1, 1);
+        return Math.Clamp(1 - 2 * Math.Clamp(error, 0, 1) + options.ImprovementWeight * (previousError - error), -1, 1);
     }
 }
