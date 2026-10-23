@@ -1,0 +1,57 @@
+{
+  "beforeSteps": 100000,
+  "afterSteps": 200000,
+  "evaluationSteps": 4000,
+  "trainingSeeds": [
+    42,
+    73,
+    101,
+    211,
+    509
+  ],
+  "evaluationSeeds": [
+    1001,
+    2002,
+    3003,
+    4004,
+    5005
+  ],
+  "experiment": {
+    "world": {
+      "width": 40,
+      "height": 40,
+      "movementSpeed": 1.5
+    },
+    "vision": {
+      "maxPerAppearance": 1
+    },
+    "temperature": {
+      "fireStrength": 40,
+      "fireRadius": 3,
+      "oscillationAmplitude": 0.15,
+      "heatProduction": 0.3,
+      "ambient": 34.1
+    },
+    "foodSpawner": {
+      "spawnIntervalTicks": 100,
+      "maxApples": 1,
+      "minSpawnDistanceFromAgent": 4
+    },
+    "hunger": {
+      "growthPerSecond": 0.001,
+      "eatRadius": 3,
+      "driveWeight": 4
+    },
+    "learning": {
+      "learningRate": 0.001,
+      "gamma": 0.97,
+      "targetSyncInterval": 100,
+      "epsilonEnd": 0.3,
+      "epsilonDecaySteps": 30000,
+      "adaptationEpsilon": 0.5,
+      "adaptationSteps": 50000,
+      "prioritizedReplayAlpha": 0.6,
+      "prioritizedReplayBeta": 0.4
+    }
+  }
+}

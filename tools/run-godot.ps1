@@ -10,13 +10,14 @@ param(
 )
 . (Join-Path $PSScriptRoot 'common.ps1')
 Initialize-Dotnet
+& (Join-Path $PSScriptRoot 'package.ps1')
 $godot = Get-Godot
 $project = Join-Path $RepoRoot 'src/ArtificialLife.Godot'
 if ([string]::IsNullOrWhiteSpace($Checkpoint)) {
     $Checkpoint = if ($Train) { 'artifacts/checkpoints/live-thermal' } else { 'artifacts/checkpoints/thermal' }
 }
 $checkpointPath = if ([IO.Path]::IsPathRooted($Checkpoint)) { $Checkpoint } else { Join-Path $RepoRoot $Checkpoint }
-if (!$Train -and !(Test-Path -LiteralPath (Join-Path $checkpointPath 'manifest.json'))) { throw 'No checkpoint found. Run ./tools/train.ps1 first.' }
+if (!$Train -and !(Test-Path -LiteralPath (Join-Path $checkpointPath 'manifest.json')) -and !(Test-Path -LiteralPath (Join-Path $checkpointPath 'current'))) { throw 'No checkpoint found. Run ./tools/train.ps1 first.' }
 Invoke-Dotnet build (Join-Path $project 'ArtificialLife.Godot.csproj') -c Debug
 $userArgs = @('--checkpoint', $checkpointPath)
 if ($Train) {

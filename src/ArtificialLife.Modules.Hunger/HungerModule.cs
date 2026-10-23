@@ -6,11 +6,12 @@ public sealed record HungerOptions
 {
     public double GrowthPerSecond { get; init; } = 0.001;
     public double EatRadius { get; init; } = 2;
+    public double DriveWeight { get; init; } = 1;
 
     public void Validate()
     {
         if (!double.IsFinite(GrowthPerSecond) || GrowthPerSecond <= 0 ||
-            !double.IsFinite(EatRadius) || EatRadius <= 0)
+            !double.IsFinite(EatRadius) || EatRadius <= 0 || !double.IsFinite(DriveWeight) || DriveWeight < 0)
             throw new ArgumentException("Hunger growth and eating radius must be positive and finite.");
     }
 }
@@ -66,5 +67,5 @@ public sealed class HungerModule : IWorldSystem, IObservationProvider, IDrivePro
     public IEnumerable<DriveDescriptor> GetDriveDescriptors() => [new("hunger", "Hunger", "")];
 
     public IEnumerable<DriveState> GetDrives(AgentState agent) =>
-        [new("hunger", agent.Get<HungerState>().Level, 0, 1, 1)];
+        [new("hunger", agent.Get<HungerState>().Level, 0, 1, Options.DriveWeight)];
 }

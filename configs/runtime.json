@@ -1,0 +1,9 @@
+{
+  "packageRoot": "artifacts/packages",
+  "inbox": "artifacts/activation",
+  "packages": [
+    {"id":"movement","version":"1.0.0"}, {"id":"vision","version":"1.0.0"},
+    {"id":"temperature","version":"1.0.0"}, {"id":"homeostasis","version":"1.0.0"},
+    {"id":"hunger","version":"1.0.0"}, {"id":"food","version":"1.0.0"}
+  ]
+}

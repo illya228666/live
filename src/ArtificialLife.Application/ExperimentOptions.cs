@@ -18,6 +18,7 @@ public sealed record ExperimentOptions
     public WorldOptions World { get; init; } = new();
     public TemperatureOptions Temperature { get; init; } = new();
     public HungerOptions Hunger { get; init; } = new();
+    public VisionOptions Vision { get; init; } = new();
     public FoodSpawnerOptions FoodSpawner { get; init; } = new();
     public RewardOptions Reward { get; init; } = new();
     public NetworkOptions Network { get; init; } = new();
@@ -39,6 +40,7 @@ public sealed record ExperimentOptions
         Temperature.Validate();
         Hunger.Validate();
         FoodSpawner.Validate();
+        if (Vision.MaxPerAppearance < 1) throw new ArgumentException("Vision.MaxPerAppearance must be positive.");
         Network.Validate();
         Learning.Validate();
         if (Evaluation.Seeds.Length == 0 || Evaluation.EpisodesPerSeed < 1 || !double.IsFinite(Reward.ImprovementWeight) ||
@@ -69,7 +71,7 @@ public sealed class SimulationSession
         Observations = new TypeRegistry(options.Network.ObservationCapacity);
         Actions = new TypeRegistry(options.Network.ActionCapacity);
         Temperature = new TemperatureModule(options.Temperature, Observations);
-        Vision = new VisionModule(new DirectGeometryVisionBackend(), Observations);
+        Vision = new VisionModule(new DirectGeometryVisionBackend(), Observations, options.Vision);
         Hunger = new HungerModule(options.Hunger, Observations);
         Fire = new Entity { Position = new Position(options.World.Width / 2, options.World.Height / 2) };
         Fire.Set(new HeatEmitter(options.Temperature.FireStrength, options.Temperature.FireRadius,

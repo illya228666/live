@@ -1,5 +1,7 @@
 # Live Training
 
+The current implementation uses the shared package-driven `RuntimeSession` in both Godot and CLI `live`. The detailed lifecycle description below also records the earlier static implementation; its `TrainingEngine`/`SimulationSession` composition now serves the episodic compatibility benchmark. The authoritative current contracts, generic snapshots, package-owned graphics and v2 policy export are described in [runtime-modules.md](runtime-modules.md).
+
 `./tools/run-godot.ps1 -Train` starts one continuous life. The agent, thermal body and world initialize once. Position, body temperature, world time and fire phase continue through every former `EpisodeSteps` boundary. The brain, optimizer, replay and epsilon schedule also continue; transitions at those boundaries are nonterminal.
 
 Headless `./tools/train.ps1` remains episodic, with deterministic episode seeds and the same replay/learning order. `EpisodeSteps` remains a real benchmark setting. The food lifecycle described below changes the environment in both modes; earlier thermal benchmark figures are historical measurements, not results for the new food configuration.

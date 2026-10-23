@@ -1,5 +1,7 @@
 # Extending the experiment
 
+Runtime extensions now use the package/activation interfaces documented in [runtime-modules.md](runtime-modules.md). That document supersedes the historical static-composition guidance below. The original module interfaces remain available to the episodic compatibility benchmark; they are not the extension entry point for a running life.
+
 The existing modules use four narrow Core contracts:
 
 | Contract | Purpose |
@@ -31,4 +33,4 @@ Logical keys are versioned, registered in a deterministic order and stored in ch
 
 The capacity to accept new token/action types is tested by registering new slots on an existing brain and running the same scorer. It does not mean unused embeddings encode useful behavior before training.
 
-Runtime plugin loading, hot-loading new action types and continual learning remain future milestones. Keep the next experiment statically composed until its behavior is measurable.
+Runtime loading and action registration are covered by the runtime integration tests. Continual learning is a separate measured acceptance experiment; successful loading alone is insufficient evidence of behavioral adaptation.

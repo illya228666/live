@@ -1,5 +1,11 @@
 # Architecture
 
+## Primary continuous runtime
+
+`RuntimeSession` is the shared owner used by CLI `live` and Godot training. It loads exact package versions, stages migrations on copied host-owned value state, validates the complete candidate, then switches between decisions without resetting the life or brain. `IAgentController`, `IMotivationPolicy`, module/component/provider contracts and neutral snapshots live in Core. The current DQN adapter owns tensors, replay, optimizer and learning schedules. Package-owned Godot code uses a separate shared presentation contract.
+
+See [runtime-modules.md](runtime-modules.md) for the authoritative runtime interfaces, activation/error semantics, revisioned replay, v2 exports and authoring workflow. The following detailed numerical descriptions also document the original static **episodic compatibility adapter**, retained for benchmarks and v1 policy import. New extensions use the runtime package path rather than that adapter.
+
 ## Responsibility and dependency boundaries
 
 The simulation can run without Godot. A future server would use the same `SimulationSession`, action selection and physics; it would replace the current presentation adapter. No engine lifecycle or pixel coordinate participates in training.
@@ -15,7 +21,7 @@ The simulation can run without Godot. A future server would use the same `Simula
 | Cli | Command parsing and console diagnostics | Application |
 | Godot | Rendering, input and human-speed stepping | Application, Godot SDK |
 
-There is no service container, event bus or runtime DLL loader. The composition root is `SimulationSession`. A module can implement the contracts it actually needs; it need not be a monolithic plugin object.
+The episodic compatibility composition root is `SimulationSession`. The primary continuous composition is package-driven through `RuntimeSession`, without mechanic-specific factories. Modules register only the capabilities they need.
 
 `Entity` stores a position and module-owned components by CLR type. `AgentState` extends it with an observer orientation in radians; movement does not rotate the body. `ThermalBody` belongs to the temperature module, so Core has no body-temperature field. `WorldState` contains spatial limits, a clock and an entity collection. Providers receive this context and the relevant agent.
 

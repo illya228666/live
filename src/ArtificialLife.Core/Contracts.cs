@@ -6,7 +6,7 @@ public readonly record struct Position(double X, double Y)
     public double DistanceTo(Position other) => Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2));
 }
 
-/// <summary>A positioned world object with module-owned components.</summary>
+/// <summary>Legacy episodic object with CLR components. Continuous plugins use RuntimeEntity value components.</summary>
 public class Entity
 {
     private readonly Dictionary<Type, object> components = new();
@@ -43,7 +43,7 @@ public sealed record ObservationToken(int Type, float[] Features);
 /// <summary>A legal capability instance. Parameters describe this candidate, not a fixed output neuron.</summary>
 public sealed record ActionCandidate(int Type, float[] Parameters);
 
-/// <summary>A bounded, scale-normalized homeostatic need; reward belongs to the core.</summary>
+/// <summary>A named, scale-normalized need. The active motivation policy determines its learning significance.</summary>
 public sealed record DriveState(string Key, double Current, double Target, double Scale, double Weight);
 
 /// <summary>Optional presentation hints; never used by reward or drive physics.</summary>
@@ -84,6 +84,7 @@ public interface IDriveProvider
 public sealed class TypeRegistry(int capacity)
 {
     private readonly List<string> keys = [];
+    private bool frozen;
     public int Capacity { get; } = capacity > 0 ? capacity : throw new ArgumentOutOfRangeException(nameof(capacity));
     public IReadOnlyList<string> Keys => keys.AsReadOnly();
 
@@ -95,6 +96,7 @@ public sealed class TypeRegistry(int capacity)
         {
             return existing;
         }
+        if (frozen) throw new InvalidOperationException("Registry changes require an activation transaction.");
         if (keys.Count >= Capacity)
         {
             throw new InvalidOperationException($"Type capacity {Capacity} exhausted; a new model is required.");
@@ -102,4 +104,10 @@ public sealed class TypeRegistry(int capacity)
         keys.Add(key);
         return keys.Count - 1;
     }
+    public int Resolve(string key)
+    {
+        int index = keys.IndexOf(key);
+        return index >= 0 ? index : throw new InvalidOperationException($"Unregistered type: {key}.");
+    }
+    public void Freeze() => frozen = true;
 }

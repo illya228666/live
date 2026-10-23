@@ -1,5 +1,9 @@
 # Neural architecture
 
+The current Deep Sets encoder and scalar candidate scorer remain unchanged in shape. The continuous adapter additionally separates replay by conditions revision, raises exploration after changes, and gradually introduces appended observation types using pooling masks. The mask at export is inference metadata, so a frozen teacher keeps its actual representation. See [runtime-modules.md](runtime-modules.md).
+
+Uniform replay remains the default (`prioritizedReplayAlpha = 0`). Experiments may enable TD-error priorities with a Fenwick-tree sampler and normalized importance weights (`prioritizedReplayBeta`). Priorities are cleared at revision boundaries; old-condition records are never selected. This changes sample selection inside Double DQN, not the network's architecture or world rules.
+
 ## Data contracts
 
 The brain references Core and has no knowledge of temperature, fire, food or positions. It receives arrays of `ObservationToken(Type, Features)` and `ActionCandidate(Type, Parameters)`.

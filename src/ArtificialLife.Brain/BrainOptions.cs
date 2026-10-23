@@ -34,6 +34,11 @@ public sealed record LearningOptions
     public int TrainingSteps { get; init; } = 100000;
     public int LogEvery { get; init; } = 5000;
     public int Seed { get; init; } = 42;
+    public double AdaptationEpsilon { get; init; } = 0.3;
+    public int AdaptationSteps { get; init; } = 10000;
+    public int ObservationIntroductionSteps { get; init; } = 10000;
+    public double PrioritizedReplayAlpha { get; init; }
+    public double PrioritizedReplayBeta { get; init; } = 0.4;
 
     public void Validate()
     {
@@ -41,7 +46,10 @@ public sealed record LearningOptions
             EpsilonStart is < 0 or > 1 || EpsilonEnd is < 0 or > 1 || !double.IsFinite(EpsilonStart) || !double.IsFinite(EpsilonEnd) ||
             EpsilonStart < EpsilonEnd || EpsilonDecaySteps < 1 || BatchSize < 1 || ReplayCapacity < BatchSize ||
             WarmupSteps < BatchSize || TrainEvery < 1 || TargetSyncInterval < 1 || TrainingSteps < 1 || LogEvery < 1 ||
-            !double.IsFinite(GradientClip) || GradientClip <= 0)
+            !double.IsFinite(GradientClip) || GradientClip <= 0 || !double.IsFinite(AdaptationEpsilon) ||
+            AdaptationEpsilon is < 0 or > 1 || AdaptationSteps < 1 || ObservationIntroductionSteps < 1 ||
+            !double.IsFinite(PrioritizedReplayAlpha) || PrioritizedReplayAlpha is < 0 or > 1 ||
+            !double.IsFinite(PrioritizedReplayBeta) || PrioritizedReplayBeta is < 0 or > 1)
         {
             throw new ArgumentException("Invalid learning options.");
         }

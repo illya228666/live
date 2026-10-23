@@ -5,185 +5,110 @@ using ArtificialLife.Core;
 
 namespace ArtificialLife.Application;
 
-/// <summary>Safe values copied from the single mutable training owner.</summary>
-public sealed record TrainingViewModel(int Step, int Life, long Age,
-    double Epsilon, double LastLoss, int OptimizationUpdates, int ReplayCount, int ReplayCapacity,
+public sealed record TrainingViewModel(long Step, int Life, long Age,
+    double Epsilon, double LastLoss, long OptimizationUpdates, int ReplayCount, int ReplayCapacity,
     EvaluationMetrics RecentMetrics, bool Evaluating);
-
 public sealed record TrainingVisualizationSnapshot(WorldViewModel World, TrainingViewModel Training,
     ReadOnlyCollection<TrainingSample> History, ReadOnlyCollection<TrainingSample> Trail);
 
-/// <summary>Incremental live learning; owns simulation/brain lifetime and exposes no native tensors.</summary>
-/// <remarks>All operations run synchronously on one owner thread. A frontend supplies bounded batches.</remarks>
+/// <summary>Bounded UI adapter; the same RuntimeSession also runs in the console.</summary>
 public sealed class TrainingVisualizationSession : IDisposable
 {
-    private readonly ExperimentOptions options;
+    private readonly RuntimeOptions options;
     private readonly TrainingVisualizationOptions visualOptions;
-    private SimulationSession session = null!;
-    private DqnBrain brain = null!;
-    private TrainingEngine engine = null!;
+    private RuntimeSession runtime = null!;
+    private RuntimeSession? evaluation;
     private RollingMetricAccumulator metrics = null!;
-    private SimulationSession? evaluation;
     private RollingMetricAccumulator? evaluationMetrics;
-    private int evaluationStep;
     private readonly Queue<TrainingSample> history = new();
     private readonly Queue<TrainingSample> trail = new();
     private bool disposed;
     private int life;
-
+    public RuntimeSession Runtime => runtime;
     public bool Evaluating => evaluation is not null;
-
     public TrainingVisualizationSession(ExperimentOptions options, TrainingVisualizationOptions? visualOptions = null)
+        : this(RuntimeDefaults.FromLegacy(options), visualOptions) { }
+    public TrainingVisualizationSession(RuntimeOptions options, TrainingVisualizationOptions? visualOptions = null)
     {
-        options.Validate();
         this.options = options;
-        this.visualOptions = visualOptions ?? new TrainingVisualizationOptions();
+        this.visualOptions = visualOptions ?? new();
         this.visualOptions.Validate();
         ResetTraining();
     }
-
-    /// <summary>Advances real training, returning early between steps when the optional time budget expires.</summary>
     public int AdvanceTraining(int numberOfSteps, TimeSpan? timeBudget = null)
     {
-        ObjectDisposedException.ThrowIf(disposed, this);
-        if (Evaluating)
-        {
-            throw new InvalidOperationException("Leave frozen evaluation before advancing training.");
-        }
-        ValidateBatch(numberOfSteps, timeBudget);
-        var stopwatch = timeBudget.HasValue ? Stopwatch.StartNew() : null;
-        int completed = 0;
-        while (completed < numberOfSteps)
-        {
-            TrainingSample sample = engine.AdvanceOne();
-            metrics.Add(sample.Homeostasis, sample.Reward);
-            Record(sample);
-            completed++;
-            // Бюджет проверяется между полными переходами: оптимизация никогда не прерывается посередине.
-            if (stopwatch is not null && stopwatch.Elapsed >= timeBudget!.Value)
-            {
-                break;
-            }
-        }
-        return completed;
+        if (Evaluating) throw new InvalidOperationException("Leave evaluation first.");
+        return Advance(numberOfSteps, timeBudget, false);
     }
-
-    /// <summary>Runs the frozen policy in an independent world; training state, replay and RNG remain untouched.</summary>
     public int AdvanceEvaluation(int numberOfSteps, TimeSpan? timeBudget = null)
     {
+        if (!Evaluating) throw new InvalidOperationException("Enter evaluation first.");
+        return Advance(numberOfSteps, timeBudget, true);
+    }
+    private int Advance(int count, TimeSpan? budget, bool evaluating)
+    {
         ObjectDisposedException.ThrowIf(disposed, this);
-        if (evaluation is null)
-        {
-            throw new InvalidOperationException("Enter frozen evaluation first.");
-        }
-        ValidateBatch(numberOfSteps, timeBudget);
-        var stopwatch = timeBudget.HasValue ? Stopwatch.StartNew() : null;
+        if (count < 0 || budget <= TimeSpan.Zero) throw new ArgumentOutOfRangeException(nameof(count));
+        var timer = Stopwatch.StartNew();
         int completed = 0;
-        while (completed < numberOfSteps)
+        while (completed < count)
         {
-            Simulation simulation = evaluation.Simulation;
-            ActionCandidate action = brain.ChooseGreedy(simulation.Observe(), simulation.LegalActions());
-            StepResult result = simulation.Step(action);
-            HomeostasisReport report = HomeostasisReport.Capture(simulation);
-            evaluationStep++;
-            evaluationMetrics!.Add(report, result.Reward);
-            Record(new TrainingSample(evaluationStep, 0, evaluationStep, simulation.Agent.Position.X,
-                simulation.Agent.Position.Y, report, result.Reward, false));
-            completed++;
-            if (stopwatch is not null && stopwatch.Elapsed >= timeBudget!.Value)
+            var sample = (evaluating ? evaluation! : runtime).AdvanceOne(!evaluating);
+            (evaluating ? evaluationMetrics! : metrics).Add(sample.Homeostasis, sample.Reward);
+            trail.Enqueue(sample);
+            while (trail.Count > visualOptions.TrailLength) trail.Dequeue();
+            if (sample.Step % visualOptions.HistorySampleInterval == 0)
             {
-                break;
+                history.Enqueue(sample);
+                while (history.Count > visualOptions.HistoryLength) history.Dequeue();
             }
+            completed++;
+            if (budget.HasValue && timer.Elapsed >= budget.Value) break;
         }
         return completed;
     }
-
     public void ToggleEvaluation()
     {
         ObjectDisposedException.ThrowIf(disposed, this);
-        if (Evaluating)
-        {
-            evaluation = null;
-            evaluationMetrics = null;
-        }
+        if (evaluation is not null) { evaluation.Dispose(); evaluation = null; evaluationMetrics = null; }
         else
         {
-            evaluation = new SimulationSession(options, SimulationLifecycle.Continuous);
-            evaluation.Simulation.Reset(options.Evaluation.Seeds[0]);
-            evaluationMetrics = new RollingMetricAccumulator(visualOptions.RollingMetricWindow);
-            evaluationStep = 0;
+            var active = options with
+            {
+                Packages = runtime.Packages.Select(p => new PackageReference(p.Id, p.Version)).ToArray(),
+                Settings = runtime.Packages.ToDictionary(p => p.Id, p => p.Settings.Clone())
+            };
+            evaluation = new(active, runtime.Controller.CreateInferenceController(), observationKeys: runtime.ObservationKeys, actionKeys: runtime.ActionKeys);
+            evaluationMetrics = new(visualOptions.RollingMetricWindow);
         }
-        history.Clear();
-        trail.Clear();
+        history.Clear(); trail.Clear();
     }
-
-    /// <summary>Disposes the old optimizer/model and restarts from the configured deterministic seed.</summary>
     public void ResetTraining()
     {
         ObjectDisposedException.ThrowIf(disposed, this);
-        brain?.Dispose();
-        session = new SimulationSession(options, SimulationLifecycle.Continuous);
-        brain = new DqnBrain(options.Network, options.Learning);
-        engine = new TrainingEngine(session, brain);
-        life++;
-        metrics = new RollingMetricAccumulator(visualOptions.RollingMetricWindow);
-        evaluation = null;
-        evaluationMetrics = null;
-        evaluationStep = 0;
-        history.Clear();
-        trail.Clear();
+        var presentation = runtime?.PresentationHost;
+        evaluation?.Dispose(); evaluation = null; evaluationMetrics = null;
+        runtime?.Dispose();
+        runtime = new(options, new DqnController(options.Network, options.Learning), presentationHost: presentation);
+        metrics = new(visualOptions.RollingMetricWindow);
+        history.Clear(); trail.Clear(); life++;
     }
-
     public TrainingVisualizationSnapshot Snapshot()
     {
         ObjectDisposedException.ThrowIf(disposed, this);
-        SimulationSession displayed = evaluation ?? session;
-        var training = new TrainingViewModel(engine.Step, life, session.Simulation.World.Step,
-            Evaluating ? 0 : brain.Epsilon(engine.Step), brain.LastLoss, brain.OptimizationUpdates,
-            brain.Replay.Count, options.Learning.ReplayCapacity, (evaluationMetrics ?? metrics).Metrics(), Evaluating);
-        WorldViewModel world = WorldSnapshots.Create(displayed, Evaluating ? evaluationStep : engine.Step,
-            Evaluating ? "Evaluation · frozen policy · ε = 0" : "Live Training");
-        return new TrainingVisualizationSnapshot(world, training, Array.AsReadOnly(history.ToArray()), Array.AsReadOnly(trail.ToArray()));
+        var displayed = evaluation ?? runtime;
+        var status = runtime.Controller.Status;
+        var training = new TrainingViewModel(status.Steps, life, runtime.Snapshot().Age, Evaluating ? 0 : status.Epsilon,
+            status.Loss, status.Updates, status.ReplayCount, options.Learning.ReplayCapacity,
+            (evaluationMetrics ?? metrics).Metrics(), Evaluating);
+        return new(new(displayed.Snapshot(), displayed.LastReward, Evaluating ? "Evaluation · frozen policy" : "Live training", displayed.Report()),
+            training, Array.AsReadOnly(history.ToArray()), Array.AsReadOnly(trail.ToArray()));
     }
-
-    public void SaveCheckpoint(string directory)
-    {
-        ObjectDisposedException.ThrowIf(disposed, this);
-        Checkpoint.Save(directory, session, brain, engine.Step);
-    }
-
-    private void Record(TrainingSample sample)
-    {
-        trail.Enqueue(sample);
-        if (trail.Count > visualOptions.TrailLength)
-        {
-            trail.Dequeue();
-        }
-        if (sample.Step % visualOptions.HistorySampleInterval == 0 || sample.Terminal)
-        {
-            history.Enqueue(sample);
-            if (history.Count > visualOptions.HistoryLength)
-            {
-                history.Dequeue();
-            }
-        }
-    }
-
-    private static void ValidateBatch(int count, TimeSpan? timeBudget)
-    {
-        if (count < 0 || (timeBudget.HasValue && timeBudget.Value <= TimeSpan.Zero))
-        {
-            throw new ArgumentOutOfRangeException(nameof(count), "Step count must be nonnegative; time budget must be positive.");
-        }
-    }
-
+    public void SaveCheckpoint(string directory) => RuntimeCheckpoint.Save(directory, runtime);
     public void Dispose()
     {
-        if (disposed)
-        {
-            return;
-        }
-        brain.Dispose();
+        if (disposed) return;
         disposed = true;
+        evaluation?.Dispose(); runtime.Dispose();
     }
 }

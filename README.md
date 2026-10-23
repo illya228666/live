@@ -4,6 +4,20 @@ A small simulated creature learns to regulate its own body temperature in a chan
 
 The experiment asks one question: **can a fixed neural architecture learn homeostasis while its observations and available actions remain extensible?**
 
+The primary runtime now supports one continuous life with hot-installed/upgraded DLL packages. Temperature, vision, hunger, food supply, movement, motivation and Godot presentation use runtime contracts. The original episodic experiment remains available for comparison. Continual-learning acceptance is measured separately; runtime plumbing alone does not establish that a newly installed mechanic has been learned.
+
+```powershell
+./tools/build.ps1
+./tools/live.ps1                         # headless continuous learning
+./tools/run-godot.ps1 -Train             # same RuntimeSession in Godot
+./tools/activate.ps1 -Package hunger@1.0.0,food@1.0.0
+./tools/runtime-smoke.ps1                # install, upgrade, render and unload in one life
+```
+
+`configs/runtime.json` selects startup packages; the existing `configs/default.json` remains supported through an adapter. To install Hunger/Food later, start a configuration without those packages. Use exact new package versions for upgrades. See [runtime module authoring and guarantees](docs/runtime-modules.md) for state migration, activation requests, extensible presentation, motivation and controller contracts.
+
+The controlled [continual-learning acceptance experiment](docs/continual-learning.md) passed all five fixed training seeds: mean hunger error fell 53.43% versus the frozen policy and 52.22% versus random actions, with thermal error 0.009058 below the 0.05 limit. This result uses the explicit experimental configuration and does not establish balanced behavior in the original default world.
+
 ![A trained agent maintaining body temperature beside a smoothly varying heat source](docs/images/thermoregulation.png)
 
 *Actual Godot capture of the trained policy. The creature is the green circle; the orange marker is the heat source.*
@@ -128,7 +142,7 @@ Settings live in `configs/live-training.json`, separately from DQN/physics confi
 ./tools/run-godot.ps1 -Checkpoint artifacts/checkpoints/live-thermal
 ```
 
-Saves record the actual completed step count and remain inference checkpoints; they do not resume optimizer/replay state. Full reset intentionally restarts the configured deterministic seed. Application owns the single synchronous training engine; Godot only requests bounded work and draws copied read-only snapshots. See [live-training notes](docs/live-training.md) for validation and limitations.
+Saves record the actual completed step count and remain inference checkpoints; they do not resume optimizer/replay state. Live saves use format v2: an atomic `current` pointer selects an immutable policy generation with weights, architecture/registry metadata and archived package versions. Compatible format-v1 policies still import. Full reset intentionally restarts the configured deterministic seed. Application owns the single synchronous runtime; Godot requests bounded work and draws copied snapshots through package-owned presentation. See [runtime notes](docs/runtime-modules.md).
 
 ## Measured experiment
 
@@ -190,9 +204,9 @@ Each observation has a registered type slot and up to four normalized numeric fe
 
 Actions are candidates containing a type and parameters. The same neural scorer computes `Q(state, candidate) → scalar` for each legal candidate. The nine movement choices share one movement type with different direction parameters. Future capabilities can use unused slots without adding output neurons.
 
-Modules report scaled homeostatic drives. The core computes their weighted error and clamps the combined reward. Modules cannot hand out arbitrary reward values. The temperature module provides raw local thermal samples and the body-temperature drive; it supplies no direction to an ideal position.
+Modules report scaled homeostatic drives and can provide independent scalar signals. A replaceable motivation package determines the learning signal; the shipped Homeostasis policy implements the original weighted-error formula. Temperature supplies raw local samples and a body-temperature drive, without a direction to an ideal position.
 
-Adding a module requires registration in the composition root and training with its new signals. Architectural capacity does **not** imply that a saved policy already understands a new sense or action. Checkpoints reject incompatible registry mappings. See [extensibility](docs/extensibility.md), [neural architecture](docs/neural-architecture.md) and [thermoregulation](docs/thermoregulation.md).
+Runtime additions require a package manifest and activation request, with no new registration in Application or Godot. Architectural capacity does **not** imply that a policy already understands a new sense or action. New learning conditions start a replay revision and an exploration adaptation period while retaining network/optimizer state. See [runtime modules](docs/runtime-modules.md), [neural architecture](docs/neural-architecture.md) and [thermoregulation](docs/thermoregulation.md).
 
 ## Tests and CI
 
@@ -206,8 +220,8 @@ This is a controlled numerical experiment, not a biologically realistic organism
 
 The following are **future milestones, not implemented**:
 
-- New runtime action types, runtime plugin loading and continual learning.
-- Multiple agents and a persistent long-running world.
+- General continual learning beyond the measured controlled scenario and migration to different neural architectures.
+- Multiple agents and restoration of a complete life after process termination.
 - LLM director and LLM-generated modules.
 - Remote server execution, a web frontend and WebSocket streaming.
 - Sharing worlds with other people.

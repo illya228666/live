@@ -78,6 +78,14 @@
       "artificiallife.core": {
         "type": "Project"
       },
+      "artificiallife.godot.contracts": {
+        "type": "Project",
+        "dependencies": {
+          "ArtificialLife.Core": "[1.0.0, )",
+          "GodotSharp": "[4.7.2, )",
+          "GodotSharpEditor": "[4.7.2, )"
+        }
+      },
       "artificiallife.modules.hunger": {
         "type": "Project",
         "dependencies": {

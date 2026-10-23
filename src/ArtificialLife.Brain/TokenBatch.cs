@@ -15,7 +15,7 @@ internal sealed class TokenBatch
     public Tensor ActionMask { get; }
 
     // Все tensors создаются внутри DisposeScope вызывающего кода и живут только один forward/update.
-    public TokenBatch(ObservationToken[][] states, ActionCandidate[][] candidates, NetworkOptions options)
+    public TokenBatch(ObservationToken[][] states, ActionCandidate[][] candidates, NetworkOptions options, float[]? observationWeights = null)
     {
         if (states.Length == 0 || states.Length != candidates.Length || states.Any(state => state.Length == 0) || candidates.Any(set => set.Length == 0))
         {
@@ -38,9 +38,12 @@ internal sealed class TokenBatch
                 ObservationToken token = states[row][index];
                 Validate(token.Type, token.Features, options.ObservationCapacity, width);
                 observationTypes[row * tokens + index] = token.Type;
-                observationMask[row * tokens + index] = 1;
+                observationMask[row * tokens + index] = observationWeights?[token.Type] ?? 1;
                 token.Features.CopyTo(observationFeatures, (row * tokens + index) * width);
             }
+            // If a replacement supplies only new types, there is no previous representation to preserve.
+            if (!Enumerable.Range(0, states[row].Length).Any(i => observationMask[row * tokens + i] > 0))
+                for (int index = 0; index < states[row].Length; index++) observationMask[row * tokens + index] = 1;
             for (int index = 0; index < candidates[row].Length; index++)
             {
                 ActionCandidate candidate = candidates[row][index];

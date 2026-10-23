@@ -1,0 +1,563 @@
+{
+  "Pilot": false,
+  "Passed": true,
+  "Seconds": 950.6207095999999,
+  "HungerRatioFrozen": 0.4657480474217975,
+  "HungerRatioRandom": 0.4778257571761018,
+  "TemperatureError": 0.009057856043101921,
+  "TemperatureLimit": 0.05,
+  "Configuration": {
+    "Experiment": {
+      "World": {
+        "Width": 40,
+        "Height": 40,
+        "TimeStep": 1,
+        "MovementSpeed": 1.5,
+        "EpisodeSteps": 400
+      },
+      "Temperature": {
+        "Ambient": 34.1,
+        "FireStrength": 40,
+        "FireRadius": 3,
+        "OscillationPeriod": 180,
+        "OscillationAmplitude": 0.15,
+        "HeatProduction": 0.3,
+        "HeatTransfer": 0.12,
+        "Target": 36.6,
+        "SensorDistance": 3,
+        "DriveScale": 6,
+        "ComfortHalfWidth": 1
+      },
+      "Hunger": {
+        "GrowthPerSecond": 0.001,
+        "EatRadius": 3,
+        "DriveWeight": 4
+      },
+      "Vision": {
+        "MaxPerAppearance": 1
+      },
+      "FoodSpawner": {
+        "SpawnIntervalTicks": 100,
+        "MaxApples": 1,
+        "MinSpawnDistanceFromAgent": 4
+      },
+      "Reward": {
+        "ImprovementWeight": 0.2,
+        "MaximumDriveWeight": 10
+      },
+      "Network": {
+        "ObservationCapacity": 256,
+        "ActionCapacity": 256,
+        "FeatureWidth": 4,
+        "TypeEmbeddingSize": 8,
+        "StateSize": 32,
+        "HiddenSize": 64
+      },
+      "Learning": {
+        "LearningRate": 0.001,
+        "Gamma": 0.97,
+        "EpsilonStart": 1,
+        "EpsilonEnd": 0.3,
+        "EpsilonDecaySteps": 30000,
+        "BatchSize": 64,
+        "ReplayCapacity": 50000,
+        "WarmupSteps": 1000,
+        "TrainEvery": 4,
+        "TargetSyncInterval": 100,
+        "GradientClip": 5,
+        "TrainingSteps": 100000,
+        "LogEvery": 5000,
+        "Seed": 42,
+        "AdaptationEpsilon": 0.5,
+        "AdaptationSteps": 50000,
+        "ObservationIntroductionSteps": 10000,
+        "PrioritizedReplayAlpha": 0.6,
+        "PrioritizedReplayBeta": 0.4
+      },
+      "Evaluation": {
+        "Seeds": [
+          1001,
+          2002,
+          3003,
+          4004,
+          5005
+        ],
+        "EpisodesPerSeed": 4
+      }
+    },
+    "BeforeSteps": 100000,
+    "AfterSteps": 200000,
+    "EvaluationSteps": 4000,
+    "TrainingSeeds": [
+      42,
+      73,
+      101,
+      211,
+      509
+    ],
+    "EvaluationSeeds": [
+      1001,
+      2002,
+      3003,
+      4004,
+      5005
+    ]
+  },
+  "Seeds": [
+    {
+      "Seed": 42,
+      "Pretrained": {
+        "Steps": 20000,
+        "MeanBalance": 0.9959030421841281,
+        "MeanReward": 0.9918189425438466,
+        "Drives": {
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.62318315170675,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.004096957815860587,
+            "MeanSatisfaction": 0.9959030421841281,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Frozen": {
+        "Steps": 20000,
+        "MeanBalance": 0.29908060843676587,
+        "MeanReward": -0.40187621149128655,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.875125,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.875125,
+            "MeanSatisfaction": 0.12487499999999997,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.62318315170675,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.004096957815860587,
+            "MeanSatisfaction": 0.9959030421841281,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Random": {
+        "Steps": 20000,
+        "MeanBalance": 0.29684699097845435,
+        "MeanReward": -0.410071649367939,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.8530049999999996,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.8530049999999996,
+            "MeanSatisfaction": 0.14699499999999996,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 37.596380607241805,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.1662964749432514,
+            "MeanSatisfaction": 0.8962549548922698,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Adapted": {
+        "Steps": 20000,
+        "MeanBalance": 0.4727647228758681,
+        "MeanReward": -0.05450976749033027,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.6585643999999992,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.6585643999999992,
+            "MeanSatisfaction": 0.3414356,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.610114118544814,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.0019187856206021319,
+            "MeanSatisfaction": 0.9980812143794595,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "AgeBefore": 100000,
+      "AgeAfter": 300000,
+      "UpdatesBefore": 24751,
+      "UpdatesAfter": 74502
+    },
+    {
+      "Seed": 73,
+      "Pretrained": {
+        "Steps": 20000,
+        "MeanBalance": 0.9994741913913491,
+        "MeanReward": 0.9989614293799927,
+        "Drives": {
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.60175758179617,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.0005258086086506031,
+            "MeanSatisfaction": 0.9994741913913491,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Frozen": {
+        "Steps": 20000,
+        "MeanBalance": 0.2997948382782153,
+        "MeanReward": -0.4004477141241121,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.875125,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.875125,
+            "MeanSatisfaction": 0.12487499999999997,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.60175758179617,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.0005258086086506031,
+            "MeanSatisfaction": 0.9994741913913491,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Random": {
+        "Steps": 20000,
+        "MeanBalance": 0.29684699097845435,
+        "MeanReward": -0.410071649367939,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.8530049999999996,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.8530049999999996,
+            "MeanSatisfaction": 0.14699499999999996,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 37.596380607241805,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.1662964749432514,
+            "MeanSatisfaction": 0.8962549548922698,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Adapted": {
+        "Steps": 20000,
+        "MeanBalance": 0.633186449087569,
+        "MeanReward": 0.2663300417273141,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.45439309999999944,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.45439309999999944,
+            "MeanSatisfaction": 0.5456069000000004,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.69757353223271,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.016495354562141868,
+            "MeanSatisfaction": 0.9835046454378704,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "AgeBefore": 100000,
+      "AgeAfter": 300000,
+      "UpdatesBefore": 24751,
+      "UpdatesAfter": 74502
+    },
+    {
+      "Seed": 101,
+      "Pretrained": {
+        "Steps": 20000,
+        "MeanBalance": 0.9994742853256654,
+        "MeanReward": 0.9989616172486205,
+        "Drives": {
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.601755692846744,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.0005257146743401972,
+            "MeanSatisfaction": 0.9994742853256654,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Frozen": {
+        "Steps": 20000,
+        "MeanBalance": 0.2997948570650446,
+        "MeanReward": -0.4004476765503831,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.875125,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.875125,
+            "MeanSatisfaction": 0.12487499999999997,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.601755692846744,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.0005257146743401972,
+            "MeanSatisfaction": 0.9994742853256654,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Random": {
+        "Steps": 20000,
+        "MeanBalance": 0.29684699097845435,
+        "MeanReward": -0.410071649367939,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.8530049999999996,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.8530049999999996,
+            "MeanSatisfaction": 0.14699499999999996,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 37.596380607241805,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.1662964749432514,
+            "MeanSatisfaction": 0.8962549548922698,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Adapted": {
+        "Steps": 20000,
+        "MeanBalance": 0.7764374096246821,
+        "MeanReward": 0.5527773724225055,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.27777790000000196,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.27777790000000196,
+            "MeanSatisfaction": 0.7222220999999955,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.63880951607881,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.006701351876553857,
+            "MeanSatisfaction": 0.9932986481234478,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "AgeBefore": 100000,
+      "AgeAfter": 300000,
+      "UpdatesBefore": 24751,
+      "UpdatesAfter": 74502
+    },
+    {
+      "Seed": 211,
+      "Pretrained": {
+        "Steps": 20000,
+        "MeanBalance": 0.9994769494596462,
+        "MeanReward": 0.9989669455164433,
+        "Drives": {
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.601952894916536,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.0005230505403714326,
+            "MeanSatisfaction": 0.9994769494596462,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Frozen": {
+        "Steps": 20000,
+        "MeanBalance": 0.2997953898919319,
+        "MeanReward": -0.4004466108967155,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.875125,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.875125,
+            "MeanSatisfaction": 0.12487499999999997,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.601952894916536,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.0005230505403714326,
+            "MeanSatisfaction": 0.9994769494596462,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Random": {
+        "Steps": 20000,
+        "MeanBalance": 0.29684699097845435,
+        "MeanReward": -0.410071649367939,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.8530049999999996,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.8530049999999996,
+            "MeanSatisfaction": 0.14699499999999996,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 37.596380607241805,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.1662964749432514,
+            "MeanSatisfaction": 0.8962549548922698,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Adapted": {
+        "Steps": 20000,
+        "MeanBalance": 0.6566416232146649,
+        "MeanReward": 0.31320591762328215,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.4265995000000012,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.4265995000000012,
+            "MeanSatisfaction": 0.573400499999998,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.66096471405727,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.010393883926639496,
+            "MeanSatisfaction": 0.9896061160733468,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "AgeBefore": 100000,
+      "AgeAfter": 300000,
+      "UpdatesBefore": 24751,
+      "UpdatesAfter": 74502
+    },
+    {
+      "Seed": 509,
+      "Pretrained": {
+        "Steps": 20000,
+        "MeanBalance": 0.9992749676541299,
+        "MeanReward": 0.9985629819055503,
+        "Drives": {
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.60328866179276,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.0007250323458749517,
+            "MeanSatisfaction": 0.9992749676541299,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Frozen": {
+        "Steps": 20000,
+        "MeanBalance": 0.2997549935307377,
+        "MeanReward": -0.40052740361899664,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.875125,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.875125,
+            "MeanSatisfaction": 0.12487499999999997,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.60328866179276,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.0007250323458749517,
+            "MeanSatisfaction": 0.9992749676541299,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Random": {
+        "Steps": 20000,
+        "MeanBalance": 0.29684699097845435,
+        "MeanReward": -0.410071649367939,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.8530049999999996,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.8530049999999996,
+            "MeanSatisfaction": 0.14699499999999996,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 37.596380607241805,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.1662964749432514,
+            "MeanSatisfaction": 0.8962549548922698,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "Adapted": {
+        "Steps": 20000,
+        "MeanBalance": 0.8217303508245631,
+        "MeanReward": 0.6430380669695993,
+        "Drives": {
+          "hunger": {
+            "Samples": 20000,
+            "MeanCurrent": 0.22060390000000096,
+            "MeanTarget": 0,
+            "MeanNormalizedError": 0.22060390000000096,
+            "MeanSatisfaction": 0.7793960999999957,
+            "MeanWeight": 4
+          },
+          "temperature": {
+            "Samples": 20000,
+            "MeanCurrent": 36.65728083023802,
+            "MeanTarget": 36.59999999998653,
+            "MeanNormalizedError": 0.009779904229572258,
+            "MeanSatisfaction": 0.9910673541227952,
+            "MeanWeight": 1
+          }
+        }
+      },
+      "AgeBefore": 100000,
+      "AgeAfter": 300000,
+      "UpdatesBefore": 24751,
+      "UpdatesAfter": 74502
+    }
+  ]
+}

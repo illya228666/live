@@ -13,13 +13,15 @@ public sealed class DqnBrain : IDisposable
     private readonly NetworkOptions networkOptions;
     private readonly LearningOptions learning;
     private readonly Random random;
-    private int updates;
+    private long updates;
     private bool disposed;
 
     public ReplayBuffer Replay { get; }
     public double LastLoss { get; private set; }
     /// <summary>Number of completed optimizer steps, independent of world-step count.</summary>
-    public int OptimizationUpdates => updates;
+    public long OptimizationUpdates => updates;
+    public long Revision { get; set; }
+    public float[] ObservationWeights { get; }
 
     public DqnBrain(NetworkOptions networkOptions, LearningOptions learning)
     {
@@ -27,6 +29,7 @@ public sealed class DqnBrain : IDisposable
         learning.Validate();
         this.networkOptions = networkOptions;
         this.learning = learning;
+        ObservationWeights = Enumerable.Repeat(1f, networkOptions.ObservationCapacity).ToArray();
         random = new Random(learning.Seed);
         // Один поток уменьшает накладные расходы крошечной модели и разброс CPU-результатов.
         set_num_threads(1);
@@ -35,10 +38,10 @@ public sealed class DqnBrain : IDisposable
         target = new CandidateQNetwork(networkOptions);
         SynchronizeTarget();
         optimizer = optim.Adam(online.parameters(), lr: learning.LearningRate);
-        Replay = new ReplayBuffer(learning.ReplayCapacity);
+        Replay = new ReplayBuffer(learning.ReplayCapacity, learning.PrioritizedReplayAlpha);
     }
 
-    public double Epsilon(int step) => learning.EpsilonEnd + (learning.EpsilonStart - learning.EpsilonEnd) * Math.Max(0, 1 - (double)step / learning.EpsilonDecaySteps);
+    public double Epsilon(long step) => learning.EpsilonEnd + (learning.EpsilonStart - learning.EpsilonEnd) * Math.Max(0, 1 - (double)step / learning.EpsilonDecaySteps);
 
     public ActionCandidate Choose(ObservationToken[] state, ActionCandidate[] actions, double epsilon = 0)
     {
@@ -76,7 +79,7 @@ public sealed class DqnBrain : IDisposable
     {
         using var scope = NewDisposeScope();
         using var noGrad = no_grad();
-        var batch = new TokenBatch([state], [actions], networkOptions);
+        var batch = new TokenBatch([state], [actions], networkOptions, ObservationWeights);
         return online.Score(batch).data<float>().ToArray();
     }
 
@@ -84,22 +87,23 @@ public sealed class DqnBrain : IDisposable
     {
         using var scope = NewDisposeScope();
         using var noGrad = no_grad();
-        var batch = new TokenBatch([state], [[new ActionCandidate(0, [])]], networkOptions);
+        var batch = new TokenBatch([state], [[new ActionCandidate(0, [])]], networkOptions, ObservationWeights);
         return online.Encode(batch).data<float>().ToArray();
     }
 
-    public bool Learn(int step)
+    public bool Learn(long step)
     {
-        if (Replay.Count < learning.WarmupSteps || step % learning.TrainEvery != 0)
+        if (Replay.CountFor(Revision) < learning.WarmupSteps || step % learning.TrainEvery != 0)
         {
             return false;
         }
         using var scope = NewDisposeScope();
-        Experience[] samples = Replay.Sample(learning.BatchSize, random);
+        PrioritySample[]? prioritized = learning.PrioritizedReplayAlpha > 0 ? Replay.SamplePrioritized(learning.BatchSize, random, Revision, learning.PrioritizedReplayBeta) : null;
+        Experience[] samples = prioritized?.Select(s => s.Experience).ToArray() ?? Replay.Sample(learning.BatchSize, random, Revision == 0 ? null : Revision);
         var current = new TokenBatch(samples.Select(sample => sample.State).ToArray(),
-            samples.Select(sample => new[] { sample.Action }).ToArray(), networkOptions);
+            samples.Select(sample => new[] { sample.Action }).ToArray(), networkOptions, ObservationWeights);
         var next = new TokenBatch(samples.Select(sample => sample.NextState).ToArray(),
-            samples.Select(sample => sample.NextActions).ToArray(), networkOptions);
+            samples.Select(sample => sample.NextActions).ToArray(), networkOptions, ObservationWeights);
         Tensor predicted = online.Score(current).squeeze(1);
         Tensor expected;
         using (no_grad())
@@ -111,12 +115,23 @@ public sealed class DqnBrain : IDisposable
             Tensor continuation = tensor(samples.Select(sample => sample.Terminal ? 0f : 1f).ToArray());
             expected = rewards + learning.Gamma * nextValue * continuation;
         }
-        Tensor loss = nn.functional.smooth_l1_loss(predicted, expected);
+        Tensor loss;
+        if (prioritized is null) loss = nn.functional.smooth_l1_loss(predicted, expected);
+        else
+        {
+            Tensor difference = predicted - expected;
+            Tensor absolute = difference.abs();
+            Tensor perSample = where(absolute.lt(1), difference.square() * 0.5, absolute - 0.5);
+            loss = (perSample * tensor(prioritized.Select(s => s.Weight).ToArray())).mean();
+            float[] errors = absolute.detach().data<float>().ToArray();
+            for (int i = 0; i < errors.Length; i++) Replay.UpdatePriority(prioritized[i].Slot, errors[i]);
+        }
         optimizer.zero_grad();
         loss.backward();
         nn.utils.clip_grad_norm_(online.parameters(), learning.GradientClip);
         optimizer.step();
         LastLoss = loss.item<float>();
+        if (!double.IsFinite(LastLoss)) throw new InvalidOperationException("DQN produced a non-finite loss.");
         updates++;
         if (updates % learning.TargetSyncInterval == 0)
         {

@@ -7,6 +7,10 @@ namespace ArtificialLife.Godot;
 public partial class Main : Node2D
 {
     private VisualizationSession? session;
+    private PresentationHost? presentations;
+    private ActivationInbox? activationInbox;
+    private double activationElapsed;
+    private string? lastActivationNotice;
     private WorldViewModel? snapshot;
     private readonly Queue<Vector2> trail = new();
     private readonly Queue<TrainingSample> history = new();
@@ -38,6 +42,7 @@ public partial class Main : Node2D
             }
             session = new VisualizationSession(checkpoint);
             snapshot = session.Snapshot();
+            AttachPresentations(session.Runtime);
             if (smokeSteps > 0)
             {
                 for (int index = 0; index < smokeSteps; index++)
@@ -95,6 +100,19 @@ public partial class Main : Node2D
             }
             QueueRedraw();
         }
+        activationElapsed += delta;
+        if (activationElapsed >= 1)
+        {
+            activationElapsed = 0;
+            if (trainingSession is { Evaluating: false }) trainingSession.Runtime.Poll(activationInbox!);
+            else if (session is not null) session.Runtime.Poll(activationInbox!);
+            var runtime = trainingSession?.Runtime ?? session?.Runtime;
+            if (runtime?.LastActivation is { Id: not "initial" } outcome && outcome.Id != lastActivationNotice)
+            {
+                lastActivationNotice = outcome.Id;
+                ShowNotice($"Package {(outcome.Accepted ? "accepted" : "rejected")}: {outcome.Message}", 8);
+            }
+        }
         frames++;
         if (capture is not null && !captureScheduled && frames >= 4 && (!trainMode || trainingSmokeSteps == 0 || trainingSmokeFinished))
         {
@@ -116,7 +134,7 @@ public partial class Main : Node2D
         session!.Advance();
         snapshot = session.Snapshot();
         trail.Enqueue(ToScreen(snapshot.Agent.X, snapshot.Agent.Y));
-        history.Enqueue(new TrainingSample((int)snapshot.Step, 1, (int)snapshot.Step, snapshot.Agent.X, snapshot.Agent.Y,
+        history.Enqueue(new TrainingSample(snapshot.Step, 1, snapshot.Step, snapshot.Agent.X, snapshot.Agent.Y,
             snapshot.Homeostasis, snapshot.Reward, false));
         if (trail.Count > 160)
         {
@@ -149,6 +167,7 @@ public partial class Main : Node2D
                 session?.Dispose();
                 session = new VisualizationSession(checkpoint);
                 snapshot = session.Snapshot();
+            AttachPresentations(session.Runtime);
                 trail.Clear(); history.Clear(); accumulator = 0;
                 break;
         }
@@ -170,41 +189,14 @@ public partial class Main : Node2D
             return;
         }
         WorldViewModel state = snapshot;
-        Vector2 center = ToScreen(state.HeatSource.X, state.HeatSource.Y);
-        // Кольца — только отображение поля; эти координаты никогда не передаются политике.
-        for (int ring = 35; ring >= 1; ring--)
-        {
-            float radius = ring * 8;
-            float distance = radius / worldRect.Size.X * (float)state.Width;
-            float warmth = (float)(state.HeatSource.Strength * Math.Exp(-distance * distance / (2 * state.HeatSource.Radius * state.HeatSource.Radius)) /
-                (state.HeatSource.Ambient + state.HeatSource.Strength));
-            DrawCircle(center, radius, new Color(0.96f, 0.38f, 0.15f, warmth * 0.11f));
-        }
-        for (int line = 1; line < 10; line++)
-        {
-            float offset = line * 70;
-            DrawLine(new Vector2(40 + offset, 92), new Vector2(40 + offset, 792), new Color(0.45f, 0.6f, 0.7f, 0.06f));
-            DrawLine(new Vector2(40, 92 + offset), new Vector2(740, 92 + offset), new Color(0.45f, 0.6f, 0.7f, 0.06f));
-        }
-        DrawCircle(center, 11, new Color("ff9d52"));
-        DrawArc(center, 17, 0, Mathf.Tau, 64, new Color(1, 0.6f, 0.3f, 0.45f), 1, antialiased: true);
-        foreach (AppleViewModel apple in state.Apples)
-        {
-            Vector2 at = ToScreen(apple.X, apple.Y);
-            DrawColoredPolygon([at + new Vector2(0, -7), at + new Vector2(7, 0),
-                at + new Vector2(0, 7), at + new Vector2(-7, 0)], new Color("ef6672"));
-            DrawLine(at + new Vector2(0, -7), at + new Vector2(3, -10), Accent, 2);
-        }
+        presentations?.Draw(state.Frame);
         Vector2[] points = liveSnapshot is null ? trail.ToArray() : liveSnapshot.Trail
             .Select(sample => ToScreen(sample.X, sample.Y)).ToArray();
         for (int index = 1; index < points.Length; index++)
         {
             DrawLine(points[index - 1], points[index], new Color(0.4f, 0.87f, 0.74f, 0.6f * index / points.Length), 2, antialiased: true);
         }
-        Vector2 agent = ToScreen(state.Agent.X, state.Agent.Y);
-        DrawCircle(agent, 8, Accent);
-        DrawArc(agent, 12, 0, Mathf.Tau, 40, new Color(0.4f, 0.87f, 0.74f, 0.35f), 1, antialiased: true);
-        Label($"{state.Width:0} x {state.Height:0} / apples {state.Apples.Count} / debug body {state.Agent.BodyTemperature:F1} C / env {state.Agent.LocalTemperature:F1} C", 58, 772, 12, Muted);
+        Label($"{state.Width:0} x {state.Height:0} / entities {state.Frame.Entities.Count} / revision {state.Frame.Revision}", 58, 772, 12, Muted);
         if (liveSnapshot is not null)
         {
             DrawTrainingHud(state);
@@ -223,6 +215,14 @@ public partial class Main : Node2D
         }
     }
 
+    private void AttachPresentations(RuntimeSession runtime)
+    {
+        presentations ??= new PresentationHost(this, worldRect);
+        activationInbox = new(runtime.Options.Inbox);
+        runtime.PresentationHost = presentations;
+        runtime.PreparePresentation();
+    }
+
     private Vector2 ToScreen(double x, double y) => worldRect.Position + new Vector2((float)(x / snapshot!.Width), (float)(y / snapshot.Height)) * worldRect.Size;
     private void Metric(string label, string value, float y)
     {
@@ -232,6 +232,7 @@ public partial class Main : Node2D
     private void Label(string text, float x, float y, int size, Color color) => DrawString(ThemeDB.FallbackFont, new Vector2(x, y), text, fontSize: size, modulate: color);
     public override void _ExitTree()
     {
+        presentations?.Dispose();
         trainingSession?.Dispose();
         session?.Dispose();
     }

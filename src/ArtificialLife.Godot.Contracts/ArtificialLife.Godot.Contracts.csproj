@@ -1,0 +1,4 @@
+<Project Sdk="Godot.NET.Sdk/4.7.2">
+  <PropertyGroup><EnableDynamicLoading>true</EnableDynamicLoading></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../ArtificialLife.Core/ArtificialLife.Core.csproj" /></ItemGroup>
+</Project>

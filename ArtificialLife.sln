@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -24,6 +24,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Modules.Vision", "src\ArtificialLife.Modules.Vision\ArtificialLife.Modules.Vision.csproj", "{3FAA75AC-F45F-4CCE-88F8-9BE21B411235}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Modules.Hunger", "src\ArtificialLife.Modules.Hunger\ArtificialLife.Modules.Hunger.csproj", "{47B5D43B-C965-4942-814A-DD7791D4B144}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Modules.Movement", "src\ArtificialLife.Modules.Movement\ArtificialLife.Modules.Movement.csproj", "{03E5E182-D845-4CC8-9F17-F0F2D532450C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Modules.Food", "src\ArtificialLife.Modules.Food\ArtificialLife.Modules.Food.csproj", "{4873D32A-D988-4D79-B41B-7A9C69A73776}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Modules.Homeostasis", "src\ArtificialLife.Modules.Homeostasis\ArtificialLife.Modules.Homeostasis.csproj", "{10747F39-AC62-40EE-BDCD-BD85FD48BF38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Godot.Contracts", "src\ArtificialLife.Godot.Contracts\ArtificialLife.Godot.Contracts.csproj", "{64C671DE-8F14-44DC-A2C9-DD3D82B783EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Presentation.Godot", "src\ArtificialLife.Presentation.Godot\ArtificialLife.Presentation.Godot.csproj", "{E8F56396-AEA2-47B2-B4B8-7321261F201E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +80,26 @@ Global
 		{47B5D43B-C965-4942-814A-DD7791D4B144}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47B5D43B-C965-4942-814A-DD7791D4B144}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47B5D43B-C965-4942-814A-DD7791D4B144}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03E5E182-D845-4CC8-9F17-F0F2D532450C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03E5E182-D845-4CC8-9F17-F0F2D532450C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03E5E182-D845-4CC8-9F17-F0F2D532450C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03E5E182-D845-4CC8-9F17-F0F2D532450C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4873D32A-D988-4D79-B41B-7A9C69A73776}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4873D32A-D988-4D79-B41B-7A9C69A73776}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4873D32A-D988-4D79-B41B-7A9C69A73776}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4873D32A-D988-4D79-B41B-7A9C69A73776}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10747F39-AC62-40EE-BDCD-BD85FD48BF38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10747F39-AC62-40EE-BDCD-BD85FD48BF38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10747F39-AC62-40EE-BDCD-BD85FD48BF38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10747F39-AC62-40EE-BDCD-BD85FD48BF38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64C671DE-8F14-44DC-A2C9-DD3D82B783EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64C671DE-8F14-44DC-A2C9-DD3D82B783EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64C671DE-8F14-44DC-A2C9-DD3D82B783EE}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{64C671DE-8F14-44DC-A2C9-DD3D82B783EE}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{E8F56396-AEA2-47B2-B4B8-7321261F201E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8F56396-AEA2-47B2-B4B8-7321261F201E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8F56396-AEA2-47B2-B4B8-7321261F201E}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8F56396-AEA2-47B2-B4B8-7321261F201E}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6272856E-8FA6-48A6-9C4C-51119E6C38A6} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
@@ -81,5 +111,10 @@ Global
 		{05E7451C-C8D9-46F3-8D90-693CDC1793B3} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 		{3FAA75AC-F45F-4CCE-88F8-9BE21B411235} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 		{47B5D43B-C965-4942-814A-DD7791D4B144} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
+		{03E5E182-D845-4CC8-9F17-F0F2D532450C} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
+		{4873D32A-D988-4D79-B41B-7A9C69A73776} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
+		{10747F39-AC62-40EE-BDCD-BD85FD48BF38} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
+		{64C671DE-8F14-44DC-A2C9-DD3D82B783EE} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
+		{E8F56396-AEA2-47B2-B4B8-7321261F201E} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 	EndGlobalSection
 EndGlobal

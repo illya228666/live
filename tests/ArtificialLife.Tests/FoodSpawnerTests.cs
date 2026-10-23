@@ -124,9 +124,9 @@ public sealed class FoodSpawnerTests
         {
             live.AdvanceTraining(1);
             var current = live.Snapshot().World;
-            observedRemovals += previous.Apples.Count(apple => !current.Apples.Contains(apple));
-            Assert.InRange(current.Apples.Count, 0, 8);
-            Assert.Equal(current.TotalApplesSpawned - current.Apples.Count, observedRemovals);
+            observedRemovals += previous.Frame.Entities.Count(apple => apple.Components.ContainsKey("food.apple") && !current.Frame.Entities.Any(entity => entity.Id == apple.Id));
+            Assert.InRange(current.Frame.Entities.Count(e => e.Components.ContainsKey("food.apple")), 0, 8);
+            Assert.Equal(current.Frame.ModuleState["food"].Read<long>("spawned") - current.Frame.Entities.Count(e => e.Components.ContainsKey("food.apple")), observedRemovals);
             previous = current;
         }
         Assert.True(observedRemovals > 0, "The live run must exercise removal through snapshots.");
@@ -159,9 +159,9 @@ public sealed class FoodSpawnerTests
         var initial = live.Snapshot();
         live.AdvanceTraining(10);
         var later = live.Snapshot();
-        Assert.Empty(initial.World.Apples);
-        Assert.Equal(2, later.World.Apples.Count);
-        Assert.Equal(2, later.World.TotalApplesSpawned);
-        Assert.All(later.World.Apples, apple => Assert.InRange(apple.X, 0, later.World.Width));
+        Assert.DoesNotContain(initial.World.Frame.Entities, e => e.Components.ContainsKey("food.apple"));
+        Assert.Equal(2, later.World.Frame.Entities.Count(e => e.Components.ContainsKey("food.apple")));
+        Assert.Equal(2, later.World.Frame.ModuleState["food"].Read<long>("spawned"));
+        Assert.All(later.World.Frame.Entities.Where(e => e.Components.ContainsKey("food.apple")), apple => Assert.InRange(apple.Position.X, 0, later.World.Width));
     }
 }

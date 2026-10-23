@@ -2,6 +2,9 @@ using ArtificialLife.Core;
 
 namespace ArtificialLife.Modules.Vision;
 
+/// <summary>Optional generic sensory attention, independent of object purpose. Unlimited preserves the original backend output.</summary>
+public sealed record VisionOptions(int MaxPerAppearance = int.MaxValue);
+
 /// <summary>Neutral visible shape, not an object's purpose or physical effect.</summary>
 public enum AppearanceType { Disc, Diamond }
 

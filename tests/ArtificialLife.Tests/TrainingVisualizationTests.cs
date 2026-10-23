@@ -72,7 +72,7 @@ public sealed class TrainingVisualizationTests
         TrainingVisualizationSnapshot snapshot = live.Snapshot();
         Assert.Equal(121, snapshot.History.Count);
         Assert.Equal(121, snapshot.Trail.Count);
-        Assert.Equal(Enumerable.Range(1, 121), snapshot.Trail.Select(sample => sample.Step));
+        Assert.Equal(Enumerable.Range(1, 121).Select(i => (long)i), snapshot.Trail.Select(sample => sample.Step));
         Assert.All(snapshot.History, sample => Assert.False(sample.Terminal));
         Assert.Equal(1, snapshot.Training.Life);
         Assert.Equal(121, snapshot.Training.Age);
@@ -105,7 +105,7 @@ public sealed class TrainingVisualizationTests
             Assert.Equal(whole.Trail.ToArray(), split.Trail.ToArray());
             string splitPath = Path.Combine(directory, "split");
             chunks.SaveCheckpoint(splitPath);
-            Assert.Equal(Checkpoint.Read(wholePath).WeightSha256, Checkpoint.Read(splitPath).WeightSha256);
+            Assert.Equal(RuntimeCheckpoint.Read(wholePath).WeightSha256, RuntimeCheckpoint.Read(splitPath).WeightSha256);
             Assert.True(split.Training.OptimizationUpdates > 0);
         }
         finally { Directory.Delete(directory, recursive: true); }
@@ -197,7 +197,7 @@ public sealed class TrainingVisualizationTests
             session.AdvanceTraining(300);
             string learnedPath = Path.Combine(directory, "learned");
             session.SaveCheckpoint(learnedPath);
-            Assert.NotEqual(Checkpoint.Read(initialPath).WeightSha256, Checkpoint.Read(learnedPath).WeightSha256);
+            Assert.NotEqual(RuntimeCheckpoint.Read(initialPath).WeightSha256, RuntimeCheckpoint.Read(learnedPath).WeightSha256);
             session.ResetTraining();
             TrainingVisualizationSnapshot reset = session.Snapshot();
             Assert.Equal(0, reset.Training.Step);
@@ -213,7 +213,7 @@ public sealed class TrainingVisualizationTests
             Assert.Empty(reset.Trail);
             string resetPath = Path.Combine(directory, "reset");
             session.SaveCheckpoint(resetPath);
-            Assert.Equal(Checkpoint.Read(initialPath).WeightSha256, Checkpoint.Read(resetPath).WeightSha256);
+            Assert.Equal(RuntimeCheckpoint.Read(initialPath).WeightSha256, RuntimeCheckpoint.Read(resetPath).WeightSha256);
             session.AdvanceTraining(64);
             Assert.Equal(1, session.Snapshot().Training.OptimizationUpdates);
         }
@@ -229,16 +229,20 @@ public sealed class TrainingVisualizationTests
             using var live = new TrainingVisualizationSession(Options());
             live.AdvanceTraining(73);
             live.SaveCheckpoint(directory);
-            CheckpointManifest manifest = Checkpoint.Read(directory);
-            Assert.Equal(1, manifest.FormatVersion);
+            PolicyManifest manifest = RuntimeCheckpoint.Read(directory);
+            Assert.Equal(2, manifest.FormatVersion);
             Assert.Equal(73, manifest.TrainingSteps);
             using var visualization = new VisualizationSession(directory);
             visualization.Advance();
-            Assert.True(double.IsFinite(visualization.Snapshot().Agent.BodyTemperature));
-            var session = new SimulationSession(manifest.Options);
-            using var brain = new DqnBrain(manifest.Options.Network, manifest.Options.Learning);
-            Checkpoint.Load(directory, session, brain);
-            EvaluationMetrics result = Evaluator.Run(session, brain, [606]);
+            Assert.True(double.IsFinite(visualization.Snapshot().Frame.Agent.Components["temperature.body"].Read<double>("temperature")));
+            using var runtime = RuntimeCheckpoint.Open(directory);
+            var accumulator = new MetricAccumulator();
+            for (int i = 0; i < 160; i++)
+            {
+                var sample = runtime.AdvanceOne(false);
+                accumulator.Add(sample.Homeostasis, sample.Reward);
+            }
+            var result = accumulator.Metrics();
             Assert.Equal(160, result.Steps);
             Assert.True(double.IsFinite(result.MeanBalance));
         }

@@ -25,16 +25,17 @@ public partial class Main
     private double noticeSeconds;
     private int trainingSmokeSteps;
     private bool trainingSmokeFinished;
-    private int nextTrainingLog = 5000;
+    private long nextTrainingLog = 5000;
     private string? progressCaptureDirectory;
     private readonly Queue<int> captureStages = new();
     private readonly List<TrainingViewModel> observationStages = new();
     private readonly List<double> workDurations = new();
     private readonly List<double> frameDurations = new();
     private readonly Stopwatch trainingWallClock = new();
-    private ExperimentOptions? smokeOptions;
+    private RuntimeOptions? smokeOptions;
     private WorldViewModel? initialSmokeWorld;
     private TrainingSample? previousSmokeSample;
+    private ActivationSchedule? activationSchedule;
 
     private void ParseLaunchArguments(string root)
     {
@@ -62,6 +63,7 @@ public partial class Main
                 case "--visual-config": visualConfig = value; break;
                 case "--training-speed": initialTrainingSpeed = value; break;
                 case "--capture": capture = value; break;
+                case "--activation-schedule": activationSchedule = new(value); break;
                 case "--capture-training-progress": progressCaptureDirectory = value; break;
                 case "--smoke-steps": smokeSteps = PositiveInteger(value); break;
                 case "--training-smoke-steps":
@@ -84,7 +86,7 @@ public partial class Main
     private void StartLiveTraining()
     {
         visualOptions = TrainingVisualizationOptions.Load(visualConfig);
-        ExperimentOptions options = ExperimentOptions.Load(experimentConfig);
+        RuntimeOptions options = RuntimeCommands.ReadOptions(experimentConfig);
         if (progressCaptureDirectory is not null && trainingSmokeSteps == 0)
         {
             throw new ArgumentException("Progress capture requires a finite --training-smoke-steps run.");
@@ -107,6 +109,7 @@ public partial class Main
         }
         trainingSession = new TrainingVisualizationSession(options, visualOptions);
         RefreshTrainingSnapshot();
+        AttachPresentations(trainingSession.Runtime);
         if (trainingSmokeSteps > 0)
         {
             smokeOptions = options;
@@ -147,22 +150,27 @@ public partial class Main
                 trainingCredits = Math.Min(visualOptions.MaxBatchSize, trainingCredits + delta * visualOptions.StepsPerSecond(trainingSpeed));
             }
             int requested = max ? visualOptions.MaxBatchSize : (int)trainingCredits;
-            int currentStep = liveSnapshot!.Training.Step;
+            long currentStep = liveSnapshot!.Training.Step;
             if (trainingSmokeSteps > 0)
             {
                 // Точное окончание smoke; снимок шага берём у Application, а не у кадрового счётчика.
                 currentStep = trainingSession!.Snapshot().Training.Step;
-                requested = Math.Min(requested, trainingSmokeSteps - currentStep);
+                requested = (int)Math.Min(requested, trainingSmokeSteps - currentStep);
                 // Retain every transition for smoke continuity checks, with one overlapping trail sample.
                 requested = Math.Min(requested, visualOptions.TrailLength - 1);
             }
             if (captureStages.TryPeek(out int captureAt))
             {
                 currentStep = trainingSession!.Snapshot().Training.Step;
-                requested = Math.Min(requested, captureAt - currentStep);
+                requested = (int)Math.Min(requested, captureAt - currentStep);
             }
             if (requested > 0)
             {
+                if (activationSchedule is not null)
+                {
+                    activationSchedule.Apply(trainingSession!.Runtime);
+                    requested = activationSchedule.LimitBatch(trainingSession!.Runtime.Snapshot().Age, requested);
+                }
                 var timer = Stopwatch.StartNew();
                 TimeSpan budget = TimeSpan.FromMilliseconds(visualOptions.FrameBudgetMilliseconds);
                 int completed = trainingSession!.Evaluating
@@ -217,12 +225,14 @@ public partial class Main
             throw new InvalidOperationException("Live training smoke did not produce valid optimized state.");
         }
         trainingSession!.SaveCheckpoint(checkpoint);
-        GD.Print($"ARTIFICIALLIFE_TRAINING_SMOKE_OK life={state.Life} age={state.Age} steps={state.Step} updates={state.OptimizationUpdates} replay={state.ReplayCount} loss={state.LastLoss:F4} apples={snapshot.Apples.Count} spawned={snapshot.TotalApplesSpawned} eaten={snapshot.TotalApplesSpawned - snapshot.Apples.Count} balance={snapshot.Homeostasis.Balance:P1} needs=[{FormatNeeds(snapshot.Homeostasis)}] continuity=verified");
+        activationSchedule?.VerifyUnloaded(trainingSession.Runtime, presentations!);
+        GD.Print($"ARTIFICIALLIFE_TRAINING_SMOKE_OK life={state.Life} age={state.Age} steps={state.Step} updates={state.OptimizationUpdates} replay={state.ReplayCount} loss={state.LastLoss:F4} entities={snapshot.Frame.Entities.Count} balance={snapshot.Homeostasis.Balance:P1} needs=[{FormatNeeds(snapshot.Homeostasis)}] continuity=verified");
         trainingSmokeFinished = true;
         paused = true;
         ShowNotice($"Saved at step {state.Step:N0}", 10);
         if (capture is null && progressCaptureDirectory is null)
         {
+            if (activationSchedule is not null) { GetTree().Quit(); return; }
             // Exercise the actual Godot input path, including the modifier guard.
             _UnhandledKeyInput(new InputEventKey { PhysicalKeycode = Key.R, Pressed = true });
             if (trainingSession.Snapshot().Training.Step != state.Step) throw new InvalidOperationException("Unmodified R reset the life.");
@@ -240,7 +250,7 @@ public partial class Main
 
     private void ValidateContinuousSmoke()
     {
-        ExperimentOptions options = smokeOptions!;
+        RuntimeOptions options = smokeOptions!;
         foreach (TrainingSample sample in liveSnapshot!.Trail)
         {
             TrainingSample previous = previousSmokeSample!;
@@ -409,7 +419,7 @@ public partial class Main
         TrainingViewModel state = liveSnapshot!.Training;
         if (state.Step >= nextTrainingLog)
         {
-            GD.Print($"LIVE life={state.Life} age={state.Age} step={state.Step} epsilon={state.Epsilon:F3} balance={liveSnapshot.World.Homeostasis.Balance:P1} reward={liveSnapshot.World.Reward:F3} needs=[{FormatNeeds(liveSnapshot.World.Homeostasis)}] windowBalance={state.RecentMetrics.MeanBalance:P1} windowReward={state.RecentMetrics.MeanReward:F3} loss={state.LastLoss:F4} apples={liveSnapshot.World.Apples.Count} spawned={liveSnapshot.World.TotalApplesSpawned} eaten={liveSnapshot.World.TotalApplesSpawned - liveSnapshot.World.Apples.Count}");
+            GD.Print($"LIVE life={state.Life} age={state.Age} step={state.Step} epsilon={state.Epsilon:F3} balance={liveSnapshot.World.Homeostasis.Balance:P1} reward={liveSnapshot.World.Reward:F3} needs=[{FormatNeeds(liveSnapshot.World.Homeostasis)}] windowBalance={state.RecentMetrics.MeanBalance:P1} windowReward={state.RecentMetrics.MeanReward:F3} loss={state.LastLoss:F4} entities={liveSnapshot.World.Frame.Entities.Count}");
             nextTrainingLog = state.Step + 5000;
         }
         if (progressCaptureDirectory is null) return;

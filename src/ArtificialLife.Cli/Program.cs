@@ -7,9 +7,17 @@ CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 try
 {
     string command = args.FirstOrDefault() ?? "help";
+    if (command == "live") return RuntimeCommands.Live(args.Skip(1).ToArray());
+    if (command == "continual") return ContinualExperiment.Run(args.Skip(1).ToArray());
+    if (command == "evaluate" && args.Contains("--checkpoint"))
+    {
+        int checkpointIndex = Array.IndexOf(args, "--checkpoint");
+        if (checkpointIndex + 1 < args.Length && File.Exists(Path.Combine(args[checkpointIndex + 1], "current")))
+            return RuntimeCommands.EvaluatePolicy(args.Skip(1).ToArray());
+    }
     if (command == "help")
     {
-        Console.WriteLine("ArtificialLife: train [--config configs/default.json] [--steps N] [--checkpoint artifacts/checkpoints/thermal]\nevaluate [--checkpoint PATH]");
+        Console.WriteLine("ArtificialLife: live [--config configs/runtime.json] [--steps N] [--checkpoint PATH] [--trajectory PATH]\ncontinual [--config configs/continual.json] [--output PATH] [--pilot true]\ntrain [--config configs/default.json] [--steps N] [--checkpoint PATH]\nevaluate [--checkpoint PATH]");
         return 0;
     }
     var arguments = new Dictionary<string, string>(StringComparer.Ordinal);

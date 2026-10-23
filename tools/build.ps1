@@ -7,3 +7,4 @@ if ($Headless) {
     Invoke-Dotnet build src/ArtificialLife.Cli -c Release
 }
 else { Invoke-Dotnet build ArtificialLife.sln -c Release }
+& (Join-Path $PSScriptRoot 'package.ps1') -Headless:$Headless
