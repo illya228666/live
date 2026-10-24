@@ -4,7 +4,7 @@
     {
       "label": "ArtificialLife: собрать лаунчер",
       "type": "process",
-      "command": "${workspaceFolder}\\.tools\\dotnet\\dotnet.exe",
+      "command": "${workspaceFolder}\\.tools\\dotnet10\\dotnet.exe",
       "args": [
         "build",
         "${workspaceFolder}\\src\\ArtificialLife.Launcher\\ArtificialLife.Launcher.csproj",

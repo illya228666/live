@@ -22,7 +22,7 @@ public sealed class WildlifeTests
         }
     }
     private static string Binary(string project, bool presentation = false) => Path.Combine(Repo, "src", project,
-        presentation ? ".godot/mono/temp/bin/Release" : "bin/Release/net8.0", project + ".dll");
+        presentation ? ".godot/mono/temp/bin/Release" : "bin/Release/net10.0", project + ".dll");
     private static RuntimeWorld World(double step = 1) => new()
     {
         Options = new() { TimeStep = step }, Agent = new() { Id = 1, Position = new(50, 50) }
@@ -178,7 +178,7 @@ public sealed class WildlifeTests
     public void CloserWildlifeLowersSustainedHomeostasisReward()
     {
         using var wildlife = new Plugin();
-        string path = Path.Combine(Repo, "src/ArtificialLife.Modules.Homeostasis/bin/Release/net8.0/ArtificialLife.Modules.Homeostasis.dll");
+        string path = Path.Combine(Repo, "src/ArtificialLife.Modules.Homeostasis/bin/Release/net10.0/ArtificialLife.Modules.Homeostasis.dll");
         var context = new ModuleLoadContext(path);
         try
         {

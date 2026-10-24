@@ -56,9 +56,9 @@ If Windows blocks an unsigned script, use a process-only policy override; organi
 powershell -NoProfile -ExecutionPolicy Bypass -File ./tools/bootstrap.ps1
 ```
 
-Bootstrap detects the architecture and always uses the **exact pinned .NET SDK** from `.tools/dotnet`. If that repository-local SDK is missing or has the wrong version, bootstrap downloads the official SDK ZIP automatically. A compatible Godot .NET executable is reused when available or downloaded into `.tools/`. SHA512 hashes are checked before extraction. NuGet packages also live in `.tools/nuget`. Nothing is installed globally. Bootstrap restores centrally pinned dependencies from the repository-defined NuGet source and executes three neural shape tests to exercise the native Torch backend.
+Bootstrap detects the architecture and always uses the **exact pinned .NET SDK** from `.tools/dotnet10`. If that repository-local SDK is missing or has the wrong version, bootstrap downloads the official SDK ZIP automatically. A compatible Godot .NET executable is reused when available or downloaded into `.tools/`. SHA512 hashes are checked before extraction. NuGet packages also live in `.tools/nuget`. Nothing is installed globally. Bootstrap restores centrally pinned dependencies from the repository-defined NuGet source and executes three neural shape tests to exercise the native Torch backend.
 
-`global.json` pins the repository to the exact .NET SDK 8.0.425 for normal CLI and IDE resolution. Bootstrap guarantees that the same SDK exists under `.tools/dotnet`, and repository scripts use that local copy, so no system-wide .NET SDK installation is required. If Visual Studio already displayed an SDK-resolution error, reload the solution after bootstrap.
+`global.json` requires .NET 10 and rolls forward to an installed feature band so IDEs can use a compatible .NET 10 SDK. Bootstrap installs the pinned SDK 10.0.402 and Runtime 10.0.13 under `.tools/dotnet10`; repository scripts use that exact local copy. If Visual Studio already displayed an SDK-resolution error, reload the solution after bootstrap.
 
 Windows ARM64 and x86 are explicitly rejected: the upstream LibTorch CPU dependency selected for this MVP has Windows x64 binaries only. The script does not pretend that installing an ARM64 Godot editor would solve that limitation.
 
@@ -68,15 +68,15 @@ Downloads are several hundred MB, mostly the SDK and LibTorch. They are ignored 
 
 | Tool / dependency | Version |
 | --- | --- |
-| .NET SDK / target framework | 8.0.425 / net8.0 |
+| .NET SDK / Runtime / target framework | 10.0.402 / 10.0.13 / net10.0 |
 | Godot .NET / Godot.NET.Sdk | 4.7.2 |
 | TorchSharp / LibTorch CPU | 0.107.0 / 2.10.0 |
 | xUnit v3 / Visual Studio runner | 4.0.1 / 4.0.0 |
 | Microsoft.NET.Test.Sdk | 18.10.1 |
 
-Pins are in `global.json`, `tools/versions.json`, the Godot project and `Directory.Packages.props`. The repository-local `NuGet.config` clears machine-wide package sources and restores these dependencies from nuget.org. .NET 8 was selected as the conservative common target for Godot and TorchSharp. It approaches its support deadline in November 2026; upgrading the framework is an early maintenance task.
+Pins are in `global.json`, `tools/versions.json`, the Godot project and `Directory.Packages.props`. The repository-local `NuGet.config` clears machine-wide package sources and restores these dependencies from nuget.org. The solution targets .NET 10 LTS, supported through November 14, 2028; Godot 4.7 supports .NET 8 and later.
 
-Official references: [.NET releases](https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json), [Godot 4.7.2](https://github.com/godotengine/godot/releases/tag/4.7.2-stable), [TorchSharp](https://www.nuget.org/packages/TorchSharp/0.107.0), [xUnit v3](https://www.nuget.org/packages/xunit.v3/4.0.1).
+Official references: [.NET 10 releases](https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json), [Godot 4.7.2](https://github.com/godotengine/godot/releases/tag/4.7.2-stable), [TorchSharp](https://www.nuget.org/packages/TorchSharp/0.107.0), [xUnit v3](https://www.nuget.org/packages/xunit.v3/4.0.1).
 
 ### Useful commands
 
@@ -96,7 +96,7 @@ dotnet run --project src/ArtificialLife.Cli -c Release -- train --config configs
 dotnet run --project src/ArtificialLife.Cli -c Release -- evaluate --checkpoint artifacts/checkpoints/thermal
 ```
 
-The project includes conditional Linux x64 LibTorch support. Linux is not part of the verified bootstrap workflow: install SDK 8.0.425, run `dotnet restore` to resolve Linux packages, then build/run the CLI. CI verifies Windows x64.
+The project includes conditional Linux x64 LibTorch support. Linux is not part of the verified bootstrap workflow: install SDK 10.0.402, run `dotnet restore` to resolve Linux packages, then build/run the CLI. CI verifies Windows x64.
 
 ## Training and visualization
 

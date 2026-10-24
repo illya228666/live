@@ -17,7 +17,7 @@ foreach ($definition in $runtimeDefinitions) {
     if (!$NoBuild) { Invoke-Dotnet build ('src/' + $projectName) -c Release --verbosity quiet }
     $destination = Join-Path $RepoRoot ('artifacts/packages/' + $definition.Id + '/1.0.0')
     New-Item -ItemType Directory -Force -Path $destination | Out-Null
-    $sourceDirectory = Join-Path $RepoRoot ('src/' + $projectName + '/bin/Release/net8.0')
+    $sourceDirectory = Join-Path $RepoRoot ('src/' + $projectName + '/bin/Release/net10.0')
     Copy-Item -LiteralPath (Join-Path $sourceDirectory ($projectName + '.dll')) -Destination $destination -Force
     Copy-Item -LiteralPath (Join-Path $sourceDirectory ($projectName + '.deps.json')) -Destination $destination -Force
     $manifest = [ordered]@{id=$definition.Id; version='1.0.0'; apiVersion=1; assembly=($projectName + '.dll'); entryType=($projectName + '.' + $definition.Type); logicHash=(Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $destination ($projectName + '.dll'))).Hash; schemas=$definition.Schemas; settings=@{}}

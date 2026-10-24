@@ -13,7 +13,7 @@ Invoke-Dotnet build ('src/' + $wildlifeView) -c Release --verbosity quiet
 $wildlifeStage = Join-Path $wildlifeRoot ('wildlife/.staging-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path (Join-Path $wildlifeStage 'assets') -Force | Out-Null
 foreach ($wildlifeProject in @($wildlifeLogic, $wildlifeView)) {
-    $wildlifeBin = if ($wildlifeProject -eq $wildlifeLogic) { 'bin/Release/net8.0' } else { '.godot/mono/temp/bin/Release' }
+    $wildlifeBin = if ($wildlifeProject -eq $wildlifeLogic) { 'bin/Release/net10.0' } else { '.godot/mono/temp/bin/Release' }
     foreach ($wildlifeExtension in @('.dll', '.deps.json')) {
         Copy-Item -LiteralPath (Join-Path $RepoRoot ('src/' + $wildlifeProject + '/' + $wildlifeBin + '/' + $wildlifeProject + $wildlifeExtension)) -Destination $wildlifeStage
     }

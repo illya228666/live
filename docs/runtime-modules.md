@@ -34,7 +34,7 @@ The optional [wild boar package](wildlife.md) is a complete example with a separ
 behavior DLL, Godot presentation DLL and external PNG. Its dedicated build prepares
 the package without activating it or changing the startup package set.
 
-Reference **ArtificialLife.Core**, target net8.0, implement `IRuntimeModule` and publish a manifest:
+Reference **ArtificialLife.Core**, target net10.0, implement `IRuntimeModule` and publish a manifest:
 
 ```json
 {

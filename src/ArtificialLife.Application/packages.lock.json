@@ -1,7 +1,7 @@
 {
   "version": 2,
   "dependencies": {
-    "net8.0": {
+    "net10.0": {
       "Google.Protobuf": {
         "type": "Transitive",
         "resolved": "3.21.9",
@@ -30,11 +30,6 @@
         "type": "Transitive",
         "resolved": "2.88.6",
         "contentHash": "7TzFO0u/g2MpQsTty4fyCDdMcfcWI+aLswwfnYXr3gtNS6VLKdMXPMeKpJa3pJSLnUBN6wD0JjuCe8OoLBQ6cQ=="
-      },
-      "System.Memory": {
-        "type": "Transitive",
-        "resolved": "4.5.5",
-        "contentHash": "XIWiDvKPXaTveaB7HVganDlOCRoj03l+jrwNvcge/t8vhGYKvqV+dMv6G4SAX2NoNmN0wZfVPTAlFwZcZvVOUw=="
       },
       "artificiallife.brain": {
         "type": "Project",
@@ -79,8 +74,7 @@
         "dependencies": {
           "Google.Protobuf": "3.21.9",
           "SharpZipLib": "1.4.0",
-          "SkiaSharp": "2.88.6",
-          "System.Memory": "4.5.5"
+          "SkiaSharp": "2.88.6"
         }
       }
     }

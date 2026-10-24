@@ -6,8 +6,8 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "ArtificialLife: собрать лаунчер",
-      "program": "${workspaceFolder}\\src\\ArtificialLife.Launcher\\bin\\Debug\\net8.0-windows\\ArtificialLife.Launcher.exe",
-      "cwd": "${workspaceFolder}\\src\\ArtificialLife.Launcher\\bin\\Debug\\net8.0-windows",
+      "program": "${workspaceFolder}\\src\\ArtificialLife.Launcher\\bin\\Debug\\net10.0-windows\\ArtificialLife.Launcher.exe",
+      "cwd": "${workspaceFolder}\\src\\ArtificialLife.Launcher\\bin\\Debug\\net10.0-windows",
       "console": "internalConsole",
       "stopAtEntry": false
     }

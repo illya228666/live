@@ -38,7 +38,7 @@ function Install-Archive($pin, [string]$fileName, [string]$destination) {
     Expand-Archive -LiteralPath $archive -DestinationPath $destination -Force
 }
 
-$localDotnet = Join-Path $RepoRoot '.tools/dotnet/dotnet.exe'
+$localDotnet = Join-Path $RepoRoot (Join-Path $ToolVersions.dotnet.localDirectory 'dotnet.exe')
 $validLocal = $false
 if (Test-Path -LiteralPath $localDotnet) {
     Push-Location $RepoRoot
@@ -47,7 +47,7 @@ if (Test-Path -LiteralPath $localDotnet) {
 }
 if (!$validLocal) {
     Write-Host "Installing repository-local .NET SDK $($ToolVersions.dotnet.version)..."
-    Install-Archive $ToolVersions.dotnet 'dotnet.zip' (Join-Path $RepoRoot '.tools/dotnet')
+    Install-Archive $ToolVersions.dotnet 'dotnet.zip' (Join-Path $RepoRoot $ToolVersions.dotnet.localDirectory)
 }
 Initialize-Dotnet
 if (!$Headless) {
@@ -67,7 +67,7 @@ if (!$Headless) {
 Invoke-Dotnet restore ArtificialLife.sln --force
 # Check the native tensor backend, not just NuGet restore.
 Invoke-Dotnet test tests/ArtificialLife.Tests -c Release --filter 'FullyQualifiedName~EncoderAndScorerAcceptVariableSets' --verbosity minimal
-Write-Host "Ready: SDK $($ToolVersions.dotnet.version). No global software was installed."
+Write-Host "Ready: SDK $($ToolVersions.dotnet.version), runtime $($ToolVersions.dotnet.runtimeVersion). No global software was installed."
 Write-Host './tools/build.ps1'
 Write-Host './tools/test.ps1'
 Write-Host './tools/train.ps1'
