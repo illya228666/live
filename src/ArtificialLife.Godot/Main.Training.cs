@@ -118,7 +118,7 @@ public partial class Main
                 initialSmokeWorld.Homeostasis, 0, false);
         }
         trainingWallClock.Start();
-        ShowNotice($"Fresh weights · warm-up {options.Learning.WarmupSteps:N0} steps", 6);
+        ShowNotice($"Новые веса · разогрев: {options.Learning.WarmupSteps:N0} шагов", 6);
         if (progressCaptureDirectory is not null)
         {
             System.IO.Directory.CreateDirectory(progressCaptureDirectory);
@@ -229,7 +229,7 @@ public partial class Main
         GD.Print($"ARTIFICIALLIFE_TRAINING_SMOKE_OK life={state.Life} age={state.Age} steps={state.Step} updates={state.OptimizationUpdates} replay={state.ReplayCount} loss={state.LastLoss:F4} entities={snapshot.Frame.Entities.Count} balance={snapshot.Homeostasis.Balance:P1} needs=[{FormatNeeds(snapshot.Homeostasis)}] continuity=verified");
         trainingSmokeFinished = true;
         paused = true;
-        ShowNotice($"Saved at step {state.Step:N0}", 10);
+        ShowNotice($"Сохранено на шаге {state.Step:N0}", 10);
         if (capture is null && progressCaptureDirectory is null)
         {
             if (activationSchedule is not null) { GetTree().Quit(); return; }
@@ -295,12 +295,12 @@ public partial class Main
                     trainingSession.ToggleEvaluation();
                     trainingCredits = 0;
                     RefreshTrainingSnapshot();
-                    ShowNotice(trainingSession.Evaluating ? "Frozen policy · no replay or optimizer updates" : "Training resumed from the suspended state", 4);
+                    ShowNotice(trainingSession.Evaluating ? "Оценка политики · обучение приостановлено" : "Обучение продолжено", 4);
                     break;
                 case Key.S:
                     trainingSession.SaveCheckpoint(checkpoint);
                     RefreshTrainingSnapshot();
-                    ShowNotice($"Saved {System.IO.Path.GetFileName(checkpoint)} · step {liveSnapshot!.Training.Step:N0}", 4);
+                    ShowNotice($"Сохранено: {System.IO.Path.GetFileName(checkpoint)} · шаг {liveSnapshot!.Training.Step:N0}", 4);
                     break;
                 case Key.R when key.CtrlPressed && key.ShiftPressed:
                     trainingSession.ResetTraining();
@@ -309,14 +309,14 @@ public partial class Main
                     rateSteps = 0;
                     rateElapsed = 0;
                     RefreshTrainingSnapshot();
-                    ShowNotice("New life · fresh brain, replay, body and world", 4);
+                    ShowNotice("Новая жизнь · мозг, память и мир сброшены", 4);
                     break;
-                case Key.R: ShowNotice("Hold Ctrl + Shift + R to reset all learning", 3); break;
+                case Key.R: ShowNotice("Нажмите Ctrl + Shift + R, чтобы сбросить обучение", 3); break;
             }
         }
         catch (Exception exception)
         {
-            ShowNotice($"Operation failed: {exception.Message}", 6);
+            ShowNotice($"Не удалось выполнить действие: {exception.Message}", 6);
             GD.PushError(exception.Message);
         }
     }
@@ -332,7 +332,7 @@ public partial class Main
         TrainingSpeed.Normal => "1×",
         TrainingSpeed.TenTimes => "10×",
         TrainingSpeed.HundredTimes => "100×",
-        TrainingSpeed.Max => "Max",
+        TrainingSpeed.Max => "Макс.",
         _ => throw new ArgumentOutOfRangeException(nameof(value))
     };
 
@@ -342,10 +342,10 @@ public partial class Main
     private void DrawHomeostasisHud(WorldViewModel world)
     {
         var report = world.Homeostasis;
-        Label("OVERALL BALANCE", 786, 120, 15, Muted);
+        Label("ОБЩИЙ БАЛАНС", 786, 120, 15, Muted);
         Label($"{report.Balance:P0}", 786, 168, 38, Accent);
-        TrainingMetric("Reward", $"{world.Reward:+0.000;-0.000;0.000}", 198, TextColor);
-        Label("NEEDS", 786, 237, 14, Muted);
+        TrainingMetric("Награда", $"{world.Reward:+0.000;-0.000;0.000}", 198, TextColor);
+        Label("ПОТРЕБНОСТИ", 786, 237, 14, Muted);
         var drives = report.Drives.Values.ToArray();
         const int visibleRows = 3;
         needsOffset = Math.Clamp(needsOffset, 0, Math.Max(0, drives.Length - visibleRows));
@@ -354,34 +354,34 @@ public partial class Main
         {
             DriveReport drive = drives[index];
             float y = 264 + (index - needsOffset) * 46;
-            TrainingMetric(drive.Name, $"{drive.Satisfaction:P0}", y, Accent);
+            TrainingMetric(LocalizedDriveName(drive), $"{drive.Satisfaction:P0}", y, Accent);
             Label($"{drive.Current:0.##} / {drive.Target:0.##} {drive.Unit}", 786, y + 18, 12, Muted);
             DrawGraph(samples, new Rect2(991, y + 5, 189, 25), 0, 1,
                 sample => sample.Homeostasis.Drives.TryGetValue(drive.Key, out var value) ? value.Satisfaction : null);
         }
-        if (drives.Length == 0) Label("No active drives", 786, 274, 14, Muted);
+        if (drives.Length == 0) Label("Нет активных потребностей", 786, 274, 14, Muted);
         if (drives.Length > visibleRows)
-            Label($"{needsOffset + 1}-{Math.Min(drives.Length, needsOffset + visibleRows)} / {drives.Length} - mouse wheel to scroll", 786, 408, 12, Muted);
+            Label($"{needsOffset + 1}–{Math.Min(drives.Length, needsOffset + visibleRows)} из {drives.Length} · прокрутка колёсиком", 786, 408, 12, Muted);
         if (liveSnapshot is not null)
         {
             TrainingViewModel learning = liveSnapshot.Training;
-            Label(learning.Evaluating ? "LEARNING / FROZEN EVALUATION" : "LEARNING", 786, 432, 14, Muted);
-            TrainingMetric("Epsilon / loss", $"{learning.Epsilon:F3} / {(learning.OptimizationUpdates == 0 ? "warm-up" : learning.LastLoss.ToString("F4"))}", 457, TextColor);
-            TrainingMetric("Replay / steps", $"{learning.ReplayCount:N0} / {learning.Step:N0}", 482, TextColor);
-            Label($"Life {learning.Life} / Age {learning.Age:N0} / window balance {learning.RecentMetrics.MeanBalance:P0}", 786, 507, 13, Muted);
+            Label(learning.Evaluating ? "ОЦЕНКА ПОЛИТИКИ" : "ОБУЧЕНИЕ", 786, 432, 14, Muted);
+            TrainingMetric("Эпсилон / ошибка", $"{learning.Epsilon:F3} / {(learning.OptimizationUpdates == 0 ? "разогрев" : learning.LastLoss.ToString("F4"))}", 457, TextColor);
+            TrainingMetric("Память / шаги", $"{learning.ReplayCount:N0} / {learning.Step:N0}", 482, TextColor);
+            Label($"Жизнь {learning.Life} / возраст {learning.Age:N0} / баланс {learning.RecentMetrics.MeanBalance:P0}", 786, 507, 13, Muted);
         }
         else
         {
-            Label(world.Mode, 786, 457, 15, Accent);
-            TrainingMetric("Steps", world.Step.ToString("N0"), 482, TextColor);
+            Label(LocalizedMode(world.Mode), 786, 457, 15, Accent);
+            TrainingMetric("Шаги", world.Step.ToString("N0"), 482, TextColor);
         }
-        Label("BALANCE HISTORY", 786, 540, 12, Muted);
+        Label("ИСТОРИЯ БАЛАНСА", 786, 540, 12, Muted);
         DrawGraph(samples, new Rect2(786, 550, 394, 58), 0, 1, sample => sample.Homeostasis.Balance);
-        Label("REWARD HISTORY", 786, 631, 12, Muted);
+        Label("ИСТОРИЯ НАГРАДЫ", 786, 631, 12, Muted);
         DrawGraph(samples, new Rect2(786, 641, 394, 51), -1, 1, sample => sample.Reward);
-        Label($"{(paused ? "Paused" : "Running")} / {(trainMode ? SpeedLabel(trainingSpeed) : speed.ToString("0.##") + "x")} / {actualStepsPerSecond:N0} steps/s", 786, 719, 14, TextColor);
-        Label("Space  pause / resume    + / -  speed", 786, 744, 13, Muted);
-        Label(trainMode ? "E  evaluation / S  save / Ctrl+Shift+R  new life" : "R  restart world", 786, 769, 13, Muted);
+        Label($"{(paused ? "Пауза" : "Работа")} / {(trainMode ? SpeedLabel(trainingSpeed) : speed.ToString("0.##") + "×")} / {actualStepsPerSecond:N0} шаг/с", 786, 719, 14, TextColor);
+        Label("Пробел — пауза    + / − — скорость", 786, 744, 13, Muted);
+        Label(trainMode ? "E — оценка / S — сохранить / Ctrl+Shift+R — новая жизнь" : "R — перезапустить мир", 786, 769, 13, Muted);
         if (error is not null || noticeSeconds > 0)
         {
             string message = error ?? notice;
@@ -395,6 +395,20 @@ public partial class Main
         float width = ThemeDB.FallbackFont.GetStringSize(value, fontSize: 16).X;
         Label(value, 1180 - width, y, 16, color);
     }
+
+    private static string LocalizedDriveName(DriveReport drive) => drive.Key switch
+    {
+        "temperature" => "Температура",
+        "hunger" => "Голод",
+        "safety" => "Безопасность",
+        _ => drive.Descriptor is null || drive.Name == drive.Key ? drive.Key : drive.Name
+    };
+
+    private static string LocalizedMode(string mode) => mode switch
+    {
+        "Evaluation · ε = 0" => "Оценка · ε = 0",
+        _ => mode
+    };
 
     private void DrawGraph(TrainingSample[] samples, Rect2 rect, double minimum, double maximum,
         Func<TrainingSample, double?> value)

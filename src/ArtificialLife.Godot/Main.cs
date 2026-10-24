@@ -1,5 +1,6 @@
 using ArtificialLife.Application;
 using Godot;
+using System.Globalization;
 
 namespace ArtificialLife.Godot;
 
@@ -30,6 +31,9 @@ public partial class Main : Node2D
 
     public override void _Ready()
     {
+        TranslationServer.SetLocale("ru");
+        CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("ru-RU");
+        CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("ru-RU");
         string root = System.IO.Path.GetFullPath(System.IO.Path.Combine(ProjectSettings.GlobalizePath("res://"), "../.."));
         try
         {
@@ -111,7 +115,7 @@ public partial class Main : Node2D
             if (runtime?.LastActivation is { Id: not "initial" } outcome && outcome.Id != lastActivationNotice)
             {
                 lastActivationNotice = outcome.Id;
-                ShowNotice($"Package {(outcome.Accepted ? "accepted" : "rejected")}: {outcome.Message}", 8);
+                ShowNotice($"Пакет {(outcome.Accepted ? "подключён" : "отклонён")}: {outcome.Message}", 8);
                 RefreshPackageList();
             }
         }
@@ -180,15 +184,15 @@ public partial class Main : Node2D
     public override void _Draw()
     {
         Label("ArtificialLife", 40, 40, 28, TextColor);
-        Label("A creature learning to stay in balance", 40, 66, 15, Muted);
-        Label(trainMode ? "LIVE DQN TRAINING  /  CPU" : "LOCAL NEURAL POLICY  / CPU", 830, 44, 14, Accent);
+        Label("Симуляция живого существа", 40, 66, 15, Muted);
+        Label(trainMode ? "ОБУЧЕНИЕ DQN  /  ЦП" : "НЕЙРОСЕТЬ  /  ЦП", 830, 44, 14, Accent);
         DrawRect(worldRect, new Color("101b29"));
         DrawRect(worldRect, new Color("304356"), filled: false, width: 1);
         if (snapshot is null)
         {
-            Label("Train a checkpoint to begin", 80, 150, 24, TextColor);
+            Label("Чтобы начать, обучите модель", 80, 150, 24, TextColor);
             Label("./tools/train.ps1", 80, 190, 19, Accent);
-            Label((error ?? "No checkpoint loaded")[..Math.Min((error ?? "No checkpoint loaded").Length, 85)], 80, 230, 14, Muted);
+            Label((error ?? "Контрольная точка не загружена")[..Math.Min((error ?? "Контрольная точка не загружена").Length, 85)], 80, 230, 14, Muted);
             return;
         }
         WorldViewModel state = snapshot;
@@ -199,7 +203,7 @@ public partial class Main : Node2D
         {
             DrawLine(points[index - 1], points[index], new Color(0.4f, 0.87f, 0.74f, 0.6f * index / points.Length), 2, antialiased: true);
         }
-        Label($"{state.Width:0} x {state.Height:0} / entities {state.Frame.Entities.Count} / revision {state.Frame.Revision}", 58, 772, 12, Muted);
+        Label($"{state.Width:0} × {state.Height:0} / объектов: {state.Frame.Entities.Count} / версия: {state.Frame.Revision}", 58, 772, 12, Muted);
         if (liveSnapshot is not null)
         {
             DrawTrainingHud(state);

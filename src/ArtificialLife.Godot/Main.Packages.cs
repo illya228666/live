@@ -76,7 +76,7 @@ public partial class Main
         bool unavailable = PackageRuntime is null || PackageRuntime.Fault is not null || trainingSession?.Evaluating == true;
         importPackageFile.Disabled = importPackageFolder.Disabled = packageImportBusy || unavailable;
         if (!packageImportBusy && trainingSession?.Evaluating == true)
-            packageStatus.Text = "Добавление недоступно в Frozen evaluation. Закройте окно и нажмите E, чтобы вернуться к обучению.";
+            packageStatus.Text = "Во время оценки политики добавление недоступно. Закройте окно и нажмите E, чтобы вернуться к обучению.";
         else if (!packageImportBusy && PackageRuntime is null)
             packageStatus.Text = "Сначала запустите симуляцию.";
         else if (!packageImportBusy && PackageRuntime?.Fault is { } fault)
@@ -111,7 +111,7 @@ public partial class Main
             packageStatus.Text = result.Accepted
                 ? $"Подключено: {names}\nМир и обучение сохранены."
                 : $"Пакеты сохранены, подключение отклонено:\n{result.Message}";
-            ShowNotice(result.Accepted ? $"Packages connected: {names}" : $"Package rejected: {result.Message}", 8);
+            ShowNotice(result.Accepted ? $"Пакеты подключены: {names}" : $"Пакет отклонён: {result.Message}", 8);
             if (trainingSession is not null) RefreshTrainingSnapshot();
             else if (session is not null) snapshot = session.Snapshot();
             RefreshPackageList(); QueueRedraw();
