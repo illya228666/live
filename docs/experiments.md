@@ -1,5 +1,11 @@
 # Эксперименты Motivation × Learning
 
+Сравнение Drive Reduction / Drive Level / Weighted Homeostasis использует
+`configs/drive-motivation-pilot.json` и `configs/drive-motivation.json`.
+Формулы, фиксированный протокол и метрики стабильности описаны в
+[протоколе исследования](drive-motivation-protocol.md).
+Результаты 15 длительных trials: [сравнительный отчёт](drive-motivation-report.md).
+
 Основной путь — CLI и `RuntimeSession`; Godot для запусков не нужен.
 `configs/experiments-pilot.json` содержит пример 2 × 2 с тремя обучающими seed,
 двумя фазами и отдельными оценочными мирами.

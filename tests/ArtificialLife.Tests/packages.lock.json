@@ -213,6 +213,12 @@
       "artificiallife.core": {
         "type": "Project"
       },
+      "artificiallife.modules.drivemotivation": {
+        "type": "Project",
+        "dependencies": {
+          "ArtificialLife.Core": "[1.0.0, )"
+        }
+      },
       "artificiallife.modules.hunger": {
         "type": "Project",
         "dependencies": {

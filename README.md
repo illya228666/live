@@ -5,6 +5,11 @@ independent behavioral evaluation, policy exports and comparison reports. See th
 [experiment guide](docs/experiments.md) and `configs/experiments-pilot.json`.
 The [reproducibility pilot](docs/experiments-pilot-report.md) records two complete
 12-trial series, including negative behavioral results.
+The [Drive Motivation study protocol](docs/drive-motivation-protocol.md) fixes an
+unweighted L2 Drive Reduction / Drive Level comparison against Weighted Homeostasis,
+with one shared Double DQN configuration and independent temporal behavior metrics.
+The [completed five-seed comparison](docs/drive-motivation-report.md) separates
+technical correctness from hunger, temperature, boar proximity and retention results.
 
 A small simulated creature learns to regulate its own body temperature in a changing 2D thermal environment. Its brain is a local TorchSharp neural network trained through reinforcement learning, entirely in C#.
 

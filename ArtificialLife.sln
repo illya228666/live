@@ -43,6 +43,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{5709A66F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Launcher", "src\ArtificialLife.Launcher\ArtificialLife.Launcher.csproj", "{5D7CC430-04C3-41AF-81FE-8139EB0E8925}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Modules.DriveMotivation", "src\ArtificialLife.Modules.DriveMotivation\ArtificialLife.Modules.DriveMotivation.csproj", "{B2A81057-90F3-449D-A104-E6293B40E772}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2A81057-90F3-449D-A104-E6293B40E772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2A81057-90F3-449D-A104-E6293B40E772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2A81057-90F3-449D-A104-E6293B40E772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2A81057-90F3-449D-A104-E6293B40E772}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6272856E-8FA6-48A6-9C4C-51119E6C38A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6272856E-8FA6-48A6-9C4C-51119E6C38A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6272856E-8FA6-48A6-9C4C-51119E6C38A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -122,6 +128,7 @@ Global
 		{5D7CC430-04C3-41AF-81FE-8139EB0E8925}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{B2A81057-90F3-449D-A104-E6293B40E772} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 		{6272856E-8FA6-48A6-9C4C-51119E6C38A6} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 		{9BB138CA-1603-4257-B4CF-36AD8CB4B637} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 		{6E6937FE-AA3C-40D3-B4CD-6E313A48BC68} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}

@@ -7,6 +7,8 @@ $runtimeDefinitions = @(
     @{ Id='vision'; Project='Vision'; Type='RuntimeVision'; Schemas=@{'vision.appearance'=1}; Provides=@('vision.appearance') },
     @{ Id='temperature'; Project='Temperature'; Type='RuntimeTemperature'; Schemas=@{'temperature.body'=1; 'temperature.emitter'=1}; Requires=@('vision.appearance'); Renderer='TemperaturePresentation'; Settings='temperature' },
     @{ Id='homeostasis'; Project='Homeostasis'; Type='RuntimeHomeostasis'; Schemas=@{}; Provides=@('motivation'); Settings='reward' },
+    @{ Id='drive-reduction'; Project='DriveMotivation'; Type='RuntimeDriveReduction'; Schemas=@{}; Provides=@('motivation') },
+    @{ Id='drive-level'; Project='DriveMotivation'; Type='RuntimeDriveLevel'; Schemas=@{}; Provides=@('motivation') },
     @{ Id='hunger'; Project='Hunger'; Type='RuntimeHunger'; Schemas=@{'hunger.body'=1; 'nutrition'=1}; Provides=@('nutrition'); Settings='hunger' },
     @{ Id='food'; Project='Food'; Type='RuntimeFood'; Schemas=@{'food.apple'=1}; Requires=@('nutrition','vision.appearance'); Dependencies=@(@{id='hunger';version='1.0.0'},@{id='vision';version='1.0.0'}); Renderer='FoodPresentation'; Order=50; Settings='foodSpawner' },
     @{ Id='wildlife'; Project='Wildlife'; Type='RuntimeWildlife'; Schemas=@{'wildlife.boar'=1}; Provides=@('wildlife','safety'); Requires=@('vision.appearance','motivation'); Renderer='BoarPresentation'; PresentationProject='ArtificialLife.Modules.Wildlife.Presentation.Godot'; Order=75; Assets=@{'assets/boar.png'='assets/wildlife/boar.png'} }

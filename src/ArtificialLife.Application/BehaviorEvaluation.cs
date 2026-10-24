@@ -28,7 +28,8 @@ public static class BehaviorEvaluators
     private static readonly Dictionary<string, Func<JsonElement, IBehaviorEvaluator>> factories = new(StringComparer.Ordinal)
     {
         ["drives"] = _ => new DriveEvaluator(),
-        ["physical"] = settings => new PhysicalEvaluator(settings)
+        ["physical"] = settings => new PhysicalEvaluator(settings),
+        ["stability-v1"] = settings => new StabilityEvaluator(settings)
     };
     public static void Register(string id, Func<JsonElement, IBehaviorEvaluator> factory)
     {
