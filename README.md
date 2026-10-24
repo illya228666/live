@@ -1,5 +1,9 @@
 # ArtificialLife
 
+For local autonomous research in Codex, start with the [campaign guide](research/README.md).
+It adds durable research memory, frozen preregistrations, bounded Windows execution,
+stop/resume and artifact backups on top of the existing experiment runner.
+
 Headless Motivation × Learning studies now have configurable variants, fixed phases/seeds,
 independent behavioral evaluation, policy exports and comparison reports. See the
 [experiment guide](docs/experiments.md) and `configs/experiments-pilot.json`.

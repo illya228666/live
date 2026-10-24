@@ -8,6 +8,7 @@ try
 {
     string command = args.FirstOrDefault() ?? "help";
     if (command == "experiment") return ExperimentRunner.Run(args.Skip(1).ToArray());
+    if (command == "experiment-prepare") return ExperimentRunner.Prepare(args.Skip(1).ToArray());
     if (command == "experiment-worker") return ExperimentRunner.Worker(args.Skip(1).ToArray());
     if (command == "compare") return ExperimentComparison.Run(args.Skip(1).ToArray());
     if (command == "live") return RuntimeCommands.Live(args.Skip(1).ToArray());
@@ -21,6 +22,7 @@ try
     if (command == "help")
     {
         Console.WriteLine("experiment --config PATH --output DIR [--variant MOTIVATION--LEARNER]\ncompare --inputs DIR1,DIR2 --output DIR");
+        Console.WriteLine("experiment options: --parallel N --threads-per-worker N --max-minutes N --trial-timeout-minutes N --stop-file PATH\nexperiment-prepare --config PATH --output NEW_DIR");
         Console.WriteLine("ArtificialLife: live [--config configs/runtime.json] [--steps N] [--checkpoint PATH] [--trajectory PATH]\ncontinual [--config configs/continual.json] [--output PATH] [--pilot true]\ntrain [--config configs/default.json] [--steps N] [--checkpoint PATH]\nevaluate [--checkpoint PATH]");
         return 0;
     }

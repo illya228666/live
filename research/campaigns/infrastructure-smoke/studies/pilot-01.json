@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "id": "pilot-01",
+  "stage": "pilot",
+  "registeredUtc": "2026-10-24T07:52:26.4591900+00:00",
+  "hypothesis": {
+    "statement": "Отдельные процессы с одинаковой сборкой и seed дают одинаковые действия и метрики при последовательном и параллельном исполнении; пауза и запись исследовательской памяти не заставляют пересчитывать готовые trials.",
+    "direction": "methodology: reproducibility and recovery",
+    "rationale": "Проверка исследовательского процесса на существующих DQN/Homeostasis, без поиска новых алгоритмов. Процессы изолируют глобальный Torch RNG; зафиксированные конфигурации и пакеты удерживают условия.",
+    "falsification": "Различающиеся действия/метрики сверх 1e-9, потеря готового trial, невозможность восстановить решение и следующий шаг из файлов.",
+    "sources": [
+      {
+        "title": "Существующий протокол и пилот экспериментальной инфраструктуры",
+        "urlOrDoi": "docs/experiments-pilot-report.md",
+        "readOn": "2026-10-24",
+        "sections": "Условия; Проверки и артефакты",
+        "evidence": "Предыдущий последовательный пилот воспроизводился; новый тест проверяет координацию, а не новую теорию мотивации.",
+        "implementationDifference": "Два процесса, явная пауза и восстановление памяти между запусками. Бюджет сокращён до технического smoke."
+      }
+    ]
+  },
+  "decisionRule": "Сравнить последовательный и параллельный запуск: одинаковые SHA256 действий, счётчики и поведенческие метрики с допуском 1e-9. Поведенческого превосходства не утверждать.",
+  "metrics": [
+    "temperature.mae",
+    "hunger.mean",
+    "wildlife.proximity"
+  ],
+  "plan": {
+    "SchemaVersion": 1,
+    "ExpectedRuns": 4,
+    "Protocols": [
+      "86755FAB004687829D3C1930359A99398D65154C953B4A2FA6403A277EC374FF"
+    ],
+    "ConfigurationHash": "BED68D131A7DBD2363C7165E44CF0C46CA255C6AE483995DD0F6A167BAE481DA",
+    "TrainingSeeds": [
+      17,
+      23
+    ],
+    "EvaluationSeeds": [
+      10017,
+      10023
+    ],
+    "TrainingStepsPerTrial": 256,
+    "PreparedUtc": "2026-10-24T09:52:26.4352424+02:00"
+  },
+  "configSha256": "EFA405D6CE9B636620A9EC619D3985DADC9534F53A8F76F8953AE7D22207744C",
+  "bundle": "artifacts\\research\\infrastructure-smoke\\bundles\\98D668F71084CD4723C1E928EA0F5D3CB4AB9CE5E02528DBDF1FCD7CA3CF2DBE",
+  "output": "artifacts\\research\\infrastructure-smoke\\studies\\pilot-01\\results",
+  "sourceRevision": "cf78fa5555637f7782f85a359fad422883b5332e",
+  "sourceStatus": "M src/ArtificialLife.Application/ExperimentRunner.cs\n M src/ArtificialLife.Brain/DqnBrain.cs\n M src/ArtificialLife.Cli/Program.cs\n M src/ArtificialLife.Godot.Contracts/packages.lock.json\n?? AGENTS.md\n?? configs/research-smoke.json\n?? research/\n?? tools/research.ps1"
+}

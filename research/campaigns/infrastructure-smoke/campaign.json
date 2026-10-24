@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "infrastructure-smoke",
+  "branch": "codex/research-campaign-infrastructure",
+  "createdUtc": "2026-10-24T09:49:31.4696356+02:00",
+  "maxParallel": 2,
+  "threadsPerWorker": 1,
+  "reserveFreeMemoryGiB": 2,
+  "workerMemoryEstimateGiB": 0.5,
+  "minFreeDiskGiB": 10,
+  "computeSliceMinutes": 10,
+  "sessionMinutes": 30,
+  "trialTimeoutMinutes": 120
+}

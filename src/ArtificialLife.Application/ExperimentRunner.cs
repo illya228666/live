@@ -26,19 +26,46 @@ public static class ExperimentRunner
     public static int Run(string[] args)
     {
         var arguments = RuntimeCommands.Arguments(args);
-        if (arguments.Keys.Any(k => k is not ("--config" or "--output" or "--variant"))) throw new ArgumentException("Unknown experiment option.");
+        if (arguments.Keys.Any(k => k is not ("--config" or "--output" or "--variant" or "--parallel" or "--max-minutes" or "--stop-file" or "--trial-timeout-minutes" or "--threads-per-worker"))) throw new ArgumentException("Unknown experiment option.");
+        int parallel = int.Parse(arguments.GetValueOrDefault("--parallel", "1"));
+        int threads = int.Parse(arguments.GetValueOrDefault("--threads-per-worker", "1"));
+        double minutes = double.Parse(arguments.GetValueOrDefault("--max-minutes", "Infinity"), System.Globalization.CultureInfo.InvariantCulture);
+        double timeout = double.Parse(arguments.GetValueOrDefault("--trial-timeout-minutes", "Infinity"), System.Globalization.CultureInfo.InvariantCulture);
+        if (parallel < 1 || threads < 1 || !double.IsFinite(parallel * (double)threads) || double.IsNaN(minutes) || minutes <= 0 || double.IsNaN(timeout) || timeout <= 0)
+            throw new ArgumentException("Parallelism, threads and budgets must be positive.");
         string config = Path.GetFullPath(arguments.GetValueOrDefault("--config", "configs/experiments-pilot.json"));
         string output = Path.GetFullPath(arguments.GetValueOrDefault("--output", "artifacts/experiments/pilot"));
         var definition = ExperimentDefinition.Load(config);
         var jobs = definition.Jobs(arguments.GetValueOrDefault("--variant")).ToArray();
         if (jobs.Length == 0) throw new ArgumentException("No experiment variant matches the filter.");
         Directory.CreateDirectory(output);
-        File.Copy(config, Path.Combine(output, "source.json"), true);
-        ExperimentJson.Atomic(Path.Combine(output, "resolved.json"), definition);
-        var provenance = Provenance(output);
-        string executionHash = ExperimentJson.Hash(provenance);
+        using var suiteLock = new FileStream(Path.Combine(output, "suite.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+        var clock = Stopwatch.StartNew();
+        int stopState = 0;
+        string? stopFile = arguments.GetValueOrDefault("--stop-file");
+        bool StopRequested()
+        {
+            if (stopFile is not null && File.Exists(stopFile))
+            {
+                try
+                {
+                    if (File.ReadAllText(stopFile).Trim().Equals("force", StringComparison.OrdinalIgnoreCase)) Interlocked.Exchange(ref stopState, 2);
+                    else Interlocked.CompareExchange(ref stopState, 1, 0);
+                }
+                catch (IOException) { /* an atomically replaced/removed request is retried on the next poll */ }
+            }
+            return Volatile.Read(ref stopState) > 0 || clock.Elapsed.TotalMinutes >= minutes;
+        }
+        ConsoleCancelEventHandler cancel = (_, e) => { e.Cancel = true; Interlocked.Increment(ref stopState); };
+        Console.CancelKeyPress += cancel;
+        string auditOutput = File.Exists(Path.Combine(output, "provenance.json")) ? Path.Combine(output, "attempts", Guid.NewGuid().ToString("N")) : output;
+        Directory.CreateDirectory(auditOutput);
+        File.Copy(config, Path.Combine(auditOutput, "source.json"), true);
+        ExperimentJson.Atomic(Path.Combine(auditOutput, "resolved.json"), definition);
+        string executionHash = Provenance(auditOutput, threads);
         var errors = new List<string>();
         var runs = new List<string>();
+        var prepared = new List<(ExperimentJob Job, string Directory, string Relative)>();
         foreach (var original in jobs)
         {
             string directory = Path.Combine(output, original.Variant, $"seed-{original.Seed}-world-{original.WorldSeed}");
@@ -58,8 +85,9 @@ public static class ExperimentRunner
                         Controller = ControllerRegistry.Resolve(original.Runtime with { ControllerSeed = 0 }).Controller,
                         Motivation = original.Definition.Motivations.Single(m => original.Variant.StartsWith(m.Id + "--", StringComparison.Ordinal))
                     }),
-                    ConfigurationHash = ExperimentJson.Hash(new { original.Variant, original.Seed, original.WorldSeed, original.Runtime,
-                        original.Definition.Phases, original.Definition.Behavior, original.Definition.EvaluationSeeds,
+                    ConfigurationHash = ExperimentJson.Hash(new { original.Variant, original.Seed, original.WorldSeed, Runtime = PortableOptions(original.Runtime),
+                        Phases = original.Definition.Phases.Select(p => p with { EvaluationRuntime = p.EvaluationRuntime is null ? null : PortableOptions(p.EvaluationRuntime) }),
+                        original.Definition.Behavior, original.Definition.EvaluationSeeds,
                         original.Definition.EpisodesPerSeed, original.Definition.EvaluationSteps, original.Definition.EvaluateEvery,
                         Packages = PackageEvidence(original) }),
                     ProtocolHash = protocol, ExecutionHash = executionHash
@@ -73,16 +101,7 @@ public static class ExperimentRunner
                     if (previous.Status == "completed") { Console.WriteLine($"SKIP {relative}"); continue; }
                 }
                 ExperimentJson.Atomic(Path.Combine(directory, "job.json"), job);
-                Console.WriteLine($"EXPERIMENT {relative}");
-                int exit;
-                try { exit = LaunchWorker(Path.Combine(directory, "job.json"), directory); }
-                catch (Exception ex)
-                {
-                    File.WriteAllText(Path.Combine(directory, "worker.log"), ex.ToString());
-                    exit = -1;
-                }
-                if (exit != 0 || !File.Exists(resultPath) || ExperimentJson.Read<ExperimentRunResult>(resultPath).Status != "completed")
-                    errors.Add($"{relative}: child exit {exit}; see worker.log and result.json.");
+                prepared.Add((job, directory, relative));
             }
             catch (Exception ex)
             {
@@ -94,12 +113,71 @@ public static class ExperimentRunner
                 ExperimentJson.Atomic(Path.Combine(output, "suite.json"), new ExperimentSuiteResult(1, "running", jobs.Length, runs.ToArray(), errors.ToArray()));
             }
         }
-        ExperimentJson.Atomic(Path.Combine(output, "suite.json"), new ExperimentSuiteResult(1, errors.Count == 0 ? "completed" : "failed", jobs.Length, runs.ToArray(), errors.ToArray()));
-        Console.WriteLine($"EXPERIMENT finished runs={runs.Count} errors={errors.Count} output={output}");
-        return errors.Count == 0 ? 0 : 1;
+        object gate = new();
+        int deferred = 0;
+        try
+        {
+            Parallel.ForEach(prepared, new ParallelOptions { MaxDegreeOfParallelism = parallel }, item =>
+            {
+                if (StopRequested()) { Interlocked.Increment(ref deferred); return; }
+                // An orphaned worker after a killed coordinator owns its directory until it finishes.
+                while (TrialBusy(item.Directory))
+                {
+                    if (StopRequested()) { Interlocked.Increment(ref deferred); return; }
+                    Thread.Sleep(100);
+                }
+                string resultPath = Path.Combine(item.Directory, "result.json");
+                if (File.Exists(resultPath) && ExperimentJson.Read<ExperimentRunResult>(resultPath).Status == "completed") return;
+                Console.WriteLine($"EXPERIMENT {item.Relative}");
+                int exit;
+                try { exit = LaunchWorker(Path.Combine(item.Directory, "job.json"), item.Directory, threads, timeout, () => { StopRequested(); return Volatile.Read(ref stopState) >= 2; }); }
+                catch (Exception ex) { File.WriteAllText(Path.Combine(item.Directory, "worker.log"), ex.ToString()); exit = -1; }
+                lock (gate)
+                {
+                    if (exit == 130) deferred++;
+                    else if (exit != 0 || !File.Exists(resultPath) || ExperimentJson.Read<ExperimentRunResult>(resultPath).Status != "completed")
+                        errors.Add($"{item.Relative}: child exit {exit}; see worker.log and result.json.");
+                    ExperimentJson.Atomic(Path.Combine(output, "suite.json"), new ExperimentSuiteResult(1, "running", jobs.Length, runs.ToArray(), errors.ToArray()));
+                }
+            });
+        }
+        finally { Console.CancelKeyPress -= cancel; }
+        string status = errors.Count > 0 ? "failed" : deferred > 0 ? "paused" : "completed";
+        ExperimentJson.Atomic(Path.Combine(output, "suite.json"), new ExperimentSuiteResult(1, status, jobs.Length, runs.ToArray(), errors.ToArray()));
+        Console.WriteLine($"EXPERIMENT status={status} runs={runs.Count} errors={errors.Count} output={output}");
+        return errors.Count > 0 ? 1 : deferred > 0 ? 130 : 0;
     }
 
-    private static int LaunchWorker(string job, string directory)
+    private static RuntimeOptions PortableOptions(RuntimeOptions options) => options with { PackageRoot = "", Inbox = "" };
+
+    public static int Prepare(string[] args)
+    {
+        var arguments = RuntimeCommands.Arguments(args);
+        if (arguments.Keys.Any(k => k is not ("--config" or "--output"))) throw new ArgumentException("Unknown prepare option.");
+        string output = Path.GetFullPath(arguments["--output"]);
+        if (Directory.Exists(output)) throw new IOException("Preparation output must be a new directory.");
+        var definition = ExperimentDefinition.Load(arguments["--config"]);
+        var jobs = definition.Jobs().ToArray();
+        Directory.CreateDirectory(output);
+        foreach (var job in jobs) _ = ArchivePackages(job, Path.Combine(output, "packages"));
+        var archived = ArchivePackages(jobs[0], Path.Combine(output, "packages")).Definition;
+        ExperimentJson.Atomic(Path.Combine(output, "config.json"), archived);
+        ExperimentJson.Atomic(Path.Combine(output, "plan.json"), new
+        {
+            SchemaVersion = 1, ExpectedRuns = jobs.Length, Protocols = jobs.Select(ProtocolHash).Distinct().ToArray(),
+            ConfigurationHash = ExperimentJson.Hash(archived), definition.TrainingSeeds, definition.EvaluationSeeds,
+            TrainingStepsPerTrial = definition.Phases.Sum(p => (long)p.Steps), PreparedUtc = DateTimeOffset.UtcNow
+        });
+        return 0;
+    }
+
+    private static bool TrialBusy(string directory)
+    {
+        try { using var lease = new FileStream(Path.Combine(directory, "worker.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None); return false; }
+        catch (IOException) { return true; }
+    }
+
+    private static int LaunchWorker(string job, string directory, int threads, double timeoutMinutes, Func<bool> force)
     {
         string entry = Assembly.GetEntryAssembly()!.Location;
         string executable = Environment.ProcessPath!;
@@ -107,12 +185,21 @@ public static class ExperimentRunner
         if (Path.GetFileNameWithoutExtension(executable).Equals("dotnet", StringComparison.OrdinalIgnoreCase)) start.ArgumentList.Add(entry);
         start.ArgumentList.Add("experiment-worker"); start.ArgumentList.Add("--job"); start.ArgumentList.Add(job);
         start.ArgumentList.Add("--output"); start.ArgumentList.Add(directory);
+        foreach (string name in new[] { "AL_COMPUTE_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "DOTNET_PROCESSOR_COUNT" }) start.Environment[name] = threads.ToString(System.Globalization.CultureInfo.InvariantCulture);
         using var child = Process.Start(start) ?? throw new InvalidOperationException("Cannot start experiment worker.");
+        ExperimentJson.Atomic(Path.Combine(directory, "process.json"), new { child.Id, StartedUtc = child.StartTime.ToUniversalTime(), Threads = threads });
+        var timer = Stopwatch.StartNew();
         var stdout = child.StandardOutput.ReadToEndAsync();
         var stderr = child.StandardError.ReadToEndAsync();
-        child.WaitForExit();
+        int? stopped = null;
+        while (!child.WaitForExit(100))
+            if (force() || timer.Elapsed.TotalMinutes >= timeoutMinutes)
+            {
+                stopped = force() ? 130 : 124;
+                child.Kill(entireProcessTree: true); child.WaitForExit(); break;
+            }
         File.WriteAllText(Path.Combine(directory, "worker.log"), stdout.GetAwaiter().GetResult() + stderr.GetAwaiter().GetResult());
-        return child.ExitCode;
+        return stopped ?? child.ExitCode;
     }
 
     public static int Worker(string[] args)
@@ -124,6 +211,7 @@ public static class ExperimentRunner
     public static ExperimentRunResult Execute(ExperimentJob job, string directory)
     {
         Directory.CreateDirectory(directory);
+        using var workerLock = new FileStream(Path.Combine(directory, "worker.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
         var evaluations = new List<EvaluationEpisode>();
         var points = new List<LearningPoint>();
         var scenarios = new List<(string Id, RuntimeOptions Options)>();
@@ -309,12 +397,18 @@ public static class ExperimentRunner
                 if (PackageCatalog.ManifestHash(source) != PackageCatalog.ManifestHash(target)) throw new InvalidDataException("Package identity collision in suite archive.");
                 continue;
             }
+            string stagingRoot = Path.Combine(packageRoot, ".staging", Guid.NewGuid().ToString("N"));
+            var stagingCatalog = new PackageCatalog(stagingRoot);
+            string staged = stagingCatalog.DirectoryFor(reference);
             foreach (string file in Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories))
             {
-                string destination = Path.Combine(target, Path.GetRelativePath(source, file));
+                string destination = Path.Combine(staged, Path.GetRelativePath(source, file));
                 Directory.CreateDirectory(Path.GetDirectoryName(destination)!); File.Copy(file, destination);
             }
-            _ = new PackageCatalog(packageRoot).Read(new(manifest.Id, manifest.Version));
+            _ = stagingCatalog.Read(new(manifest.Id, manifest.Version));
+            Directory.CreateDirectory(Path.GetDirectoryName(target)!);
+            Directory.Move(staged, target); // publish a verified complete package atomically on this volume
+            Directory.Delete(Path.GetDirectoryName(staged)!); Directory.Delete(stagingRoot);
         }
         return job with
         {
@@ -330,7 +424,7 @@ public static class ExperimentRunner
         };
     }
 
-    private static object Provenance(string output)
+    private static string Provenance(string output, int threads)
     {
         static string Git(params string[] arguments)
         {
@@ -351,8 +445,18 @@ public static class ExperimentRunner
             string destination = PackageCatalog.FileWithin(Path.Combine(output, "untracked-source"), relative);
             Directory.CreateDirectory(Path.GetDirectoryName(destination)!); File.Copy(relative, destination, true);
         }
+        var execution = new
+        {
+            IdentityVersion = 2, WorkerThreads = threads, Framework = RuntimeInformation.FrameworkDescription, OS = RuntimeInformation.OSDescription,
+            Architecture = RuntimeInformation.ProcessArchitecture.ToString(), Cpu = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER"),
+            Assemblies = assemblies,
+            RuntimeMetadata = Directory.EnumerateFiles(AppContext.BaseDirectory, "*.json").Order(StringComparer.Ordinal)
+                .ToDictionary(p => Path.GetFileName(p), p => Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(p))))
+        };
+        string executionHash = ExperimentJson.Hash(execution);
         var value = new
         {
+            ExecutionHash = executionHash, Execution = execution,
             GitRevision = Git("rev-parse", "HEAD"), SourceDiffHash = ExperimentJson.Hash(Git("diff", "HEAD", "--binary")),
             Framework = RuntimeInformation.FrameworkDescription, OS = RuntimeInformation.OSDescription, Architecture = RuntimeInformation.ProcessArchitecture.ToString(),
             Cpu = Environment.GetEnvironmentVariable("PROCESSOR_IDENTIFIER"), Runtime = Environment.Version.ToString(),
@@ -361,6 +465,6 @@ public static class ExperimentRunner
                 .ToDictionary(p => Path.GetFileName(p), p => Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(p))))
         };
         ExperimentJson.Atomic(Path.Combine(output, "provenance.json"), value);
-        return value;
+        return executionHash;
     }
 }

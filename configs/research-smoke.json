@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "runtime": {
+    "packageRoot": "../artifacts/packages",
+    "world": {
+      "width": 40,
+      "height": 40,
+      "movementSpeed": 1.5
+    },
+    "packages": [
+      {
+        "id": "movement",
+        "version": "1.0.0"
+      },
+      {
+        "id": "vision",
+        "version": "1.0.0"
+      },
+      {
+        "id": "temperature",
+        "version": "1.0.0"
+      },
+      {
+        "id": "homeostasis",
+        "version": "1.0.0"
+      },
+      {
+        "id": "wildlife",
+        "version": "1.0.0"
+      }
+    ],
+    "settings": {
+      "vision": {
+        "maxPerAppearance": 1
+      },
+      "temperature": {
+        "fireStrength": 40,
+        "fireRadius": 3,
+        "oscillationAmplitude": 0.15,
+        "heatProduction": 0.3,
+        "ambient": 34.1
+      },
+      "food": {
+        "spawnIntervalTicks": 100,
+        "maxApples": 1,
+        "minSpawnDistanceFromAgent": 4
+      },
+      "hunger": {
+        "growthPerSecond": 0.001,
+        "eatRadius": 3,
+        "driveWeight": 4
+      }
+    }
+  },
+  "motivations": [
+    {
+      "id": "homeostasis-level",
+      "package": {
+        "id": "homeostasis",
+        "version": "1.0.0"
+      },
+      "settings": {
+        "improvementWeight": 0,
+        "maximumDriveWeight": 10
+      }
+    },
+    {
+      "id": "homeostasis-improvement",
+      "package": {
+        "id": "homeostasis",
+        "version": "1.0.0"
+      },
+      "settings": {
+        "improvementWeight": 0.2,
+        "maximumDriveWeight": 10
+      }
+    }
+  ],
+  "learners": [
+    {
+      "id": "dqn-uniform",
+      "controller": {
+        "algorithm": "dqn",
+        "parameters": {
+          "network": {
+            "typeEmbeddingSize": 4,
+            "stateSize": 8,
+            "hiddenSize": 16
+          },
+          "learning": {
+            "warmupSteps": 64,
+            "batchSize": 16,
+            "observationIntroductionSteps": 1000,
+            "epsilonDecaySteps": 3000,
+            "epsilonEnd": 0.3,
+            "targetSyncInterval": 100,
+            "adaptationEpsilon": 0.5,
+            "adaptationSteps": 50000,
+            "prioritizedReplayAlpha": 0,
+            "prioritizedReplayBeta": 0.4,
+            "replayCapacity": 512
+          }
+        }
+      }
+    }
+  ],
+  "trainingSeeds": [
+    17,
+    23
+  ],
+  "evaluationSeeds": [
+    10017,
+    10023
+  ],
+  "episodesPerSeed": 1,
+  "evaluationSteps": 16,
+  "evaluateEvery": 64,
+  "phases": [
+    {
+      "id": "thermal-wildlife",
+      "steps": 128
+    },
+    {
+      "id": "with-hunger",
+      "steps": 128,
+      "activate": [
+        {
+          "id": "hunger",
+          "version": "1.0.0"
+        },
+        {
+          "id": "food",
+          "version": "1.0.0"
+        }
+      ]
+    }
+  ],
+  "behavior": {
+    "evaluators": [
+      {
+        "id": "drives"
+      },
+      {
+        "id": "physical",
+        "parameters": {
+          "temperatureTarget": 36.6,
+          "temperatureTolerance": 1,
+          "hungerThreshold": 0.8,
+          "boarRadius": 10
+        }
+      }
+    ],
+    "criteria": []
+  }
+}

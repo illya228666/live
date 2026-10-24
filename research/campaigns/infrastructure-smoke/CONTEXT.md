@@ -1,0 +1,35 @@
+# Campaign infrastructure-smoke
+
+Branch: codex/research-campaign-infrastructure. Current: codex/research-campaign-infrastructure.
+
+Read research/RESEARCHER.md, research/BASELINE.md, campaign.json, FINDINGS.md (if present) and the most recent journal entries before acting.
+
+Compute defaults: 2 workers, 1 threads each; slice 10 min; reserve 2 GiB free RAM.
+
+Last session deadline (UTC): 10/24/2026 10:12:17. An expired deadline needs a new explicit session budget.
+
+Stop requested: False.
+
+| Study | Stage | Status | Hypothesis | Full artifacts |
+|---|---|---|---|---|
+| pilot-01 | pilot | completed | Отдельные процессы с одинаковой сборкой и seed дают одинаковые действия и метрики при последовательном и параллельном исполнении; пауза и запись исследовательской памяти не заставляют пересчитывать готовые trials. | artifacts\research\infrastructure-smoke\studies\pilot-01\results |
+| pilot-02 | pilot | completed | Отдельные процессы с одинаковой сборкой и seed дают одинаковые действия и метрики при последовательном и параллельном исполнении; пауза и запись исследовательской памяти не заставляют пересчитывать готовые trials. | artifacts\research\infrastructure-smoke\studies\pilot-02\results |
+
+## Recent decisions/events
+
+{"kind":"stop-requested","data":{"next":"Resume explicitly; incomplete trials restart from their seed.","force":false},"utc":"2026-10-24T08:08:49.4154244+00:00"}
+{"kind":"stop-requested","data":{"next":"Resume explicitly; incomplete trials restart from their seed.","force":true},"utc":"2026-10-24T08:08:50.7588424+00:00"}
+{"kind":"stop-requested","data":{"next":"Resume explicitly; incomplete trials restart from their seed.","force":false},"utc":"2026-10-24T08:09:08.7891594+00:00"}
+{"kind":"decision","data":{"text":"Sequential reference saved. A deliberate stop request interrupted admission; immutable configs and completed evidence are retained.","study":"pilot-02","next":"Resume the registered study and compare with the sequential reference."},"utc":"2026-10-24T08:09:09.7294045+00:00"}
+{"kind":"compute-started","data":{"minutes":2.0,"parallel":2,"threads":1},"utc":"2026-10-24T08:09:11.1109884+00:00"}
+{"kind":"compute-returned","data":{"status":"completed","study":"pilot-02","next":"Inspect per-seed comparisons; record interpretation and a next step. Completion is not behavioral success.","exit":0},"utc":"2026-10-24T08:09:20.2459288+00:00"}
+{"kind":"decision","data":{"text":"Methodological hypothesis supported in this smoke: 4 matching pairs at 1e-9. No conclusion about behavioral superiority or adequacy of thermoregulation scenarios.","study":"pilot-02","next":"Do not start a long campaign yet. On the next user request, read BASELINE.md, choose a research question, and preregister a discriminating scenario/pilot."},"utc":"2026-10-24T08:09:20.7855748+00:00"}
+{"kind":"compute-started","data":{"minutes":1.0,"parallel":2,"threads":1},"utc":"2026-10-24T08:09:22.1614280+00:00"}
+{"data":{"next":"Для доказательства параллелизма использовать pilot-02 и его last-execution/smoke-proof; не объединять эту методологическую проверку с научной оценкой алгоритмов.","study":"pilot-01","text":"Уточнение аудита: автоматический admission по свободной RAM снизил фактический parallel до 1. Четыре пары этого smoke подтверждают stop/resume и память, но не параллельное исполнение. Данные сохранены; pilot-02 отдельно проверил два реальных worker."},"kind":"decision","utc":"2026-10-24T08:11:07.1295997+00:00"}
+{"data":{"next":"Не начинать длинную кампанию до следующего запроса. В новой сессии прочитать BASELINE.md, выбрать вопрос, проверить различающую способность сценария и зарегистрировать pilot до оценки.","study":"pilot-02","text":"Финальная проверка: 4/4 пары совпали, фактический parallel=2, проверена force-остановка orphan worker по PID+времени+пути, completed result.json не переписались, новый процесс восстановил анализ и следующий шаг. Полный набор: 158 тестов без ошибок."},"kind":"decision","utc":"2026-10-24T08:11:07.2451297+00:00"}
+{"kind":"session-started","data":{"minutes":1E-06},"utc":"2026-10-24T08:12:17.6281645+00:00"}
+{"kind":"decision","data":{"study":"pilot-02","next":"Для реальной следующей кампании использовать local; явно задать новый бюджет сессии и зарегистрировать выбранный pilot.","text":"Проверен истёкший дедлайн сессии: вычислительный срез отклонён, новые trials не стартовали. Проверка backup во время занятой блокировки также отклоняет копирование."},"utc":"2026-10-24T08:12:17.9830440+00:00"}
+
+## Resume in Codex
+
+Continue campaign 'infrastructure-smoke' on branch 'codex/research-campaign-infrastructure'. Read this file, research/RESEARCHER.md, research/BASELINE.md, the immutable study registrations and referenced evidence. Reconcile suite.json/result.json with journal before launching anything. Preserve completed runs; do not treat reward as success. Check the session deadline. Record the next decision and next action before ending the session.

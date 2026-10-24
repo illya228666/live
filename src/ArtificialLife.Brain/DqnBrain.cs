@@ -32,7 +32,8 @@ public sealed class DqnBrain : IDisposable
         ObservationWeights = Enumerable.Repeat(1f, networkOptions.ObservationCapacity).ToArray();
         random = new Random(learning.Seed);
         // Один поток уменьшает накладные расходы крошечной модели и разброс CPU-результатов.
-        set_num_threads(1);
+        int threads = int.TryParse(Environment.GetEnvironmentVariable("AL_COMPUTE_THREADS"), out int configured) && configured > 0 ? configured : 1;
+        set_num_threads(threads);
         manual_seed(learning.Seed);
         online = new CandidateQNetwork(networkOptions);
         target = new CandidateQNetwork(networkOptions);

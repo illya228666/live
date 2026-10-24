@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-24",
+  "branch": "codex/research-campaign-infrastructure",
+  "mainCampaign": "local",
+  "longCampaignStarted": false,
+  "tests": {
+    "failed": 0,
+    "passed": 158
+  },
+  "smoke": {
+    "study": "pilot-02",
+    "recordedUtc": "2026-10-24T10:09:22.550247+02:00",
+    "schemaVersion": 1,
+    "completedResultsPreserved": true,
+    "campaign": "infrastructure-smoke",
+    "comparison": "artifacts\\research\\infrastructure-smoke\\studies\\pilot-02\\reproducibility",
+    "matches": 4,
+    "parallel": 2,
+    "orphanForceStopped": true,
+    "pairs": 4,
+    "contextRecovered": true
+  },
+  "technicalStatus": "completed",
+  "scientificConclusion": "No new algorithm or motivation-theory conclusion; methodological validation only",
+  "controls": {
+    "trainingStepsPerTrial": 256,
+    "evaluationSeeds": [
+      10017,
+      10023
+    ],
+    "threadsPerWorker": 1,
+    "workerMemoryEstimateGiB": 0.5,
+    "trainingSeeds": [
+      17,
+      23
+    ],
+    "behaviorOutcome": "not-assessed",
+    "parallelTrials": 4,
+    "sequentialTrials": 4
+  },
+  "safetyAndRecovery": {
+    "drainCurrentTrial": true,
+    "busyBackupRejected": true,
+    "completedBytesAndMtimePreserved": true,
+    "orphanIdentityCheck": true,
+    "forceStop": true,
+    "budgetPauseResume": true,
+    "backupFilesVerified": 2228,
+    "expiredSessionRejected": true
+  },
+  "artifacts": {
+    "backup": "artifacts/research-backups/infrastructure-smoke-validation",
+    "history": "research/campaigns/infrastructure-smoke",
+    "readyContext": "research/campaigns/local/CONTEXT.md",
+    "study": "artifacts/research/infrastructure-smoke/studies/pilot-02"
+  },
+  "limitations": [
+    "RAM admission is an estimate, not an OS memory quota",
+    "Wall budget is soft for active trials; force/timeout restarts interrupted trials from seed",
+    "Current checkpoints do not restore optimizer/replay/world",
+    "Current DQN is CPU-only; RTX 4060 Ti 8188 MiB is present but not automatically used",
+    "No automatic Codex wakeup or unlimited background research is configured",
+    "Initial smoke pilot-01 was reduced to one worker by RAM admission; only pilot-02 proves two-worker execution"
+  ]
+}

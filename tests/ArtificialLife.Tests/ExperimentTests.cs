@@ -222,6 +222,111 @@ public sealed class ExperimentTests
         Assert.Equal(2, groups.Metrics.Select(m => m.Protocol).Distinct().Count()); Assert.Empty(groups.Pairs);
     }
 
+    private static (int Exit, string Output) RunCli(params string[] args)
+    {
+        using var process = StartCli(args);
+        var stdout = process.StandardOutput.ReadToEndAsync(); var stderr = process.StandardError.ReadToEndAsync();
+        if (!process.WaitForExit(60000)) { process.Kill(true); throw new TimeoutException("CLI test timed out."); }
+        return (process.ExitCode, stdout.GetAwaiter().GetResult() + stderr.GetAwaiter().GetResult());
+    }
+    private static Process StartCli(params string[] args)
+    {
+        string executable = Path.Combine(RuntimeDefaults.RepositoryRoot(), "src", "ArtificialLife.Cli", "bin", "Release", "net10.0", "ArtificialLife.Cli.exe");
+        var start = new ProcessStartInfo(executable) { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true };
+        foreach (string argument in args) start.ArgumentList.Add(argument);
+        return Process.Start(start)!;
+    }
+    private static ExperimentDefinition SmallDqnStudy() => Definition() with
+    {
+        TrainingSeeds = [11, 12], EvaluationSeeds = [1001],
+        Learners = [new() { Id = "dqn", Controller = new() { Parameters = Json(new
+        {
+            network = new { hiddenSize = 8, stateSize = 8, typeEmbeddingSize = 2 },
+            learning = new { warmupSteps = 8, batchSize = 4, replayCapacity = 32 }
+        }) } }]
+    };
+
+    [Fact]
+    public void ParallelProcessesReproduceSequentialTrialsAndResumeAfterBudgetPause()
+    {
+        using var files = new TemporaryFiles();
+        string config = Path.Combine(files.Root, "config.json"), a = Path.Combine(files.Root, "a"), b = Path.Combine(files.Root, "b");
+        ExperimentJson.Atomic(config, SmallDqnStudy());
+        Assert.Equal(0, RunCli("experiment", "--config", config, "--output", a).Exit);
+        Assert.Equal(130, RunCli("experiment", "--config", config, "--output", b, "--max-minutes", "0.00000001").Exit);
+        Assert.Equal("paused", ExperimentJson.Read<ExperimentSuiteResult>(Path.Combine(b, "suite.json")).Status);
+        Assert.Equal(0, RunCli("experiment", "--config", config, "--output", b, "--parallel", "2").Exit);
+        var suite = ExperimentJson.Read<ExperimentSuiteResult>(Path.Combine(a, "suite.json"));
+        foreach (string relative in suite.Runs)
+            Assert.Null(ExperimentComparison.ReproductionDifference(ExperimentJson.Read<ExperimentRunResult>(Path.Combine(a, relative, "result.json")),
+                ExperimentJson.Read<ExperimentRunResult>(Path.Combine(b, relative, "result.json"))));
+        string provenance = File.ReadAllText(Path.Combine(b, "provenance.json"));
+        string note = Path.Combine(RuntimeDefaults.RepositoryRoot(), "research-note-test-" + Guid.NewGuid().ToString("N") + ".md");
+        try
+        {
+            File.WriteAllText(note, "Research memory changed after the completed trials.");
+            var resumed = RunCli("experiment", "--config", config, "--output", b, "--parallel", "2");
+            Assert.Equal(0, resumed.Exit); Assert.Contains("SKIP", resumed.Output);
+            Assert.Equal(provenance, File.ReadAllText(Path.Combine(b, "provenance.json")));
+        }
+        finally { File.Delete(note); }
+        Assert.Equal(0, RunCli("compare", "--inputs", a + "," + b, "--output", Path.Combine(files.Root, "comparison")).Exit);
+    }
+
+    [Fact]
+    public async Task ForceStopKillsOnlyItsWorkerAndSameFrozenStudyCanResume()
+    {
+        using var files = new TemporaryFiles();
+        string config = Path.Combine(files.Root, "config.json"), output = Path.Combine(files.Root, "suite"), stop = Path.Combine(files.Root, "STOP");
+        var definition = SmallDqnStudy() with { TrainingSeeds = [11], Phases = [new() { Id = "old", Steps = 4000 }], EvaluateEvery = 1000 };
+        ExperimentJson.Atomic(config, definition);
+        using var process = StartCli("experiment", "--config", config, "--output", output, "--stop-file", stop);
+        var stdout = process.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken); var stderr = process.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);
+        var timer = Stopwatch.StartNew();
+        while ((!Directory.Exists(output) || !Directory.EnumerateFiles(output, "process.json", SearchOption.AllDirectories).Any()) && timer.Elapsed < TimeSpan.FromSeconds(30))
+            await Task.Delay(25, TestContext.Current.CancellationToken);
+        Assert.True(timer.Elapsed < TimeSpan.FromSeconds(30));
+        File.WriteAllText(stop, "force");
+        if (!process.WaitForExit(30000)) { process.Kill(true); throw new TimeoutException(); }
+        _ = await stdout; _ = await stderr;
+        Assert.Equal(130, process.ExitCode);
+        Assert.Equal("paused", ExperimentJson.Read<ExperimentSuiteResult>(Path.Combine(output, "suite.json")).Status);
+        File.Delete(stop);
+        string marker = Directory.EnumerateFiles(output, "process.json", SearchOption.AllDirectories).Single();
+        File.Delete(marker);
+        using var resumed = StartCli("experiment", "--config", config, "--output", output, "--stop-file", stop);
+        var resumedOut = resumed.StandardOutput.ReadToEndAsync(TestContext.Current.CancellationToken);
+        var resumedError = resumed.StandardError.ReadToEndAsync(TestContext.Current.CancellationToken);
+        timer.Restart();
+        while (!File.Exists(marker) && timer.Elapsed < TimeSpan.FromSeconds(30)) await Task.Delay(25, TestContext.Current.CancellationToken);
+        Assert.True(File.Exists(marker));
+        File.WriteAllText(stop, "drain");
+        if (!resumed.WaitForExit(30000)) { resumed.Kill(true); throw new TimeoutException(); }
+        _ = await resumedOut; _ = await resumedError;
+        Assert.Equal(0, resumed.ExitCode); // Last active trial finishes even though a drain was requested.
+        var result = ExperimentJson.Read<ExperimentRunResult>(Path.Combine(output, "homeostasis--dqn", "seed-11-world-11", "result.json"));
+        Assert.Equal("completed", result.Status); Assert.Equal(4000, result.TrainingSteps);
+    }
+
+    [Fact]
+    public void PreparedStudyUsesArchivedPackagesAndRejectsOverwrite()
+    {
+        using var files = new TemporaryFiles();
+        string config = Path.Combine(files.Root, "config.json"), frozen = Path.Combine(files.Root, "frozen");
+        ExperimentJson.Atomic(config, SmallDqnStudy());
+        Assert.Equal(0, RunCli("experiment-prepare", "--config", config, "--output", frozen).Exit);
+        var definition = ExperimentDefinition.Load(Path.Combine(frozen, "config.json"));
+        Assert.StartsWith(frozen, definition.Runtime.PackageRoot, StringComparison.OrdinalIgnoreCase);
+        Assert.True(File.Exists(Path.Combine(definition.Runtime.PackageRoot, "food", "1.0.0", "module.json")));
+        Assert.Equal(0, RunCli("experiment", "--config", Path.Combine(frozen, "config.json"), "--output", Path.Combine(files.Root, "results"), "--parallel", "2").Exit);
+        string second = Path.Combine(files.Root, "other-package-location");
+        Assert.Equal(0, RunCli("experiment-prepare", "--config", config, "--output", second).Exit);
+        Assert.Equal(0, RunCli("experiment", "--config", Path.Combine(second, "config.json"), "--output", Path.Combine(files.Root, "other-results"), "--parallel", "2").Exit);
+        Assert.Equal(0, RunCli("compare", "--inputs", Path.Combine(files.Root, "results") + "," + Path.Combine(files.Root, "other-results"),
+            "--output", Path.Combine(files.Root, "comparison")).Exit);
+        Assert.NotEqual(0, RunCli("experiment-prepare", "--config", config, "--output", frozen).Exit);
+    }
+
     private sealed class TemporaryFiles : IDisposable
     {
         public string Root { get; } = Path.Combine(Path.GetTempPath(), "ArtificialLife-experiments-" + Guid.NewGuid().ToString("N"));
