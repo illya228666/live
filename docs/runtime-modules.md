@@ -30,7 +30,7 @@ An activation request contains an id and exact `{ id, version }` references. The
 
 ## Author a package
 
-The optional [wild boar package](wildlife.md) is a complete example with a separate
+The standard [wild boar package](wildlife.md) is a complete example with a separate
 behavior DLL, Godot presentation DLL and external PNG. Its dedicated build prepares
 the package without activating it or changing the startup package set.
 

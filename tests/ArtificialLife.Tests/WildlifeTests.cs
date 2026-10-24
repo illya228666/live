@@ -28,6 +28,24 @@ public sealed class WildlifeTests
         Options = new() { TimeStep = step }, Agent = new() { Id = 1, Position = new(50, 50) }
     };
     private static RuntimeEntity Animal(RuntimeWorld world) => Assert.Single(world.Entities, e => e.Components.ContainsKey("wildlife.boar"));
+    [Fact]
+    public void StandardRuntimeStartsWithOneBoarAndSafetyWithoutManualActivation()
+    {
+        var options = RuntimeOptions.Load(Path.Combine(Repo, "configs/runtime.json"));
+        options = options with { PackageRoot = Path.Combine(Repo, options.PackageRoot) };
+        using var runtime = new RuntimeSession(options, new DqnController(options.Network, options.Learning));
+        var initial = runtime.Snapshot();
+        Assert.Equal(0, initial.Age);
+        var boar = Assert.Single(initial.Entities, e => e.Components.ContainsKey("wildlife.boar"));
+        Assert.Contains("safety", runtime.Report().Drives.Keys);
+        var package = new PackageCatalog(options.PackageRoot).Read(new("wildlife", "1.0.0"));
+        Assert.Equal(View + ".dll", package.PresentationAssembly);
+        Assert.Contains("assets/boar.png", package.PresentationFiles.Keys);
+        for (int i = 0; i < 20; i++) runtime.AdvanceOne(false);
+        var moved = Assert.Single(runtime.Snapshot().Entities, e => e.Components.ContainsKey("wildlife.boar"));
+        Assert.Equal(boar.Id, moved.Id); Assert.NotEqual(boar.Position, moved.Position);
+    }
+
     private static void Step(Plugin plugin, RuntimeWorld world)
     {
         // Clock setters are host-owned; unit tests emulate the host's advance order.

@@ -17,6 +17,8 @@ $wildlifeNextManifest = Get-Content -LiteralPath (Join-Path $wildlifeReplacement
 $wildlifeNextManifest.version = '1.0.1'
 $wildlifeNextManifest | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath (Join-Path $wildlifeReplacement 'module.json') -Encoding UTF8
 $wildlifeConfig = Get-Content -LiteralPath (Join-Path $RepoRoot 'configs/runtime.json') -Raw | ConvertFrom-Json
+# This scenario specifically tests a later installation, unlike the normal startup set.
+$wildlifeConfig.packages = @($wildlifeConfig.packages | Where-Object { $_.id -ne 'wildlife' })
 $wildlifeConfig.packageRoot = $wildlifePackages
 $wildlifeConfig.inbox = Join-Path $wildlifeSmoke 'isolated-inbox'
 $wildlifeConfigPath = Join-Path $wildlifeSmoke 'config.json'

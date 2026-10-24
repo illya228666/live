@@ -39,7 +39,7 @@ public partial class Main
 
     private void ParseLaunchArguments(string root)
     {
-        experimentConfig = System.IO.Path.Combine(root, "configs/default.json");
+        experimentConfig = System.IO.Path.Combine(root, "configs/runtime.json");
         visualConfig = System.IO.Path.Combine(root, "configs/live-training.json");
         string? selectedCheckpoint = null;
         string[] arguments = OS.GetCmdlineUserArgs();
@@ -87,6 +87,12 @@ public partial class Main
     {
         visualOptions = TrainingVisualizationOptions.Load(visualConfig);
         RuntimeOptions options = RuntimeCommands.ReadOptions(experimentConfig);
+        string root = RuntimeDefaults.RepositoryRoot();
+        options = options with
+        {
+            PackageRoot = System.IO.Path.GetFullPath(options.PackageRoot, root),
+            Inbox = System.IO.Path.GetFullPath(options.Inbox, root)
+        };
         if (progressCaptureDirectory is not null && trainingSmokeSteps == 0)
         {
             throw new ArgumentException("Progress capture requires a finite --training-smoke-steps run.");

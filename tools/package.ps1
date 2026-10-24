@@ -8,7 +8,8 @@ $runtimeDefinitions = @(
     @{ Id='temperature'; Project='Temperature'; Type='RuntimeTemperature'; Schemas=@{'temperature.body'=1; 'temperature.emitter'=1}; Requires=@('vision.appearance'); Renderer='TemperaturePresentation'; Settings='temperature' },
     @{ Id='homeostasis'; Project='Homeostasis'; Type='RuntimeHomeostasis'; Schemas=@{}; Provides=@('motivation'); Settings='reward' },
     @{ Id='hunger'; Project='Hunger'; Type='RuntimeHunger'; Schemas=@{'hunger.body'=1; 'nutrition'=1}; Provides=@('nutrition'); Settings='hunger' },
-    @{ Id='food'; Project='Food'; Type='RuntimeFood'; Schemas=@{'food.apple'=1}; Requires=@('nutrition','vision.appearance'); Dependencies=@(@{id='hunger';version='1.0.0'},@{id='vision';version='1.0.0'}); Renderer='FoodPresentation'; Order=50; Settings='foodSpawner' }
+    @{ Id='food'; Project='Food'; Type='RuntimeFood'; Schemas=@{'food.apple'=1}; Requires=@('nutrition','vision.appearance'); Dependencies=@(@{id='hunger';version='1.0.0'},@{id='vision';version='1.0.0'}); Renderer='FoodPresentation'; Order=50; Settings='foodSpawner' },
+    @{ Id='wildlife'; Project='Wildlife'; Type='RuntimeWildlife'; Schemas=@{'wildlife.boar'=1}; Provides=@('wildlife','safety'); Requires=@('vision.appearance','motivation'); Renderer='BoarPresentation'; PresentationProject='ArtificialLife.Modules.Wildlife.Presentation.Godot'; Order=75; Assets=@{'assets/boar.png'='assets/wildlife/boar.png'} }
 )
 $legacyDefaults = Get-Content -LiteralPath (Join-Path $RepoRoot 'configs/default.json') -Raw | ConvertFrom-Json
 if (!$NoBuild) { Invoke-Dotnet build src/ArtificialLife.Presentation.Godot -c Release --verbosity quiet }
@@ -25,12 +26,29 @@ foreach ($definition in $runtimeDefinitions) {
     foreach ($field in @('Provides','Requires','Dependencies')) { if ($definition.ContainsKey($field)) { $manifest[$field] = $definition[$field] } }
     if ($definition.ContainsKey('Settings')) { $manifest.settings = $legacyDefaults.($definition.Settings) }
     if ($definition.ContainsKey('Renderer')) {
-        $rendererFile = 'ArtificialLife.Presentation.Godot.dll'
-        Copy-Item -LiteralPath (Join-Path $RepoRoot ('src/ArtificialLife.Presentation.Godot/.godot/mono/temp/bin/Release/' + $rendererFile)) -Destination $destination -Force
+        $rendererProject = if ($definition.ContainsKey('PresentationProject')) { $definition.PresentationProject } else { 'ArtificialLife.Presentation.Godot' }
+        if (!$NoBuild -and $definition.ContainsKey('PresentationProject')) { Invoke-Dotnet build ('src/' + $rendererProject) -c Release --verbosity quiet }
+        $rendererFile = $rendererProject + '.dll'
+        $rendererDirectory = Join-Path $RepoRoot ('src/' + $rendererProject + '/.godot/mono/temp/bin/Release')
+        Copy-Item -LiteralPath (Join-Path $rendererDirectory $rendererFile) -Destination $destination -Force
         $manifest.presentationAssembly = $rendererFile
-        $manifest.presentationType = 'ArtificialLife.Presentation.Godot.' + $definition.Renderer
+        $manifest.presentationType = $rendererProject + '.' + $definition.Renderer
         $manifest.presentationHash = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $destination $rendererFile)).Hash
         if ($definition.ContainsKey('Order')) { $manifest.presentationOrder = $definition.Order }
+        if ($definition.ContainsKey('PresentationProject')) {
+            $rendererDeps = $rendererProject + '.deps.json'
+            Copy-Item -LiteralPath (Join-Path $rendererDirectory $rendererDeps) -Destination $destination -Force
+            $manifest.presentationFiles = @{ $rendererDeps=(Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $destination $rendererDeps)).Hash }
+        }
+    }
+    if ($definition.ContainsKey('Assets')) {
+        if (!$manifest.Contains('presentationFiles')) { $manifest.presentationFiles = @{} }
+        foreach ($asset in $definition.Assets.GetEnumerator()) {
+            $assetDestination = Join-Path $destination $asset.Key
+            New-Item -ItemType Directory -Force -Path (Split-Path -Parent $assetDestination) | Out-Null
+            Copy-Item -LiteralPath (Join-Path $RepoRoot $asset.Value) -Destination $assetDestination -Force
+            $manifest.presentationFiles[$asset.Key] = (Get-FileHash -Algorithm SHA256 -LiteralPath $assetDestination).Hash
+        }
     }
     $temporaryManifest = Join-Path $destination 'module.json.tmp'
     $manifest | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $temporaryManifest -Encoding UTF8

@@ -2,7 +2,7 @@
 param(
     [string]$Checkpoint = '',
     [switch]$Train,
-    [string]$Config = 'configs/default.json',
+    [string]$Config = 'configs/runtime.json',
     [string]$VisualConfig = 'configs/live-training.json',
     [ValidateSet('1x', '10x', '100x', 'Max')][string]$TrainingSpeed,
     [switch]$Smoke,

@@ -16,6 +16,11 @@ The primary runtime now supports one continuous life with hot-installed/upgraded
 
 `configs/runtime.json` selects startup packages; the existing `configs/default.json` remains supported through an adapter. To install Hunger/Food later, start a configuration without those packages. Use exact new package versions for upgrades. See [runtime module authoring and guarantees](docs/runtime-modules.md) for state migration, activation requests, extensible presentation, motivation and controller contracts.
 
+The standard package set includes the [wild boar](docs/wildlife.md): one wandering
+animal, its external sprite, danger radius and the Safety need. Both `live.ps1`
+and `run-godot.ps1 -Train` use this set by default. Saved policies keep their
+archived package set; explicit legacy experiment configurations remain supported.
+
 The controlled [continual-learning acceptance experiment](docs/continual-learning.md) passed all five fixed training seeds: mean hunger error fell 53.43% versus the frozen policy and 52.22% versus random actions, with thermal error 0.009058 below the 0.05 limit. This result uses the explicit experimental configuration and does not establish balanced behavior in the original default world.
 
 ![A trained agent maintaining body temperature beside a smoothly varying heat source](docs/images/thermoregulation.png)

@@ -8,6 +8,12 @@ an external PNG sprite and a package-owned Godot renderer. It uses the existing
 runtime API v1. Application, Brain, Homeostasis and the Godot host need no mechanic
 registration or implementation references.
 
+Wildlife is included in the standard `tools/package.ps1` build and in
+`configs/runtime.json`. New default headless lives and Godot live-training runs
+start with one boar and Safety already active. To test adding it later, use a
+startup configuration without the wildlife entry (as `wildlife-smoke.ps1` does).
+Loading a saved policy retains that policy's archived package set.
+
 ## Build without activating
 
 ```powershell
