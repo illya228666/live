@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Godot.Contra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Presentation.Godot", "src\ArtificialLife.Presentation.Godot\ArtificialLife.Presentation.Godot.csproj", "{E8F56396-AEA2-47B2-B4B8-7321261F201E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Modules.Wildlife", "src\ArtificialLife.Modules.Wildlife\ArtificialLife.Modules.Wildlife.csproj", "{557FE461-616D-4C77-8328-F58BA6F7A1DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Modules.Wildlife.Presentation.Godot", "src\ArtificialLife.Modules.Wildlife.Presentation.Godot\ArtificialLife.Modules.Wildlife.Presentation.Godot.csproj", "{8BEB21F0-E0CB-495B-A812-8E429216E458}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +104,14 @@ Global
 		{E8F56396-AEA2-47B2-B4B8-7321261F201E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8F56396-AEA2-47B2-B4B8-7321261F201E}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{E8F56396-AEA2-47B2-B4B8-7321261F201E}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{557FE461-616D-4C77-8328-F58BA6F7A1DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{557FE461-616D-4C77-8328-F58BA6F7A1DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{557FE461-616D-4C77-8328-F58BA6F7A1DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{557FE461-616D-4C77-8328-F58BA6F7A1DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BEB21F0-E0CB-495B-A812-8E429216E458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BEB21F0-E0CB-495B-A812-8E429216E458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BEB21F0-E0CB-495B-A812-8E429216E458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BEB21F0-E0CB-495B-A812-8E429216E458}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6272856E-8FA6-48A6-9C4C-51119E6C38A6} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
@@ -116,5 +128,7 @@ Global
 		{10747F39-AC62-40EE-BDCD-BD85FD48BF38} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 		{64C671DE-8F14-44DC-A2C9-DD3D82B783EE} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 		{E8F56396-AEA2-47B2-B4B8-7321261F201E} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
+		{557FE461-616D-4C77-8328-F58BA6F7A1DA} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
+		{8BEB21F0-E0CB-495B-A812-8E429216E458} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 	EndGlobalSection
 EndGlobal

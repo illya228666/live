@@ -34,6 +34,7 @@ public partial class Main : Node2D
         try
         {
             ParseLaunchArguments(root);
+            InitializePackageUi(root);
             if (trainMode)
             {
                 StartLiveTraining();
@@ -111,6 +112,7 @@ public partial class Main : Node2D
             {
                 lastActivationNotice = outcome.Id;
                 ShowNotice($"Package {(outcome.Accepted ? "accepted" : "rejected")}: {outcome.Message}", 8);
+                RefreshPackageList();
             }
         }
         frames++;
@@ -148,6 +150,7 @@ public partial class Main : Node2D
 
     public override void _UnhandledKeyInput(InputEvent @event)
     {
+        if (packageDialog?.Visible == true) return;
         if (@event is not InputEventKey { Pressed: true, Echo: false } key)
         {
             return;
@@ -232,6 +235,7 @@ public partial class Main : Node2D
     private void Label(string text, float x, float y, int size, Color color) => DrawString(ThemeDB.FallbackFont, new Vector2(x, y), text, fontSize: size, modulate: color);
     public override void _ExitTree()
     {
+        DisposePackageUi();
         presentations?.Dispose();
         trainingSession?.Dispose();
         session?.Dispose();

@@ -4,6 +4,15 @@
 
 ## Run and activate
 
+In Godot, click **Пакеты…** to import a package folder, `module.json` or ZIP and
+activate it in the current life. These inputs can also be dropped directly onto
+the simulation window. Multiple selected files or a ZIP bundle activate together.
+The manager lists active packages and displays complete import/activation errors.
+Imports validate hashes before publishing immutable versions to the current
+catalogue; simulation continues during file work. Close the manager and return
+from frozen evaluation with **E** before importing. Startup configurations remain
+unchanged. The existing command-line inbox workflow is also available:
+
 ```powershell
 ./tools/build.ps1
 ./tools/live.ps1                         # continuous headless learning; Ctrl+C stops
@@ -20,6 +29,10 @@ The development packaging script rebuilds the shipped 1.0.0 packages. Do not run
 An activation request contains an id and exact `{ id, version }` references. The producer writes a temporary file then renames it to `<id>.ready.json`. Runtime polls at step boundaries; `.tmp` files are ignored. The result is written atomically to `<id>.result.json`. A request can install/upgrade multiple packages together. Missing files, checksums, dependencies, cycles, schemas, feature widths, capacities, actions or presentation preparation reject the entire candidate.
 
 ## Author a package
+
+The optional [wild boar package](wildlife.md) is a complete example with a separate
+behavior DLL, Godot presentation DLL and external PNG. Its dedicated build prepares
+the package without activating it or changing the startup package set.
 
 Reference **ArtificialLife.Core**, target net8.0, implement `IRuntimeModule` and publish a manifest:
 
