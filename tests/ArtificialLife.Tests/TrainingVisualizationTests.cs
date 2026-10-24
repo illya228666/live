@@ -230,7 +230,7 @@ public sealed class TrainingVisualizationTests
             live.AdvanceTraining(73);
             live.SaveCheckpoint(directory);
             PolicyManifest manifest = RuntimeCheckpoint.Read(directory);
-            Assert.Equal(2, manifest.FormatVersion);
+            Assert.Equal(3, manifest.FormatVersion);
             Assert.Equal(73, manifest.TrainingSteps);
             using var visualization = new VisualizationSession(directory);
             visualization.Advance();

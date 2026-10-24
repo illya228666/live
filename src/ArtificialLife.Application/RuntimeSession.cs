@@ -9,6 +9,9 @@ public sealed record RuntimeOptions
     public WorldOptions World { get; init; } = new();
     public ArtificialLife.Brain.NetworkOptions Network { get; init; } = new();
     public ArtificialLife.Brain.LearningOptions Learning { get; init; } = new();
+    public ControllerSelection? Controller { get; init; }
+    public int? ControllerSeed { get; init; }
+    public int? WorldSeed { get; init; }
     public PackageReference[] Packages { get; init; } = [];
     public string PackageRoot { get; init; } = "artifacts/packages";
     public string Inbox { get; init; } = "artifacts/activation";
@@ -57,7 +60,7 @@ public sealed class RuntimeSession : IDisposable
         foreach (string key in observationKeys ?? []) observations.Register(key);
         foreach (string key in actionKeys ?? []) actions.Register(key);
         world = new() { Options = options.World };
-        world.State("rng:initial").Write("state", unchecked((ulong)options.Learning.Seed));
+        world.State("rng:initial").Write("state", unchecked((ulong)(options.WorldSeed ?? options.Learning.Seed)));
         world.Agent.Position = new(world.Random("initial") * options.World.Width, world.Random("initial") * options.World.Height);
         world.Time = world.Random("initial") * 600;
         var outcome = Activate(new("initial", options.Packages));
@@ -116,7 +119,7 @@ public sealed class RuntimeSession : IDisposable
                     changed = true;
                     if (!candidate.ModuleState.ContainsKey("rng:" + manifest.Id))
                     {
-                        ulong seed = unchecked((ulong)Options.Learning.Seed);
+                        ulong seed = unchecked((ulong)(Options.WorldSeed ?? Options.Learning.Seed));
                         foreach (char c in manifest.Id) seed = unchecked(seed * 1099511628211UL ^ c);
                         candidate.State("rng:" + manifest.Id).Write("state", seed);
                     }

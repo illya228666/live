@@ -73,7 +73,7 @@ When the vocabulary extends during training, the DQN initially masks the new obs
 
 `CreateInferenceController` supplies the separate evaluation branch. A future recurrent controller must fork its temporal state and RNG there; the UI never assumes that greedy inference can safely advance training memory. The current stateless DQN shares read-only parameters while training is suspended.
 
-Policy export v2 contains immutable weight/manifest generations and an atomically replaced `current` pointer, architecture id/config, ordered registries, training count and archived packages/checksums. Loading checks architecture, registry identity and package logic. This is an inference/teacher export, not optimizer/replay/world persistence. Compatible v1 checkpoints still import. `live --trajectory PATH` emits revision schema records and copied transitions as JSONL; this is a foundation for later distillation, not a distillation implementation.
+Policy export v3 contains immutable weight/manifest generations and an atomically replaced `current` pointer, controller selection/effective parameters, architecture id/config, ordered registries, training count and archived packages/checksums. Loading uses the controller factory and checks architecture, registry identity and package logic. This is an inference/teacher export, not optimizer/replay/world persistence. Compatible DQN v1/v2 checkpoints still import. `live --trajectory PATH` emits revision schema records and copied transitions as JSONL; this is a foundation for later distillation, not a distillation implementation. See the [experiment guide](experiments.md) for headless studies and independent behavioral evaluation.
 
 ## Godot presentation packages
 

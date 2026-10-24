@@ -16,7 +16,9 @@ public static class RuntimeCheckpoint
 {
     public static void Save(string directory, RuntimeSession session)
     {
-        if (session.Controller is not DqnController) throw new InvalidOperationException("This exporter supports the current DQN controller only.");
+        var resolved = ControllerRegistry.Resolve(session.Options);
+        var factory = ControllerRegistry.Factory(resolved.Controller!.Algorithm);
+        if (!factory.Supports(session.Controller)) throw new InvalidOperationException("Configured controller does not match the exported controller.");
         Directory.CreateDirectory(directory);
         string generation = "policy-" + Guid.NewGuid().ToString("N");
         string path = Path.Combine(directory, generation);
@@ -37,13 +39,13 @@ public static class RuntimeCheckpoint
             if (!RuntimeSession.SameLogic(package.Manifest, archived with { Settings = package.Manifest.Settings }))
                 throw new InvalidDataException($"Package changed while exporting: {package.Manifest.Id}.");
         }
-        var options = session.Options with
+        var options = resolved with
         {
             PackageRoot = "packages",
             Packages = session.Packages.Select(p => new PackageReference(p.Id, p.Version)).ToArray(),
             Settings = session.Packages.ToDictionary(p => p.Id, p => p.Settings.Clone())
         };
-        var manifest = new PolicyManifest(2, DqnController.Architecture, options, session.ObservationKeys.ToArray(), session.ActionKeys.ToArray(),
+        var manifest = new PolicyManifest(3, factory.Architecture, options, session.ObservationKeys.ToArray(), session.ActionKeys.ToArray(),
             session.Packages.ToArray(), session.Controller.Status.Steps, Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(weights))))
             { ControllerState = session.Controller.InferenceState.Clone() };
         string manifestPath = Path.Combine(path, "manifest.json");
@@ -69,7 +71,12 @@ public static class RuntimeCheckpoint
         string path = Resolve(directory);
         var manifest = JsonSerializer.Deserialize<PolicyManifest>(File.ReadAllText(Path.Combine(path, "manifest.json")), PackageCatalog.Json)
             ?? throw new InvalidDataException("Missing policy metadata.");
-        if (manifest.FormatVersion != 2 || manifest.Architecture != DqnController.Architecture) throw new InvalidDataException("Unsupported policy architecture.");
+        if (manifest.FormatVersion is not (2 or 3)) throw new InvalidDataException("Unsupported policy format.");
+        var resolved = ControllerRegistry.Resolve(manifest.FormatVersion == 2 ? manifest.Options with { Controller = null } : manifest.Options);
+        if (manifest.FormatVersion == 2 && manifest.Architecture != DqnController.Architecture ||
+            manifest.FormatVersion == 3 && manifest.Architecture != ControllerRegistry.Factory(resolved.Controller!.Algorithm).Architecture)
+            throw new InvalidDataException("Unsupported policy architecture.");
+        manifest = manifest with { Options = resolved };
         string actual = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(path, "weights.bin"))));
         if (actual != manifest.WeightSha256) throw new InvalidDataException("Policy checksum mismatch.");
         if (!Path.IsPathRooted(manifest.Options.PackageRoot)) manifest = manifest with
@@ -97,7 +104,7 @@ public static class RuntimeCheckpoint
             var installed = catalog.Read(new(expected.Id, expected.Version));
             if (!RuntimeSession.SameLogic(expected, installed with { Settings = expected.Settings })) throw new InvalidDataException($"Policy module changed: {expected.Id}.");
         }
-        var runtime = new RuntimeSession(manifest.Options, new DqnController(manifest.Options.Network, manifest.Options.Learning), catalog,
+        var runtime = new RuntimeSession(manifest.Options, ControllerRegistry.Create(manifest.Options), catalog,
             manifest.ObservationKeys, manifest.ActionKeys);
         try
         {

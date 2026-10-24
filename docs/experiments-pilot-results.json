@@ -1,0 +1,1456 @@
+{
+  "SchemaVersion": 1,
+  "RecordedDate": "2026-10-24",
+  "Configuration": "configs/experiments-pilot.json",
+  "Purpose": "Infrastructure and reproducibility pilot; no claim of algorithm superiority",
+  "TechnicalStatus": "completed",
+  "BehaviorOutcome": "not-assessed",
+  "TrialsPerSeries": 12,
+  "Series": 2,
+  "TrainingSeeds": [
+    42,
+    73,
+    101
+  ],
+  "EvaluationSeeds": [
+    1001,
+    2002
+  ],
+  "TrainingStepsPerTrial": 6000,
+  "EvaluationStepsPerEpisode": 1000,
+  "EvaluationEpisodesPerTrial": 38,
+  "AbsoluteTolerance": 1E-09,
+  "ReproducedPairs": 12,
+  "ExactlyEqualComparableResults": 12,
+  "ProtocolHash": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+  "ExecutionHash": "79552DC597F73D74E0C9BE77130D2C48DAAD6A90287427E5E3BCB7EA7486CE06",
+  "Environment": {
+    "Framework": ".NET 10.0.13",
+    "OS": "Microsoft Windows 10.0.26200",
+    "Architecture": "X64",
+    "CPU": "Intel64 Family 6 Model 151 Stepping 2, GenuineIntel",
+    "TorchSharp": "0.107.0.0",
+    "LibTorch": "2.10.0",
+    "ParentGitRevision": "8544519067e5505d335dd05b0837626a23924ca3",
+    "SourceDiffHash": "4195D2AE8AE4B3257924875AF466E7C42B92BD5F68AFE903B994CFE50B50613B"
+  },
+  "Tests": {
+    "Passed": 144,
+    "Failed": 0,
+    "GodotSmokeSteps": 3000,
+    "GodotRetiredContexts": 33
+  },
+  "Warnings": [],
+  "Reproductions": [
+    {
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Seed": 42,
+      "Matches": true,
+      "Difference": null
+    },
+    {
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Seed": 73,
+      "Matches": true,
+      "Difference": null
+    },
+    {
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Seed": 101,
+      "Matches": true,
+      "Difference": null
+    },
+    {
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Seed": 42,
+      "Matches": true,
+      "Difference": null
+    },
+    {
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Seed": 73,
+      "Matches": true,
+      "Difference": null
+    },
+    {
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Seed": 101,
+      "Matches": true,
+      "Difference": null
+    },
+    {
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Seed": 42,
+      "Matches": true,
+      "Difference": null
+    },
+    {
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Seed": 73,
+      "Matches": true,
+      "Difference": null
+    },
+    {
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Seed": 101,
+      "Matches": true,
+      "Difference": null
+    },
+    {
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Seed": 42,
+      "Matches": true,
+      "Difference": null
+    },
+    {
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Seed": 73,
+      "Matches": true,
+      "Difference": null
+    },
+    {
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Seed": 101,
+      "Matches": true,
+      "Difference": null
+    }
+  ],
+  "TrialDigests": [
+    {
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Seed": 42,
+      "TrainingActionHash": "D708EF6177F747E9E32AFA0F5E11269F38DF37E6A78F6F47602D00E961D27580",
+      "Updates": 1470,
+      "EvaluationEpisodes": 38
+    },
+    {
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Seed": 73,
+      "TrainingActionHash": "EE95EBA044BA8302A9B6BB96FBE5D53D434DBBE761D5B5DFF1B4C039EC7B3913",
+      "Updates": 1470,
+      "EvaluationEpisodes": 38
+    },
+    {
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Seed": 101,
+      "TrainingActionHash": "F9E4F4039A2BE14344288E76A219F307E839959F3ECF75DF6FCB86688A09B191",
+      "Updates": 1470,
+      "EvaluationEpisodes": 38
+    },
+    {
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Seed": 42,
+      "TrainingActionHash": "DA2E1FBCD50564F88E889FA667230CA6D3D070DF7C6E5DC5D724EC399F212E27",
+      "Updates": 1470,
+      "EvaluationEpisodes": 38
+    },
+    {
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Seed": 73,
+      "TrainingActionHash": "7FE02476167F9CF5DCD3F9D30658FDF381110C70CA130A12BA168BFEA7CCF699",
+      "Updates": 1470,
+      "EvaluationEpisodes": 38
+    },
+    {
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Seed": 101,
+      "TrainingActionHash": "57FC49AB099C58CBEF3EA73777C0DC572821148A8D1F96DBFE1C79F35E4C8E75",
+      "Updates": 1470,
+      "EvaluationEpisodes": 38
+    },
+    {
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Seed": 42,
+      "TrainingActionHash": "C29CA60072DF98563161B3EAA34AD90ACA9EFDE29F0B92FA0F4F096EF3125FEE",
+      "Updates": 1470,
+      "EvaluationEpisodes": 38
+    },
+    {
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Seed": 73,
+      "TrainingActionHash": "202B8B775198EA789772F3226CFA557A579F07326A4F7C1CE1B65ECC8BDF781D",
+      "Updates": 1470,
+      "EvaluationEpisodes": 38
+    },
+    {
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Seed": 101,
+      "TrainingActionHash": "2077B6748D57EA6D68AC0B0ED76BCFD43DE55F9F915D14F12F7682CF60469DF6",
+      "Updates": 1470,
+      "EvaluationEpisodes": 38
+    },
+    {
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Seed": 42,
+      "TrainingActionHash": "140382F193D08EE478ACA0FB76850E31B14F356497CF6E5F714F004BFE0E89EC",
+      "Updates": 1470,
+      "EvaluationEpisodes": 38
+    },
+    {
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Seed": 73,
+      "TrainingActionHash": "BB172A482C571654796DB74A450A34532B6AC5485C948275C074192E3B2B812F",
+      "Updates": 1470,
+      "EvaluationEpisodes": 38
+    },
+    {
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Seed": 101,
+      "TrainingActionHash": "42F6380E4E6459C9CBB014A2A3FFEDA9D8AB377E856082AB408D550A93BC4D14",
+      "Updates": 1470,
+      "EvaluationEpisodes": 38
+    }
+  ],
+  "Metrics": [
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Scenario": "thermal-wildlife",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.013894263684117345,
+      "StandardDeviation": 7.62263064873761E-05,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.013850895160021252
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.013982279146508837
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.013849616745821944
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Scenario": "thermal-wildlife",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.013850119798291746,
+      "StandardDeviation": 6.997462662063435E-07,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.013849923121092008
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.013849539437107913
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.013850896836675317
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Scenario": "thermal-wildlife",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.0961221167599677,
+      "StandardDeviation": 0.11293995919953838,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.013968405313899002
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.04948631572401172
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.22491162924199237
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Scenario": "thermal-wildlife",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.01393822659658484,
+      "StandardDeviation": 7.63017647474889E-05,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.013975874179433925
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.013988387976993068
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.013850417633327524
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Scenario": "thermal-wildlife",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.03266666666666667,
+      "StandardDeviation": 0.01675062187900298,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.0225
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.052
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.0235
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Scenario": "thermal-wildlife",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.06199999999999999,
+      "StandardDeviation": 0.04472415454762672,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.11149999999999999
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.05
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.0245
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Scenario": "thermal-wildlife",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.16833333333333333,
+      "StandardDeviation": 0.10144128022325692,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.28200000000000003
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.087
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.136
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Scenario": "thermal-wildlife",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.073,
+      "StandardDeviation": 0.039411292797877105,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.051
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.0495
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.1185
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Scenario": "thermal-wildlife",
+      "Phase": "final",
+      "Measure": "retention-change",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": -0.024591530152675373,
+      "StandardDeviation": 0.04259828174991486,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": -0.07377978881953634
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 6.476887799342773E-06
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": -1.2785262891099047E-06
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Scenario": "thermal-wildlife",
+      "Phase": "final",
+      "Measure": "retention-change",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": -0.06784981553975661,
+      "StandardDeviation": 0.060520203683277984,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": -0.11626213620061004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": -0.08728859145671698
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 1.2810380571742774E-06
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Scenario": "thermal-wildlife",
+      "Phase": "final",
+      "Measure": "retention-change",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.06311909694971599,
+      "StandardDeviation": 0.12859119739689664,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.00011878943595217302
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": -0.021823512004727506
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.2110620134179233
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Scenario": "thermal-wildlife",
+      "Phase": "final",
+      "Measure": "retention-change",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": -0.0023550555665240846,
+      "StandardDeviation": 0.004079832588032352,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 7.192072443151787E-08
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": -0.0070660404335747065
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 8.018132780212434E-07
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "adaptation-change",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "adaptation-change",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": -0.015680000000000027,
+      "StandardDeviation": 0.027158556662680043,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": -0.04704000000000008
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "adaptation-change",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "adaptation-change",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": -0.009133333333333346,
+      "StandardDeviation": 0.015819397375795765,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": -0.027400000000000035
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "frozen",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.5005000000000004,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "frozen",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.5005000000000004,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "frozen",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.5005000000000004,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "frozen",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.5005000000000004,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.5005000000000004,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.4848200000000003,
+      "StandardDeviation": 0.027158556662680043,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.4534600000000003
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.5005000000000004,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.491366666666667,
+      "StandardDeviation": 0.01581939737579577,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.47310000000000035
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.013895640061392295,
+      "StandardDeviation": 7.750024177491961E-05,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.013850895279771513
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.013985129632294317
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.013850895272111054
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.013889620773730809,
+      "StandardDeviation": 6.831584197211686E-05,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.01384992337001037
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.013850434389686531
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.013968504561495529
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.014793869110296239,
+      "StandardDeviation": 0.0015703797455647536,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.01387059896898293
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.01660708537714478
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.013903922984761003
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.022822748548212337,
+      "StandardDeviation": 0.015431238789513444,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.04064106349573779
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.013975799611464997
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.01385138253743422
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.028,
+      "StandardDeviation": 0.0031224989991991995,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.0315
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.027000000000000003
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.0255
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.060166666666666674,
+      "StandardDeviation": 0.04120173944548135,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.10550000000000001
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.05
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.025
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.09683333333333334,
+      "StandardDeviation": 0.04361574639202376,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.1005
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.051500000000000004
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.1385
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.10616666666666667,
+      "StandardDeviation": 0.11046530375341086,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.049
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.036
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.23349999999999999
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "random",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.5005000000000004,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "random",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.5005000000000004,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "random",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.5005000000000004,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "random",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.5005000000000004,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "untrained",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.49153333333333366,
+      "StandardDeviation": 0.015530722241200954,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.47360000000000035
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-improvement--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "untrained",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.49153333333333366,
+      "StandardDeviation": 0.015530722241200954,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.47360000000000035
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-prioritized",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "untrained",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.49153333333333366,
+      "StandardDeviation": 0.015530722241200954,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.47360000000000035
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "D1FAC25F9AE63F91652E514359826FCA8BFB9B17C66FF65D24910CB4CDC7E07C",
+      "Variant": "homeostasis-level--dqn-uniform",
+      "Scenario": "with-hunger",
+      "Phase": "with-hunger",
+      "Measure": "untrained",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.49153333333333366,
+      "StandardDeviation": 0.015530722241200954,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5005000000000004
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.47360000000000035
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5005000000000004
+        }
+      ]
+    }
+  ],
+  "RawArtifacts": [
+    "artifacts/experiments/pilot-a",
+    "artifacts/experiments/pilot-b",
+    "artifacts/experiments/comparison"
+  ],
+  "Limitations": [
+    "Short training budget and only three training seeds; behavioral criteria deliberately unspecified",
+    "Boar proximity is a proxy, not actual harm or survival",
+    "Exact equality was observed only in the recorded environment"
+  ]
+}

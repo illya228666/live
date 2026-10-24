@@ -103,7 +103,7 @@ public static class ContinualExperiment
         var metrics = new MetricAccumulator();
         foreach (int seed in seeds)
         {
-            var options = manifest.Options with { Learning = manifest.Options.Learning with { Seed = seed } };
+            var options = manifest.Options with { WorldSeed = seed, ControllerSeed = seed, Learning = manifest.Options.Learning with { Seed = seed } };
             using var runtime = new RuntimeSession(options, new DqnController(options.Network, options.Learning),
                 observationKeys: manifest.ObservationKeys, actionKeys: manifest.ActionKeys);
             runtime.Controller.Import(Path.Combine(RuntimeCheckpoint.Resolve(policyPath), "weights.bin"));

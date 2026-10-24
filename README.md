@@ -1,5 +1,11 @@
 # ArtificialLife
 
+Headless Motivation × Learning studies now have configurable variants, fixed phases/seeds,
+independent behavioral evaluation, policy exports and comparison reports. See the
+[experiment guide](docs/experiments.md) and `configs/experiments-pilot.json`.
+The [reproducibility pilot](docs/experiments-pilot-report.md) records two complete
+12-trial series, including negative behavioral results.
+
 A small simulated creature learns to regulate its own body temperature in a changing 2D thermal environment. Its brain is a local TorchSharp neural network trained through reinforcement learning, entirely in C#.
 
 The experiment asks one question: **can a fixed neural architecture learn homeostasis while its observations and available actions remain extensible?**
@@ -149,7 +155,7 @@ Settings live in `configs/live-training.json`, separately from DQN/physics confi
 ./tools/run-godot.ps1 -Checkpoint artifacts/checkpoints/live-thermal
 ```
 
-Saves record the actual completed step count and remain inference checkpoints; they do not resume optimizer/replay state. Live saves use format v2: an atomic `current` pointer selects an immutable policy generation with weights, architecture/registry metadata and archived package versions. Compatible format-v1 policies still import. Full reset intentionally restarts the configured deterministic seed. Application owns the single synchronous runtime; Godot requests bounded work and draws copied snapshots through package-owned presentation. See [runtime notes](docs/runtime-modules.md).
+Saves record the actual completed step count and remain inference checkpoints; they do not resume optimizer/replay state. Live saves use format v3: an atomic `current` pointer selects an immutable policy generation with weights, controller/architecture/registry metadata and archived package versions. Compatible format-v1/v2 DQN policies still import. Full reset intentionally restarts the configured deterministic seed. Application owns the single synchronous runtime; Godot requests bounded work and draws copied snapshots through package-owned presentation. See [runtime notes](docs/runtime-modules.md).
 
 ## Measured experiment
 

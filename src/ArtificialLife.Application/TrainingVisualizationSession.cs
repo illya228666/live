@@ -30,7 +30,7 @@ public sealed class TrainingVisualizationSession : IDisposable
         : this(RuntimeDefaults.FromLegacy(options), visualOptions) { }
     public TrainingVisualizationSession(RuntimeOptions options, TrainingVisualizationOptions? visualOptions = null)
     {
-        this.options = options;
+        this.options = ControllerRegistry.Resolve(options);
         this.visualOptions = visualOptions ?? new();
         this.visualOptions.Validate();
         ResetTraining();
@@ -89,7 +89,7 @@ public sealed class TrainingVisualizationSession : IDisposable
         var presentation = runtime?.PresentationHost;
         evaluation?.Dispose(); evaluation = null; evaluationMetrics = null;
         runtime?.Dispose();
-        runtime = new(options, new DqnController(options.Network, options.Learning), presentationHost: presentation);
+        runtime = new(options, ControllerRegistry.Create(options), presentationHost: presentation);
         metrics = new(visualOptions.RollingMetricWindow);
         history.Clear(); trail.Clear(); life++;
     }
@@ -99,7 +99,7 @@ public sealed class TrainingVisualizationSession : IDisposable
         var displayed = evaluation ?? runtime;
         var status = runtime.Controller.Status;
         var training = new TrainingViewModel(status.Steps, life, runtime.Snapshot().Age, Evaluating ? 0 : status.Epsilon,
-            status.Loss, status.Updates, status.ReplayCount, options.Learning.ReplayCapacity,
+            status.Loss, status.Updates, status.ReplayCount, options.Controller?.Algorithm == "dqn" ? options.Learning.ReplayCapacity : 0,
             (evaluationMetrics ?? metrics).Metrics(), Evaluating);
         return new(new(displayed.Snapshot(), displayed.LastReward, Evaluating ? "Evaluation · frozen policy" : "Live training", displayed.Report()),
             training, Array.AsReadOnly(history.ToArray()), Array.AsReadOnly(trail.ToArray()));

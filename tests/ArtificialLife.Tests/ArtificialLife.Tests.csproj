@@ -2,6 +2,7 @@
   <PropertyGroup><OutputType>Exe</OutputType><IsTestProject>true</IsTestProject><IsPackable>false</IsPackable></PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../src/ArtificialLife.Application/ArtificialLife.Application.csproj" />
+    <ProjectReference Include="../../src/ArtificialLife.Cli/ArtificialLife.Cli.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="../../src/ArtificialLife.Modules.Wildlife/ArtificialLife.Modules.Wildlife.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="../../src/ArtificialLife.Modules.Wildlife.Presentation.Godot/ArtificialLife.Modules.Wildlife.Presentation.Godot.csproj" ReferenceOutputAssembly="false" />
     <PackageReference Include="xunit.v3" />

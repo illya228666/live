@@ -25,10 +25,10 @@ public static class RuntimeCommands
     {
         var arguments = Arguments(args);
         if (arguments.Keys.Any(k => k is not ("--config" or "--steps" or "--checkpoint" or "--trajectory"))) throw new ArgumentException("Unknown live option.");
-        var options = ReadOptions(arguments.GetValueOrDefault("--config", "configs/runtime.json"));
+        var options = ControllerRegistry.Resolve(ReadOptions(arguments.GetValueOrDefault("--config", "configs/runtime.json")));
         long limit = arguments.TryGetValue("--steps", out string? text) ? long.Parse(text) : long.MaxValue;
         if (limit <= 0) throw new ArgumentException("Steps must be positive.");
-        using var runtime = new RuntimeSession(options, new DqnController(options.Network, options.Learning));
+        using var runtime = new RuntimeSession(options, ControllerRegistry.Create(options));
         using var trajectory = arguments.TryGetValue("--trajectory", out string? trajectoryPath) ? new StreamWriter(trajectoryPath) : null;
         long loggedRevision = -1;
         if (trajectory is not null) runtime.TrajectorySink = t =>
