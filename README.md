@@ -38,6 +38,8 @@ No LLM, external AI service, sprite assets or additional game mechanics are invo
 
 ## Quick start: Windows x64
 
+For a graphical launcher with run modes, training-speed presets, configuration and checkpoint pickers, use the **ArtificialLife.Launcher** project in `ArtificialLife.sln` (F5 in Visual Studio). Visual Studio Code users can press F5 and choose **ArtificialLife: лаунчер**. See [the Russian launcher guide](docs/launcher.ru.md).
+
 Clone the repository into a writable directory. Windows PowerShell 5.1 or PowerShell 7 and internet access are sufficient; administrator privileges are not needed.
 
 ```powershell

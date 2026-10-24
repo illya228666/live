@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <RootNamespace>ArtificialLife.Launcher</RootNamespace>
+    <AssemblyName>ArtificialLife.Launcher</AssemblyName>
+  </PropertyGroup>
+</Project>

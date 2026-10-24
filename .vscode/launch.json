@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ArtificialLife: лаунчер",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "ArtificialLife: собрать лаунчер",
+      "program": "${workspaceFolder}\\src\\ArtificialLife.Launcher\\bin\\Debug\\net8.0-windows\\ArtificialLife.Launcher.exe",
+      "cwd": "${workspaceFolder}\\src\\ArtificialLife.Launcher\\bin\\Debug\\net8.0-windows",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "ArtificialLife: собрать лаунчер",
+      "type": "process",
+      "command": "${workspaceFolder}\\.tools\\dotnet\\dotnet.exe",
+      "args": [
+        "build",
+        "${workspaceFolder}\\src\\ArtificialLife.Launcher\\ArtificialLife.Launcher.csproj",
+        "-c",
+        "Debug"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}
