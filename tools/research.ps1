@@ -5,7 +5,7 @@ param(
     [string]$Campaign = 'local', [string]$Id, [string]$Branch, [string]$Config, [string]$Hypothesis,
     [ValidateSet('pilot','full','diagnostic')][string]$Stage = 'pilot', [string]$DecisionRule,
     [string[]]$Metrics = @('temperature.mae','hunger.mean','wildlife.proximity'),
-    [string]$Text, [string]$Next, [double]$Minutes = 0, [int]$Parallel = 0, [int]$Threads = 0,
+    [string]$Text, [string]$Next, [string]$ScenarioReview, [double]$Minutes = 0, [int]$Parallel = 0, [int]$Threads = 0,
     [double]$TrialTimeoutMinutes = 0, [switch]$Force, [switch]$Resume, [string]$Destination
 )
 . (Join-Path $PSScriptRoot 'common.ps1')
@@ -71,6 +71,11 @@ function Write-Context {
         $lines.Add("`nLast session deadline (UTC): $($session.deadlineUtc). An expired deadline needs a new explicit session budget.")
     }
     $lines.Add("`nStop requested: $(Test-Path -LiteralPath $stopPath).")
+    $baselinePath=Join-Path $RepoRoot 'research/baseline.json'
+    if (Test-Path -LiteralPath $baselinePath) {
+        $baseline=Read-Json $baselinePath
+        $lines.Add("`nCurrent comparison baseline: $($baseline.id), $($baseline.experiment). Scope: $($baseline.scope) Review: $($baseline.review). Additional factors require their own passing review; repair trivial scenarios before scientific pilot/full runs.")
+    }
     $lines.Add("`n| Study | Stage | Status | Hypothesis | Full artifacts |`n|---|---|---|---|---|")
     foreach ($entry in Get-Entries) {
         $lines.Add("| $($entry.id) | $($entry.stage) | $(Get-StudyStatus $entry) | $($entry.hypothesis.statement.Replace('|','/')) | $($entry.output) |")
@@ -178,11 +183,17 @@ if ($Action -eq 'session') {
 if ($Action -eq 'note') {
     if (!$Text -or !$Next) { throw 'Notes require -Text (analysis/decision, including negative findings) and -Next.' }
     Add-Journal 'decision' @{study=$Id;text=$Text;next=$Next}
-    [IO.File]::AppendAllText((Join-Path $memoryRoot 'FINDINGS.md'), "`n## $([DateTimeOffset]::UtcNow.ToString('o')) — $Id`n`n$Text`n`nNext: $Next`n", [Text.UTF8Encoding]::new($false))
+    $subject=if ($Id) { $Id } else { $Campaign }
+    [IO.File]::AppendAllText((Join-Path $memoryRoot 'FINDINGS.md'), "`n## $([DateTimeOffset]::UtcNow.ToString('o')) — $subject`n`n$Text`n`nNext: $Next`n", [Text.UTF8Encoding]::new($false))
     Write-Context; return
 }
 if ($Action -eq 'add') {
-    if ($Id -notmatch '^[a-zA-Z0-9][a-zA-Z0-9_-]*$' -or !$Config -or !$Hypothesis -or !$DecisionRule -or $Metrics.Count -eq 0) { throw 'Add requires -Id, -Config, -Hypothesis, -DecisionRule and behavioral -Metrics.' }
+    $baselinePath=Join-Path $RepoRoot 'research/baseline.json'
+    $baseline=if (Test-Path -LiteralPath $baselinePath) { Read-Json $baselinePath } else { $null }
+    if (!$Config -and $null -ne $baseline) { $Config=Join-Path $RepoRoot $baseline.experiment }
+    if (!$ScenarioReview -and $Stage -ne 'diagnostic' -and $null -ne $baseline) { $ScenarioReview=Join-Path $RepoRoot $baseline.review }
+    if ($Id -notmatch '^[a-zA-Z0-9][a-zA-Z0-9_-]*$' -or !$Config -or !$Hypothesis -or !$DecisionRule -or $Metrics.Count -eq 0) { throw 'Add requires -Id, -Config (or the registered baseline), -Hypothesis, -DecisionRule and behavioral -Metrics.' }
+    if ($Stage -ne 'diagnostic' -and !$ScenarioReview) { throw 'Scientific pilot/full studies require a passing -ScenarioReview for every active factor. Repair trivial scenarios first; use diagnostic for the repair checks.' }
     $registration = Join-Path $memoryRoot ('studies/' + $Id + '.json')
     $studyRoot = Join-Path $artifactRoot ('studies/' + $Id)
     if ((Test-Path -LiteralPath $registration) -or (Test-Path -LiteralPath $studyRoot)) { throw 'Study ids are immutable. Use a new id (including for a repaired preflight).' }
@@ -193,16 +204,35 @@ if ($Action -eq 'add') {
     Initialize-Dotnet
     $bundle = Get-Bundle
     $executor = Join-Path $bundle 'ArtificialLife.Cli.exe'
+    if ($Stage -ne 'diagnostic') {
+        Invoke-Executor $executor @('scenario-validate-review','--config',[IO.Path]::GetFullPath($Config),'--review',[IO.Path]::GetFullPath($ScenarioReview))
+        if ($script:ResearchExitCode -ne 0) { throw 'Scenario suitability rejected: repair/re-audit the scenario instead of merely documenting an ineffective factor.' }
+    }
     Invoke-Executor $executor @('experiment-prepare','--config',[IO.Path]::GetFullPath($Config),'--output',$studyRoot)
     if ($script:ResearchExitCode -ne 0) { throw 'Experiment preflight failed. Partial preparation is retained; repair using a new study id.' }
     $plan = Read-Json (Join-Path $studyRoot 'plan.json')
     $spec = Read-Json (Join-Path $studyRoot 'config.json')
+    $reviewHash=$null
+    if ($ScenarioReview) {
+        $reviewPath=[IO.Path]::GetFullPath($ScenarioReview)
+        $review=Read-Json $reviewPath
+        $evidencePath=[IO.Path]::GetFullPath($review.Evidence,[IO.Path]::GetDirectoryName($reviewPath))
+        Copy-Item -LiteralPath $evidencePath -Destination (Join-Path $studyRoot 'scenario-evidence.json')
+        $review.Evidence='scenario-evidence.json'
+        Write-AtomicJson (Join-Path $studyRoot 'scenario-review.json') $review
+        $reviewHash=Get-Hash (Join-Path $studyRoot 'scenario-review.json')
+        if ($Stage -ne 'diagnostic') {
+            Invoke-Executor $executor @('scenario-validate-review','--config',(Join-Path $studyRoot 'config.json'),'--review',(Join-Path $studyRoot 'scenario-review.json'))
+            if ($script:ResearchExitCode -ne 0) { throw 'Frozen scenario or copied evidence does not match the review.' }
+        }
+    }
     if ($Stage -eq 'full' -and $spec.TrainingSeeds.Count -lt 2) { throw 'A full multi-seed comparison needs multiple training seeds; single-seed exploration uses pilot/diagnostic.' }
     $entry = [ordered]@{
         schemaVersion=1;id=$Id;stage=$Stage;registeredUtc=[DateTimeOffset]::UtcNow.ToString('o');hypothesis=$idea
         decisionRule=$DecisionRule;metrics=$Metrics;plan=$plan;configSha256=(Get-Hash (Join-Path $studyRoot 'config.json'))
         bundle=[IO.Path]::GetRelativePath($RepoRoot,$bundle);output=[IO.Path]::GetRelativePath($RepoRoot,(Join-Path $studyRoot 'results'))
         sourceRevision=(Git-Value @('rev-parse','HEAD'));sourceStatus=(Git-Value @('status','--short'))
+        scenarioReviewSha256=$reviewHash;scenarioCleared=($Stage -ne 'diagnostic')
     }
     Write-AtomicJson $registration $entry
     Copy-Item -LiteralPath $registration -Destination (Join-Path $studyRoot 'registration.json')
@@ -266,7 +296,16 @@ if ($Action -eq 'run') {
                 if ((Get-Hash (Join-Path $bundle $relative)) -ne $bundleManifest.files[$relative]) { throw 'Frozen executable bundle changed.' }
             }
             if ((Get-StudyStatus $entry) -eq 'completed') { continue }
+            if ($entry.stage -ne 'diagnostic' -and (!$entry.ContainsKey('scenarioCleared') -or !$entry.scenarioCleared)) {
+                throw 'Unfinished historical study has no passing scenario review. Preserve it; repair/audit and register a new scientific study, or use diagnostic for investigation.'
+            }
             $executor=Join-Path $bundle 'ArtificialLife.Cli.exe'
+            if ($entry.ContainsKey('scenarioCleared') -and $entry.scenarioCleared) {
+                $reviewPath=Join-Path $studyRoot 'scenario-review.json'
+                if ((Get-Hash $reviewPath) -ne $entry.scenarioReviewSha256) { throw 'Registered scenario review changed.' }
+                Invoke-Executor $executor @('scenario-validate-review','--config',$frozenConfig,'--review',$reviewPath)
+                if ($script:ResearchExitCode -ne 0) { throw 'Scenario review/evidence must remain valid before scientific execution.' }
+            }
             $left=($Minutes-$timer.Elapsed.TotalMinutes).ToString('R',[Globalization.CultureInfo]::InvariantCulture)
             $runnerArgs=@('experiment','--config',$frozenConfig,'--output',(Join-Path $RepoRoot $entry.output),'--parallel',"$workers",'--threads-per-worker',"$Threads",'--max-minutes',$left,'--trial-timeout-minutes',$TrialTimeoutMinutes.ToString('R',[Globalization.CultureInfo]::InvariantCulture),'--stop-file',$stopPath)
             Invoke-Executor $executor $runnerArgs

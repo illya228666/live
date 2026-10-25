@@ -13,7 +13,7 @@ if ($WorkerMemoryGiB -gt 0) {
 }
 $registration=Join-Path $RepoRoot ("research/campaigns/$Campaign/studies/$Study.json")
 if (!(Test-Path -LiteralPath $registration)) {
-    & $driver -Action add -Campaign $Campaign -Id $Study -Config (Join-Path $RepoRoot 'configs/research-smoke.json') -Hypothesis (Join-Path $RepoRoot 'research/smoke-hypothesis.json') -Stage pilot -DecisionRule 'Identical action hashes/counters/behavior within 1e-9 for sequential versus parallel execution; retained completed trials after stop/resume; context recovers conclusion and next step.' | Out-Null
+    & $driver -Action add -Campaign $Campaign -Id $Study -Config (Join-Path $RepoRoot 'configs/research-smoke.json') -Hypothesis (Join-Path $RepoRoot 'research/smoke-hypothesis.json') -Stage diagnostic -DecisionRule 'Identical action hashes/counters/behavior within 1e-9 for sequential versus parallel execution; retained completed trials after stop/resume; context recovers conclusion and next step.' | Out-Null
 }
 $entry=Get-Content -LiteralPath $registration -Raw | ConvertFrom-Json
 $studyRoot=Join-Path $RepoRoot ("artifacts/research/$Campaign/studies/$Study")

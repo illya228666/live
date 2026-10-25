@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "runtime": {
+    "packageRoot": "../artifacts/packages",
+    "world": {
+      "width": 40,
+      "height": 40,
+      "timeStep": 1,
+      "movementSpeed": 1.5,
+      "episodeSteps": 400
+    },
+    "packages": [
+      {
+        "id": "movement",
+        "version": "1.0.0"
+      },
+      {
+        "id": "vision",
+        "version": "1.0.0"
+      },
+      {
+        "id": "temperature",
+        "version": "1.0.0"
+      },
+      {
+        "id": "homeostasis",
+        "version": "1.0.0"
+      }
+    ],
+    "settings": {
+      "vision": {
+        "maxPerAppearance": 1
+      },
+      "temperature": {
+        "ambient": 28.1,
+        "fireStrength": 32,
+        "fireRadius": 6,
+        "oscillationPeriod": 240,
+        "oscillationAmplitude": 0.65,
+        "heatProduction": 0.3,
+        "heatTransfer": 0.12,
+        "target": 36.6,
+        "sensorDistance": 3,
+        "driveScale": 6,
+        "comfortHalfWidth": 1
+      }
+    }
+  },
+  "motivations": [
+    {
+      "settings": {
+        "maximumDriveWeight": 10,
+        "improvementWeight": 0.2
+      },
+      "package": {
+        "version": "1.0.0",
+        "id": "homeostasis"
+      },
+      "id": "weighted-homeostasis"
+    }
+  ],
+  "learners": [
+    {
+      "id": "dqn-reference",
+      "controller": {
+        "algorithm": "dqn",
+        "parameters": {
+          "learning": {},
+          "network": {}
+        }
+      }
+    }
+  ],
+  "trainingSeeds": [
+    42,
+    73,
+    101,
+    211,
+    509
+  ],
+  "evaluationSeeds": [
+    91001,
+    92003,
+    93011,
+    94009,
+    95003
+  ],
+  "episodesPerSeed": 1,
+  "evaluationSteps": 4000,
+  "evaluateEvery": 10000,
+  "phases": [
+    {
+      "id": "thermal-v2",
+      "steps": 100000
+    }
+  ],
+  "behavior": {
+    "evaluators": [
+      {
+        "id": "drives"
+      },
+      {
+        "id": "physical",
+        "parameters": {
+          "temperatureTarget": 36.6,
+          "temperatureTolerance": 1,
+          "hungerThreshold": 0.8,
+          "boarRadius": 10
+        }
+      },
+      {
+        "id": "stability-v1",
+        "parameters": {
+          "temperatureTolerance": 1,
+          "hungerThreshold": 0.8,
+          "temperatureTarget": 36.6,
+          "boarRadius": 10
+        }
+      }
+    ],
+    "criteria": [
+      {
+        "metric": "temperature.mae",
+        "scenario": "thermal-v2",
+        "maximum": 0.5
+      },
+      {
+        "metric": "temperature.outside",
+        "scenario": "thermal-v2",
+        "maximum": 0.1
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-25",
+  "baseline": "thermal-v2",
+  "tests": {
+    "failed": 0,
+    "passed": 163
+  },
+  "verificationSeeds": [
+    81001,
+    82003,
+    83009,
+    84011,
+    85021
+  ],
+  "controlsPerRun": 20,
+  "stepsPerControl": 4000,
+  "repeatedActionHashesAndMetrics": true,
+  "oldTrivialScenarioRejected": true,
+  "oldScientificRegistrationRejected": true,
+  "validBaselineRegistrationAccepted": true,
+  "changedReviewRejectedBeforeExecution": true,
+  "physicsCodeChanged": false,
+  "scope": "temperature only; all additional factors require their own suitability review and repair",
+  "fingerprint": "625BCD8F45F5C03DFEF5D1DC5016437BC151E711C9E4B88316150C4D1507F69D",
+  "unchangedPhysicsAcrossMetadataBuild": true,
+  "binaryStableAcrossSourceRevisionIds": true,
+  "coreSha256": "374D984BBBF915990B3B27A131FE351A350732B323F110508E3966AF2C05A8C4",
+  "temperatureSha256": "AFB7AF902C4208B2D07A59F043832B0EF6D4C45FED7D65DA7F2550E22DC5EB98",
+  "stableBuildAdmissionAccepted": true,
+  "noResearchLearnerTrialsRun": true
+}

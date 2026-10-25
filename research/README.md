@@ -1,5 +1,13 @@
 # Локальная исследовательская кампания
 
+Текущая проверенная база: [thermal-v2](../configs/research-baseline.json),
+[результаты проверки](../docs/temperature-scenario-v2-report.md).
+`-Action add` для pilot/full проверяет suitability review каждого активного
+фактора; по умолчанию берёт базу/review из `research/baseline.json`.
+Если фактор не требует адаптации, исследователь обязан исправить параметры
+сценария, повторить пассивный/активный контроль и зарегистрировать новую версию.
+Одного предупреждения в отчёте недостаточно.
+
 Готовая пустая кампания: `research/campaigns/local`. Рабочая ветка этого этапа —
 `codex/research-campaign-infrastructure`. Многочасовое исследование ещё не запущено.
 Работать из корня репозитория в **PowerShell 7.2+** (`pwsh`), на этом компьютере
@@ -37,7 +45,7 @@ tools/research.ps1, затем следуй research/RESEARCHER.md. Выбери
 ```powershell
 ./tools/research.ps1 -Action add -Campaign local -Id h01-pilot `
   -Hypothesis research/my-hypothesis.json -Config configs/my-pilot.json `
-  -Stage pilot -Metrics temperature.mae,hunger.mean,wildlife.proximity `
+  -Stage pilot -Metrics temperature.mae,temperature.outside `
   -DecisionRule 'Заранее записанное правило продолжения/отказа, baselines и допустимые компромиссы'
 ./tools/research.ps1 -Action run -Campaign local -Minutes 10
 ```
@@ -48,6 +56,13 @@ tools/research.ps1, затем следуй research/RESEARCHER.md. Выбери
 перед запуском. Новые исходники не меняют уже зарегистрированные trials.
 Если забыть пересобрать CLI/пакет, запустится именно предыдущая сохранённая сборка:
 команда сборки перед регистрацией обязательна при изменении реализации.
+
+Перед подготовкой также проверяется fingerprint физики/профиля оценки/горизонта
+и SHA256 доказательства пригодности. `-ScenarioReview PATH` задаёт review другого
+сценария; полный протокол и копия доказательств сохраняются вместе со study.
+Смена мотивации, learner или training budget не требует переаудита неизменной среды.
+Новый фактор или изменение среды/оценки требует новой проверки. `-Stage diagnostic`
+позволяет исследовать и исправлять плохие условия; это не допуск к научному сравнению.
 
 Стадия `full` предназначена для полноценных сравнений на нескольких training seed
 и независимых от подбора evaluation seed; `diagnostic` — для разбора конкретного

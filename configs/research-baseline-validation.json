@@ -1,0 +1,13 @@
+{
+  "seeds": [
+    81001,
+    82003,
+    83009,
+    84011,
+    85021
+  ],
+  "maximumStationaryComfortFraction": 0.65,
+  "minimumActiveComfortFraction": 0.9,
+  "maximumActiveMae": 0.5,
+  "minimumPeriods": 8
+}

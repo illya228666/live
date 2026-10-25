@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "thermal-v2",
+  "experiment": "configs/research-baseline.json",
+  "review": "research/scenarios/temperature-v2-review.json",
+  "scope": "Temperature only. Additional factors must pass their own passive/active checks before scientific comparison.",
+  "fingerprint": "625BCD8F45F5C03DFEF5D1DC5016437BC151E711C9E4B88316150C4D1507F69D",
+  "protocol": "docs/temperature-scenario-v2-protocol.md",
+  "evidence": "docs/temperature-scenario-v2-results.json",
+  "rule": "Repair scenarios whose factors are trivial or unsolvable; a caveat alone is not enough."
+}

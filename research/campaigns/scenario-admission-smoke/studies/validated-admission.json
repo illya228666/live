@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "id": "validated-admission",
+  "stage": "pilot",
+  "registeredUtc": "2026-10-25T10:45:38.0990661+00:00",
+  "hypothesis": {
+    "statement": "Admission accepts the audited thermal baseline and rejects old trivial physics before scientific experiments.",
+    "direction": "scenario validity",
+    "rationale": "Guard the existing research process without algorithm training.",
+    "falsification": "Old trivial or changed factors are accepted without matching passing evidence.",
+    "sources": [
+      {
+        "readOn": "2026-10-25",
+        "title": "Thermal v2 audit",
+        "urlOrDoi": "docs/temperature-scenario-v2-protocol.md"
+      }
+    ]
+  },
+  "decisionRule": "Accept only matching independently audited physical conditions; no algorithm trial is required for this admission test.",
+  "metrics": [
+    "temperature.mae"
+  ],
+  "plan": {
+    "SchemaVersion": 1,
+    "ExpectedRuns": 2,
+    "Protocols": [
+      "A564425E3AC55908643000F6A07426C383593774BEF6334ECAF0DA48D7510213"
+    ],
+    "ConfigurationHash": "A8A432A246F199107A063E00010E758E13CF3F4DA4AC1E5B374E8EC008DA4E10",
+    "TrainingSeeds": [
+      17,
+      23
+    ],
+    "EvaluationSeeds": [
+      91001,
+      92003,
+      93011,
+      94009,
+      95003
+    ],
+    "TrainingStepsPerTrial": 16,
+    "PreparedUtc": "2026-10-25T11:45:37.739914+01:00"
+  },
+  "configSha256": "4A1119980ECE7A9B5D13917A400E0DF1DEF3DC1D304DE93FA174C4DF8B529EBD",
+  "bundle": "artifacts\\research\\scenario-admission-smoke\\bundles\\CAD98E43AEE26AEC2FC200D03A202AD521BAE08E5F2C0E90361798E3DF4C5F40",
+  "output": "artifacts\\research\\scenario-admission-smoke\\studies\\validated-admission\\results",
+  "sourceRevision": "f00cb844c4d051ec70490002417ead48a0d3b1a5",
+  "sourceStatus": "M AGENTS.md\n M README.md\n M docs/experiments.md\n M research/BASELINE.md\n M research/README.md\n M research/RESEARCHER.md\n M src/ArtificialLife.Cli/Program.cs\n M src/ArtificialLife.Godot.Contracts/packages.lock.json\n M tools/research-smoke.ps1\n M tools/research.ps1\n?? configs/research-baseline-validation.json\n?? configs/research-baseline.json\n?? docs/temperature-scenario-v2-protocol.md\n?? docs/temperature-scenario-v2-report.md\n?? docs/temperature-scenario-v2-results.json\n?? research/baseline.json\n?? research/campaigns/scenario-admission-smoke/\n?? research/scenarios/\n?? src/ArtificialLife.Application/ScenarioSuitability.cs\n?? src/ArtificialLife.Application/TemperatureScenarioAudit.cs\n?? tests/ArtificialLife.Tests/ScenarioSuitabilityTests.cs",
+  "scenarioReviewSha256": "AA869AE5D50DD88F05475D84A105B3C2C1E1DBDD9F41D93811AA955FC43F4EA7",
+  "scenarioCleared": true
+}

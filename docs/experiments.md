@@ -1,5 +1,12 @@
 # Эксперименты Motivation × Learning
 
+Для **новых научных сравнений** использовать `configs/research-baseline.json`
+(thermal-v2) и passing review из `research/baseline.json`. Сценарий и проверка:
+[thermal-v2](temperature-scenario-v2-report.md). Исторические pilot/drive-motivation
+конфигурации ниже сохраняют прежние условия ради воспроизводимости; их нельзя
+считать новой проверенной базой. Если фактор не требует адаптации, сначала
+исправить общий сценарий и повторить проверку, затем сравнивать подходы.
+
 Сравнение Drive Reduction / Drive Level / Weighted Homeostasis использует
 `configs/drive-motivation-pilot.json` и `configs/drive-motivation.json`.
 Формулы, фиксированный протокол и метрики стабильности описаны в

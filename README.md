@@ -1,5 +1,10 @@
 # ArtificialLife
 
+New approach comparisons use the validated [thermal-v2 baseline](configs/research-baseline.json).
+[Scenario validation](docs/temperature-scenario-v2-report.md) excludes permanent
+comfort at any fixed position and demonstrates sensor-based active regulation.
+Additional factors require their own suitability checks and repairs before research.
+
 For local autonomous research in Codex, start with the [campaign guide](research/README.md).
 It adds durable research memory, frozen preregistrations, bounded Windows execution,
 stop/resume and artifact backups on top of the existing experiment runner.

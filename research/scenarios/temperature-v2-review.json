@@ -1,0 +1,16 @@
+{
+  "SchemaVersion": 1,
+  "Fingerprint": "625BCD8F45F5C03DFEF5D1DC5016437BC151E711C9E4B88316150C4D1507F69D",
+  "Passed": true,
+  "Factors": [
+    {
+      "Factor": "temperature",
+      "Verdict": "requires-adaptation",
+      "PassiveEvidence": "Analytical all-position bound, best-static grid and stationary runtime controls.",
+      "ActiveEvidence": "Local thermal sensors + body-temperature feedback, no training; see per-seed controls.",
+      "RepairRule": "If passivity is sufficient or active feasibility fails, repair common scenario parameters and rerun this audit before comparing methods."
+    }
+  ],
+  "Evidence": "../../docs/temperature-scenario-v2-results.json",
+  "EvidenceSha256": "B79A443D4CC06C2B34F03D13D59CD9FB4B209C8694404067E6448B17EA44BC90"
+}
