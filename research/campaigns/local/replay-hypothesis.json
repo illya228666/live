@@ -1,0 +1,32 @@
+{
+  "statement": "On ecology-v2, replay prioritization at fixed original motivation improves balanced behavior versus uniform replay after100000 primitive training transitions; longer exposure also tests whether earlier20k negatives were premature.",
+  "direction": "learning-only: replay sampling",
+  "rationale": "Previous20k pilots ended at epsilon.62 and acquired almost no food. Useful acquisition experiences may be rare and diluted in replay; TD-error prioritization can reuse them. Both treatments train100k with unchanged optimizer/network/exploration/discount so the contrast isolates sampling, while learning curves reveal exposure effects. No p4 or persistent exploration.",
+  "falsification": "No promotion unless prioritized replay improves the worst fixed-criterion ratio by>=10% in>=2/3 paired training seeds and lowers mean hunger by>=.05 in>=2 seeds, without aggregate thermal MAE, proximity or contact worsening>10%. Regardless of the contrast, any learner satisfying every fixed criterion on all3 seeds is eligible for an independent full confirmation. Final100k only; no retrospective best checkpoint choice.",
+  "sources": [
+    {
+      "title": "Prioritized Experience Replay",
+      "authors": "Schaul, Quan, Antonoglou and Silver",
+      "urlOrDoi": "https://arxiv.org/html/1511.05952",
+      "versionRead": "v4 (2016-02-25)",
+      "readOn": "2026-10-26",
+      "sectionsRead": "3.1-3.4, Algorithm1, sections4-5; reread3.3-3.4 at campaign resume",
+      "mechanism": "Sample transitions proportional to (absolute TD error plus epsilon)^alpha and apply importance weights to reduce sampling bias.",
+      "limitations": "TD error may reflect stochasticity, not useful novelty. Live's existing implementation uses constant beta.4, epsilon1e-5 and batch-local max-weight normalization rather than the source's annealing beta to1 and global normalization. Optimizer is held fixed for causal isolation, while the paper also adjusted step size. This is a fixed Live implementation study, not a full replication. Historical very short PER pilots were negative in different physics; this new test does not erase them."
+    }
+  ],
+  "protocol": {
+    "config": "configs/research-replay-pilot.json",
+    "baseline": "ecology-v2",
+    "trainingSeeds": [42,73,101],
+    "evaluationSeeds": [91001,92003,93011,94009,95003],
+    "trainingSteps": 100000,
+    "evaluationSteps": 12000,
+    "evaluateEvery": 25000,
+    "controls": "Uniform alpha0, PER alpha.6; original weighted-homeostasis, beta.4, primitive epsilon-greedy duration1; runner random/untrained/initial frozen.",
+    "primary": "Per training seed, mean metrics over5 evaluation worlds, then max of the six metric/threshold ratios from unchanged ecology-v2 criteria. Training replicates N=3, not15.",
+    "checkpointRule": "Use final100k for decision; report all intermediate policies. No selection by reward or best seed.",
+    "fullRule": "New training seeds and new held-out evaluation seeds, fixed final budget, all needs checked per seed/world; do not call pilot confirmation.",
+    "compute": "Two CPU workers only while measured RAM leaves reserve2GiB;10min drainable slices, per-trial timeout8min. User explicitly authorizes continued research without a30min cap."
+  }
+}

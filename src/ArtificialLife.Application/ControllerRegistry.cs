@@ -25,7 +25,8 @@ public static class ControllerRegistry
 {
     private static readonly Dictionary<string, IAgentControllerFactory> factories = new(StringComparer.Ordinal)
     {
-        ["dqn"] = new DqnControllerFactory()
+        ["dqn"] = new DqnControllerFactory(),
+        ["relational-sarsa"] = new RelationalSarsaFactory()
     };
 
     public static void Register(IAgentControllerFactory factory)
@@ -71,6 +72,20 @@ public static class ControllerRegistry
     }
 
     public sealed record DqnParameters(NetworkOptions Network, LearningOptions Learning);
+
+    private sealed class RelationalSarsaFactory : IAgentControllerFactory
+    {
+        public string Algorithm => "relational-sarsa";
+        public string Architecture => RelationalSarsaController.Architecture;
+        public JsonElement ResolveParameters(JsonElement parameters)
+        {
+            var strict = new JsonSerializerOptions(PackageCatalog.Json) { UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow };
+            var value = parameters.Deserialize<RelationalSarsaOptions>(strict) ?? throw new InvalidDataException("Missing Sarsa parameters.");
+            value.Validate(); return JsonSerializer.SerializeToElement(value, PackageCatalog.Json);
+        }
+        public IAgentController Create(JsonElement parameters, int seed) => new RelationalSarsaController(parameters.Deserialize<RelationalSarsaOptions>(PackageCatalog.Json)!, seed);
+        public bool Supports(IAgentController controller) => controller is RelationalSarsaController;
+    }
 
     private sealed class DqnControllerFactory : IAgentControllerFactory
     {

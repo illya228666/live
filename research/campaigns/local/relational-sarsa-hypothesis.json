@@ -1,0 +1,31 @@
+{
+  "statement": "Relational action features and linear true-online Sarsa acquire useful multi-need behavior in ecology-v2; at identical representation, eligibility traces lambda.9 outperform lambda0 at100k transitions.",
+  "direction": "learning-only: representation/control learner, with trace ablation",
+  "rationale": "Scalar DQN100k learns thermal control but hardly forages. Its mean-pooled encoded tokens must learn distance inversion and action-relative geometry. Supply generic visual distance kernels and action-dependent changes as a fixed inductive bias, then learn all signed utilities from the existing reward. True-online traces may propagate sparse food benefits. Lambda0/9 comparison isolates traces inside the new representation; comparisons with DQN conflate representation and learner and must be labeled accordingly.",
+  "falsification": "No confirmation if neither variant passes every fixed ecology-v2 criterion on all3 training seeds. A partial mechanism lead may be retained if hunger.mean improves>=.1 versus uniform-DQN100k in>=2/3 seeds without aggregate thermal/proximity/contact regression>10%, but it is not satisfactory behavior. Trace-specific claim requires worst criterion ratio improved>=10% in>=2/3 paired seeds without need regressions>10%. Final100k policy only; do not choose checkpoint/seed retrospectively.",
+  "sources": [
+    {
+      "title": "True Online Temporal-Difference Learning",
+      "authors": "van Seijen, Mahmood, Pilarski, Machado and Sutton (2016)",
+      "urlOrDoi": "https://www.jmlr.org/papers/volume17/15-599/15-599.pdf",
+      "readOn": "2026-10-26",
+      "sectionsRead": "Section4.3 and Algorithm3, pp14-15; Dutch trace/update equations; section6.1 discussion of changing step sizes",
+      "mechanism": "Linear on-policy Sarsa with Dutch eligibility traces and the Q-old correction; lambda0 recovers one-step linear Sarsa.",
+      "limitations": "This is our custom continuous relational feature representation, not the paper's benchmarks. Alpha is fixed.03 and features L2-normalized. Gamma.97 and epsilon1->.05/50k match DQN, but no replay or neural representation learning. These inductive biases may transfer poorly beyond the present token semantics."
+    }
+  ],
+  "protocol": {
+    "config": "configs/research-relational-sarsa-pilot.json",
+    "baseline": "ecology-v2",
+    "trainingSeeds": [42,73,101],
+    "evaluationSeeds": [91001,92003,93011,94009,95003],
+    "trainingSteps": 100000,
+    "evaluationSteps": 12000,
+    "evaluateEvery": 25000,
+    "motivation": "Unchanged weighted-homeostasis from baseline; no intrinsic rewards, no demonstrations, no drive-dependent hand-coded behavior.",
+    "features": "Observed body/hunger/safety, five thermal sensors and their action interactions; per appearance type identical nearest-distance exp kernels at scales2/6/12/24, hypothetical action displacement and interactions with hunger/body. MovementScale1.5 is known motor calibration supplied equally to both variants. Every utility coefficient starts at zero; unknown object roles must be learned. No target location, world snapshot, audit-control action, hidden RNG or future state access.",
+    "interface": "Choose next on-policy action before the weight update in Receive and cache it for the following Choose; isolated inference controllers never consume that cache or exploration RNG. Reset traces at terminal/condition/schema changes. Export inference weights, not training optimizer/trace continuation.",
+    "validation": "Two-step analytical Dutch trace and lambda0 update; permutation-invariant features; zero-weight no object utility; frozen evaluation does not alter cached next actions; weight roundtrip. Registered frozen executable required before world evaluation.",
+    "primary": "All six fixed baseline behavioral criteria per training seed after averaging held-out evaluation worlds; report individual evaluation worlds for any candidate confirmation. Do not pool training replicates or count earlier seed reuse as independent evidence."
+  }
+}

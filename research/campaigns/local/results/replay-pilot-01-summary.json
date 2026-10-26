@@ -1,0 +1,6354 @@
+{
+  "independentTrainingSeeds": 3,
+  "warnings": [],
+  "study": "replay-pilot-01",
+  "pairs": [
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Left": "weighted-homeostasis--prioritized-replay",
+      "Right": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "food.consumed",
+      "N": 3,
+      "MeanRightMinusLeft": 3.3333333333333335,
+      "StandardDeviation": 7.365686209263421
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Left": "weighted-homeostasis--prioritized-replay",
+      "Right": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.above",
+      "N": 3,
+      "MeanRightMinusLeft": -0.029933333333333367,
+      "StandardDeviation": 0.07120242466221069
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Left": "weighted-homeostasis--prioritized-replay",
+      "Right": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.above-longest",
+      "N": 3,
+      "MeanRightMinusLeft": -1163.9333333333332,
+      "StandardDeviation": 1731.1892367194682
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Left": "weighted-homeostasis--prioritized-replay",
+      "Right": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.mean",
+      "N": 3,
+      "MeanRightMinusLeft": -0.017810944444444605,
+      "StandardDeviation": 0.042605880279677474
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Left": "weighted-homeostasis--prioritized-replay",
+      "Right": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "movement.fraction",
+      "N": 3,
+      "MeanRightMinusLeft": 0.05391004805956057,
+      "StandardDeviation": 0.09879413255421408
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Left": "weighted-homeostasis--prioritized-replay",
+      "Right": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "movement.reversal",
+      "N": 3,
+      "MeanRightMinusLeft": 0.014620475943316835,
+      "StandardDeviation": 0.060634754430894396
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Left": "weighted-homeostasis--prioritized-replay",
+      "Right": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.mae",
+      "N": 3,
+      "MeanRightMinusLeft": 0.16910680245841628,
+      "StandardDeviation": 0.3051155179335543
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Left": "weighted-homeostasis--prioritized-replay",
+      "Right": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.outside",
+      "N": 3,
+      "MeanRightMinusLeft": 0.08426666666666664,
+      "StandardDeviation": 0.11299758969897447
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Left": "weighted-homeostasis--prioritized-replay",
+      "Right": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.outside-longest",
+      "N": 3,
+      "MeanRightMinusLeft": 1.8666666666666838,
+      "StandardDeviation": 113.99058440649094
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Left": "weighted-homeostasis--prioritized-replay",
+      "Right": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.contact-proxy",
+      "N": 3,
+      "MeanRightMinusLeft": -0.001366666666666667,
+      "StandardDeviation": 0.0074811429608048555
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Left": "weighted-homeostasis--prioritized-replay",
+      "Right": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.proximity",
+      "N": 3,
+      "MeanRightMinusLeft": 0.008622222222222234,
+      "StandardDeviation": 0.02012153581871186
+    }
+  ],
+  "decision": "negative: PER gate failed; neither learner acquired balanced needs",
+  "metrics": [
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9334166666666667,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9334166666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9334166666666667
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9334166666666667
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9334166666666667,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9334166666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9334166666666667
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9334166666666667
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 11201,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 11201
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 11201
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 11201
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 11201,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 11201
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 11201
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 11201
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9583749999999999,
+      "StandardDeviation": 1.3597399555105182E-16,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.958375
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.958375
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.958375
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9583749999999999,
+      "StandardDeviation": 1.3597399555105182E-16,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.958375
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.958375
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.958375
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.6672556046337195,
+      "StandardDeviation": 0.576330198708184,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 1
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.0017668139011584299
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.6672556046337195,
+      "StandardDeviation": 0.576330198708184,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 1
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.0017668139011584299
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.6657387342334834,
+      "StandardDeviation": 0.5765467386042893,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9989164860810135
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9982997166194366
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.6657387342334834,
+      "StandardDeviation": 0.5765467386042893,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9989164860810135
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9982997166194366
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 5.993057559980397,
+      "StandardDeviation": 0.000498406865041852,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 5.993133283962978
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 5.992525624298279
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 5.993513771679933
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 5.993057559980397,
+      "StandardDeviation": 0.000498406865041852,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 5.993133283962978
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 5.992525624298279
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 5.993513771679933
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9997444444444445,
+      "StandardDeviation": 6.735753140551302E-05,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9997833333333332
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9996666666666666
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9997833333333335
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9997444444444445,
+      "StandardDeviation": 6.735753140551302E-05,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9997833333333332
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9996666666666666
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9997833333333335
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 11994.666666666666,
+      "StandardDeviation": 1.3316656236951683,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 11993.2
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 11995.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 11995
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 11994.666666666666,
+      "StandardDeviation": 1.3316656236951683,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 11993.2
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 11995.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 11995
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.13428888888888887,
+      "StandardDeviation": 0.022503983186521876,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.15343333333333334
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.13993333333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.1095
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.13428888888888887,
+      "StandardDeviation": 0.022503983186521876,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.15343333333333334
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.13993333333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.1095
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.33836666666666665,
+      "StandardDeviation": 0.027899019297777803,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.36086666666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.3470833333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.30715
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@0",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.33836666666666665,
+      "StandardDeviation": 0.027899019297777803,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.36086666666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.3470833333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.30715
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 7.333333333333335,
+      "StandardDeviation": 3.1069813860616122,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 10.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 6.4
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 4.8
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 10.666666666666666,
+      "StandardDeviation": 6.007772743149772,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 7.4
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 17.6
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 7
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8883222222222221,
+      "StandardDeviation": 0.025512580411617726,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8641166666666666
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8858833333333335
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9149666666666667
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8583888888888889,
+      "StandardDeviation": 0.0715555132850117,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8915666666666666
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.7762666666666667
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9073333333333334
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 7280.733333333333,
+      "StandardDeviation": 880.9066768581866,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 6284.2
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 7955.6
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 7602.4
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 6116.8,
+      "StandardDeviation": 1056.2744151024394,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 6629.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 4902
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 6818.6
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9301079499999999,
+      "StandardDeviation": 0.015017217182815111,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.916166083333333
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9281494333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9460083333333333
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9122970055555553,
+      "StandardDeviation": 0.042599385087718725,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9341362999999998
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8632067999999998
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9395479166666663
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.853504458704892,
+      "StandardDeviation": 0.07561984394456245,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9124093674472873
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.7682306858904908
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.8798733227768981
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9074145067644527,
+      "StandardDeviation": 0.03467678454473528,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.867938994916243
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9213434452871073
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9329610800900076
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.5286661233217402,
+      "StandardDeviation": 0.03631095330571627,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.568197185203456
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.49679866320211596
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5210025215596487
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.5432865992650571,
+      "StandardDeviation": 0.026120342175958645,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5134544546874642
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5543549920173844
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5620503510903225
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8797469763199034,
+      "StandardDeviation": 0.02430295549725231,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8673991497132537
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8640970029512689
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9077447762951871
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 1.0488537787783194,
+      "StandardDeviation": 0.2836228120548809,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1.0325875368564235
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 1.3402596597219776
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.7737141397565576
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.2659,
+      "StandardDeviation": 0.03581750425575616,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.27576666666666666
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.22618333333333335
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.29575
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.3501666666666667,
+      "StandardDeviation": 0.08156668028878786,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.38299999999999995
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.4102
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.2573
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 223.13333333333333,
+      "StandardDeviation": 45.60935576538362,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 191.4
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 275.4
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 202.6
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 225,
+      "StandardDeviation": 154.95457398863707,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 178.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 397.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 98.4
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.02022222222222222,
+      "StandardDeviation": 0.005558710215442003,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.015466666666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.018866666666666664
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.026333333333333337
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.018855555555555556,
+      "StandardDeviation": 0.0053438524735680394,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.01445
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.0248
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.017316666666666668
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.18196666666666664,
+      "StandardDeviation": 0.017477294794485017,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.16645000000000001
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.17855
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.2009
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@100000",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.19058888888888892,
+      "StandardDeviation": 0.025653818934535392,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.16158333333333333
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.21030000000000001
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.19988333333333336
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 9.133333333333333,
+      "StandardDeviation": 7.300228306932142,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 12.2
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 14.4
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 3.4,
+      "StandardDeviation": 4.521061822182926,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1.2
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.4
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 8.6
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8857722222222222,
+      "StandardDeviation": 0.03558954408457837,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.85265
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9234
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.8812666666666666
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9114555555555556,
+      "StandardDeviation": 0.024988243532005513,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9167333333333334
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9333833333333335
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.8842500000000001
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 6216,
+      "StandardDeviation": 4101.600658279643,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 4368.6
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 10916.4
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 3363
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 8928.933333333332,
+      "StandardDeviation": 2810.6859328877945,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 10422
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 10678
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 5686.8
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.928472183333333,
+      "StandardDeviation": 0.020343972920069217,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.913250783333333
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9515783333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9205874333333327
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9432538388888888,
+      "StandardDeviation": 0.01830138129243814,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9493816666666666
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.957705
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9226748499999999
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.5414673445009307,
+      "StandardDeviation": 0.2927979363775354,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.6533877823151929
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.2092174347862322
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.7617968164013669
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.5909992499374948,
+      "StandardDeviation": 0.4140706560139426,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.7808650720893408
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.11604300358363198
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.8760896741395117
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.6554191766642662,
+      "StandardDeviation": 0.14210772012420184,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5218408724868603
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8047445729655258
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.6396720845404124
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.7312589780800929,
+      "StandardDeviation": 0.13767888879508908,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.7196121563891547
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8743913109890066
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5997734668621172
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 3.9090849756477133,
+      "StandardDeviation": 1.7599560865664912,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 2.7034964769374845
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 5.9286935055193855
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 3.0950649444862703
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 5.633147170098462,
+      "StandardDeviation": 0.4860395456644729,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 5.830571424891632
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 5.989409973510431
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 5.079460111893323
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8619888888888889,
+      "StandardDeviation": 0.13915936640865847,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.7186333333333333
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9965333333333334
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.8708
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9822222222222224,
+      "StandardDeviation": 0.024323881345371324,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9925833333333334
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9996500000000001
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9544333333333335
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 4240.066666666667,
+      "StandardDeviation": 6558.87632550983,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 446
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 11813.6
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 460.6
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 7790.799999999999,
+      "StandardDeviation": 5527.365741472152,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 9854
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 11989.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 1528.6
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.10811111111111112,
+      "StandardDeviation": 0.00507505701482296,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.10808333333333334
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.10305
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.11320000000000001
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.07814444444444445,
+      "StandardDeviation": 0.02654527753215738,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.0731
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.10685
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.05448333333333333
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.39447777777777776,
+      "StandardDeviation": 0.08067903715982881,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.4565
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.3032666666666667
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.42366666666666675
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@25000",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.2904333333333333,
+      "StandardDeviation": 0.014311737607059888,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.2739166666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.29821666666666663
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.29916666666666664
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 6.466666666666666,
+      "StandardDeviation": 4.460194315647396,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 8.2
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 1.4
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 9.8
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 11.266666666666666,
+      "StandardDeviation": 4.838732616433082,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 15
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 5.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 13
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8996166666666667,
+      "StandardDeviation": 0.028577399772858624,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.87325
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9299833333333334
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.8956166666666666
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8488833333333333,
+      "StandardDeviation": 0.048661597909554044,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.80535
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9014166666666668
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.8398833333333334
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 7214.400000000001,
+      "StandardDeviation": 2165.5932027968693,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 7472.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 9239.2
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 4931.2
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 5598.733333333334,
+      "StandardDeviation": 1357.7801933057253,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 4616.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 7148.2
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 5031.2
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9337914833333332,
+      "StandardDeviation": 0.02164104721134381,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9116143666666666
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9548533333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9349067499999997
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9137355555555553,
+      "StandardDeviation": 0.0249564719580434,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8917266666666659
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9408499999999999
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9086299999999998
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.7243214712337139,
+      "StandardDeviation": 0.1908201078467774,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8703391949329111
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5084090340861739
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.7942161846820568
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8200127788426813,
+      "StandardDeviation": 0.19533100389689537,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9225268772397699
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.59476623051921
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.942745228769064
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.6264309312052938,
+      "StandardDeviation": 0.0817425995305101,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.6125817574808249
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.7142134358515491
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5524976002835076
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.6510742732208317,
+      "StandardDeviation": 0.11930928264717262,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5441824495123313
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.779788428338666
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.6292519418114976
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 1.6330999412015614,
+      "StandardDeviation": 0.3894422561952524,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1.5342127966877839
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 2.0624530690080336
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 1.3026339579088666
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 2.140028544764792,
+      "StandardDeviation": 0.8534917397859814,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1.7684250798411434
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 3.1163246152996065
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 1.5353359391536254
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.5511333333333334,
+      "StandardDeviation": 0.09671722241209736,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5309
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.6563666666666667
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.46613333333333334
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.6123277777777778,
+      "StandardDeviation": 0.023243023644701377,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.6193500000000001
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.63125
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5863833333333334
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 1135.3999999999999,
+      "StandardDeviation": 1434.340140970753,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 316.4
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 2791.6
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 298.2
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 796.7333333333332,
+      "StandardDeviation": 750.0125421173524,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 378.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 1662.6
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 348.8
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.07094444444444445,
+      "StandardDeviation": 0.036942501619759406,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.05815
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.11258333333333334
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.0421
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.08183888888888889,
+      "StandardDeviation": 0.050317553633932796,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.0264
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.12461666666666667
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.0945
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.38796666666666674,
+      "StandardDeviation": 0.06425413302746455,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.3783166666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.4565
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.32908333333333334
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@50000",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.38196666666666673,
+      "StandardDeviation": 0.08728196167211945,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.28293333333333337
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.41528333333333334
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.4476833333333333
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 9.8,
+      "StandardDeviation": 5.436910887627275,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 14.4
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 11.2
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 3.8
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 10.533333333333333,
+      "StandardDeviation": 5.804595880277397,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 11.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 15.6
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 4.2
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8757999999999999,
+      "StandardDeviation": 0.03067513017268401,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8507166666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8666833333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9099999999999999
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8723666666666666,
+      "StandardDeviation": 0.051433811296115746,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8951
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8134833333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9085166666666666
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 6403.8,
+      "StandardDeviation": 1281.8724585542823,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 5396.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 5967.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 7846.8
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 5440.666666666667,
+      "StandardDeviation": 1316.1155015169957,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 5460.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 4114.6
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 6746.6
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9216479222222221,
+      "StandardDeviation": 0.021765596997870437,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9050854333333331
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9135583333333331
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9462999999999999
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9172305555555552,
+      "StandardDeviation": 0.0341444983502847,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.929886666666666
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8785649999999997
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.94324
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8513820596160792,
+      "StandardDeviation": 0.09636011055720087,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.955596299691641
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8330360863405284
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.765513792816068
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9116981970719782,
+      "StandardDeviation": 0.056719356641462,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9286440536711392
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8484373697808151
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9580131677639804
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.548849936489036,
+      "StandardDeviation": 0.018217013647123016,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5410925663883532
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5696616364233323
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5357956066554224
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.5542500279120848,
+      "StandardDeviation": 0.024758370846274635,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5261793781189487
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5635943089903761
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5729763966269296
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 1.0725679704269482,
+      "StandardDeviation": 0.1783304676680541,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1.2165169502162165
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 1.1281112209135196
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.8730757401511087
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 1.2334859149465245,
+      "StandardDeviation": 0.22207586407469856,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1.4075976771563066
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 1.3094684038643898
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9833916638188771
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.36948333333333333,
+      "StandardDeviation": 0.05534434880314743,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.4232666666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.37248333333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.3127
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.45625555555555547,
+      "StandardDeviation": 0.10204547506617564,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5631333333333333
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.4457833333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.35985
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 307.2,
+      "StandardDeviation": 128.15599868909766,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 371.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 390.2
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 159.6
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 244.80000000000004,
+      "StandardDeviation": 34.39476704383968,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 250.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 275.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 207.8
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.02417222222222222,
+      "StandardDeviation": 0.00700080021881097,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.016099999999999996
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.028583333333333332
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.02783333333333333
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.0429,
+      "StandardDeviation": 0.027658035802356692,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.017966666666666666
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.07265
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.03808333333333334
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.24127777777777779,
+      "StandardDeviation": 0.04094371588376378,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.19765
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.2473166666666667
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.27886666666666665
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "curve@75000",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.3156111111111111,
+      "StandardDeviation": 0.08624431113820612,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.2285833333333333
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.40104999999999996
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.31720000000000004
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "frozen",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 0,
+      "Mean": null,
+      "StandardDeviation": null,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": null
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": null
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": null
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 7.333333333333335,
+      "StandardDeviation": 3.1069813860616122,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 10.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 6.4
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 4.8
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 10.666666666666666,
+      "StandardDeviation": 6.007772743149772,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 7.4
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 17.6
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 7
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8883222222222221,
+      "StandardDeviation": 0.025512580411617726,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8641166666666666
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8858833333333335
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9149666666666667
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8583888888888889,
+      "StandardDeviation": 0.0715555132850117,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8915666666666666
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.7762666666666667
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9073333333333334
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 7280.733333333333,
+      "StandardDeviation": 880.9066768581866,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 6284.2
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 7955.6
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 7602.4
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 6116.8,
+      "StandardDeviation": 1056.2744151024394,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 6629.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 4902
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 6818.6
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9301079499999999,
+      "StandardDeviation": 0.015017217182815111,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.916166083333333
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9281494333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9460083333333333
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9122970055555553,
+      "StandardDeviation": 0.042599385087718725,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9341362999999998
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8632067999999998
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9395479166666663
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.853504458704892,
+      "StandardDeviation": 0.07561984394456245,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9124093674472873
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.7682306858904908
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.8798733227768981
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9074145067644527,
+      "StandardDeviation": 0.03467678454473528,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.867938994916243
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9213434452871073
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9329610800900076
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.5286661233217402,
+      "StandardDeviation": 0.03631095330571627,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.568197185203456
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.49679866320211596
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5210025215596487
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.5432865992650571,
+      "StandardDeviation": 0.026120342175958645,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5134544546874642
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5543549920173844
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5620503510903225
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8797469763199034,
+      "StandardDeviation": 0.02430295549725231,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8673991497132537
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8640970029512689
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9077447762951871
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 1.0488537787783194,
+      "StandardDeviation": 0.2836228120548809,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1.0325875368564235
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 1.3402596597219776
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.7737141397565576
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.2659,
+      "StandardDeviation": 0.03581750425575616,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.27576666666666666
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.22618333333333335
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.29575
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.3501666666666667,
+      "StandardDeviation": 0.08156668028878786,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.38299999999999995
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.4102
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.2573
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 223.13333333333333,
+      "StandardDeviation": 45.60935576538362,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 191.4
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 275.4
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 202.6
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 225,
+      "StandardDeviation": 154.95457398863707,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 178.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 397.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 98.4
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.02022222222222222,
+      "StandardDeviation": 0.005558710215442003,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.015466666666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.018866666666666664
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.026333333333333337
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.018855555555555556,
+      "StandardDeviation": 0.0053438524735680394,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.01445
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.0248
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.017316666666666668
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.18196666666666664,
+      "StandardDeviation": 0.017477294794485017,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.16645000000000001
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.17855
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.2009
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.19058888888888892,
+      "StandardDeviation": 0.025653818934535392,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.16158333333333333
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.21030000000000001
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.19988333333333336
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 19.8,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 19.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 19.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 19.8
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 19.8,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 19.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 19.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 19.8
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8515333333333336,
+      "StandardDeviation": 1.3597399555105182E-16,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8515333333333335
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8515333333333335
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.8515333333333335
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8515333333333336,
+      "StandardDeviation": 1.3597399555105182E-16,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8515333333333335
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8515333333333335
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.8515333333333335
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 1809,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1809
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 1809
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 1809
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 1809,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1809
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 1809
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 1809
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9055315999999985,
+      "StandardDeviation": 1.3597399555105182E-16,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9055315999999987
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9055315999999987
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9055315999999987
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9055315999999985,
+      "StandardDeviation": 1.3597399555105182E-16,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9055315999999987
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9055315999999987
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9055315999999987
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8859404950412534,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8859404950412534
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8859404950412534
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.8859404950412534
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8859404950412534,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8859404950412534
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.8859404950412534
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.8859404950412534
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.38696725684571415,
+      "StandardDeviation": 6.798699777552591E-17,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.3869672568457142
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.3869672568457142
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.3869672568457142
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.38696725684571415,
+      "StandardDeviation": 6.798699777552591E-17,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.3869672568457142
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.3869672568457142
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.3869672568457142
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 6.107065815797038,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 6.107065815797038
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 6.107065815797038
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 6.107065815797038
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 6.107065815797038,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 6.107065815797038
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 6.107065815797038
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 6.107065815797038
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9380499999999999,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9380499999999999
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9380499999999999
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9380499999999999
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9380499999999999,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9380499999999999
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9380499999999999
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9380499999999999
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 774.4,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 774.4
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 774.4
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 774.4
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 774.4,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 774.4
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 774.4
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 774.4
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.16443333333333335,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.16443333333333335
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.16443333333333335
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.16443333333333335
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.16443333333333335,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.16443333333333335
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.16443333333333335
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.16443333333333335
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.48008333333333325,
+      "StandardDeviation": 6.798699777552591E-17,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.4800833333333333
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.4800833333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.4800833333333333
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "random",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.48008333333333325,
+      "StandardDeviation": 6.798699777552591E-17,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.4800833333333333
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.4800833333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.4800833333333333
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9334166666666667,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9334166666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9334166666666667
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9334166666666667
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9334166666666667,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9334166666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9334166666666667
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9334166666666667
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 11201,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 11201
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 11201
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 11201
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 11201,
+      "StandardDeviation": 0,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 11201
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 11201
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 11201
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9583749999999999,
+      "StandardDeviation": 1.3597399555105182E-16,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.958375
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.958375
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.958375
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9583749999999999,
+      "StandardDeviation": 1.3597399555105182E-16,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.958375
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.958375
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.958375
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.6672556046337195,
+      "StandardDeviation": 0.576330198708184,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 1
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.0017668139011584299
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.6672556046337195,
+      "StandardDeviation": 0.576330198708184,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 1
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.0017668139011584299
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.6657387342334834,
+      "StandardDeviation": 0.5765467386042893,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9989164860810135
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9982997166194366
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.6657387342334834,
+      "StandardDeviation": 0.5765467386042893,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9989164860810135
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9982997166194366
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 5.993057559980397,
+      "StandardDeviation": 0.000498406865041852,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 5.993133283962978
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 5.992525624298279
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 5.993513771679933
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 5.993057559980397,
+      "StandardDeviation": 0.000498406865041852,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 5.993133283962978
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 5.992525624298279
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 5.993513771679933
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9997444444444445,
+      "StandardDeviation": 6.735753140551302E-05,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9997833333333332
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9996666666666666
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9997833333333335
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9997444444444445,
+      "StandardDeviation": 6.735753140551302E-05,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9997833333333332
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9996666666666666
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9997833333333335
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 11994.666666666666,
+      "StandardDeviation": 1.3316656236951683,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 11993.2
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 11995.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 11995
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 11994.666666666666,
+      "StandardDeviation": 1.3316656236951683,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 11993.2
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 11995.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 11995
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.13428888888888887,
+      "StandardDeviation": 0.022503983186521876,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.15343333333333334
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.13993333333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.1095
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.13428888888888887,
+      "StandardDeviation": 0.022503983186521876,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.15343333333333334
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.13993333333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.1095
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.33836666666666665,
+      "StandardDeviation": 0.027899019297777803,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.36086666666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.3470833333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.30715
+        }
+      ]
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Scenario": "ecology-v2",
+      "Phase": "ecology-v2",
+      "Measure": "untrained",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.33836666666666665,
+      "StandardDeviation": 0.027899019297777803,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.36086666666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.3470833333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.30715
+        }
+      ]
+    }
+  ],
+  "trials": [
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Seed": 42,
+      "WorldSeed": 42,
+      "BehaviorOutcome": "failed",
+      "TrainingSteps": 100000,
+      "Updates": 24751,
+      "TrainingSeconds": 59.8045357,
+      "EvaluationSeconds": 82.9637466,
+      "FinalEvaluationReward": 0.2389094427500591
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Seed": 73,
+      "WorldSeed": 73,
+      "BehaviorOutcome": "failed",
+      "TrainingSteps": 100000,
+      "Updates": 24751,
+      "TrainingSeconds": 59.8887688,
+      "EvaluationSeconds": 83.5378488,
+      "FinalEvaluationReward": 0.24228842019242108
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--uniform-replay",
+      "Seed": 101,
+      "WorldSeed": 101,
+      "BehaviorOutcome": "failed",
+      "TrainingSteps": 100000,
+      "Updates": 24751,
+      "TrainingSeconds": 61.3449251,
+      "EvaluationSeconds": 85.9579755,
+      "FinalEvaluationReward": 0.2585786649623421
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Seed": 42,
+      "WorldSeed": 42,
+      "BehaviorOutcome": "failed",
+      "TrainingSteps": 100000,
+      "Updates": 24751,
+      "TrainingSeconds": 62.9431374,
+      "EvaluationSeconds": 81.8282377,
+      "FinalEvaluationReward": 0.2678099254298195
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Seed": 73,
+      "WorldSeed": 73,
+      "BehaviorOutcome": "failed",
+      "TrainingSteps": 100000,
+      "Updates": 24751,
+      "TrainingSeconds": 61.8945037,
+      "EvaluationSeconds": 82.8962257,
+      "FinalEvaluationReward": 0.257931253765158
+    },
+    {
+      "Protocol": "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3",
+      "Variant": "weighted-homeostasis--prioritized-replay",
+      "Seed": 101,
+      "WorldSeed": 101,
+      "BehaviorOutcome": "failed",
+      "TrainingSteps": 100000,
+      "Updates": 24751,
+      "TrainingSeconds": 62.1523803,
+      "EvaluationSeconds": 85.8372474,
+      "FinalEvaluationReward": 0.23518360069589747
+    }
+  ]
+}
