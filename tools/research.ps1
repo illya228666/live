@@ -68,7 +68,8 @@ function Write-Context {
     $lines.Add("`nCompute defaults: $($settings.maxParallel) workers, $($settings.threadsPerWorker) threads each; slice $($settings.computeSliceMinutes) min; reserve $($settings.reserveFreeMemoryGiB) GiB free RAM.")
     if (Test-Path -LiteralPath (Join-Path $artifactRoot 'session.json')) {
         $session = Read-Json (Join-Path $artifactRoot 'session.json')
-        $lines.Add("`nLast session deadline (UTC): $($session.deadlineUtc). An expired deadline needs a new explicit session budget.")
+        $deadlineUtc = ([DateTimeOffset]$session.deadlineUtc).ToUniversalTime().ToString('o')
+        $lines.Add("`nLast session deadline (UTC): $deadlineUtc. An expired deadline needs a new explicit session budget.")
     }
     $lines.Add("`nStop requested: $(Test-Path -LiteralPath $stopPath).")
     $baselinePath=Join-Path $RepoRoot 'research/baseline.json'

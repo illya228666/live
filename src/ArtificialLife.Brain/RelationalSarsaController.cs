@@ -17,6 +17,7 @@ public sealed record RelationalSarsaOptions
     public bool LearnThermalModel { get; init; } = true;
     public int WarmupSteps { get; init; }
     public double SensorDistance { get; init; } = 3;
+    public int ExplorationMaxDuration { get; init; } = 1;
     public void Validate()
     {
         if (!double.IsFinite(Alpha) || Alpha <= 0 || Alpha > 1 || !double.IsFinite(Gamma) || Gamma is < 0 or > 1 ||
@@ -24,7 +25,7 @@ public sealed record RelationalSarsaOptions
             EpsilonEnd is < 0 or > 1 || EpsilonStart < EpsilonEnd || EpsilonStart > 1 || EpsilonDecaySteps < 1 ||
             !double.IsFinite(MovementScale) || MovementScale <= 0 || Normalization is not ("l2" or "fixed") ||
             WarmupSteps < 0 || UseThermalModel && LearnThermalModel && WarmupSteps == 0 ||
-            !double.IsFinite(SensorDistance) || SensorDistance <= 0) throw new InvalidDataException("Invalid relational Sarsa options.");
+            !double.IsFinite(SensorDistance) || SensorDistance <= 0 || ExplorationMaxDuration is < 1 or > 10000) throw new InvalidDataException("Invalid relational Sarsa options.");
     }
 }
 
@@ -34,6 +35,7 @@ public sealed class RelationalSarsaController : IAgentController
     public const string Architecture = "relational-true-online-sarsa.v1";
     private readonly RelationalSarsaOptions options;
     private readonly Random random;
+    private readonly PersistentExploration explorer;
     private readonly Dictionary<int, int> visualBlocks = [];
     private string[] keys = [];
     private double[] weights = new double[32], trace = new double[32];
@@ -45,13 +47,14 @@ public sealed class RelationalSarsaController : IAgentController
     public ControllerLimits Limits => new(256, 256, 4);
     public double Epsilon => options.EpsilonEnd + (options.EpsilonStart - options.EpsilonEnd) * Math.Max(0, 1 - (double)steps / options.EpsilonDecaySteps);
     public ControllerStatus Status => new(steps, updates, Epsilon, loss, 0, 0);
-    public JsonElement InferenceState => options.UseThermalModel
+    public JsonElement InferenceState => options.UseThermalModel || options.ExplorationMaxDuration > 1
         ? JsonSerializer.SerializeToElement(new { steps, updates, loss, thermalModel = new
-        { ThermalModel.Coefficients, ThermalModel.Samples, ThermalModel.SquaredError } })
+        { ThermalModel.Coefficients, ThermalModel.Samples, ThermalModel.SquaredError }, exploration = new
+        { explorer.Choices, explorer.ExploratoryActions, explorer.Bursts, explorer.IllegalTerminations, explorer.MeanDuration } })
         : JsonSerializer.SerializeToElement(new { steps, updates, loss });
 
     public RelationalSarsaController(RelationalSarsaOptions options, int seed)
-    { options.Validate(); this.options = options; random = new(seed); }
+    { options.Validate(); this.options = options; random = new(seed); explorer = new(random, options.ExplorationMaxDuration); }
 
     public void SchemaChanged(IReadOnlyList<string> observations, IReadOnlyList<string> actions)
     {
@@ -133,6 +136,8 @@ public sealed class RelationalSarsaController : IAgentController
     private ActionCandidate Select(ObservationToken[] state, ActionCandidate[] actions, double epsilon)
     {
         if (actions.Length == 0) throw new ArgumentException("No legal actions.");
+        if (epsilon > 0 && options.ExplorationMaxDuration > 1 && steps >= options.WarmupSteps)
+            return explorer.Choose(actions, epsilon, () => actions.MaxBy(a => Dot(weights, Features(state, a)))!);
         if (epsilon > 0 && random.NextDouble() < epsilon) return actions[random.Next(actions.Length)];
         return actions.MaxBy(a => Dot(weights, Features(state, a)))!;
     }
@@ -182,7 +187,7 @@ public sealed class RelationalSarsaController : IAgentController
         oldQ = nextQ; loss = delta * delta; steps++; updates++;
         if (transition.Terminal) ResetTrace();
     }
-    private void ResetTrace() { Array.Clear(trace); oldQ = 0; pending = null; }
+    private void ResetTrace() { Array.Clear(trace); oldQ = 0; pending = null; explorer.Reset(); }
     public void ConditionsChanged(long value) { if (value != revision) ResetTrace(); revision = value; }
     private static int StateHash(ObservationToken[] state)
     {

@@ -54,10 +54,12 @@ public sealed class RelationalSarsaTests
         Assert.All(fixedController.Features(state, towards).Skip(1), value => Assert.InRange(value, -0.25, 0.25));
     }
 
-    [Fact]
-    public void FrozenEvaluationPreservesCachedOnPolicyActionAndRoundTripWorks()
+    [Theory]
+    [InlineData(1)]
+    [InlineData(32)]
+    public void FrozenEvaluationPreservesCachedOnPolicyActionAndRoundTripWorks(int duration)
     {
-        var options = new RelationalSarsaOptions { EpsilonStart = 1, EpsilonEnd = 1 };
+        var options = new RelationalSarsaOptions { EpsilonStart = 1, EpsilonEnd = 1, ExplorationMaxDuration = duration };
         using var source = new RelationalSarsaController(options, 73);
         using var reference = new RelationalSarsaController(options, 73);
         string[] keys = ["hunger.body.v1", "vision.appearance.diamond.v1"];

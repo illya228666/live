@@ -9,6 +9,6 @@
   "workerMemoryEstimateGiB": 1,
   "minFreeDiskGiB": 10,
   "computeSliceMinutes": 10,
-  "sessionMinutes": 30,
+  "sessionMinutes": 1440,
   "trialTimeoutMinutes": 120
 }

@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "id": "predictive-features-pilot-01",
+  "stage": "pilot",
+  "registeredUtc": "2026-10-26T15:00:37.3655519+00:00",
+  "hypothesis": {
+    "statement": "Learning a one-step interoceptive transition model from the agent's own sensory transitions supplies action features that permit balanced thermal/food/safety learning where generic relational Sarsa failed.",
+    "direction": "learning-only: self-supervised predictive representation",
+    "rationale": "The fixed lambda0 learner reliably forages and avoids but misses thermal comfort; increasing thermal reward weight alone did not solve the tradeoff and could return starvation. Generic linear action interactions may poorly represent absolute predicted thermal error. Learn a three-parameter observable transition model, then expose predicted absolute/squared error and action-relative differences to the same reward-trained critic. No hand-coded utility sign or model-based expert actions.",
+    "falsification": "No full promotion unless the learned-model variant passes every one of six unchanged criteria on all3 training seeds at final1M. A mechanistic partial lead requires temperature.outside improves by>=.05 in>=2/3 seeds versus both paired controls, with hunger<=.35 and no aggregate proximity/contact regression>10%. Base and zero-model should reproduce each other exactly. Model accuracy or scalar reward alone cannot establish behavioral success.",
+    "sources": [
+      {
+        "title": "Learning to Act by Predicting the Future",
+        "authors": "Dosovitskiy and Koltun (ICLR2017)",
+        "urlOrDoi": "https://vladlen.info/papers/learning-to-act.pdf",
+        "readOn": "2026-10-26",
+        "sectionsRead": "3 Model,3.1 Training,3.2 Architecture, pp3-5; vector measurements and supervised predictions from own experience",
+        "mechanism": "Use observed future measurements as dense self-supervision for action-conditioned representations.",
+        "limitations": "Our model is ridge-initialized3-variable RLS and predicts only one-step normalized temperature; predictions augment an unchanged scalar Sarsa critic. It is not the source's deep multi-horizon DFP architecture or its direct vector-goal control. Local Taylor field approximation, known motor scale1.5 and sensor spacing3 are explicit domain priors. No access to hidden physics parameters, world snapshots, random state or teacher policy."
+      },
+      {
+        "title": "Live thermal-weight-pilot-01",
+        "urlOrDoi": "research/campaigns/local/results/thermal-weight-pilot-01-summary.json",
+        "readOn": "2026-10-26",
+        "limitations": "Repeated pilot seeds guide the question; only new independent confirmation can establish transfer."
+      }
+    ],
+    "protocol": {
+      "config": "configs/research-predictive-features-pilot.json",
+      "baseline": "ecology-v2",
+      "trainingSeeds": [
+        42,
+        73,
+        101
+      ],
+      "evaluationSeeds": [
+        91001,
+        92003,
+        93011,
+        94009,
+        95003
+      ],
+      "trainingSteps": 1000000,
+      "evaluationSteps": 12000,
+      "evaluateEvery": 100000,
+      "motivation": "Original weighted-homeostasis, no altered weights or intrinsic rewards.",
+      "learner": "Fixed-normalization lambda0 Sarsa, alpha.03 gamma.97, epsilon1->.05/50k; all variants skip TD updates during first2000 transitions and then perform998000 updates.",
+      "model": "Observe bodyBefore,nextFieldCenter,nextBody during2000 warmup steps; fit nextBody=a*bodyBefore+b*observedNextField+c by RLS (initial covariance10000I, zero coefficients). Freeze thereafter, avoiding a nonstationary feature map during TD learning. At decision time approximate nextField only from current five sensors and candidate motor displacement; next observations are targets only during training.",
+      "controls": "Base with matched warmup, zero-coefficient frozen predictor, learned predictor. Zero model contributes only zero additional features, so base/zero exact hash equality is expected and is not extra independent evidence. Runner random/untrained/initial frozen included.",
+      "checkpointRule": "Final1M only; all100k curves, all evaluation worlds and model coefficients/samples in manifest ControllerState. No best seed/checkpoint selection.",
+      "fullRule": "New training/evaluation seeds, preregistered final budget and per-need/per-world confirmation before claiming satisfactory acquisition."
+    }
+  },
+  "decisionRule": "Final1M: learned-model must pass all6 criteria on all3 seeds for full promotion. Partial lead:outside decreases>=.05 in>=2/3 seeds versus both controls, hunger<=.35 and proximity/contact regression<=10%. Base/zero hashes must match; prediction fit or reward is not behavior. Independent full confirmation required.",
+  "metrics": [
+    "temperature.mae",
+    "temperature.outside",
+    "hunger.mean",
+    "hunger.above",
+    "wildlife.proximity",
+    "wildlife.contact-proxy"
+  ],
+  "plan": {
+    "SchemaVersion": 1,
+    "ExpectedRuns": 9,
+    "Protocols": [
+      "D58B081A1EF7E4E2DAD586AB584633FBCECDCE8964ECFA9C1BF0379C11DFA994"
+    ],
+    "ConfigurationHash": "BA5280939E4E60124FC2DBAD3E2628106EACB78F1E5CEE46BC3CAFD97EAFF8AE",
+    "TrainingSeeds": [
+      42,
+      73,
+      101
+    ],
+    "EvaluationSeeds": [
+      91001,
+      92003,
+      93011,
+      94009,
+      95003
+    ],
+    "TrainingStepsPerTrial": 1000000,
+    "PreparedUtc": "2026-10-26T16:00:37.0030837+01:00"
+  },
+  "configSha256": "0C6892862A9749BA35D21CEEA65732D3703C268F3939C18BD40241BDE20E77CA",
+  "bundle": "artifacts\\research\\local\\bundles\\BF6F8E9C7A9E97247DC78E12030969CB8A68897CF70365A257373AAEBA7D1810",
+  "output": "artifacts\\research\\local\\studies\\predictive-features-pilot-01\\results",
+  "sourceRevision": "0bc22c6ab2004cf7036ed25ab5cfbb9393c78f3f",
+  "sourceStatus": "M src/ArtificialLife.Presentation.Godot/packages.lock.json",
+  "scenarioReviewSha256": "95953BA3D908FE7696A7E6A85240BA15E33C01A0ABDEFF25268EEE60571AAED2",
+  "scenarioCleared": true
+}

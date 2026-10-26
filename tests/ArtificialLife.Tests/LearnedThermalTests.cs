@@ -7,6 +7,26 @@ namespace ArtificialLife.Tests;
 public sealed class LearnedThermalTests
 {
     [Fact]
+    public void PersistenceStartsOnlyAfterMatchedModelWarmup()
+    {
+        var settings = new RelationalSarsaOptions { UseThermalModel = true, WarmupSteps = 40, EpsilonStart = 1, EpsilonEnd = 1 };
+        using var step = new RelationalSarsaController(settings, 73);
+        using var persistent = new RelationalSarsaController(settings with { ExplorationMaxDuration = 32 }, 73);
+        foreach (var c in new[] { step, persistent }) c.SchemaChanged(["temperature.body.v1", "temperature.sensor.v1"], []);
+        ActionCandidate[] actions = [new(0, [1, 0]), new(0, [-1, 0])];
+        ObservationToken[] state = [new(0, [0.1f]), new(1, [0.2f, 0, 0])];
+        for (int i = 0; i < 40; i++)
+        {
+            var a = step.Choose(state, actions, true);
+            var b = persistent.Choose(state, actions, true);
+            Assert.Equal(a.Parameters, b.Parameters);
+            foreach (var c in new[] { step, persistent }) c.Receive(new(state, a, 0.3, state, actions, false, 0));
+        }
+        Assert.Equal(step.ThermalModel.Coefficients, persistent.ThermalModel.Coefficients);
+        Assert.Equal(0, persistent.InferenceState.GetProperty("exploration").GetProperty("Choices").GetInt64());
+    }
+
+    [Fact]
     public void ModelLearnsUnknownTransitionCoefficientsAndPredictsHeldOutInputs()
     {
         var model = new LearnedThermalTransition();
