@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "id": "safety-weight-pilot-01",
+  "stage": "pilot",
+  "registeredUtc": "2026-10-26T15:24:43.7376605+00:00",
+  "hypothesis": {
+    "statement": "Moderately increasing safety's motivational weight resolves the last proximity failure of the predictive/persistent learner while preserving its independently acquired food and thermal regulation across seeds.",
+    "direction": "motivation-only: relative safety weight",
+    "rationale": "With learned thermal features and persistent exploration, all3 pilot seeds now satisfy hunger, thermal and contact criteria, but proximity is consistently13.1-13.6% against12%. Change only safety weight, retaining the complete learner, exposure and original physics. The earlier temperature-weight study used a different learner with a different remaining failure; its negative result remains recorded.",
+    "falsification": "Weight1.5 is the preferred candidate only if every one of six unchanged ecology-v2 criteria passes on every3 training seeds at final1M. Otherwise weight2 may be chosen only under the same complete gate. If both fail, no candidate promotion. Do not round away failures or select favorable seeds/checkpoints. Any candidate then needs a separate fresh-seed full confirmation.",
+    "sources": [
+      {
+        "title": "Live predictive-exploration-pilot-01",
+        "urlOrDoi": "research/campaigns/local/results/predictive-exploration-pilot-01-summary.json",
+        "readOn": "2026-10-26",
+        "mechanism": "Isolate the cost tradeoff after food/thermal acquisition on3/3 seeds; prediction and exploration remain fixed.",
+        "limitations": "This is original pilot calibration, not a biological optimum or independent confirmation. Relative weighting and reward normalization scale change together. Safety is spatial proximity, not actual harm."
+      }
+    ],
+    "protocol": {
+      "config": "configs/research-safety-weight-pilot.json",
+      "baseline": "ecology-v2",
+      "trainingSeeds": [
+        42,
+        73,
+        101
+      ],
+      "evaluationSeeds": [
+        91001,
+        92003,
+        93011,
+        94009,
+        95003
+      ],
+      "trainingSteps": 1000000,
+      "evaluationSteps": 12000,
+      "evaluateEvery": 100000,
+      "learner": "Unchanged model-persistent: fixed lambda0 Sarsa alpha.03/gamma.97,2000 identical model warmup, capped zeta2 max32 afterward, nominal occupancy correction and unchanged epsilon schedule.",
+      "controls": "Safety multipliers1/1.5/2; temperature/hunger multipliers1, exponent1, same reward mapping. Identity1 must reproduce the previous learned policy hashes. Random/untrained/initial frozen controls remain.",
+      "physics": "Private motivational copies of physical drives only; no altered boar radius, body target, hunger rate, observation, action or behavioral threshold.",
+      "selection": "Final1M; choose1.5 if all3 seeds pass all6, otherwise2 only if all3 pass. Never use a best intermediate checkpoint. Independent confirmation must use new training and evaluation seeds and report per-world outcomes."
+    }
+  },
+  "decisionRule": "Final1M all6 unchanged criteria on all3 seeds. Choosew1.5 if complete gate passes, elsew2 only if same passes, else no candidate. Identityw1 must reproduce prior hashes. Fresh training/evaluation seeds and independent full confirmation required before satisfactory acquisition.",
+  "metrics": [
+    "temperature.mae",
+    "temperature.outside",
+    "hunger.mean",
+    "hunger.above",
+    "wildlife.proximity",
+    "wildlife.contact-proxy"
+  ],
+  "plan": {
+    "SchemaVersion": 1,
+    "ExpectedRuns": 9,
+    "Protocols": [
+      "D58B081A1EF7E4E2DAD586AB584633FBCECDCE8964ECFA9C1BF0379C11DFA994"
+    ],
+    "ConfigurationHash": "8D2121F440B1427181506E2F565850E2CF89AAEFD536145E9972AC3B2CE41091",
+    "TrainingSeeds": [
+      42,
+      73,
+      101
+    ],
+    "EvaluationSeeds": [
+      91001,
+      92003,
+      93011,
+      94009,
+      95003
+    ],
+    "TrainingStepsPerTrial": 1000000,
+    "PreparedUtc": "2026-10-26T16:24:43.3474152+01:00"
+  },
+  "configSha256": "473590D86E9BCCDA5B2BF7E3242893001082DF02FF876B47BF2227DE3641F505",
+  "bundle": "artifacts\\research\\local\\bundles\\7575201A39CA029C3167E89FA3F55BBAF22B13FED18B4978E836EE8B428AF0DB",
+  "output": "artifacts\\research\\local\\studies\\safety-weight-pilot-01\\results",
+  "sourceRevision": "41fdd3292cf9adc784885033a6664691a574b5d8",
+  "sourceStatus": "M src/ArtificialLife.Presentation.Godot/packages.lock.json",
+  "scenarioReviewSha256": "95953BA3D908FE7696A7E6A85240BA15E33C01A0ABDEFF25268EEE60571AAED2",
+  "scenarioCleared": true
+}

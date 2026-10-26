@@ -1,0 +1,33 @@
+{
+  "statement": "The pilot-selected predictive/persistent learner with safety weight1.5 independently acquires balanced food, thermal regulation and avoidance on fresh training seeds and held-out worlds.",
+  "direction": "independent full confirmation of a fixed learned agent configuration",
+  "rationale": "Pilot safety1.5 passed all six unchanged criteria on3/3 training seeds and14/15 evaluation worlds, while safety1 failed proximity. Select1.5 by the earlier preregistered preference even though2 also passed. Confirm the whole configuration on disjoint data; do not pool pilot outcomes or adjust settings after seeing these results.",
+  "falsification": "Reject satisfactory confirmation unless all5 selected-candidate training-seed averages pass every fixed criterion, at least20 of25 final evaluation worlds jointly pass all6, all25 worlds pass hunger.mean<=.35 and hunger.above<=.1, and each of5 training seeds improves hunger by>=.1 and thermal MAE by>=.5 versus its untrained/initial frozen policy. Technical completion alone is insufficient. Any failure is retained and triggers a new hypothesis/new seed pool; no seed/checkpoint replacement or threshold relaxation.",
+  "sources": [
+    {
+      "title": "Live safety-weight-pilot-01 preregistered selection",
+      "urlOrDoi": "research/campaigns/local/results/safety-weight-pilot-01-summary.json",
+      "readOn": "2026-10-26",
+      "mechanism": "Independently validate a fixed combination of self-supervised interoceptive features, scalar control learning, temporally persistent exploration and relative safety cost.",
+      "limitations": "The confirmation establishes this configuration on ecology-v2's seed distribution, not universal algorithm superiority or transfer to altered physics. Proximity/contact are proxies, not actual harm or survival. The agent has explicit motor/sensor geometry and relational feature priors; no teacher trajectories or expert actions. Persistence's exact causal effect is not isolated from its small change in realized exploration occupancy."
+    }
+  ],
+  "protocol": {
+    "config": "configs/research-balanced-confirmation.json",
+    "baseline": "ecology-v2",
+    "trainingSeeds": [1009,2027,3037,4051,5059],
+    "evaluationSeeds": [131101,132103,133111,134109,135121],
+    "trainingSteps": 1000000,
+    "evaluationSteps": 12000,
+    "episodesPerSeed": 1,
+    "evaluateEvery": 250000,
+    "candidate": "safety-w15--model-persistent",
+    "control": "safety-w1--model-persistent, identical learner and fresh paired seeds. Random/untrained/initial frozen measured per trial.",
+    "fixedLearner": "Relational Sarsa fixed normalization,lambda0 alpha.03 gamma.97,epsilon1->.05 in50k;2000 shared model-only warmup, RLS thermal predictor then frozen;998000 TD updates; capped zeta2 exploration max32 after warmup with nominal occupancy correction. Greedy inference has no exploratory repeats or parameter updates.",
+    "fixedMotivation": "Reweighted-homeostasis exponent1, safety multiplier1.5, all other multipliers1, existing weighted-mean reward mapping. Control multiplier1. Physical drives and criteria untouched.",
+    "checkpointRule": "Assess final1M only. Curves at0/250k/500k/750k/1M are descriptive, never used for checkpoint selection. Keep every training seed and result.",
+    "unitOfReplication": "Training seed N=5 after within-seed averaging5 evaluation worlds.25 world episodes are a secondary robustness check, not25 independent training replicates.",
+    "inferenceArtifactRule": "If confirmed, use first prespecified training seed1009 final checkpoint as the demonstration artifact, not the empirically best seed. Verify export/load and frozen primitive action selection for every final candidate checkpoint.",
+    "decision": "Apply falsification gate without tuning. Report every world failure, worst-world metrics, controls and training curves. A candidate passing this rule is satisfactory for the current baseline; broader conditions and sample efficiency remain further research."
+  }
+}
