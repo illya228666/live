@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "id": "ecology-v2-admission-only",
+  "stage": "pilot",
+  "registeredUtc": "2026-10-26T12:26:26.9426735+00:00",
+  "hypothesis": {
+    "statement": "The validated ecology-v2 baseline passes the existing scientific suitability gate and survives freezing without a learner trial.",
+    "sources": [
+      {
+        "urlOrDoi": "docs/ecology-v2-protocol.md",
+        "title": "Ecology scenario audit"
+      }
+    ],
+    "falsification": "A missing factor or mismatched evidence passes, or the validated unchanged scenario fails after freezing.",
+    "rationale": "Admission must cover hunger, safety and temperature under the same archived physical conditions.",
+    "direction": "infrastructure validation"
+  },
+  "decisionRule": "Admission/freeze smoke only. Do not execute this study or infer learner results.",
+  "metrics": [
+    "temperature.mae",
+    "hunger.mean",
+    "wildlife.proximity"
+  ],
+  "plan": {
+    "SchemaVersion": 1,
+    "ExpectedRuns": 1,
+    "Protocols": [
+      "F8E250331AE775BA859702CFC8284F2AC74A23CB4ADD165E0A45E485CEACF02E"
+    ],
+    "ConfigurationHash": "63C5F4B03EB6DB2A28EA1373FC3BCA8B44FDCFF8A66C8ADBEDC4D29826EAB5F7",
+    "TrainingSeeds": [
+      42
+    ],
+    "EvaluationSeeds": [
+      91001,
+      92003,
+      93011,
+      94009,
+      95003
+    ],
+    "TrainingStepsPerTrial": 1,
+    "PreparedUtc": "2026-10-26T13:26:26.5744829+01:00"
+  },
+  "configSha256": "28078A4D1AFBBA9C568B43EFDBC854B03D2D61D62641EC2389CED336DA0D56E0",
+  "bundle": "artifacts\\research\\ecology-audit\\bundles\\FB865ACC1427F711DEFC0217B02CD682B56A159A4103FD76682561ADA9DBEB97",
+  "output": "artifacts\\research\\ecology-audit\\studies\\ecology-v2-admission-only\\results",
+  "sourceRevision": "0809901772cf26fd3425b09b804985f6cb8b3961",
+  "sourceStatus": "M .gitattributes\n M README.md\n M docs/experiments.md\n M docs/temperature-scenario-v2-results.json\n M research/BASELINE.md\n M research/README.md\n M research/RESEARCHER.md\n M research/baseline.json\n M src/ArtificialLife.Application/BehaviorEvaluation.cs\n M src/ArtificialLife.Application/ExperimentRunner.cs\n M src/ArtificialLife.Cli/Program.cs\n M src/ArtificialLife.Modules.Wildlife/RuntimeWildlife.cs\n M tests/ArtificialLife.Tests/WildlifeTests.cs\n M tools/build.ps1\n M tools/package-wildlife.ps1\n M tools/test.ps1\n?? configs/ecology-v2-validation.json\n?? configs/research-ecology-v2.json\n?? configs/research-hunger-v2.json\n?? configs/research-safety-v2.json\n?? docs/ecology-v2-controls.csv\n?? docs/ecology-v2-protocol.md\n?? docs/ecology-v2-report.md\n?? research/campaigns/ecology-audit/\n?? research/scenarios/ecology-v2-calibration-summary.json\n?? research/scenarios/ecology-v2-reproducibility.json\n?? research/scenarios/ecology-v2-results.json\n?? research/scenarios/ecology-v2-review.json\n?? research/scenarios/hunger-v2-reproducibility.json\n?? research/scenarios/hunger-v2-results.json\n?? research/scenarios/hunger-v2-review.json\n?? research/scenarios/safety-v2-reproducibility.json\n?? research/scenarios/safety-v2-results.json\n?? research/scenarios/safety-v2-review.json\n?? src/ArtificialLife.Application/EcologyBehaviorEvaluator.cs\n?? src/ArtificialLife.Application/EcologyScenarioAudit.cs\n?? tests/ArtificialLife.Tests/EcologyScenarioTests.cs\n?? tools/package-ecology.ps1\n?? tools/summarize-ecology.ps1\n?? tools/verify-ecology.ps1",
+  "scenarioReviewSha256": "64532AC9EC687F1F2CE25C647CAC591E479D072E79943E4676ED0BAE5FEC6EDD",
+  "scenarioCleared": true
+}

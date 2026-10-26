@@ -8,3 +8,4 @@ if ($Headless) {
 }
 else { Invoke-Dotnet build ArtificialLife.sln -c Release }
 & (Join-Path $PSScriptRoot 'package.ps1') -Headless:$Headless
+& (Join-Path $PSScriptRoot 'package-ecology.ps1')

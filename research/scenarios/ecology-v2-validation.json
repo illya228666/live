@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "baseline": "ecology-v2",
+  "validatedFactors": [
+    "temperature",
+    "hunger",
+    "safety"
+  ],
+  "heldOutSeeds": [
+    61001,
+    62003,
+    63011,
+    64009,
+    65003
+  ],
+  "stepsPerControl": 12000,
+  "controlsPerScenario": 95,
+  "scenarios": 3,
+  "repeatedPairs": 285,
+  "pairedSimulationSteps": 6840000,
+  "maximumReproductionError": 0,
+  "numericTolerance": 1E-09,
+  "physicalStateAndActionHashesMatch": true,
+  "noResearchLearnerTrialsRun": true,
+  "tests": {
+    "log": "artifacts/scenario-audits/ecology-v2-tests-complete.log",
+    "total": 178,
+    "failed": 0,
+    "learningRegressionsIncluded": true,
+    "runner": "built-in xUnit v3",
+    "finalFocusedRecheckPassed": 8
+  },
+  "integration": {
+    "smokeOptimizationUpdates": 0,
+    "untrainedSmokePolicy": true,
+    "hotUpgradePreservesAnimalsAndRegistriesTested": true,
+    "godotInferenceSmokeSteps": 1000,
+    "changedMetricRejected": true,
+    "wildlifePackage": "1.1.0",
+    "missingSafetyFactorRejected": true,
+    "incompleteAuditRejected": true,
+    "frozenScenarioAdmissionPassed": true
+  },
+  "historicalThermalEvidence": {
+    "semanticDataUnchanged": true,
+    "gitNewlineConversionDisabled": true,
+    "sha256": "B79A443D4CC06C2B34F03D13D59CD9FB4B209C8694404067E6448B17EA44BC90",
+    "restoredOriginalCrlfBytes": true
+  },
+  "fullArtifacts": [
+    "artifacts/scenario-audits/hunger-v2-final-a",
+    "artifacts/scenario-audits/hunger-v2-final-b",
+    "artifacts/scenario-audits/safety-v2-final-a",
+    "artifacts/scenario-audits/safety-v2-final-b",
+    "artifacts/scenario-audits/ecology-v2-final-a",
+    "artifacts/scenario-audits/ecology-v2-final-b"
+  ],
+  "limitations": [
+    "No injury, mortality or survival mechanics: safety remains a spatial/contact proxy.",
+    "Feasibility witness is not evidence that any learner has learned these tasks.",
+    "Finite seeds and control family cannot exclude all possible open-loop policies.",
+    "Some 1000-step blocks temporarily exceed whole-life thermal/proximity limits."
+  ],
+  "executionHash": "8F33D1D7A7EE7D6E5779A060F2D0E44B68C825598053FDEE657A7465D420C5FA"
+}

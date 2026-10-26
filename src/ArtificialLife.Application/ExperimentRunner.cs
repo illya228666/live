@@ -424,7 +424,7 @@ public static class ExperimentRunner
         };
     }
 
-    private static string Provenance(string output, int threads)
+    internal static string Provenance(string output, int threads)
     {
         static string Git(params string[] arguments)
         {

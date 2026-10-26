@@ -1,0 +1,30 @@
+{
+  "SchemaVersion": 1,
+  "Fingerprint": "AD148C10A11E01AF388780A8F4E461BD74340E37ABCCB1D1C4898A2ED692DC30",
+  "Passed": true,
+  "Factors": [
+    {
+      "Factor": "hunger",
+      "Verdict": "requires-adaptation",
+      "PassiveEvidence": "Stay, nine fixed positions, blind patrol, random and factor ablations; per-seed long-horizon metrics in evidence.",
+      "ActiveEvidence": "Observation-only reactive control under identical physics; thresholds fixed in the audit protocol.",
+      "RepairRule": "Repair common scenario parameters/mechanics and rerun controls if trivial or infeasible; never rank learners on a broken factor."
+    },
+    {
+      "Factor": "safety",
+      "Verdict": "requires-adaptation",
+      "PassiveEvidence": "Stay, nine fixed positions, blind patrol, random and factor ablations; per-seed long-horizon metrics in evidence.",
+      "ActiveEvidence": "Observation-only reactive control under identical physics; thresholds fixed in the audit protocol.",
+      "RepairRule": "Repair common scenario parameters/mechanics and rerun controls if trivial or infeasible; never rank learners on a broken factor."
+    },
+    {
+      "Factor": "temperature",
+      "Verdict": "requires-adaptation",
+      "PassiveEvidence": "Stay, nine fixed positions, blind patrol, random and factor ablations; per-seed long-horizon metrics in evidence.",
+      "ActiveEvidence": "Observation-only reactive control under identical physics; thresholds fixed in the audit protocol.",
+      "RepairRule": "Repair common scenario parameters/mechanics and rerun controls if trivial or infeasible; never rank learners on a broken factor."
+    }
+  ],
+  "Evidence": "ecology-v2-results.json",
+  "EvidenceSha256": "FEC8BB74866A98604D2A7D62DD707659B69C2455C5285828DCDDF4BADF3FCDF1"
+}

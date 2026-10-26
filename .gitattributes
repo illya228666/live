@@ -2,3 +2,6 @@
 *.cs text eol=lf
 *.ps1 text eol=lf
 *.sh text eol=lf
+# Suitability reviews authenticate exact evidence bytes. Do not rewrite signed JSON newlines.
+docs/temperature-scenario-v2-results.json -text whitespace=cr-at-eol
+research/scenarios/*-v2-results.json -text whitespace=cr-at-eol

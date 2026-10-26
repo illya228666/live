@@ -107,6 +107,36 @@ public sealed class WildlifeTests
         Assert.Equal(1.125 / (Math.PI / 4) * Math.Sin(Math.PI / 4), animal.Position.X - 50, 10);
     }
 
+    [Fact]
+    public void InvestigativeTurnsAreSeededAndDoNotContinuouslyTrackTheAgent()
+    {
+        using var plugin = new Plugin(new { approachProbability = 1.0, approachSpreadDegrees = 0.0, minTurnSeconds = 10, maxTurnSeconds = 10 });
+        var a = World(); plugin.Module.Migrate(a, null);
+        var animal = Animal(a); animal.Position = new(50, 50);
+        var data = animal.Require("wildlife.boar"); data.Write("nextTurnAt", 0.0); data.Write("heading", Math.PI / 2); data.Write("targetHeading", Math.PI / 2);
+        a.Agent.Position = new(70, 50); var b = a.Copy(); b.Agent.Position = new(30, 50);
+        Step(plugin, a); Step(plugin, b);
+        Assert.Equal(0, data.Read<double>("targetHeading"), 10);
+        Assert.Equal(Math.PI, Animal(b).Require("wildlife.boar").Read<double>("targetHeading"), 10);
+        Assert.NotEqual(animal.Position, Animal(b).Position);
+        var copy = a.Copy(); copy.Agent.Position = new(0, 0);
+        Step(plugin, a); Step(plugin, copy);
+        Assert.Equal(animal.Position, Animal(copy).Position); // No new turn: moving the agent does not steer the animal.
+        var exact = a.Copy();
+        for (int i = 0; i < 200; i++) { Step(plugin, a); Step(plugin, exact); Assert.Equal(Animal(a).Position, Animal(exact).Position); }
+        Assert.Equal(JsonSerializer.Serialize(a.ModuleState), JsonSerializer.Serialize(exact.ModuleState));
+    }
+
+    [Fact]
+    public void DisabledInvestigationPreservesLegacyRandomConsumptionAndTrajectories()
+    {
+        using var legacy = new Plugin(); using var disabled = new Plugin(new { approachProbability = 0.0, approachSpreadDegrees = 0.0 });
+        var a = World(); var b = World(); legacy.Module.Migrate(a, null); disabled.Module.Migrate(b, null);
+        b.Agent.Position = new(0, 0);
+        for (int i = 0; i < 1000; i++) { Step(legacy, a); Step(disabled, b); Assert.Equal(Animal(a).Position, Animal(b).Position); }
+        Assert.Equal(JsonSerializer.Serialize(a.ModuleState), JsonSerializer.Serialize(b.ModuleState));
+    }
+
     [Theory]
     [InlineData(0, 1)] [InlineData(5, 0.5)] [InlineData(10, 0)] [InlineData(20, 0)]
     public void SafetyAndSenseFollowDistanceWithoutAccumulation(double distance, double expected)
@@ -151,6 +181,8 @@ public sealed class WildlifeTests
     [InlineData("turnDegreesPerSecond", "0")] [InlineData("dangerRadius", "0")]
     [InlineData("driveWeight", "-1")] [InlineData("minSpawnDistance", "-1")]
     [InlineData("diameter", "0")] [InlineData("speedFactor", "1e309")]
+    [InlineData("approachProbability", "-0.1")] [InlineData("approachProbability", "1.1")]
+    [InlineData("approachSpreadDegrees", "-1")] [InlineData("approachSpreadDegrees", "181")]
     public void InvalidSettingsAreRejected(string key, string value)
     {
         using var settings = JsonDocument.Parse("{\"" + key + "\":" + value + "}");
@@ -190,6 +222,25 @@ public sealed class WildlifeTests
             Assert.Single(runtime.Snapshot().Entities, e => e.Components.ContainsKey("wildlife.boar")).Id);
         Assert.Equal(JsonSerializer.Serialize(after.Entities), JsonSerializer.Serialize(runtime.Snapshot().Entities));
         runtime.AdvanceOne(); Assert.Equal(before.Age + 1, runtime.Snapshot().Age);
+    }
+
+    [Fact]
+    public void InvestigativeUpgradePreservesExistingAnimalsSchedulesAndRegistries()
+    {
+        using var fixture = new Catalog();
+        using var runtime = fixture.Session();
+        Assert.True(runtime.Activate(new("legacy", [new("wildlife", "1.0.0")])).Accepted);
+        for (int i = 0; i < 20; i++) runtime.AdvanceOne(false);
+        var before = runtime.Snapshot(); var observations = runtime.ObservationKeys.ToArray(); var actions = runtime.ActionKeys.ToArray();
+        fixture.Publish("1.1.0", new { initialCount = 6, approachProbability = 0.1, approachSpreadDegrees = 60 });
+        Assert.True(runtime.Activate(new("investigate", [new("wildlife", "1.1.0")])).Accepted);
+        var after = runtime.Snapshot();
+        Assert.Equal(before.Age, after.Age); Assert.Equal(before.Time, after.Time);
+        Assert.Equal(JsonSerializer.Serialize(before.Entities), JsonSerializer.Serialize(after.Entities));
+        Assert.Equal(JsonSerializer.Serialize(before.ModuleState), JsonSerializer.Serialize(after.ModuleState));
+        Assert.Equal(observations, runtime.ObservationKeys); Assert.Equal(actions, runtime.ActionKeys);
+        Assert.Single(after.Entities, e => e.Components.ContainsKey("wildlife.boar")); // initialCount never respawns on upgrade.
+        runtime.AdvanceOne(false); Assert.Equal(before.Age + 1, runtime.Snapshot().Age);
     }
 
     [Fact]

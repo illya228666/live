@@ -1,11 +1,16 @@
 {
   "schemaVersion": 1,
-  "id": "thermal-v2",
-  "experiment": "configs/research-baseline.json",
-  "review": "research/scenarios/temperature-v2-review.json",
-  "scope": "Temperature only. Additional factors must pass their own passive/active checks before scientific comparison.",
-  "fingerprint": "625BCD8F45F5C03DFEF5D1DC5016437BC151E711C9E4B88316150C4D1507F69D",
-  "protocol": "docs/temperature-scenario-v2-protocol.md",
-  "evidence": "docs/temperature-scenario-v2-results.json",
+  "id": "ecology-v2",
+  "experiment": "configs/research-ecology-v2.json",
+  "review": "research/scenarios/ecology-v2-review.json",
+  "scope": "Temperature (unchanged thermal-v2), hunger/food and avoidable wildlife proximity. Safety is a spatial/contact proxy, not harm or survival.",
+  "fingerprint": "AD148C10A11E01AF388780A8F4E461BD74340E37ABCCB1D1C4898A2ED692DC30",
+  "protocol": "docs/ecology-v2-protocol.md",
+  "evidence": "research/scenarios/ecology-v2-results.json",
+  "alternatives": [
+    { "id": "thermal-v2", "experiment": "configs/research-baseline.json", "review": "research/scenarios/temperature-v2-review.json" },
+    { "id": "hunger-v2", "experiment": "configs/research-hunger-v2.json", "review": "research/scenarios/hunger-v2-review.json" },
+    { "id": "safety-v2", "experiment": "configs/research-safety-v2.json", "review": "research/scenarios/safety-v2-review.json" }
+  ],
   "rule": "Repair scenarios whose factors are trivial or unsolvable; a caveat alone is not enough."
 }

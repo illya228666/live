@@ -1,7 +1,11 @@
 # ArtificialLife
 
-New approach comparisons use the validated [thermal-v2 baseline](configs/research-baseline.json).
-[Scenario validation](docs/temperature-scenario-v2-report.md) excludes permanent
+New approach comparisons use the validated [ecology-v2 baseline](configs/research-ecology-v2.json):
+unchanged thermal-v2, foraging and avoidable wildlife proximity. See the
+[five-seed passive/active audit](docs/ecology-v2-report.md). Standalone thermal-v2,
+hunger-v2 and safety-v2 remain available through `research/baseline.json`.
+The preserved [thermal-v2 baseline](configs/research-baseline.json) has its own
+[scenario validation](docs/temperature-scenario-v2-report.md), which excludes permanent
 comfort at any fixed position and demonstrates sensor-based active regulation.
 Additional factors require their own suitability checks and repairs before research.
 
@@ -255,4 +259,4 @@ The following are **future milestones, not implemented**:
 - Remote server execution, a web frontend and WebSocket streaming.
 - Sharing worlds with other people.
 
-Hunger and apples now use the same module contracts. The next experiment is to measure whether the fixed encoder/scorer learns to balance both needs. FoodSpawner creates one apple every 200 ticks, up to eight at once, at least ten units from the agent. Eating frees capacity; reset clears food and restarts the independent schedule. Existing thermal-only benchmark numbers above describe the earlier experiment. Policies saved before Hunger require retraining for the added observation keys.
+The preserved legacy/default world uses the same Hunger/Food module contracts: one apple every 200 ticks, up to eight at once, at least ten units from the agent. Eating frees capacity; reset clears food and restarts the independent schedule. New research uses the separately validated ecology-v2 supply and threat parameters described above. Existing thermal-only benchmark numbers describe the earlier experiment. Policies saved before Hunger require retraining for the added observation keys.

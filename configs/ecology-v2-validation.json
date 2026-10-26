@@ -1,0 +1,19 @@
+{
+  "minimumSafetyImprovement": 0.5,
+  "blockSteps": 1000,
+  "seeds": [
+    61001,
+    62003,
+    63011,
+    64009,
+    65003
+  ],
+  "maximumProximity": 0.12,
+  "maximumThermalOutside": 0.35,
+  "minimumPassiveProximity": 0.15,
+  "maximumContact": 0.01,
+  "minimumPassiveHungerMean": 0.6,
+  "maximumHungerAbove": 0.1,
+  "maximumHungerMean": 0.35,
+  "maximumThermalMae": 1.2
+}

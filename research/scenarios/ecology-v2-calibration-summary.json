@@ -1,0 +1,6950 @@
+[
+  {
+    "scenario": "ecology-legacy-controls",
+    "passed": false,
+    "controls": 39,
+    "fingerprint": "7C7456D61E7A518F388BE645A0A98FD64E0750D5A651C94FB307E49FFF9404F4",
+    "statistics": [
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.964891061701622,
+        "sd": 0.13375806238554427,
+        "minimum": 5.856303714790944,
+        "maximum": 6.114304713717252
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9953,
+        "sd": 0.004714870093650552,
+        "minimum": 0.9902,
+        "maximum": 0.9995
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.9447899999999999,
+        "sd": 0.005977256895934784,
+        "minimum": 0.93829,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9137333333333334,
+        "sd": 0.01085464570280089,
+        "minimum": 0.9012,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 26.8976942804938,
+        "sd": 1.2995387374429703,
+        "minimum": 25.504078130896932,
+        "maximum": 28.076349271648425
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.0551,
+        "sd": 0.008404165633779477,
+        "minimum": 0.0462,
+        "maximum": 0.0629
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.0007,
+        "sd": 0.0006557438524302001,
+        "minimum": 0.0001,
+        "maximum": 0.0014
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 2.0,
+        "sd": 2.0,
+        "minimum": 0.0,
+        "maximum": 4.0
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.026399999999999996,
+        "sd": 0.005663038053907108,
+        "minimum": 0.0202,
+        "maximum": 0.0313
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.7804550660202745,
+        "sd": 0.1774297697559767,
+        "minimum": 5.589946509719492,
+        "maximum": 5.9409871403788905
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9429333333333334,
+        "sd": 0.0231171653394903,
+        "minimum": 0.9209,
+        "maximum": 0.967
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.11490000000000415,
+        "sd": 0.00043863424398923585,
+        "minimum": 0.11440000000000414,
+        "maximum": 0.11522000000000412
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 19.516910782087134,
+        "sd": 0.9720367316204688,
+        "minimum": 18.45212731371341,
+        "maximum": 20.356763947559163
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.18073333333333333,
+        "sd": 0.037298838230343495,
+        "minimum": 0.1451,
+        "maximum": 0.2195
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.019633333333333332,
+        "sd": 0.006305817419917367,
+        "minimum": 0.0129,
+        "maximum": 0.0254
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 49.0,
+        "sd": 0.0,
+        "minimum": 49.0,
+        "maximum": 49.0
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.07690000000000001,
+        "sd": 0.002193171219946133,
+        "minimum": 0.0744,
+        "maximum": 0.0785
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.2644418859688917,
+        "sd": 0.06946919589006302,
+        "minimum": 0.19190446137961853,
+        "maximum": 0.33037051571247916
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.06633333333333334,
+        "sd": 0.013563308347646354,
+        "minimum": 0.0516,
+        "maximum": 0.0783
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.1954066666666707,
+        "sd": 0.003632868471791037,
+        "minimum": 0.19282000000000407,
+        "maximum": 0.19956000000000404
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 19.252138742464552,
+        "sd": 0.33577694821631104,
+        "minimum": 18.8874915160086,
+        "maximum": 19.548569582159324
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.11586666666666667,
+        "sd": 0.009360733589486109,
+        "minimum": 0.1085,
+        "maximum": 0.1264
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 49.0,
+        "sd": 0.0,
+        "minimum": 49.0,
+        "maximum": 49.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.6578333333333334,
+        "sd": 0.005485739087245528,
+        "minimum": 0.6539,
+        "maximum": 0.6641
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.0461763804843969,
+        "sd": 0.0022577697462492848,
+        "minimum": 0.04395199586940297,
+        "maximum": 0.04846611643886084
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.005666666666666667,
+        "sd": 0.0015821925715074426,
+        "minimum": 0.0043,
+        "maximum": 0.0074
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.9390633333333335,
+        "sd": 0.005073798708397188,
+        "minimum": 0.9338800000000002,
+        "maximum": 0.9440200000000001
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9116666666666667,
+        "sd": 0.007181457605064088,
+        "minimum": 0.9062,
+        "maximum": 0.9198
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 19.295237546876546,
+        "sd": 0.43877693089756004,
+        "minimum": 18.994248013145324,
+        "maximum": 19.798690059833778
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.1087,
+        "sd": 0.012967652061957862,
+        "minimum": 0.0947,
+        "maximum": 0.1203
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 4.666666666666667,
+        "sd": 2.0816659994661326,
+        "minimum": 3.0,
+        "maximum": 7.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.609,
+        "sd": 0.0027874719729532567,
+        "minimum": 0.6059,
+        "maximum": 0.6113
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.1631730567573844,
+        "sd": 0.017830226078059754,
+        "minimum": 0.15048624478492476,
+        "maximum": 0.18355927455166438
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.043333333333333335,
+        "sd": 0.004091861841916626,
+        "minimum": 0.04,
+        "maximum": 0.0479
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.1944133333333374,
+        "sd": 0.0005601190349678707,
+        "minimum": 0.19386000000000408,
+        "maximum": 0.1949800000000041
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 17.713506291856145,
+        "sd": 0.6811426483080774,
+        "minimum": 17.044713354509028,
+        "maximum": 18.406361004346333
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.18993333333333332,
+        "sd": 0.023529201714748704,
+        "minimum": 0.1633,
+        "maximum": 0.2079
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.016,
+        "sd": 0.004355456348076514,
+        "minimum": 0.0113,
+        "maximum": 0.0199
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 48.666666666666664,
+        "sd": 0.5773502691896258,
+        "minimum": 48.0,
+        "maximum": 49.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.6449666666666668,
+        "sd": 0.006125629219380924,
+        "minimum": 0.6408,
+        "maximum": 0.652
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.785305015615301,
+        "sd": 0.4003032882646148,
+        "minimum": 5.524651291073116,
+        "maximum": 6.24621840136728
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9555666666666668,
+        "sd": 0.015566738044090492,
+        "minimum": 0.9447,
+        "maximum": 0.9734
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.19284000000000404,
+        "sd": 0.0004660472079092963,
+        "minimum": 0.19246000000000404,
+        "maximum": 0.19336000000000414
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 22.73245196020981,
+        "sd": 0.3868063219405376,
+        "minimum": 22.293958206992812,
+        "maximum": 23.025262088414596
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.08303333333333333,
+        "sd": 0.02030402258995329,
+        "minimum": 0.0689,
+        "maximum": 0.1063
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 9.999999999999999E-05,
+        "sd": 0.00017320508075688773,
+        "minimum": 0.0,
+        "maximum": 0.0003
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 49.0,
+        "sd": 0.0,
+        "minimum": 49.0,
+        "maximum": 49.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.12623333333333334,
+        "sd": 0.012909815387267687,
+        "minimum": 0.1141,
+        "maximum": 0.1398
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.9899373938211795,
+        "sd": 0.004148509687198284,
+        "minimum": 5.985165765356719,
+        "maximum": 5.992689000306803
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9994999999999999,
+        "sd": 0.00045825756949559413,
+        "minimum": 0.999,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 30.633510198395626,
+        "sd": 0.790880633139242,
+        "minimum": 29.7289524282074,
+        "maximum": 31.194525490312866
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.04373333333333334,
+        "sd": 0.010446211434454756,
+        "minimum": 0.0342,
+        "maximum": 0.0549
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.004433333333333333,
+        "sd": 0.0007571877794400365,
+        "minimum": 0.0039,
+        "maximum": 0.0053
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0024,
+        "sd": 0.000818535277187245,
+        "minimum": 0.0015,
+        "maximum": 0.0031
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 25.83293951182196,
+        "sd": 0.19701886173025246,
+        "minimum": 25.654118492633785,
+        "maximum": 26.04414375770762
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9998,
+        "sd": 0.00019999999999997797,
+        "minimum": 0.9996,
+        "maximum": 1.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 15.302570851902916,
+        "sd": 0.22817507801733014,
+        "minimum": 15.068162037728687,
+        "maximum": 15.523954177713007
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.19733333333333333,
+        "sd": 0.010080343909477173,
+        "minimum": 0.1866,
+        "maximum": 0.2066
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.015566666666666668,
+        "sd": 0.002916047553338822,
+        "minimum": 0.0122,
+        "maximum": 0.0173
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0012,
+        "sd": 0.00036055512754639893,
+        "minimum": 0.0008,
+        "maximum": 0.0015
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.991994791701951,
+        "sd": 0.0035029298009520565,
+        "minimum": 5.987951617538064,
+        "maximum": 5.994116749102
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9998333333333335,
+        "sd": 0.00011547005383791244,
+        "minimum": 0.9997,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 28.918288006446733,
+        "sd": 1.1486571974441164,
+        "minimum": 27.598001854530285,
+        "maximum": 29.688188610772784
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.0757,
+        "sd": 0.015326773959317077,
+        "minimum": 0.0588,
+        "maximum": 0.0887
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.010333333333333333,
+        "sd": 0.0015947831618540916,
+        "minimum": 0.009,
+        "maximum": 0.0121
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.002033333333333333,
+        "sd": 0.0006658328118479393,
+        "minimum": 0.0013,
+        "maximum": 0.0026
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.927961939785523,
+        "sd": 0.003901654535262727,
+        "minimum": 5.9234589665479485,
+        "maximum": 5.9303372493779305
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9994999999999999,
+        "sd": 0.00045825756949559413,
+        "minimum": 0.999,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.92923,
+        "sd": 0.018559749459515797,
+        "minimum": 0.9144200000000001,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.8900666666666667,
+        "sd": 0.03000005555550414,
+        "minimum": 0.8601,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 25.920725721054193,
+        "sd": 0.23829550607481742,
+        "minimum": 25.657852811283465,
+        "maximum": 26.122576117719266
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.08823333333333333,
+        "sd": 0.004895235779136008,
+        "minimum": 0.0828,
+        "maximum": 0.0923
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.008933333333333335,
+        "sd": 0.0030005555041247504,
+        "minimum": 0.0063,
+        "maximum": 0.0122
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 2.6666666666666665,
+        "sd": 2.5166114784235836,
+        "minimum": 0.0,
+        "maximum": 5.0
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.9968333333333333,
+        "sd": 0.005484827557301417,
+        "minimum": 0.9905,
+        "maximum": 1.0
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 6.126551579891803,
+        "sd": 0.4685025442316192,
+        "minimum": 5.7539257333821965,
+        "maximum": 6.652507135682997
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9385,
+        "sd": 0.0047507894080879125,
+        "minimum": 0.9337,
+        "maximum": 0.9432
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.7466287333333336,
+        "sd": 0.01875051063446887,
+        "minimum": 0.7314540000000005,
+        "maximum": 0.7675906000000002
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.4817666666666667,
+        "sd": 0.08365389012671999,
+        "minimum": 0.3999,
+        "maximum": 0.5671
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 19.685052500823815,
+        "sd": 0.23080661079902112,
+        "minimum": 19.480569569482725,
+        "maximum": 19.93532011175643
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.19200000000000003,
+        "sd": 0.022578086721420837,
+        "minimum": 0.1739,
+        "maximum": 0.2173
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.021199999999999997,
+        "sd": 0.0021000000000000003,
+        "minimum": 0.0197,
+        "maximum": 0.0236
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 35.333333333333336,
+        "sd": 4.163331998932266,
+        "minimum": 32.0,
+        "maximum": 40.0
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.8872333333333332,
+        "sd": 0.0010692676621563539,
+        "minimum": 0.8863,
+        "maximum": 0.8884
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 4.61648268617473,
+        "sd": 2.1530172345566863,
+        "minimum": 2.1321640206392583,
+        "maximum": 5.939905715339826
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9293,
+        "sd": 0.12228278701436272,
+        "minimum": 0.7881,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 21.261820491434914,
+        "sd": 3.4354943277721217,
+        "minimum": 17.398127032320943,
+        "maximum": 23.972464958953665
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.15933333333333333,
+        "sd": 0.07899723623857567,
+        "minimum": 0.0777,
+        "maximum": 0.2354
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.0188,
+        "sd": 0.007017121917139534,
+        "minimum": 0.011,
+        "maximum": 0.0246
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.02968426991018745,
+        "sd": 0.001347841479003793,
+        "minimum": 0.028184901187495354,
+        "maximum": 0.030795335963906864
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.0004,
+        "sd": 0.000360555127546399,
+        "minimum": 0.0001,
+        "maximum": 0.0008
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.9398066666666667,
+        "sd": 0.01037232053753315,
+        "minimum": 0.9293100000000001,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.902,
+        "sd": 0.017228755033373712,
+        "minimum": 0.8858,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 17.73558601763922,
+        "sd": 0.22010553638469912,
+        "minimum": 17.594656822284325,
+        "maximum": 17.9892190311794
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.19893333333333332,
+        "sd": 0.010800617266310914,
+        "minimum": 0.1924,
+        "maximum": 0.2114
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.016966666666666668,
+        "sd": 0.0017387735140993307,
+        "minimum": 0.015,
+        "maximum": 0.0183
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 3.0,
+        "sd": 3.0,
+        "minimum": 0.0,
+        "maximum": 6.0
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.5636666666666666,
+        "sd": 0.019432275557261278,
+        "minimum": 0.5486,
+        "maximum": 0.5856
+      }
+    ]
+  },
+  {
+    "scenario": "ecology-count-only-controls",
+    "passed": false,
+    "controls": 39,
+    "fingerprint": "BACD0BBF363FC92272753305E2501312D354A1E9C2C5C36E05FFB8F5855B217F",
+    "statistics": [
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.927466004336149,
+        "sd": 0.10549935279015808,
+        "minimum": 5.811754469072625,
+        "maximum": 6.018310313832639
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9867666666666667,
+        "sd": 0.001833939293797175,
+        "minimum": 0.9847,
+        "maximum": 0.9882
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.8410218666666663,
+        "sd": 0.007295302040583006,
+        "minimum": 0.8334502999999996,
+        "maximum": 0.8480052999999999
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.7068333333333333,
+        "sd": 0.02434529386418108,
+        "minimum": 0.6811,
+        "maximum": 0.7295
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 13.806579710358646,
+        "sd": 0.6034672910270735,
+        "minimum": 13.242298017442783,
+        "maximum": 14.442786086937147
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.3224666666666667,
+        "sd": 0.04646012627332532,
+        "minimum": 0.2797,
+        "maximum": 0.3719
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.005366666666666666,
+        "sd": 0.001553490693030806,
+        "minimum": 0.0041,
+        "maximum": 0.0071
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 23.0,
+        "sd": 1.0,
+        "minimum": 22.0,
+        "maximum": 24.0
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.16416666666666668,
+        "sd": 0.02440744421960917,
+        "minimum": 0.1418,
+        "maximum": 0.1902
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.8545292571370595,
+        "sd": 0.5559996907480629,
+        "minimum": 5.398264891813064,
+        "maximum": 6.473817134904676
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9257,
+        "sd": 0.016058642532916684,
+        "minimum": 0.9085,
+        "maximum": 0.9403
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.049858599999999635,
+        "sd": 3.173830493268309E-05,
+        "minimum": 0.04982779999999964,
+        "maximum": 0.049891199999999636
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 8.674589713389402,
+        "sd": 0.21073682121521944,
+        "minimum": 8.538830819511649,
+        "maximum": 8.91736098365262
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.664,
+        "sd": 0.0136864896887405,
+        "minimum": 0.6482,
+        "maximum": 0.6722
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.10016666666666667,
+        "sd": 0.0037166292972710285,
+        "minimum": 0.0971,
+        "maximum": 0.1043
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 99.0,
+        "sd": 0.0,
+        "minimum": 99.0,
+        "maximum": 99.0
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.14103333333333332,
+        "sd": 0.003547299442298797,
+        "minimum": 0.1372,
+        "maximum": 0.1442
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.8888742198161038,
+        "sd": 0.04042430178574654,
+        "minimum": 0.8460486135494028,
+        "maximum": 0.9263680602537526
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.2335666666666667,
+        "sd": 0.008593214377247511,
+        "minimum": 0.2275,
+        "maximum": 0.2434
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.15235059999999978,
+        "sd": 0.005026999700616751,
+        "minimum": 0.14706629999999968,
+        "maximum": 0.15707309999999985
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 10.317225226815925,
+        "sd": 0.2115803511941604,
+        "minimum": 10.193426533778375,
+        "maximum": 10.561529775324912
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.5844666666666667,
+        "sd": 0.02977756426125772,
+        "minimum": 0.5501,
+        "maximum": 0.6026
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.0006666666666666666,
+        "sd": 0.00032145502536643183,
+        "minimum": 0.0003,
+        "maximum": 0.0009
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 64.33333333333333,
+        "sd": 3.511884584284246,
+        "minimum": 61.0,
+        "maximum": 68.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.7574,
+        "sd": 0.018992893407798597,
+        "minimum": 0.7357,
+        "maximum": 0.771
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.8006822341951599,
+        "sd": 0.036442094853109515,
+        "minimum": 0.7691510820080412,
+        "maximum": 0.8405800731042449
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.20906666666666665,
+        "sd": 0.006092892033618621,
+        "minimum": 0.2054,
+        "maximum": 0.2161
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.6900034333333332,
+        "sd": 0.04674872817621158,
+        "minimum": 0.6585017,
+        "maximum": 0.7437170999999998
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.4828666666666666,
+        "sd": 0.021961177867622052,
+        "minimum": 0.4626,
+        "maximum": 0.5062
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 10.318072873433001,
+        "sd": 0.16746656723495645,
+        "minimum": 10.176748514747237,
+        "maximum": 10.503039997432722
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.5812333333333334,
+        "sd": 0.023389385056758815,
+        "minimum": 0.5555,
+        "maximum": 0.6012
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.0008666666666666666,
+        "sd": 0.00045092497528228934,
+        "minimum": 0.0004,
+        "maximum": 0.0013
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 36.666666666666664,
+        "sd": 1.5275252316519465,
+        "minimum": 35.0,
+        "maximum": 38.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.7464000000000001,
+        "sd": 0.008950418984606209,
+        "minimum": 0.7375,
+        "maximum": 0.7554
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.15445593013866535,
+        "sd": 0.01997020974998221,
+        "minimum": 0.1371130971445331,
+        "maximum": 0.1762889911097899
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.03646666666666667,
+        "sd": 0.0016862186493255633,
+        "minimum": 0.0353,
+        "maximum": 0.0384
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.16937093333333317,
+        "sd": 0.0034350816152361047,
+        "minimum": 0.16710029999999976,
+        "maximum": 0.17332279999999975
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 7.838487645874566,
+        "sd": 0.142305563934916,
+        "minimum": 7.683367811085941,
+        "maximum": 7.962997016601125
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.7242000000000001,
+        "sd": 0.013275164782404768,
+        "minimum": 0.7121,
+        "maximum": 0.7384
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.102,
+        "sd": 0.006899999999999996,
+        "minimum": 0.0951,
+        "maximum": 0.1089
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 57.0,
+        "sd": 2.6457513110645907,
+        "minimum": 55.0,
+        "maximum": 60.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.6012,
+        "sd": 0.009165151389911688,
+        "minimum": 0.5932,
+        "maximum": 0.6112
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 6.031863465239027,
+        "sd": 0.1358619441300519,
+        "minimum": 5.9271779148853945,
+        "maximum": 6.18539502202312
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9814999999999999,
+        "sd": 0.00262106848441622,
+        "minimum": 0.9786,
+        "maximum": 0.9837
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.16700006666666653,
+        "sd": 0.008887795734788992,
+        "minimum": 0.15834789999999993,
+        "maximum": 0.17610609999999993
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 13.010255648545275,
+        "sd": 0.3261484409831883,
+        "minimum": 12.660194901719363,
+        "maximum": 13.305560336358804
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.37553333333333333,
+        "sd": 0.01682508048519628,
+        "minimum": 0.3632,
+        "maximum": 0.3947
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.004666666666666667,
+        "sd": 0.002516611478423583,
+        "minimum": 0.002,
+        "maximum": 0.007
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 60.0,
+        "sd": 2.6457513110645907,
+        "minimum": 57.0,
+        "maximum": 62.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.22593333333333332,
+        "sd": 0.013905514493658023,
+        "minimum": 0.2128,
+        "maximum": 0.2405
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.9899373938211795,
+        "sd": 0.004148509687198284,
+        "minimum": 5.985165765356719,
+        "maximum": 5.992689000306803
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9994999999999999,
+        "sd": 0.00045825756949559413,
+        "minimum": 0.999,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 14.775432268811919,
+        "sd": 0.11913011439857775,
+        "minimum": 14.687381712215661,
+        "maximum": 14.910985186481634
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.2994666666666667,
+        "sd": 0.0031533051443419302,
+        "minimum": 0.2967,
+        "maximum": 0.3029
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.04306666666666667,
+        "sd": 0.004636090306856989,
+        "minimum": 0.0388,
+        "maximum": 0.048
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0024,
+        "sd": 0.000818535277187245,
+        "minimum": 0.0015,
+        "maximum": 0.0031
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 25.83293951182196,
+        "sd": 0.19701886173025246,
+        "minimum": 25.654118492633785,
+        "maximum": 26.04414375770762
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9998,
+        "sd": 0.00019999999999997797,
+        "minimum": 0.9996,
+        "maximum": 1.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 7.708917643932929,
+        "sd": 0.10573618134198545,
+        "minimum": 7.623176199059837,
+        "maximum": 7.82706414944804
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.7277,
+        "sd": 0.013081666560496016,
+        "minimum": 0.7128,
+        "maximum": 0.7373
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.10266666666666667,
+        "sd": 0.0030005555041247513,
+        "minimum": 0.0994,
+        "maximum": 0.1053
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0012,
+        "sd": 0.00036055512754639893,
+        "minimum": 0.0008,
+        "maximum": 0.0015
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.991994791701951,
+        "sd": 0.0035029298009520565,
+        "minimum": 5.987951617538064,
+        "maximum": 5.994116749102
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9998333333333335,
+        "sd": 0.00011547005383791244,
+        "minimum": 0.9997,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 14.880724783090008,
+        "sd": 0.9061672094811128,
+        "minimum": 14.16089026608974,
+        "maximum": 15.898302830021406
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.29183333333333333,
+        "sd": 0.02505400832867534,
+        "minimum": 0.2682,
+        "maximum": 0.3181
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.04006666666666667,
+        "sd": 0.005200320502943384,
+        "minimum": 0.0363,
+        "maximum": 0.046
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.002033333333333333,
+        "sd": 0.0006658328118479393,
+        "minimum": 0.0013,
+        "maximum": 0.0026
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.927961939785523,
+        "sd": 0.003901654535262727,
+        "minimum": 5.9234589665479485,
+        "maximum": 5.9303372493779305
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9994999999999999,
+        "sd": 0.00045825756949559413,
+        "minimum": 0.999,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.9210151666666667,
+        "sd": 0.025171244239872787,
+        "minimum": 0.9053465,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.8780333333333333,
+        "sd": 0.03851562453515889,
+        "minimum": 0.8445,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 11.650301884689604,
+        "sd": 0.2289608412127634,
+        "minimum": 11.39847919079384,
+        "maximum": 11.845941740428126
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.44733333333333336,
+        "sd": 0.014446222112833989,
+        "minimum": 0.4384,
+        "maximum": 0.464
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.0594,
+        "sd": 0.0029715315916207232,
+        "minimum": 0.0573,
+        "maximum": 0.0628
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 2.3333333333333335,
+        "sd": 2.081665999466133,
+        "minimum": 0.0,
+        "maximum": 4.0
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.9968333333333333,
+        "sd": 0.005484827557301417,
+        "minimum": 0.9905,
+        "maximum": 1.0
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 6.126551579891803,
+        "sd": 0.4685025442316192,
+        "minimum": 5.7539257333821965,
+        "maximum": 6.652507135682997
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9385,
+        "sd": 0.0047507894080879125,
+        "minimum": 0.9337,
+        "maximum": 0.9432
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.4697271666666672,
+        "sd": 0.04983186455776444,
+        "minimum": 0.42156440000000023,
+        "maximum": 0.5210753000000011
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.1406666666666667,
+        "sd": 0.0033080709383768235,
+        "minimum": 0.1381,
+        "maximum": 0.1444
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 8.80412220664739,
+        "sd": 0.46827208549019067,
+        "minimum": 8.327978363982183,
+        "maximum": 9.264104080141541
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.6545,
+        "sd": 0.02666814579231186,
+        "minimum": 0.629,
+        "maximum": 0.6822
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.09549999999999999,
+        "sd": 0.00925040539652182,
+        "minimum": 0.0862,
+        "maximum": 0.1047
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 47.333333333333336,
+        "sd": 0.5773502691896258,
+        "minimum": 47.0,
+        "maximum": 48.0
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.8872333333333332,
+        "sd": 0.0010692676621563539,
+        "minimum": 0.8863,
+        "maximum": 0.8884
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 4.61648268617473,
+        "sd": 2.1530172345566863,
+        "minimum": 2.1321640206392583,
+        "maximum": 5.939905715339826
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9293,
+        "sd": 0.12228278701436272,
+        "minimum": 0.7881,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 9.296805649419802,
+        "sd": 1.3795053682036045,
+        "minimum": 7.732304947655242,
+        "maximum": 10.338455743047158
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.6129,
+        "sd": 0.109361464876802,
+        "minimum": 0.517,
+        "maximum": 0.732
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.10536666666666666,
+        "sd": 0.025467102963103866,
+        "minimum": 0.0789,
+        "maximum": 0.1297
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.02968426991018745,
+        "sd": 0.001347841479003793,
+        "minimum": 0.028184901187495354,
+        "maximum": 0.030795335963906864
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.0004,
+        "sd": 0.000360555127546399,
+        "minimum": 0.0001,
+        "maximum": 0.0008
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.9293566666666667,
+        "sd": 0.02267606741331776,
+        "minimum": 0.9033100000000001,
+        "maximum": 0.9447
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.8765333333333333,
+        "sd": 0.0437077033637474,
+        "minimum": 0.8261,
+        "maximum": 0.9034
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 7.84531997742192,
+        "sd": 0.198452034016168,
+        "minimum": 7.650991801948112,
+        "maximum": 8.047653594814138
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.7302000000000001,
+        "sd": 0.0147,
+        "minimum": 0.7185,
+        "maximum": 0.7467
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.09953333333333332,
+        "sd": 0.005636783953047455,
+        "minimum": 0.0932,
+        "maximum": 0.104
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.encounters",
+        "n": 0,
+        "mean": null,
+        "sd": null,
+        "minimum": null,
+        "maximum": null
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 4.0,
+        "sd": 3.605551275463989,
+        "minimum": 1.0,
+        "maximum": 8.0
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.5636666666666666,
+        "sd": 0.019432275557261278,
+        "minimum": 0.5486,
+        "maximum": 0.5856
+      }
+    ]
+  },
+  {
+    "scenario": "ecology-investigate-4-controls",
+    "passed": false,
+    "controls": 39,
+    "fingerprint": "559DD8E9BC6FA4BCA9BFAD2222957C3A461153517F4E449AE791372373CFCB76",
+    "statistics": [
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.681881737841745,
+        "sd": 0.04643768994522603,
+        "minimum": 5.628726060420765,
+        "maximum": 5.7145681374209225
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9794666666666666,
+        "sd": 0.0015011106998930267,
+        "minimum": 0.978,
+        "maximum": 0.981
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.5500423000000003,
+        "sd": 0.11735242986657696,
+        "minimum": 0.42651800000000084,
+        "maximum": 0.6600527999999997
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.2634666666666667,
+        "sd": 0.15200583322140412,
+        "minimum": 0.0956,
+        "maximum": 0.3918
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 10.23512878226974,
+        "sd": 0.04743323169844051,
+        "minimum": 10.205592789267838,
+        "maximum": 10.289842120268814
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.22066666666666668,
+        "sd": 0.0009609023536933113,
+        "minimum": 0.2198,
+        "maximum": 0.2217
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.025399999999999995,
+        "sd": 0.002511971337416093,
+        "minimum": 0.0239,
+        "maximum": 0.0283
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 162.0,
+        "sd": 3.0,
+        "minimum": 159.0,
+        "maximum": 165.0
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 45.333333333333336,
+        "sd": 6.110100926607787,
+        "minimum": 40.0,
+        "maximum": 52.0
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.4369436943694369,
+        "sd": 0.010337377385276576,
+        "minimum": 0.42614261426142613,
+        "maximum": 0.44674467446744676
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.8545292571370595,
+        "sd": 0.5559996907480629,
+        "minimum": 5.398264891813064,
+        "maximum": 6.473817134904676
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9257,
+        "sd": 0.016058642532916684,
+        "minimum": 0.9085,
+        "maximum": 0.9403
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.049858599999999635,
+        "sd": 3.173830493268309E-05,
+        "minimum": 0.04982779999999964,
+        "maximum": 0.049891199999999636
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 5.913862595755698,
+        "sd": 0.05860881316959321,
+        "minimum": 5.875897857545656,
+        "maximum": 5.981363023051773
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.7704000000000001,
+        "sd": 0.005031898250163642,
+        "minimum": 0.7672,
+        "maximum": 0.7762
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.28036666666666665,
+        "sd": 0.0030892285984260416,
+        "minimum": 0.2776,
+        "maximum": 0.2837
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 166.0,
+        "sd": 6.244997998398398,
+        "minimum": 159.0,
+        "maximum": 171.0
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 99.0,
+        "sd": 0.0,
+        "minimum": 99.0,
+        "maximum": 99.0
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.14104743807714104,
+        "sd": 0.0035476542077195637,
+        "minimum": 0.13721372137213722,
+        "maximum": 0.14421442144214422
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 2.9878162670804738,
+        "sd": 0.048676030623441155,
+        "minimum": 2.9569380278322734,
+        "maximum": 3.043927941492199
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.6455000000000001,
+        "sd": 0.016311652276823473,
+        "minimum": 0.6342,
+        "maximum": 0.6642
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.10217336666666614,
+        "sd": 0.00854391979850781,
+        "minimum": 0.09413619999999948,
+        "maximum": 0.11114689999999952
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 10.216358611952794,
+        "sd": 0.0674714793631104,
+        "minimum": 10.139094807632777,
+        "maximum": 10.263658208958908
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.12593333333333334,
+        "sd": 0.009069362344362111,
+        "minimum": 0.1184,
+        "maximum": 0.136
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.014433333333333333,
+        "sd": 0.00403773864103824,
+        "minimum": 0.01,
+        "maximum": 0.0179
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 107.33333333333333,
+        "sd": 3.214550253664318,
+        "minimum": 105.0,
+        "maximum": 111.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 94.0,
+        "sd": 2.0,
+        "minimum": 92.0,
+        "maximum": 96.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.8135146848018135,
+        "sd": 0.00592877416119391,
+        "minimum": 0.8072807280728073,
+        "maximum": 0.819081908190819
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 3.0132525212216534,
+        "sd": 0.06448636225828171,
+        "minimum": 2.946743618433863,
+        "maximum": 3.0755055123163597
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.6459666666666667,
+        "sd": 0.015844978173962024,
+        "minimum": 0.6277,
+        "maximum": 0.656
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.12059436666666612,
+        "sd": 0.017944746117550307,
+        "minimum": 0.1017791999999994,
+        "maximum": 0.1375189999999996
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 10.22521911795881,
+        "sd": 0.05451408430639868,
+        "minimum": 10.184458503974689,
+        "maximum": 10.287141146731429
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.12283333333333334,
+        "sd": 0.003354598833442437,
+        "minimum": 0.1207,
+        "maximum": 0.1267
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.014400000000000001,
+        "sd": 0.001539480431834065,
+        "minimum": 0.0127,
+        "maximum": 0.0157
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 110.0,
+        "sd": 5.291502622129181,
+        "minimum": 104.0,
+        "maximum": 114.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 91.66666666666667,
+        "sd": 2.3094010767585034,
+        "minimum": 89.0,
+        "maximum": 93.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.8165483214988166,
+        "sd": 0.003027402562418216,
+        "minimum": 0.8137813781378138,
+        "maximum": 0.8197819781978197
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.15445593013866535,
+        "sd": 0.01997020974998221,
+        "minimum": 0.1371130971445331,
+        "maximum": 0.1762889911097899
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.03646666666666667,
+        "sd": 0.0016862186493255633,
+        "minimum": 0.0353,
+        "maximum": 0.0384
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.16937093333333317,
+        "sd": 0.0034350816152361047,
+        "minimum": 0.16710029999999976,
+        "maximum": 0.17332279999999975
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 4.697032622553773,
+        "sd": 0.1222654872850452,
+        "minimum": 4.615362015064331,
+        "maximum": 4.8375989810672
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.8848666666666668,
+        "sd": 0.011066315255464799,
+        "minimum": 0.8726,
+        "maximum": 0.8941
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.3042666666666667,
+        "sd": 0.010979222801880517,
+        "minimum": 0.2917,
+        "maximum": 0.312
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 214.33333333333334,
+        "sd": 7.094598884597588,
+        "minimum": 208.0,
+        "maximum": 222.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 57.0,
+        "sd": 2.6457513110645907,
+        "minimum": 55.0,
+        "maximum": 60.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.6011601160116012,
+        "sd": 0.009166067996711337,
+        "minimum": 0.5931593159315932,
+        "maximum": 0.6111611161116112
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.738182568625414,
+        "sd": 0.16139430144842928,
+        "minimum": 5.559637914174815,
+        "maximum": 5.873709358504209
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9815,
+        "sd": 0.005467174773134667,
+        "minimum": 0.9752,
+        "maximum": 0.985
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.15181609999999976,
+        "sd": 0.010646214329986114,
+        "minimum": 0.1456104999999997,
+        "maximum": 0.16410909999999984
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 10.370977529324604,
+        "sd": 0.051370101742064675,
+        "minimum": 10.314305010727523,
+        "maximum": 10.414481404780199
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.19933333333333336,
+        "sd": 0.00559672523296734,
+        "minimum": 0.1942,
+        "maximum": 0.2053
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.022766666666666668,
+        "sd": 0.004206344414492627,
+        "minimum": 0.0187,
+        "maximum": 0.0271
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 164.0,
+        "sd": 17.69180601295413,
+        "minimum": 145.0,
+        "maximum": 180.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 73.0,
+        "sd": 2.0,
+        "minimum": 71.0,
+        "maximum": 75.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.44654465446544656,
+        "sd": 0.019479114029706722,
+        "minimum": 0.42814281428142814,
+        "maximum": 0.4669466946694669
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.9899373938211795,
+        "sd": 0.004148509687198284,
+        "minimum": 5.985165765356719,
+        "maximum": 5.992689000306803
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9994999999999999,
+        "sd": 0.00045825756949559413,
+        "minimum": 0.999,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 4.255407327402501,
+        "sd": 0.5099758473196238,
+        "minimum": 3.8009690091414376,
+        "maximum": 4.8069561429343715
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.8935000000000001,
+        "sd": 0.03399867644482647,
+        "minimum": 0.8585,
+        "maximum": 0.9264
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.4007,
+        "sd": 0.0632140016135666,
+        "minimum": 0.3303,
+        "maximum": 0.4526
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 121.33333333333333,
+        "sd": 20.5993527406405,
+        "minimum": 102.0,
+        "maximum": 143.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0023002300230023,
+        "sd": 0.0008186171389011351,
+        "minimum": 0.0014001400140014,
+        "maximum": 0.003000300030003
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 25.83293951182196,
+        "sd": 0.19701886173025246,
+        "minimum": 25.654118492633785,
+        "maximum": 26.04414375770762
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9998,
+        "sd": 0.00019999999999997797,
+        "minimum": 0.9996,
+        "maximum": 1.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 4.333328093493939,
+        "sd": 0.046768103617832686,
+        "minimum": 4.297090882964326,
+        "maximum": 4.386122395518619
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.916,
+        "sd": 0.005597320787662613,
+        "minimum": 0.9099,
+        "maximum": 0.9209
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.33749999999999997,
+        "sd": 0.007040596565632756,
+        "minimum": 0.3299,
+        "maximum": 0.3438
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 120.0,
+        "sd": 6.0,
+        "minimum": 114.0,
+        "maximum": 126.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0011001100110011,
+        "sd": 0.00036059118666506546,
+        "minimum": 0.0007000700070007,
+        "maximum": 0.0014001400140014
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.991994791701951,
+        "sd": 0.0035029298009520565,
+        "minimum": 5.987951617538064,
+        "maximum": 5.994116749102
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9998333333333335,
+        "sd": 0.00011547005383791244,
+        "minimum": 0.9997,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 4.169179824363414,
+        "sd": 0.20045356457254987,
+        "minimum": 3.9979839083809523,
+        "maximum": 4.389687382876756
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.8954666666666666,
+        "sd": 0.009972127823756251,
+        "minimum": 0.8859,
+        "maximum": 0.9058
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.4224666666666666,
+        "sd": 0.029387298843774882,
+        "minimum": 0.3894,
+        "maximum": 0.4456
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 120.0,
+        "sd": 9.848857801796104,
+        "minimum": 109.0,
+        "maximum": 128.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0019335266860019337,
+        "sd": 0.0006658994017881181,
+        "minimum": 0.0012001200120012002,
+        "maximum": 0.0025002500250025004
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.927961939785523,
+        "sd": 0.003901654535262727,
+        "minimum": 5.9234589665479485,
+        "maximum": 5.9303372493779305
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9994999999999999,
+        "sd": 0.00045825756949559413,
+        "minimum": 0.999,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.9210151666666667,
+        "sd": 0.025171244239872787,
+        "minimum": 0.9053465,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.8780333333333333,
+        "sd": 0.03851562453515889,
+        "minimum": 0.8445,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 15.213006134364093,
+        "sd": 0.17481967639983836,
+        "minimum": 15.024760353089395,
+        "maximum": 15.370252425026733
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.14363333333333334,
+        "sd": 0.012169771293386472,
+        "minimum": 0.1306,
+        "maximum": 0.1547
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.0202,
+        "sd": 0.003051229260478472,
+        "minimum": 0.0167,
+        "maximum": 0.0223
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 182.66666666666666,
+        "sd": 9.018499505645789,
+        "minimum": 174.0,
+        "maximum": 192.0
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 2.3333333333333335,
+        "sd": 2.081665999466133,
+        "minimum": 0.0,
+        "maximum": 4.0
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.9968330166349969,
+        "sd": 0.0054853760949109395,
+        "minimum": 0.9904990499049905,
+        "maximum": 1.0
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 6.126551579891803,
+        "sd": 0.4685025442316192,
+        "minimum": 5.7539257333821965,
+        "maximum": 6.652507135682997
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9385,
+        "sd": 0.0047507894080879125,
+        "minimum": 0.9337,
+        "maximum": 0.9432
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.4697271666666672,
+        "sd": 0.04983186455776444,
+        "minimum": 0.42156440000000023,
+        "maximum": 0.5210753000000011
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.1406666666666667,
+        "sd": 0.0033080709383768235,
+        "minimum": 0.1381,
+        "maximum": 0.1444
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 4.852590564983735,
+        "sd": 0.2690402084582728,
+        "minimum": 4.657853573768043,
+        "maximum": 5.15957957952154
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.8639,
+        "sd": 0.024511017930718415,
+        "minimum": 0.8356,
+        "maximum": 0.8784
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.31239999999999996,
+        "sd": 0.020988806540630164,
+        "minimum": 0.2893,
+        "maximum": 0.3303
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 237.0,
+        "sd": 7.937253933193772,
+        "minimum": 228.0,
+        "maximum": 243.0
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 47.333333333333336,
+        "sd": 0.5773502691896258,
+        "minimum": 47.0,
+        "maximum": 48.0
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.8872553922058873,
+        "sd": 0.001026422930182406,
+        "minimum": 0.8863886388638864,
+        "maximum": 0.8883888388838884
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 4.61648268617473,
+        "sd": 2.1530172345566863,
+        "minimum": 2.1321640206392583,
+        "maximum": 5.939905715339826
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9293,
+        "sd": 0.12228278701436272,
+        "minimum": 0.7881,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 3.8304067528718164,
+        "sd": 0.3805520447081385,
+        "minimum": 3.4003474320095157,
+        "maximum": 4.123581113290474
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.9406,
+        "sd": 0.018446950967571898,
+        "minimum": 0.9259,
+        "maximum": 0.9613
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.43693333333333334,
+        "sd": 0.07645523744867536,
+        "minimum": 0.3669,
+        "maximum": 0.5185
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 83.66666666666667,
+        "sd": 23.45918441321721,
+        "minimum": 58.0,
+        "maximum": 104.0
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.02968426991018745,
+        "sd": 0.001347841479003793,
+        "minimum": 0.028184901187495354,
+        "maximum": 0.030795335963906864
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.0004,
+        "sd": 0.000360555127546399,
+        "minimum": 0.0001,
+        "maximum": 0.0008
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.9293566666666667,
+        "sd": 0.02267606741331776,
+        "minimum": 0.9033100000000001,
+        "maximum": 0.9447
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.8765333333333333,
+        "sd": 0.0437077033637474,
+        "minimum": 0.8261,
+        "maximum": 0.9034
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 4.426970257199288,
+        "sd": 0.13160196481771813,
+        "minimum": 4.323184817895045,
+        "maximum": 4.57499056958733
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.9106666666666667,
+        "sd": 0.009859175083815761,
+        "minimum": 0.8993,
+        "maximum": 0.9169
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.3257,
+        "sd": 0.016566230711903048,
+        "minimum": 0.3115,
+        "maximum": 0.3439
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 173.0,
+        "sd": 13.527749258468683,
+        "minimum": 159.0,
+        "maximum": 186.0
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 4.0,
+        "sd": 3.605551275463989,
+        "minimum": 1.0,
+        "maximum": 8.0
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.5636230289695637,
+        "sd": 0.01943421897915916,
+        "minimum": 0.5485548554855486,
+        "maximum": 0.5855585558555856
+      }
+    ]
+  },
+  {
+    "scenario": "ecology-investigate-6-controls",
+    "passed": false,
+    "controls": 39,
+    "fingerprint": "4636DD13F8308B95787161EEA73FCF7875F8F1B26058DC33F2751C468A248331",
+    "statistics": [
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.879074414316464,
+        "sd": 0.08711338939942076,
+        "minimum": 5.80687089885966,
+        "maximum": 5.975828722522273
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9895333333333333,
+        "sd": 0.005488472768752135,
+        "minimum": 0.9832,
+        "maximum": 0.9929
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.82335,
+        "sd": 0.054542334933517365,
+        "minimum": 0.7644600000000001,
+        "maximum": 0.87213
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.6607,
+        "sd": 0.1304019555068098,
+        "minimum": 0.5105,
+        "maximum": 0.745
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 12.091564724190235,
+        "sd": 0.39034985166477204,
+        "minimum": 11.734220202659316,
+        "maximum": 12.508148053200928
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.13313333333333335,
+        "sd": 0.014060701736874057,
+        "minimum": 0.1194,
+        "maximum": 0.1475
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.006766666666666667,
+        "sd": 0.0020816659994661326,
+        "minimum": 0.0051,
+        "maximum": 0.0091
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 138.0,
+        "sd": 8.18535277187245,
+        "minimum": 129.0,
+        "maximum": 145.0
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 22.666666666666668,
+        "sd": 5.507570547286102,
+        "minimum": 19.0,
+        "maximum": 29.0
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.2967963463012968,
+        "sd": 0.03505094912915505,
+        "minimum": 0.2563256325632563,
+        "maximum": 0.31743174317431744
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.8545292571370595,
+        "sd": 0.5559996907480629,
+        "minimum": 5.398264891813064,
+        "maximum": 6.473817134904676
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9257,
+        "sd": 0.016058642532916684,
+        "minimum": 0.9085,
+        "maximum": 0.9403
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.049858599999999635,
+        "sd": 3.173830493268309E-05,
+        "minimum": 0.04982779999999964,
+        "maximum": 0.049891199999999636
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 7.251389585154604,
+        "sd": 0.15870590232588225,
+        "minimum": 7.094894568723132,
+        "maximum": 7.412217634705193
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.6354333333333334,
+        "sd": 0.016190841032303845,
+        "minimum": 0.6252,
+        "maximum": 0.6541
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.14896666666666666,
+        "sd": 0.0019008769905844328,
+        "minimum": 0.1471,
+        "maximum": 0.1509
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 270.6666666666667,
+        "sd": 8.621678104251709,
+        "minimum": 263.0,
+        "maximum": 280.0
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 99.0,
+        "sd": 0.0,
+        "minimum": 99.0,
+        "maximum": 99.0
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.14104743807714104,
+        "sd": 0.0035476542077195637,
+        "minimum": 0.13721372137213722,
+        "maximum": 0.14421442144214422
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 2.5893975003280016,
+        "sd": 0.18203418090664536,
+        "minimum": 2.44137148371457,
+        "maximum": 2.792649306302149
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.5794333333333334,
+        "sd": 0.024245068227029855,
+        "minimum": 0.5581,
+        "maximum": 0.6058
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.11915036666666624,
+        "sd": 0.0022195543456589775,
+        "minimum": 0.11722929999999955,
+        "maximum": 0.12158009999999968
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 10.745499185659403,
+        "sd": 0.09598312664503382,
+        "minimum": 10.66887623929681,
+        "maximum": 10.853160883559823
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.08253333333333333,
+        "sd": 0.004563259069276403,
+        "minimum": 0.0775,
+        "maximum": 0.0864
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.004333333333333334,
+        "sd": 0.0016921386861996073,
+        "minimum": 0.0029,
+        "maximum": 0.0062
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 97.66666666666667,
+        "sd": 5.131601439446884,
+        "minimum": 92.0,
+        "maximum": 102.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 86.66666666666667,
+        "sd": 2.5166114784235836,
+        "minimum": 84.0,
+        "maximum": 89.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.7925125845917925,
+        "sd": 0.0009292502493427214,
+        "minimum": 0.7914791479147915,
+        "maximum": 0.7932793279327933
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 2.74404873914573,
+        "sd": 0.1512874568587673,
+        "minimum": 2.6326965201503216,
+        "maximum": 2.916294171779465
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.6037333333333333,
+        "sd": 0.020999365069766577,
+        "minimum": 0.5846,
+        "maximum": 0.6262
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.15936646666666635,
+        "sd": 0.04870387321993342,
+        "minimum": 0.11447349999999958,
+        "maximum": 0.21114779999999986
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0013333333333333333,
+        "sd": 0.002309401076758503,
+        "minimum": 0.0,
+        "maximum": 0.004
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 10.679610149240913,
+        "sd": 0.06783451244902365,
+        "minimum": 10.630604452520593,
+        "maximum": 10.757031353073572
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.08213333333333334,
+        "sd": 0.008315247039825899,
+        "minimum": 0.0727,
+        "maximum": 0.0884
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.0037999999999999996,
+        "sd": 0.0018520259177452136,
+        "minimum": 0.0024,
+        "maximum": 0.0059
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 106.0,
+        "sd": 12.767145334803704,
+        "minimum": 92.0,
+        "maximum": 117.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 81.33333333333333,
+        "sd": 5.507570547286102,
+        "minimum": 76.0,
+        "maximum": 87.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.7902123545687902,
+        "sd": 0.0016654993495078632,
+        "minimum": 0.7888788878887889,
+        "maximum": 0.7920792079207921
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.15445593013866535,
+        "sd": 0.01997020974998221,
+        "minimum": 0.1371130971445331,
+        "maximum": 0.1762889911097899
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.03646666666666667,
+        "sd": 0.0016862186493255633,
+        "minimum": 0.0353,
+        "maximum": 0.0384
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.16937093333333317,
+        "sd": 0.0034350816152361047,
+        "minimum": 0.16710029999999976,
+        "maximum": 0.17332279999999975
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 6.305636656313504,
+        "sd": 0.34275269064481617,
+        "minimum": 6.081570145168327,
+        "maximum": 6.700203194671825
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.7155999999999999,
+        "sd": 0.03755489315655149,
+        "minimum": 0.6723,
+        "maximum": 0.7393
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.17120000000000002,
+        "sd": 0.016859122159827884,
+        "minimum": 0.1529,
+        "maximum": 0.1861
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 367.0,
+        "sd": 13.892443989449804,
+        "minimum": 351.0,
+        "maximum": 376.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 57.0,
+        "sd": 2.6457513110645907,
+        "minimum": 55.0,
+        "maximum": 60.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.6011601160116012,
+        "sd": 0.009166067996711337,
+        "minimum": 0.5931593159315932,
+        "maximum": 0.6111611161116112
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.899473033392294,
+        "sd": 0.13962202951524308,
+        "minimum": 5.7921921414874555,
+        "maximum": 6.057336407724375
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9834333333333333,
+        "sd": 0.005316327052894052,
+        "minimum": 0.9777,
+        "maximum": 0.9882
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.17568273333333329,
+        "sd": 0.006650272409708819,
+        "minimum": 0.16922709999999985,
+        "maximum": 0.1825119
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 12.069500729267949,
+        "sd": 0.2462898304953854,
+        "minimum": 11.81814386977273,
+        "maximum": 12.31038973793074
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.12353333333333333,
+        "sd": 0.028975909534186037,
+        "minimum": 0.1021,
+        "maximum": 0.1565
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.008033333333333332,
+        "sd": 0.0023115651263447743,
+        "minimum": 0.0066,
+        "maximum": 0.0107
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 129.33333333333334,
+        "sd": 22.5905584998099,
+        "minimum": 108.0,
+        "maximum": 153.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 61.0,
+        "sd": 3.4641016151377544,
+        "minimum": 59.0,
+        "maximum": 65.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.3297996466313298,
+        "sd": 0.022004321542023,
+        "minimum": 0.3045304530453045,
+        "maximum": 0.34473447344734476
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.9899373938211795,
+        "sd": 0.004148509687198284,
+        "minimum": 5.985165765356719,
+        "maximum": 5.992689000306803
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9994999999999999,
+        "sd": 0.00045825756949559413,
+        "minimum": 0.999,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 9.467438625561977,
+        "sd": 0.7832084449020533,
+        "minimum": 9.013877172467692,
+        "maximum": 10.371808441724752
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.4581,
+        "sd": 0.045694966900086474,
+        "minimum": 0.4055,
+        "maximum": 0.488
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.1124,
+        "sd": 0.021417516195861745,
+        "minimum": 0.0878,
+        "maximum": 0.1269
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 214.33333333333334,
+        "sd": 6.6583281184793925,
+        "minimum": 207.0,
+        "maximum": 220.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0023002300230023,
+        "sd": 0.0008186171389011351,
+        "minimum": 0.0014001400140014,
+        "maximum": 0.003000300030003
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 25.83293951182196,
+        "sd": 0.19701886173025246,
+        "minimum": 25.654118492633785,
+        "maximum": 26.04414375770762
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9998,
+        "sd": 0.00019999999999997797,
+        "minimum": 0.9996,
+        "maximum": 1.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 6.256252651544453,
+        "sd": 0.10108015917171663,
+        "minimum": 6.192235629846087,
+        "maximum": 6.372780771229886
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.7160000000000001,
+        "sd": 0.0060555759428810845,
+        "minimum": 0.7094,
+        "maximum": 0.7213
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.17103333333333334,
+        "sd": 0.012888884099615965,
+        "minimum": 0.1562,
+        "maximum": 0.1795
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 259.6666666666667,
+        "sd": 4.509249752822894,
+        "minimum": 255.0,
+        "maximum": 264.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0011001100110011,
+        "sd": 0.00036059118666506546,
+        "minimum": 0.0007000700070007,
+        "maximum": 0.0014001400140014
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.991994791701951,
+        "sd": 0.0035029298009520565,
+        "minimum": 5.987951617538064,
+        "maximum": 5.994116749102
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9998333333333335,
+        "sd": 0.00011547005383791244,
+        "minimum": 0.9997,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 9.734907499534165,
+        "sd": 0.18412892711908074,
+        "minimum": 9.52283441396478,
+        "maximum": 9.854067173989083
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.44483333333333336,
+        "sd": 0.016273086164994437,
+        "minimum": 0.4301,
+        "maximum": 0.4623
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.11299999999999999,
+        "sd": 0.005802585630561601,
+        "minimum": 0.1096,
+        "maximum": 0.1197
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 206.33333333333334,
+        "sd": 5.507570547286101,
+        "minimum": 201.0,
+        "maximum": 212.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0019335266860019337,
+        "sd": 0.0006658994017881181,
+        "minimum": 0.0012001200120012002,
+        "maximum": 0.0025002500250025004
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.927961939785523,
+        "sd": 0.003901654535262727,
+        "minimum": 5.9234589665479485,
+        "maximum": 5.9303372493779305
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9994999999999999,
+        "sd": 0.00045825756949559413,
+        "minimum": 0.999,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.9210151666666667,
+        "sd": 0.025171244239872787,
+        "minimum": 0.9053465,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.8780333333333333,
+        "sd": 0.03851562453515889,
+        "minimum": 0.8445,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 12.073755085888232,
+        "sd": 0.1069143261285501,
+        "minimum": 11.993884298127373,
+        "maximum": 12.195214501249247
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.2942,
+        "sd": 0.005841232746604093,
+        "minimum": 0.288,
+        "maximum": 0.2996
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.05253333333333333,
+        "sd": 0.004455707949735187,
+        "minimum": 0.0474,
+        "maximum": 0.0554
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 314.6666666666667,
+        "sd": 0.5773502691896258,
+        "minimum": 314.0,
+        "maximum": 315.0
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 2.3333333333333335,
+        "sd": 2.081665999466133,
+        "minimum": 0.0,
+        "maximum": 4.0
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.9968330166349969,
+        "sd": 0.0054853760949109395,
+        "minimum": 0.9904990499049905,
+        "maximum": 1.0
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 6.126551579891803,
+        "sd": 0.4685025442316192,
+        "minimum": 5.7539257333821965,
+        "maximum": 6.652507135682997
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9385,
+        "sd": 0.0047507894080879125,
+        "minimum": 0.9337,
+        "maximum": 0.9432
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.4697271666666672,
+        "sd": 0.04983186455776444,
+        "minimum": 0.42156440000000023,
+        "maximum": 0.5210753000000011
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.1406666666666667,
+        "sd": 0.0033080709383768235,
+        "minimum": 0.1381,
+        "maximum": 0.1444
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 6.796302138651888,
+        "sd": 0.26657089430701514,
+        "minimum": 6.515079024758385,
+        "maximum": 7.04528902420563
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.6872333333333334,
+        "sd": 0.01760123101755482,
+        "minimum": 0.6676,
+        "maximum": 0.7016
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.17513333333333334,
+        "sd": 0.001985782801147532,
+        "minimum": 0.1737,
+        "maximum": 0.1774
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 362.0,
+        "sd": 13.527749258468683,
+        "minimum": 349.0,
+        "maximum": 376.0
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 47.333333333333336,
+        "sd": 0.5773502691896258,
+        "minimum": 47.0,
+        "maximum": 48.0
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.8872553922058873,
+        "sd": 0.001026422930182406,
+        "minimum": 0.8863886388638864,
+        "maximum": 0.8883888388838884
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 4.61648268617473,
+        "sd": 2.1530172345566863,
+        "minimum": 2.1321640206392583,
+        "maximum": 5.939905715339826
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9293,
+        "sd": 0.12228278701436272,
+        "minimum": 0.7881,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 6.723556840869009,
+        "sd": 0.5893721790081075,
+        "minimum": 6.043370718586434,
+        "maximum": 7.082877348003184
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.6807666666666666,
+        "sd": 0.06205645279367271,
+        "minimum": 0.635,
+        "maximum": 0.7514
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.18273333333333333,
+        "sd": 0.01006048375245113,
+        "minimum": 0.1718,
+        "maximum": 0.1916
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 238.0,
+        "sd": 36.59234892706397,
+        "minimum": 196.0,
+        "maximum": 263.0
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.02968426991018745,
+        "sd": 0.001347841479003793,
+        "minimum": 0.028184901187495354,
+        "maximum": 0.030795335963906864
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.0004,
+        "sd": 0.000360555127546399,
+        "minimum": 0.0001,
+        "maximum": 0.0008
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.9293566666666667,
+        "sd": 0.02267606741331776,
+        "minimum": 0.9033100000000001,
+        "maximum": 0.9447
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.8765333333333333,
+        "sd": 0.0437077033637474,
+        "minimum": 0.8261,
+        "maximum": 0.9034
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 6.092251858373435,
+        "sd": 0.26401120343626927,
+        "minimum": 5.817159255567464,
+        "maximum": 6.343574081881866
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.7463000000000001,
+        "sd": 0.03196294729839536,
+        "minimum": 0.716,
+        "maximum": 0.7797
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.17603333333333335,
+        "sd": 0.008352444751887513,
+        "minimum": 0.1678,
+        "maximum": 0.1845
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 348.3333333333333,
+        "sd": 14.153915830374762,
+        "minimum": 332.0,
+        "maximum": 357.0
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 4.0,
+        "sd": 3.605551275463989,
+        "minimum": 1.0,
+        "maximum": 8.0
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.5636230289695637,
+        "sd": 0.01943421897915916,
+        "minimum": 0.5485548554855486,
+        "maximum": 0.5855585558555856
+      }
+    ]
+  },
+  {
+    "scenario": "ecology-balanced-6-controls",
+    "passed": false,
+    "controls": 39,
+    "fingerprint": "AB415CBE1AFF083AA3D0298FD041535739A8448EEE912753FC62600FD17A6CA0",
+    "statistics": [
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.8551885642525,
+        "sd": 0.12818223533458142,
+        "minimum": 5.726817088958636,
+        "maximum": 5.9831807177486835
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9851000000000001,
+        "sd": 0.001967231557290612,
+        "minimum": 0.983,
+        "maximum": 0.9869
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.9098846333333328,
+        "sd": 0.021736939338907222,
+        "minimum": 0.8865824999999994,
+        "maximum": 0.9296135999999993
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.863,
+        "sd": 0.05044492045786173,
+        "minimum": 0.8082,
+        "maximum": 0.9075
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 10.154940729879668,
+        "sd": 0.08573295442130775,
+        "minimum": 10.093091131900557,
+        "maximum": 10.252806621601362
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.07390000000000001,
+        "sd": 0.004138840417314976,
+        "minimum": 0.0708,
+        "maximum": 0.0786
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.008366666666666668,
+        "sd": 0.0033827996294982263,
+        "minimum": 0.0058,
+        "maximum": 0.0122
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 116.33333333333333,
+        "sd": 4.163331998932265,
+        "minimum": 113.0,
+        "maximum": 121.0
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 10.0,
+        "sd": 1.0,
+        "minimum": 9.0,
+        "maximum": 11.0
+      },
+      {
+        "condition": 0,
+        "policy": "avoid",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.23305663899723306,
+        "sd": 0.0021596912140208124,
+        "minimum": 0.23102310231023102,
+        "maximum": 0.23532353235323533
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.8024704263137155,
+        "sd": 0.14073023537769275,
+        "minimum": 5.641445659781435,
+        "maximum": 5.901910766994201
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9354333333333332,
+        "sd": 0.020861767262946203,
+        "minimum": 0.9225,
+        "maximum": 0.9595
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.07949563333333289,
+        "sd": 4.9702347362397567E-05,
+        "minimum": 0.07944729999999957,
+        "maximum": 0.07954659999999955
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 7.150284110715305,
+        "sd": 0.48527253739730997,
+        "minimum": 6.59526204952346,
+        "maximum": 7.494520842842129
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.4664,
+        "sd": 0.03655735220171175,
+        "minimum": 0.4372,
+        "maximum": 0.5074
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.15786666666666668,
+        "sd": 0.01964747651311316,
+        "minimum": 0.1452,
+        "maximum": 0.1805
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 309.0,
+        "sd": 12.12435565298214,
+        "minimum": 298.0,
+        "maximum": 322.0
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 62.0,
+        "sd": 0.0,
+        "minimum": 62.0,
+        "maximum": 62.0
+      },
+      {
+        "condition": 0,
+        "policy": "forage",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.08917558422508916,
+        "sd": 0.0009292502493426947,
+        "minimum": 0.0884088408840884,
+        "maximum": 0.09020902090209021
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.9297979402965794,
+        "sd": 0.03258015374747445,
+        "minimum": 0.8955754446392088,
+        "maximum": 0.9604399682744288
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.25279999999999997,
+        "sd": 0.009853425800197615,
+        "minimum": 0.2421,
+        "maximum": 0.2615
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.1694294333333333,
+        "sd": 0.005667714165634543,
+        "minimum": 0.16301379999999985,
+        "maximum": 0.17375649999999998
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 8.548887085861876,
+        "sd": 0.1442000796307715,
+        "minimum": 8.459179652190208,
+        "maximum": 8.715223703649052
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.061366666666666674,
+        "sd": 0.0029501412395567302,
+        "minimum": 0.0584,
+        "maximum": 0.0643
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.0015666666666666667,
+        "sd": 0.0005131601439446884,
+        "minimum": 0.001,
+        "maximum": 0.002
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 248.0,
+        "sd": 7.937253933193772,
+        "minimum": 242.0,
+        "maximum": 257.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 54.666666666666664,
+        "sd": 0.5773502691896258,
+        "minimum": 54.0,
+        "maximum": 55.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.7721772177217723,
+        "sd": 0.005730319972307951,
+        "minimum": 0.7655765576557656,
+        "maximum": 0.7758775877587759
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.7089110177647614,
+        "sd": 0.14604567794947423,
+        "minimum": 0.6011441688587693,
+        "maximum": 0.8751290751471277
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.19436666666666666,
+        "sd": 0.03354703166203135,
+        "minimum": 0.1726,
+        "maximum": 0.233
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.8723023666666667,
+        "sd": 0.027807486875000557,
+        "minimum": 0.8406525000000001,
+        "maximum": 0.8928145999999999
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.8018333333333333,
+        "sd": 0.029481236970882604,
+        "minimum": 0.7716,
+        "maximum": 0.8305
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 8.642046644266744,
+        "sd": 0.26001548930393775,
+        "minimum": 8.356057633333853,
+        "maximum": 8.864197759673145
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.048933333333333336,
+        "sd": 0.012913687828553594,
+        "minimum": 0.0405,
+        "maximum": 0.0638
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.0005666666666666667,
+        "sd": 0.00045092497528228945,
+        "minimum": 0.0001,
+        "maximum": 0.001
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 204.33333333333334,
+        "sd": 41.28357219685977,
+        "minimum": 180.0,
+        "maximum": 252.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 16.333333333333332,
+        "sd": 1.5275252316519468,
+        "minimum": 15.0,
+        "maximum": 18.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.7451078441177451,
+        "sd": 0.01339922532782471,
+        "minimum": 0.7301730173017301,
+        "maximum": 0.7560756075607561
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.1725349351958163,
+        "sd": 0.013336619877894538,
+        "minimum": 0.16019578608768587,
+        "maximum": 0.18668413876587872
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.04083333333333333,
+        "sd": 0.0041669333248005435,
+        "minimum": 0.0369,
+        "maximum": 0.0452
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.1793108666666666,
+        "sd": 0.0029324510504582352,
+        "minimum": 0.17665789999999984,
+        "maximum": 0.18245959999999994
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 6.43463053220292,
+        "sd": 0.1512804386415011,
+        "minimum": 6.2604814151054535,
+        "maximum": 6.533530270504816
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.5045333333333333,
+        "sd": 0.020152501912500412,
+        "minimum": 0.4869,
+        "maximum": 0.5265
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.16103333333333333,
+        "sd": 0.008981276820883177,
+        "minimum": 0.1556,
+        "maximum": 0.1714
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 476.3333333333333,
+        "sd": 17.925772879665004,
+        "minimum": 465.0,
+        "maximum": 497.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 51.333333333333336,
+        "sd": 0.5773502691896258,
+        "minimum": 51.0,
+        "maximum": 52.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.6191619161916192,
+        "sd": 0.0035514113220451184,
+        "minimum": 0.6170617061706171,
+        "maximum": 0.6232623262326232
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.780826718230091,
+        "sd": 0.23570190442382644,
+        "minimum": 5.586911871130817,
+        "maximum": 6.0431720548957335
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9714999999999999,
+        "sd": 0.003278719262151029,
+        "minimum": 0.968,
+        "maximum": 0.9745
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.1752613666666665,
+        "sd": 0.000652497895271199,
+        "minimum": 0.17461949999999987,
+        "maximum": 0.17592399999999989
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 9.848329155331855,
+        "sd": 0.21184240338242688,
+        "minimum": 9.610325353620167,
+        "maximum": 10.016247787976837
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.07473333333333333,
+        "sd": 0.01563020579945553,
+        "minimum": 0.0631,
+        "maximum": 0.0925
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.006933333333333333,
+        "sd": 0.002830783166074953,
+        "minimum": 0.0052,
+        "maximum": 0.0102
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 137.66666666666666,
+        "sd": 13.428824718989123,
+        "minimum": 128.0,
+        "maximum": 153.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 53.666666666666664,
+        "sd": 1.1547005383792517,
+        "minimum": 53.0,
+        "maximum": 55.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.3053305330533053,
+        "sd": 0.017877189812360868,
+        "minimum": 0.2869286928692869,
+        "maximum": 0.32263226322632266
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.9899373938211795,
+        "sd": 0.004148509687198284,
+        "minimum": 5.985165765356719,
+        "maximum": 5.992689000306803
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9994999999999999,
+        "sd": 0.00045825756949559413,
+        "minimum": 0.999,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 9.467438625561977,
+        "sd": 0.7832084449020533,
+        "minimum": 9.013877172467692,
+        "maximum": 10.371808441724752
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.3126,
+        "sd": 0.03941560604633651,
+        "minimum": 0.2671,
+        "maximum": 0.3363
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.1124,
+        "sd": 0.021417516195861745,
+        "minimum": 0.0878,
+        "maximum": 0.1269
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 219.66666666666666,
+        "sd": 10.503967504392486,
+        "minimum": 209.0,
+        "maximum": 230.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-0",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0023002300230023,
+        "sd": 0.0008186171389011351,
+        "minimum": 0.0014001400140014,
+        "maximum": 0.003000300030003
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 25.83293951182196,
+        "sd": 0.19701886173025246,
+        "minimum": 25.654118492633785,
+        "maximum": 26.04414375770762
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9998,
+        "sd": 0.00019999999999997797,
+        "minimum": 0.9996,
+        "maximum": 1.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 6.256252651544453,
+        "sd": 0.10108015917171663,
+        "minimum": 6.192235629846087,
+        "maximum": 6.372780771229886
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.5127666666666666,
+        "sd": 0.009280265800791134,
+        "minimum": 0.5024,
+        "maximum": 0.5203
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.17103333333333334,
+        "sd": 0.012888884099615965,
+        "minimum": 0.1562,
+        "maximum": 0.1795
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 337.0,
+        "sd": 15.874507866387544,
+        "minimum": 325.0,
+        "maximum": 355.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-4",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0011001100110011,
+        "sd": 0.00036059118666506546,
+        "minimum": 0.0007000700070007,
+        "maximum": 0.0014001400140014
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.991994791701951,
+        "sd": 0.0035029298009520565,
+        "minimum": 5.987951617538064,
+        "maximum": 5.994116749102
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9998333333333335,
+        "sd": 0.00011547005383791244,
+        "minimum": 0.9997,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 9.734907499534165,
+        "sd": 0.18412892711908074,
+        "minimum": 9.52283441396478,
+        "maximum": 9.854067173989083
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.30810000000000004,
+        "sd": 0.02239665153544163,
+        "minimum": 0.2896,
+        "maximum": 0.333
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.11299999999999999,
+        "sd": 0.005802585630561601,
+        "minimum": 0.1096,
+        "maximum": 0.1197
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 210.33333333333334,
+        "sd": 3.7859388972001824,
+        "minimum": 206.0,
+        "maximum": 213.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "park-8",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0019335266860019337,
+        "sd": 0.0006658994017881181,
+        "minimum": 0.0012001200120012002,
+        "maximum": 0.0025002500250025004
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.927961939785523,
+        "sd": 0.003901654535262727,
+        "minimum": 5.9234589665479485,
+        "maximum": 5.9303372493779305
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9994999999999999,
+        "sd": 0.00045825756949559413,
+        "minimum": 0.999,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.9354,
+        "sd": 0.025374544330884017,
+        "minimum": 0.9061,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9001,
+        "sd": 0.034641016151377574,
+        "minimum": 0.8601,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 12.073755085888232,
+        "sd": 0.1069143261285501,
+        "minimum": 11.993884298127373,
+        "maximum": 12.195214501249247
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.18206666666666668,
+        "sd": 0.0070315953618886136,
+        "minimum": 0.174,
+        "maximum": 0.1869
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.05253333333333333,
+        "sd": 0.004455707949735187,
+        "minimum": 0.0474,
+        "maximum": 0.0554
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 279.6666666666667,
+        "sd": 4.932882862316248,
+        "minimum": 274.0,
+        "maximum": 283.0
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 1.0,
+        "sd": 1.7320508075688772,
+        "minimum": 0.0,
+        "maximum": 3.0
+      },
+      {
+        "condition": 0,
+        "policy": "patrol",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.9968330166349969,
+        "sd": 0.0054853760949109395,
+        "minimum": 0.9904990499049905,
+        "maximum": 1.0
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 6.126551579891803,
+        "sd": 0.4685025442316192,
+        "minimum": 5.7539257333821965,
+        "maximum": 6.652507135682997
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9385,
+        "sd": 0.0047507894080879125,
+        "minimum": 0.9337,
+        "maximum": 0.9432
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.8913043333333331,
+        "sd": 0.031630611064810604,
+        "minimum": 0.8548600000000001,
+        "maximum": 0.9116129999999996
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.8157,
+        "sd": 0.07780668351754881,
+        "minimum": 0.7271,
+        "maximum": 0.8729
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 6.796302138651888,
+        "sd": 0.26657089430701514,
+        "minimum": 6.515079024758385,
+        "maximum": 7.04528902420563
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.5054,
+        "sd": 0.01657015389186234,
+        "minimum": 0.4878,
+        "maximum": 0.5207
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.17513333333333334,
+        "sd": 0.001985782801147532,
+        "minimum": 0.1737,
+        "maximum": 0.1774
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 504.3333333333333,
+        "sd": 20.526405757787536,
+        "minimum": 487.0,
+        "maximum": 527.0
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 14.666666666666666,
+        "sd": 5.686240703077327,
+        "minimum": 10.0,
+        "maximum": 21.0
+      },
+      {
+        "condition": 0,
+        "policy": "random",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.8872553922058873,
+        "sd": 0.001026422930182406,
+        "minimum": 0.8863886388638864,
+        "maximum": 0.8883888388838884
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 4.61648268617473,
+        "sd": 2.1530172345566863,
+        "minimum": 2.1321640206392583,
+        "maximum": 5.939905715339826
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9293,
+        "sd": 0.12228278701436272,
+        "minimum": 0.7881,
+        "maximum": 0.9999
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.95005,
+        "sd": 0.0,
+        "minimum": 0.95005,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9201,
+        "sd": 0.0,
+        "minimum": 0.9201,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 6.723556840869009,
+        "sd": 0.5893721790081075,
+        "minimum": 6.043370718586434,
+        "maximum": 7.082877348003184
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.49846666666666667,
+        "sd": 0.049525380698519986,
+        "minimum": 0.4511,
+        "maximum": 0.5499
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.18273333333333333,
+        "sd": 0.01006048375245113,
+        "minimum": 0.1718,
+        "maximum": 0.1916
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 304.0,
+        "sd": 30.04995840263344,
+        "minimum": 275.0,
+        "maximum": 335.0
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "stay",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.02968426991018745,
+        "sd": 0.001347841479003793,
+        "minimum": 0.028184901187495354,
+        "maximum": 0.030795335963906864
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.0004,
+        "sd": 0.000360555127546399,
+        "minimum": 0.0001,
+        "maximum": 0.0008
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.9468366666666667,
+        "sd": 0.003954773486981651,
+        "minimum": 0.94242,
+        "maximum": 0.95005
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.9173333333333334,
+        "sd": 0.0047056703383612924,
+        "minimum": 0.9119,
+        "maximum": 0.9201
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 6.092251858373435,
+        "sd": 0.26401120343626927,
+        "minimum": 5.817159255567464,
+        "maximum": 6.343574081881866
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.5402666666666667,
+        "sd": 0.031186588998050605,
+        "minimum": 0.5109,
+        "maximum": 0.573
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.17603333333333335,
+        "sd": 0.008352444751887513,
+        "minimum": 0.1678,
+        "maximum": 0.1845
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 475.0,
+        "sd": 12.12435565298214,
+        "minimum": 464.0,
+        "maximum": 488.0
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 1.3333333333333333,
+        "sd": 1.5275252316519468,
+        "minimum": 0.0,
+        "maximum": 3.0
+      },
+      {
+        "condition": 0,
+        "policy": "thermal",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.5636230289695637,
+        "sd": 0.01943421897915916,
+        "minimum": 0.5485548554855486,
+        "maximum": 0.5855585558555856
+      }
+    ]
+  },
+  {
+    "scenario": "ecology-balanced-feedback-controls",
+    "passed": false,
+    "controls": 12,
+    "fingerprint": "AB415CBE1AFF083AA3D0298FD041535739A8448EEE912753FC62600FD17A6CA0",
+    "statistics": [
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.8191323673177076,
+        "sd": 0.06395586908180124,
+        "minimum": 0.7789102585590415,
+        "maximum": 0.8928809986861537
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.2205,
+        "sd": 0.016829735589129136,
+        "minimum": 0.2083,
+        "maximum": 0.2397
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.1819189333333335,
+        "sd": 0.0037955501397471066,
+        "minimum": 0.1775487,
+        "maximum": 0.18439040000000018
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 8.547795837167335,
+        "sd": 0.08275011981470302,
+        "minimum": 8.48966798841538,
+        "maximum": 8.642536600908116
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.07876666666666667,
+        "sd": 0.00652559065015063,
+        "minimum": 0.0726,
+        "maximum": 0.0856
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.0012333333333333335,
+        "sd": 0.0006806859285554045,
+        "minimum": 0.0007,
+        "maximum": 0.002
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 319.0,
+        "sd": 21.517434791350013,
+        "minimum": 297.0,
+        "maximum": 340.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 54.0,
+        "sd": 1.0,
+        "minimum": 53.0,
+        "maximum": 55.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.7608094142747609,
+        "sd": 0.0027504265536331335,
+        "minimum": 0.7580758075807581,
+        "maximum": 0.7635763576357636
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.5697346009353925,
+        "sd": 0.07640562113920957,
+        "minimum": 0.5186335295544133,
+        "maximum": 0.6575693988391851
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.1643,
+        "sd": 0.024475906520494806,
+        "minimum": 0.1446,
+        "maximum": 0.1917
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.8973766666666666,
+        "sd": 0.016617431610610873,
+        "minimum": 0.8782,
+        "maximum": 0.9075399999999995
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.8192333333333334,
+        "sd": 0.04404319849117833,
+        "minimum": 0.7826,
+        "maximum": 0.8681
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 8.645347268329713,
+        "sd": 0.128786969456576,
+        "minimum": 8.50553819345676,
+        "maximum": 8.75913973621621
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.0677,
+        "sd": 0.007507995737878382,
+        "minimum": 0.0604,
+        "maximum": 0.0754
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.0002666666666666667,
+        "sd": 0.00020816659994661328,
+        "minimum": 0.0001,
+        "maximum": 0.0005
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 288.3333333333333,
+        "sd": 35.557465226494045,
+        "minimum": 254.0,
+        "maximum": 325.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 11.333333333333334,
+        "sd": 1.5275252316519468,
+        "minimum": 10.0,
+        "maximum": 13.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-food",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.7406407307397407,
+        "sd": 0.012696281772060019,
+        "minimum": 0.7273727372737274,
+        "maximum": 0.7526752675267526
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 0.17610381437470804,
+        "sd": 0.038342778060508585,
+        "minimum": 0.14319808081832885,
+        "maximum": 0.21820971515932375
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.0431,
+        "sd": 0.010692520750505936,
+        "minimum": 0.0343,
+        "maximum": 0.055
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.19820076666666683,
+        "sd": 0.0034340041312341694,
+        "minimum": 0.19579930000000015,
+        "maximum": 0.20213410000000015
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 6.319682769488165,
+        "sd": 0.21020081406247823,
+        "minimum": 6.107654547157807,
+        "maximum": 6.528007226826641
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.5200999999999999,
+        "sd": 0.024781242906682453,
+        "minimum": 0.4995,
+        "maximum": 0.5476
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.1722,
+        "sd": 0.00871550342780037,
+        "minimum": 0.1632,
+        "maximum": 0.1806
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 491.3333333333333,
+        "sd": 17.009801096230763,
+        "minimum": 472.0,
+        "maximum": 504.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 50.666666666666664,
+        "sd": 0.5773502691896258,
+        "minimum": 50.0,
+        "maximum": 51.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-safety",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.6296963029636297,
+        "sd": 0.004164949281848398,
+        "minimum": 0.6267626762676267,
+        "maximum": 0.6344634463446345
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "temperature.mae",
+        "n": 3,
+        "mean": 5.780826718230091,
+        "sd": 0.23570190442382644,
+        "minimum": 5.586911871130817,
+        "maximum": 6.0431720548957335
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "temperature.outside",
+        "n": 3,
+        "mean": 0.9714999999999999,
+        "sd": 0.003278719262151029,
+        "minimum": 0.968,
+        "maximum": 0.9745
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "hunger.mean",
+        "n": 3,
+        "mean": 0.1752613666666665,
+        "sd": 0.000652497895271199,
+        "minimum": 0.17461949999999987,
+        "maximum": 0.17592399999999989
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "hunger.above",
+        "n": 3,
+        "mean": 0.0,
+        "sd": 0.0,
+        "minimum": 0.0,
+        "maximum": 0.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.distance",
+        "n": 3,
+        "mean": 9.848329155331855,
+        "sd": 0.21184240338242688,
+        "minimum": 9.610325353620167,
+        "maximum": 10.016247787976837
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.proximity",
+        "n": 3,
+        "mean": 0.07473333333333333,
+        "sd": 0.01563020579945553,
+        "minimum": 0.0631,
+        "maximum": 0.0925
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.contact-proxy",
+        "n": 3,
+        "mean": 0.006933333333333333,
+        "sd": 0.002830783166074953,
+        "minimum": 0.0052,
+        "maximum": 0.0102
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "wildlife.encounters",
+        "n": 3,
+        "mean": 137.66666666666666,
+        "sd": 13.428824718989123,
+        "minimum": 128.0,
+        "maximum": 153.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "food.consumed",
+        "n": 3,
+        "mean": 53.666666666666664,
+        "sd": 1.1547005383792517,
+        "minimum": 53.0,
+        "maximum": 55.0
+      },
+      {
+        "condition": 0,
+        "policy": "joint-no-thermal",
+        "metric": "movement.fraction",
+        "n": 3,
+        "mean": 0.3053305330533053,
+        "sd": 0.017877189812360868,
+        "minimum": 0.2869286928692869,
+        "maximum": 0.32263226322632266
+      }
+    ]
+  }
+]

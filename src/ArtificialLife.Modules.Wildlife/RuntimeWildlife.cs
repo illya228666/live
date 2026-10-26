@@ -11,6 +11,7 @@ public sealed class RuntimeWildlife : IRuntimeModule
     private int initialCount = 1;
     private double speedFactor = 0.75, turnMin = 3, turnMax = 8, turnRate = Math.PI / 4;
     private double radius = 10, weight = 1, spawnDistance = 15, diameter = 4;
+    private double approachProbability, approachSpread;
 
     public void Register(ModuleBuilder builder)
     {
@@ -24,9 +25,12 @@ public sealed class RuntimeWildlife : IRuntimeModule
         weight = builder.Settings.Number("driveWeight", 1);
         spawnDistance = builder.Settings.Number("minSpawnDistance", 15);
         diameter = builder.Settings.Number("diameter", 4);
+        approachProbability = builder.Settings.Number("approachProbability", 0);
+        approachSpread = builder.Settings.Number("approachSpreadDegrees", 90) * Math.PI / 180;
         if (initialCount < 1 || !Nonnegative(speedFactor) || !Positive(turnMin) || !Positive(turnMax) ||
             turnMax < turnMin || !Positive(turnRate) || !Positive(radius) || !Nonnegative(weight) ||
-            !Nonnegative(spawnDistance) || !Positive(diameter))
+            !Nonnegative(spawnDistance) || !Positive(diameter) || !Nonnegative(approachProbability) || approachProbability > 1 ||
+            !Nonnegative(approachSpread) || approachSpread > Math.PI)
             throw new InvalidDataException("Invalid wildlife settings.");
 
         builder.Components.Add(new(Boar, 1, (_, _) => false, (_, _, _) => { }));
@@ -90,6 +94,14 @@ public sealed class RuntimeWildlife : IRuntimeModule
                 if (next <= time)
                 {
                     target = world.Random(stream) * Math.Tau;
+                    // Occasional investigation, sampled only at ordinary turn times. No continuous
+                    // pursuit, interception or privileged response to the agent's chosen action.
+                    // Probability zero consumes no additional RNG and preserves legacy trajectories.
+                    if (approachProbability > 0 && world.Random(stream) < approachProbability)
+                    {
+                        double dx = world.Agent.Position.X - animal.Position.X, dy = world.Agent.Position.Y - animal.Position.Y;
+                        target = Normalize(Math.Atan2(dy, dx) + (2 * world.Random(stream) - 1) * approachSpread);
+                    }
                     next = time + Interval(world);
                     if (next <= time) throw new InvalidOperationException("Wildlife turn interval is below clock precision.");
                 }

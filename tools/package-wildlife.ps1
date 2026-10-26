@@ -27,7 +27,7 @@ $wildlifeManifest = [ordered]@{
     logicFiles=@{ ($wildlifeLogic + '.deps.json')=(Get-WildlifeHash ($wildlifeLogic + '.deps.json')) }
     requires=@('vision.appearance', 'motivation'); provides=@('wildlife', 'safety')
     schemas=@{ 'wildlife.boar'=1 }
-    settings=[ordered]@{ initialCount=1; speedFactor=0.75; minTurnSeconds=3; maxTurnSeconds=8; turnDegreesPerSecond=45; dangerRadius=10; driveWeight=1; minSpawnDistance=15; diameter=4 }
+    settings=[ordered]@{ initialCount=1; speedFactor=0.75; minTurnSeconds=3; maxTurnSeconds=8; turnDegreesPerSecond=45; dangerRadius=10; driveWeight=1; minSpawnDistance=15; diameter=4; approachProbability=0; approachSpreadDegrees=90 }
     presentationAssembly=($wildlifeView + '.dll'); presentationType=($wildlifeView + '.BoarPresentation'); presentationOrder=75
     presentationHash=(Get-WildlifeHash ($wildlifeView + '.dll'))
     presentationFiles=@{ ($wildlifeView + '.deps.json')=(Get-WildlifeHash ($wildlifeView + '.deps.json')); 'assets/boar.png'=(Get-WildlifeHash 'assets/boar.png') }

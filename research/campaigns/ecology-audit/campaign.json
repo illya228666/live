@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "ecology-audit",
+  "branch": "codex/ecology-scenario-audit",
+  "createdUtc": "2026-10-26T11:52:39.0038184+00:00",
+  "maxParallel": 2,
+  "threadsPerWorker": 1,
+  "reserveFreeMemoryGiB": 2,
+  "workerMemoryEstimateGiB": 2,
+  "minFreeDiskGiB": 10,
+  "computeSliceMinutes": 10,
+  "sessionMinutes": 30,
+  "trialTimeoutMinutes": 120
+}

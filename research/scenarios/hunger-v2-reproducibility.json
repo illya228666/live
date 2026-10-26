@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "controls": 95,
+  "stepsPerControl": 12000,
+  "fingerprint": "AAAEE6F04A37E4C2198378B7C30923379FA84DC678394350FA8F9D7FE7877771",
+  "numericTolerance": 1E-09,
+  "maximumNumericDifference": 0.0,
+  "actionHashesMatch": true,
+  "physicalStateHashesMatch": true,
+  "executionHash": "8F33D1D7A7EE7D6E5779A060F2D0E44B68C825598053FDEE657A7465D420C5FA",
+  "executableAssembliesMatch": true,
+  "firstReportSha256": "23D545AE66589A3CC65CEC620DF240A2323149A9E41FA0DA1F5E7136900A7843",
+  "secondReportSha256": "23D545AE66589A3CC65CEC620DF240A2323149A9E41FA0DA1F5E7136900A7843"
+}

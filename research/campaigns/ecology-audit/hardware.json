@@ -1,0 +1,17 @@
+{
+  "capturedUtc": "2026-10-26T11:52:40.7683837+00:00",
+  "cpu": "12th Gen Intel(R) Core(TM) i7-12700KF",
+  "physicalCores": 12,
+  "logicalProcessors": 20,
+  "memoryGiB": 15.85,
+  "availableMemoryGiB": 5.69,
+  "freeDiskGiB": 186.44,
+  "gpu": [
+    "NVIDIA GeForce RTX 4060 Ti"
+  ],
+  "gpuDetails": [
+    "NVIDIA GeForce RTX 4060 Ti, 8188 MiB, 616.92"
+  ],
+  "powerShell": "7.6.5",
+  "dqnBackend": "CPU; GPU requires a separately implemented/validated backend"
+}

@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "runtime": {
+    "packageRoot": "../artifacts/packages",
+    "world": {
+      "width": 40,
+      "height": 40,
+      "timeStep": 1,
+      "movementSpeed": 1.5,
+      "episodeSteps": 400
+    },
+    "packages": [
+      {
+        "id": "movement",
+        "version": "1.0.0"
+      },
+      {
+        "id": "vision",
+        "version": "1.0.0"
+      },
+      {
+        "id": "homeostasis",
+        "version": "1.0.0"
+      },
+      {
+        "version": "1.0.0",
+        "id": "hunger"
+      },
+      {
+        "version": "1.0.0",
+        "id": "food"
+      }
+    ],
+    "settings": {
+      "vision": {
+        "maxPerAppearance": 8
+      },
+      "hunger": {
+        "growthPerSecond": 0.001,
+        "eatRadius": 2
+      },
+      "food": {
+        "spawnIntervalTicks": 160,
+        "minSpawnDistanceFromAgent": 6,
+        "maxApples": 3
+      }
+    }
+  },
+  "motivations": [
+    {
+      "settings": {
+        "maximumDriveWeight": 10,
+        "improvementWeight": 0.2
+      },
+      "package": {
+        "version": "1.0.0",
+        "id": "homeostasis"
+      },
+      "id": "weighted-homeostasis"
+    }
+  ],
+  "learners": [
+    {
+      "id": "dqn-reference",
+      "controller": {
+        "algorithm": "dqn",
+        "parameters": {
+          "learning": {},
+          "network": {}
+        }
+      }
+    }
+  ],
+  "trainingSeeds": [
+    42,
+    73,
+    101,
+    211,
+    509
+  ],
+  "evaluationSeeds": [
+    91001,
+    92003,
+    93011,
+    94009,
+    95003
+  ],
+  "episodesPerSeed": 1,
+  "evaluationSteps": 12000,
+  "evaluateEvery": 10000,
+  "phases": [
+    {
+      "id": "hunger-v2",
+      "steps": 100000
+    }
+  ],
+  "behavior": {
+    "evaluators": [
+      {
+        "id": "drives"
+      },
+      {
+        "id": "physical",
+        "parameters": {
+          "temperatureTarget": 36.6,
+          "temperatureTolerance": 1,
+          "hungerThreshold": 0.8,
+          "boarRadius": 6
+        }
+      },
+      {
+        "id": "stability-v1",
+        "parameters": {
+          "temperatureTolerance": 1,
+          "hungerThreshold": 0.8,
+          "temperatureTarget": 36.6,
+          "boarRadius": 6
+        }
+      },
+      {
+        "id": "ecology-v1",
+        "parameters": {
+          "boarRadius": 6,
+          "contactRadius": 3
+        }
+      }
+    ],
+    "criteria": [
+      {
+        "scenario": "hunger-v2",
+        "metric": "hunger.mean",
+        "maximum": 0.35
+      },
+      {
+        "scenario": "hunger-v2",
+        "metric": "hunger.above",
+        "maximum": 0.1
+      }
+    ]
+  }
+}
