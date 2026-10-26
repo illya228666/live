@@ -15,7 +15,11 @@ public sealed class DqnController : IAgentController
     private readonly Dictionary<int, long> introducedAt = [];
     public ControllerLimits Limits { get; }
     public DqnBrain Brain => brain;
-    public JsonElement InferenceState => JsonSerializer.SerializeToElement(brain.ObservationWeights);
+    public JsonElement InferenceState => learning.ExplorationMaxDuration == 1
+        ? JsonSerializer.SerializeToElement(brain.ObservationWeights)
+        : JsonSerializer.SerializeToElement(new { observationWeights = brain.ObservationWeights, exploration = new
+        { brain.Exploration.Choices, brain.Exploration.ExploratoryActions, brain.Exploration.Bursts,
+          brain.Exploration.IllegalTerminations, brain.Exploration.MeanDuration } });
     public Random? EvaluationRandom { get; set; }
     public double Epsilon => Math.Max(brain.Epsilon(steps), changedAt < 0 ? 0 :
         learning.AdaptationEpsilon * Math.Max(0, 1 - (double)(steps - changedAt) / learning.AdaptationSteps));
@@ -41,11 +45,13 @@ public sealed class DqnController : IAgentController
         ++steps;
         IntroduceObservations();
         brain.Learn(steps);
+        if (transition.Terminal) brain.Exploration.Reset();
     }
     public void ConditionsChanged(long revision)
     {
         if (revision < brain.Revision) throw new InvalidOperationException("Conditions cannot go backwards.");
         if (revision != brain.Revision && steps > 0) changedAt = steps;
+        if (revision != brain.Revision) brain.Exploration.Reset();
         brain.Revision = revision;
     }
     public void SchemaChanged(IReadOnlyList<string> observations, IReadOnlyList<string> actions)
@@ -65,6 +71,7 @@ public sealed class DqnController : IAgentController
     }
     public void ImportInferenceState(JsonElement state)
     {
+        if (state.ValueKind == JsonValueKind.Object && state.TryGetProperty("observationWeights", out var weightsState)) state = weightsState;
         if (state.ValueKind != JsonValueKind.Array) return;
         var weights = state.Deserialize<float[]>()!;
         if (weights.Length != brain.ObservationWeights.Length || weights.Any(w => !float.IsFinite(w) || w is < 0 or > 1))

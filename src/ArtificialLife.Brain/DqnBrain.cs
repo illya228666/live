@@ -17,6 +17,7 @@ public sealed class DqnBrain : IDisposable
     private bool disposed;
 
     public ReplayBuffer Replay { get; }
+    public PersistentExploration Exploration { get; }
     public double LastLoss { get; private set; }
     /// <summary>Number of completed optimizer steps, independent of world-step count.</summary>
     public long OptimizationUpdates => updates;
@@ -31,6 +32,7 @@ public sealed class DqnBrain : IDisposable
         this.learning = learning;
         ObservationWeights = Enumerable.Repeat(1f, networkOptions.ObservationCapacity).ToArray();
         random = new Random(learning.Seed);
+        Exploration = new(random, learning.ExplorationMaxDuration);
         // Один поток уменьшает накладные расходы крошечной модели и разброс CPU-результатов.
         int threads = int.TryParse(Environment.GetEnvironmentVariable("AL_COMPUTE_THREADS"), out int configured) && configured > 0 ? configured : 1;
         set_num_threads(threads);
@@ -50,11 +52,7 @@ public sealed class DqnBrain : IDisposable
         {
             throw new ArgumentException("At least one legal action is required.");
         }
-        if (random.NextDouble() < epsilon)
-        {
-            return actions[random.Next(actions.Length)];
-        }
-        return ChooseGreedy(state, actions);
+        return Exploration.Choose(actions, epsilon, () => ChooseGreedy(state, actions));
     }
 
     /// <summary>Frozen-policy selection without consuming the training exploration/replay RNG.</summary>

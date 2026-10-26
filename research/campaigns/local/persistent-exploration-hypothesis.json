@@ -1,0 +1,32 @@
+{
+  "statement": "At fixed original weighted-homeostasis motivation, capped temporally persistent exploration improves balanced learned behavior over stepwise epsilon-greedy within 20000 ecology-v2 training steps.",
+  "direction": "learning-only: data collection/exploration",
+  "rationale": "The motivation pilot learned little foraging and p4 traded safety for temperature. This does not prove exploration is the cause. Live's globally consistent movement directions make persistent random trajectories a concrete alternative to local dithering. Keep reward, discount, optimizer, replay, network, training steps and evaluation fixed.",
+  "falsification": "No full-study promotion unless worst behavioral criterion ratio improves at least 10% in two of three paired training seeds, hunger.mean decreases at least .05 in two seeds, and aggregate temperature MAE, proximity and contact proxy each worsen at most 10%. All fixed criteria and per-seed curves must be reported. Food acquisition during frozen greedy evaluation, rather than exploratory random movement alone, must improve.",
+  "sources": [
+    {
+      "title": "Temporally-Extended epsilon-Greedy Exploration",
+      "authors": "Dabney, Ostrovski and Barreto",
+      "urlOrDoi": "https://arxiv.org/html/2006.01782",
+      "versionRead": "arXiv v1, 2020-06-02; conference version ICLR 2021 identified separately",
+      "readOn": "2026-10-26",
+      "sectionsRead": "Sections 4, 4.1, 4.2; section 6 Generality and Limitations; Appendix B.1 pseudo-code, B.3 implementation details",
+      "mechanism": "Repeat a uniformly selected exploratory primitive action for a duration sampled from a distribution, preserving single-step greedy exploitation. Capped zeta(2) supports mostly short moves and occasional long consistent motion.",
+      "limitations": "Source experiments do not establish effectiveness in Live. We cap duration at32 rather than Atari100 or10000; interrupt a repeat when the action is illegal or conditions change. We additionally correct start probability for nominal primitive-step exploration occupancy. This is an adaptation, not a replication. Walls and changing epsilon break exact stationary occupancy matching; export actual exploration counts and illegal terminations. Persistent direction may be harmful near moving threats."
+    }
+  ],
+  "protocol": {
+    "baseline": "ecology-v2",
+    "config": "configs/research-persistent-exploration-pilot.json",
+    "motivation": "Original weighted-homeostasis; equivalent to power p1 established separately. No p4 combination.",
+    "trainingSeeds": [42,73,101],
+    "evaluationSeeds": [91001,92003,93011,94009,95003],
+    "trainingSteps": 20000,
+    "evaluationSteps": 12000,
+    "controls": "Duration1 paired control, random/untrained/initial frozen. Compare duration1 hashes/metrics with prior pilot p1 as a technical regression check; repetitions are not independent scientific evidence.",
+    "checkpointRule": "Only final20000-step policy for decision; show curves0/10000/20000 without selecting best.",
+    "primary": "Per training seed max of evaluation-world averaged six metric/threshold ratios from unchanged baseline criteria.",
+    "exploration": "P(duration=n) proportional to n^-2 for n=1..32. If mean duration L and desired epsilon e, start probability=e/(L-e*(L-1)); nominal stationary primitive-step fraction=e when repeats complete. Duration1 takes the exact old RNG path. Train after each primitive transition as before; frozen inference never repeats exploratory actions.",
+    "diagnostics": "Final checkpoint InferenceState.exploration records Choices, ExploratoryActions, Bursts, IllegalTerminations, MeanDuration. These are training diagnostics, not optimizer/RNG continuation state. Source and imported inference both restore observation weights; diagnostics need not resume."
+  }
+}

@@ -25,6 +25,7 @@ public sealed record LearningOptions
     public double EpsilonStart { get; init; } = 1;
     public double EpsilonEnd { get; init; } = 0.05;
     public int EpsilonDecaySteps { get; init; } = 50000;
+    public int ExplorationMaxDuration { get; init; } = 1;
     public int BatchSize { get; init; } = 64;
     public int ReplayCapacity { get; init; } = 50000;
     public int WarmupSteps { get; init; } = 1000;
@@ -44,7 +45,7 @@ public sealed record LearningOptions
     {
         if (!double.IsFinite(LearningRate) || LearningRate <= 0 || !double.IsFinite(Gamma) || Gamma is < 0 or > 1 ||
             EpsilonStart is < 0 or > 1 || EpsilonEnd is < 0 or > 1 || !double.IsFinite(EpsilonStart) || !double.IsFinite(EpsilonEnd) ||
-            EpsilonStart < EpsilonEnd || EpsilonDecaySteps < 1 || BatchSize < 1 || ReplayCapacity < BatchSize ||
+            EpsilonStart < EpsilonEnd || EpsilonDecaySteps < 1 || ExplorationMaxDuration is < 1 or > 10000 || BatchSize < 1 || ReplayCapacity < BatchSize ||
             WarmupSteps < BatchSize || TrainEvery < 1 || TargetSyncInterval < 1 || TrainingSteps < 1 || LogEvery < 1 ||
             !double.IsFinite(GradientClip) || GradientClip <= 0 || !double.IsFinite(AdaptationEpsilon) ||
             AdaptationEpsilon is < 0 or > 1 || AdaptationSteps < 1 || ObservationIntroductionSteps < 1 ||

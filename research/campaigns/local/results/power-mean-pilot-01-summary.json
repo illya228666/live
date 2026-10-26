@@ -1,0 +1,1487 @@
+{
+  "seedPoints": [
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 101,
+      "kind": "initial",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.993513771679933,
+        "temperature.outside": 0.9997833333333335,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.30715,
+        "wildlife.contact-proxy": 0.1095,
+        "food.consumed": 0.0,
+        "movement.fraction": 0.0017668139011584299,
+        "movement.reversal": 0.0,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11995.0
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 101,
+      "kind": "policy",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.993513771679933,
+        "temperature.outside": 0.9997833333333335,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.30715,
+        "wildlife.contact-proxy": 0.1095,
+        "food.consumed": 0.0,
+        "movement.fraction": 0.0017668139011584299,
+        "movement.reversal": 0.0,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11995.0
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 101,
+      "kind": "policy",
+      "step": 10000,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.980184750700455,
+        "temperature.outside": 0.9993333333333334,
+        "hunger.mean": 0.95611,
+        "hunger.above": 0.9300833333333334,
+        "wildlife.proximity": 0.29131666666666667,
+        "wildlife.contact-proxy": 0.08875000000000001,
+        "food.consumed": 0.2,
+        "movement.fraction": 0.09514126177181433,
+        "movement.reversal": 0.5828571274120903,
+        "hunger.above-longest": 11161.0,
+        "temperature.outside-longest": 11941.0
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 101,
+      "kind": "policy",
+      "step": 20000,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.94723980506918,
+        "temperature.outside": 0.9993666666666666,
+        "hunger.mean": 0.9580400000000001,
+        "hunger.above": 0.9334,
+        "wildlife.proximity": 0.24886666666666665,
+        "wildlife.contact-proxy": 0.06288333333333332,
+        "food.consumed": 0.2,
+        "movement.fraction": 0.3857488124010334,
+        "movement.reversal": 0.5561216407261058,
+        "hunger.above-longest": 10697.8,
+        "temperature.outside-longest": 11973.0
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 101,
+      "kind": "random",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 6.107065815797038,
+        "temperature.outside": 0.9380499999999999,
+        "hunger.mean": 0.9055315999999987,
+        "hunger.above": 0.8515333333333335,
+        "wildlife.proximity": 0.4800833333333333,
+        "wildlife.contact-proxy": 0.16443333333333335,
+        "food.consumed": 19.8,
+        "movement.fraction": 0.8859404950412534,
+        "movement.reversal": 0.3869672568457142,
+        "hunger.above-longest": 1809.0,
+        "temperature.outside-longest": 774.4
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 101,
+      "kind": "untrained",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.993513771679933,
+        "temperature.outside": 0.9997833333333335,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.30715,
+        "wildlife.contact-proxy": 0.1095,
+        "food.consumed": 0.0,
+        "movement.fraction": 0.0017668139011584299,
+        "movement.reversal": 0.0,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11995.0
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 42,
+      "kind": "initial",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.993133283962978,
+        "temperature.outside": 0.9997833333333332,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.36086666666666667,
+        "wildlife.contact-proxy": 0.15343333333333334,
+        "food.consumed": 0.0,
+        "movement.fraction": 1.0,
+        "movement.reversal": 0.9989164860810135,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11993.2
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 42,
+      "kind": "policy",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.993133283962978,
+        "temperature.outside": 0.9997833333333332,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.36086666666666667,
+        "wildlife.contact-proxy": 0.15343333333333334,
+        "food.consumed": 0.0,
+        "movement.fraction": 1.0,
+        "movement.reversal": 0.9989164860810135,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11993.2
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 42,
+      "kind": "policy",
+      "step": 10000,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.842826611559418,
+        "temperature.outside": 0.9961333333333334,
+        "hunger.mean": 0.9464129666666666,
+        "hunger.above": 0.91465,
+        "wildlife.proximity": 0.4655333333333334,
+        "wildlife.contact-proxy": 0.13456666666666667,
+        "food.consumed": 1.8,
+        "movement.fraction": 0.8528710725893823,
+        "movement.reversal": 0.5874826056280387,
+        "hunger.above-longest": 9683.6,
+        "temperature.outside-longest": 8680.0
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 42,
+      "kind": "policy",
+      "step": 20000,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.943718351222417,
+        "temperature.outside": 0.9977833333333332,
+        "hunger.mean": 0.9427383833333334,
+        "hunger.above": 0.9076166666666665,
+        "wildlife.proximity": 0.3103666666666666,
+        "wildlife.contact-proxy": 0.09478333333333333,
+        "food.consumed": 2.0,
+        "movement.fraction": 0.6408700725060422,
+        "movement.reversal": 0.8531009840504054,
+        "hunger.above-longest": 10055.8,
+        "temperature.outside-longest": 10865.0
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 42,
+      "kind": "random",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 6.107065815797038,
+        "temperature.outside": 0.9380499999999999,
+        "hunger.mean": 0.9055315999999987,
+        "hunger.above": 0.8515333333333335,
+        "wildlife.proximity": 0.4800833333333333,
+        "wildlife.contact-proxy": 0.16443333333333335,
+        "food.consumed": 19.8,
+        "movement.fraction": 0.8859404950412534,
+        "movement.reversal": 0.3869672568457142,
+        "hunger.above-longest": 1809.0,
+        "temperature.outside-longest": 774.4
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 42,
+      "kind": "untrained",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.993133283962978,
+        "temperature.outside": 0.9997833333333332,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.36086666666666667,
+        "wildlife.contact-proxy": 0.15343333333333334,
+        "food.consumed": 0.0,
+        "movement.fraction": 1.0,
+        "movement.reversal": 0.9989164860810135,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11993.2
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 73,
+      "kind": "initial",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.992525624298279,
+        "temperature.outside": 0.9996666666666666,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.3470833333333333,
+        "wildlife.contact-proxy": 0.13993333333333333,
+        "food.consumed": 0.0,
+        "movement.fraction": 1.0,
+        "movement.reversal": 0.9982997166194366,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11995.8
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 73,
+      "kind": "policy",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.992525624298279,
+        "temperature.outside": 0.9996666666666666,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.3470833333333333,
+        "wildlife.contact-proxy": 0.13993333333333333,
+        "food.consumed": 0.0,
+        "movement.fraction": 1.0,
+        "movement.reversal": 0.9982997166194366,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11995.8
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 73,
+      "kind": "policy",
+      "step": 10000,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.988956258001902,
+        "temperature.outside": 0.9997,
+        "hunger.mean": 0.9580400000000001,
+        "hunger.above": 0.9334,
+        "wildlife.proximity": 0.31235,
+        "wildlife.contact-proxy": 0.11053333333333333,
+        "food.consumed": 0.2,
+        "movement.fraction": 0.32474372864405365,
+        "movement.reversal": 0.7411004634700176,
+        "hunger.above-longest": 11105.4,
+        "temperature.outside-longest": 11990.8
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 73,
+      "kind": "policy",
+      "step": 20000,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.983335116856169,
+        "temperature.outside": 0.9996,
+        "hunger.mean": 0.957465,
+        "hunger.above": 0.9322000000000001,
+        "wildlife.proximity": 0.26355,
+        "wildlife.contact-proxy": 0.06923333333333334,
+        "food.consumed": 0.4,
+        "movement.fraction": 0.280356696391366,
+        "movement.reversal": 0.5575773325627447,
+        "hunger.above-longest": 11069.0,
+        "temperature.outside-longest": 11984.2
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 73,
+      "kind": "random",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 6.107065815797038,
+        "temperature.outside": 0.9380499999999999,
+        "hunger.mean": 0.9055315999999987,
+        "hunger.above": 0.8515333333333335,
+        "wildlife.proximity": 0.4800833333333333,
+        "wildlife.contact-proxy": 0.16443333333333335,
+        "food.consumed": 19.8,
+        "movement.fraction": 0.8859404950412534,
+        "movement.reversal": 0.3869672568457142,
+        "hunger.above-longest": 1809.0,
+        "temperature.outside-longest": 774.4
+      }
+    },
+    {
+      "variant": "power-p1--dqn-reference",
+      "trainingSeed": 73,
+      "kind": "untrained",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.992525624298279,
+        "temperature.outside": 0.9996666666666666,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.3470833333333333,
+        "wildlife.contact-proxy": 0.13993333333333333,
+        "food.consumed": 0.0,
+        "movement.fraction": 1.0,
+        "movement.reversal": 0.9982997166194366,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11995.8
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 101,
+      "kind": "initial",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.993513771679933,
+        "temperature.outside": 0.9997833333333335,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.30715,
+        "wildlife.contact-proxy": 0.1095,
+        "food.consumed": 0.0,
+        "movement.fraction": 0.0017668139011584299,
+        "movement.reversal": 0.0,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11995.0
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 101,
+      "kind": "policy",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.993513771679933,
+        "temperature.outside": 0.9997833333333335,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.30715,
+        "wildlife.contact-proxy": 0.1095,
+        "food.consumed": 0.0,
+        "movement.fraction": 0.0017668139011584299,
+        "movement.reversal": 0.0,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11995.0
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 101,
+      "kind": "policy",
+      "step": 10000,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 3.795021449361206,
+        "temperature.outside": 0.8445166666666667,
+        "hunger.mean": 0.9517416666666666,
+        "hunger.above": 0.9212666666666667,
+        "wildlife.proximity": 0.6689833333333334,
+        "wildlife.contact-proxy": 0.3067666666666667,
+        "food.consumed": 2.0,
+        "movement.fraction": 0.7661805150429202,
+        "movement.reversal": 0.5932280299578447,
+        "hunger.above-longest": 9396.2,
+        "temperature.outside-longest": 541.8
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 101,
+      "kind": "policy",
+      "step": 20000,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 2.1896190587002735,
+        "temperature.outside": 0.68725,
+        "hunger.mean": 0.9561516666666667,
+        "hunger.above": 0.9322666666666667,
+        "wildlife.proximity": 0.6039666666666668,
+        "wildlife.contact-proxy": 0.2327666666666667,
+        "food.consumed": 1.2,
+        "movement.fraction": 0.28539044920410034,
+        "movement.reversal": 0.6098934665962974,
+        "hunger.above-longest": 8621.6,
+        "temperature.outside-longest": 1296.8
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 101,
+      "kind": "random",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 6.107065815797038,
+        "temperature.outside": 0.9380499999999999,
+        "hunger.mean": 0.9055315999999987,
+        "hunger.above": 0.8515333333333335,
+        "wildlife.proximity": 0.4800833333333333,
+        "wildlife.contact-proxy": 0.16443333333333335,
+        "food.consumed": 19.8,
+        "movement.fraction": 0.8859404950412534,
+        "movement.reversal": 0.3869672568457142,
+        "hunger.above-longest": 1809.0,
+        "temperature.outside-longest": 774.4
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 101,
+      "kind": "untrained",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.993513771679933,
+        "temperature.outside": 0.9997833333333335,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.30715,
+        "wildlife.contact-proxy": 0.1095,
+        "food.consumed": 0.0,
+        "movement.fraction": 0.0017668139011584299,
+        "movement.reversal": 0.0,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11995.0
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 42,
+      "kind": "initial",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.993133283962978,
+        "temperature.outside": 0.9997833333333332,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.36086666666666667,
+        "wildlife.contact-proxy": 0.15343333333333334,
+        "food.consumed": 0.0,
+        "movement.fraction": 1.0,
+        "movement.reversal": 0.9989164860810135,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11993.2
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 42,
+      "kind": "policy",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.993133283962978,
+        "temperature.outside": 0.9997833333333332,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.36086666666666667,
+        "wildlife.contact-proxy": 0.15343333333333334,
+        "food.consumed": 0.0,
+        "movement.fraction": 1.0,
+        "movement.reversal": 0.9989164860810135,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11993.2
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 42,
+      "kind": "policy",
+      "step": 10000,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 2.8064121410074714,
+        "temperature.outside": 0.7955,
+        "hunger.mean": 0.9438781666666666,
+        "hunger.above": 0.9111666666666667,
+        "wildlife.proximity": 0.6252666666666666,
+        "wildlife.contact-proxy": 0.22911666666666664,
+        "food.consumed": 1.6,
+        "movement.fraction": 0.6693891157596467,
+        "movement.reversal": 0.5790244366600501,
+        "hunger.above-longest": 10789.8,
+        "temperature.outside-longest": 824.8
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 42,
+      "kind": "policy",
+      "step": 20000,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 1.517227458870031,
+        "temperature.outside": 0.49391666666666667,
+        "hunger.mean": 0.9272516666666666,
+        "hunger.above": 0.8828499999999998,
+        "wildlife.proximity": 0.5892166666666667,
+        "wildlife.contact-proxy": 0.21801666666666666,
+        "food.consumed": 7.2,
+        "movement.fraction": 0.6097341445120426,
+        "movement.reversal": 0.6569879561510805,
+        "hunger.above-longest": 6106.4,
+        "temperature.outside-longest": 1161.2
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 42,
+      "kind": "random",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 6.107065815797038,
+        "temperature.outside": 0.9380499999999999,
+        "hunger.mean": 0.9055315999999987,
+        "hunger.above": 0.8515333333333335,
+        "wildlife.proximity": 0.4800833333333333,
+        "wildlife.contact-proxy": 0.16443333333333335,
+        "food.consumed": 19.8,
+        "movement.fraction": 0.8859404950412534,
+        "movement.reversal": 0.3869672568457142,
+        "hunger.above-longest": 1809.0,
+        "temperature.outside-longest": 774.4
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 42,
+      "kind": "untrained",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.993133283962978,
+        "temperature.outside": 0.9997833333333332,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.36086666666666667,
+        "wildlife.contact-proxy": 0.15343333333333334,
+        "food.consumed": 0.0,
+        "movement.fraction": 1.0,
+        "movement.reversal": 0.9989164860810135,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11993.2
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 73,
+      "kind": "initial",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.992525624298279,
+        "temperature.outside": 0.9996666666666666,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.3470833333333333,
+        "wildlife.contact-proxy": 0.13993333333333333,
+        "food.consumed": 0.0,
+        "movement.fraction": 1.0,
+        "movement.reversal": 0.9982997166194366,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11995.8
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 73,
+      "kind": "policy",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.992525624298279,
+        "temperature.outside": 0.9996666666666666,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.3470833333333333,
+        "wildlife.contact-proxy": 0.13993333333333333,
+        "food.consumed": 0.0,
+        "movement.fraction": 1.0,
+        "movement.reversal": 0.9982997166194366,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11995.8
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 73,
+      "kind": "policy",
+      "step": 10000,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.8682425959272475,
+        "temperature.outside": 0.9944,
+        "hunger.mean": 0.9373138000000001,
+        "hunger.above": 0.9041500000000001,
+        "wildlife.proximity": 0.38756666666666667,
+        "wildlife.contact-proxy": 0.15306666666666666,
+        "food.consumed": 2.4,
+        "movement.fraction": 0.18388199016584716,
+        "movement.reversal": 0.6151508932844187,
+        "hunger.above-longest": 10577.0,
+        "temperature.outside-longest": 9907.6
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 73,
+      "kind": "policy",
+      "step": 20000,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 4.899137366002017,
+        "temperature.outside": 0.9148166666666666,
+        "hunger.mean": 0.953213333333333,
+        "hunger.above": 0.9292166666666667,
+        "wildlife.proximity": 0.42078333333333334,
+        "wildlife.contact-proxy": 0.1700833333333333,
+        "food.consumed": 2.6,
+        "movement.fraction": 0.4494041170097508,
+        "movement.reversal": 0.6028954932334674,
+        "hunger.above-longest": 7609.6,
+        "temperature.outside-longest": 5988.8
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 73,
+      "kind": "random",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 6.107065815797038,
+        "temperature.outside": 0.9380499999999999,
+        "hunger.mean": 0.9055315999999987,
+        "hunger.above": 0.8515333333333335,
+        "wildlife.proximity": 0.4800833333333333,
+        "wildlife.contact-proxy": 0.16443333333333335,
+        "food.consumed": 19.8,
+        "movement.fraction": 0.8859404950412534,
+        "movement.reversal": 0.3869672568457142,
+        "hunger.above-longest": 1809.0,
+        "temperature.outside-longest": 774.4
+      }
+    },
+    {
+      "variant": "power-p4--dqn-reference",
+      "trainingSeed": 73,
+      "kind": "untrained",
+      "step": 0,
+      "nEvaluationWorlds": 5,
+      "metrics": {
+        "temperature.mae": 5.992525624298279,
+        "temperature.outside": 0.9996666666666666,
+        "hunger.mean": 0.958375,
+        "hunger.above": 0.9334166666666667,
+        "wildlife.proximity": 0.3470833333333333,
+        "wildlife.contact-proxy": 0.13993333333333333,
+        "food.consumed": 0.0,
+        "movement.fraction": 1.0,
+        "movement.reversal": 0.9982997166194366,
+        "hunger.above-longest": 11201.0,
+        "temperature.outside-longest": 11995.8
+      }
+    }
+  ],
+  "status": "completed",
+  "quality": [
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.8666666666666667,
+      "StandardDeviation": 0.9865765724632495,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 2
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.4
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.2
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "food.consumed",
+      "Unit": "apples",
+      "HigherIsBetter": true,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 3.6666666666666665,
+      "StandardDeviation": 3.1390019645316145,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 7.2
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 2.6
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 1.2
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9244055555555555,
+      "StandardDeviation": 0.014551978992308787,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9076166666666665
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9322000000000001
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9334
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.above",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9147777777777777,
+      "StandardDeviation": 0.02769228900561269,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8828499999999998
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9292166666666667
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9322666666666667
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 10607.533333333333,
+      "StandardDeviation": 512.5959552448045,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 10055.8
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 11069
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 10697.8
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.above-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 7445.866666666666,
+      "StandardDeviation": 1265.5687311771471,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 6106.4
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 7609.6
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 8621.6
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9527477944444445,
+      "StandardDeviation": 0.008673170662648473,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9427383833333334
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.957465
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9580400000000001
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "hunger.mean",
+      "Unit": "ratio",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9455388888888887,
+      "StandardDeviation": 0.015905197991479013,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9272516666666666
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.953213333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9561516666666667
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.4356585270994806,
+      "StandardDeviation": 0.18536641633629536,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.6408700725060422
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.280356696391366
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.3857488124010334
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "movement.fraction",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.4481762369086313,
+      "StandardDeviation": 0.16217533394033712,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.6097341445120426
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.4494041170097508
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.28539044920410034
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.655599985779752,
+      "StandardDeviation": 0.17104243040283687,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.8531009840504054
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.5575773325627447
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.5561216407261058
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "movement.reversal",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.6232589719936151,
+      "StandardDeviation": 0.02941897664803511,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.6569879561510805
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.6028954932334674
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.6098934665962974
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 5.958097757715922,
+      "StandardDeviation": 0.021927001198957137,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 5.943718351222417
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 5.983335116856169
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 5.94723980506918
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.mae",
+      "Unit": "°C",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 2.8686612945241072,
+      "StandardDeviation": 1.7902939489128153,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1.517227458870031
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 4.899137366002017
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 2.1896190587002735
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.9989166666666667,
+      "StandardDeviation": 0.0009884050002122392,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.9977833333333332
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9996
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.9993666666666666
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.outside",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 0.6986611111111111,
+      "StandardDeviation": 0.21068189906252646,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.49391666666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.9148166666666666
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.68725
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 11607.4,
+      "StandardDeviation": 642.9616473787532,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 10865
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 11984.2
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 11973
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "temperature.outside-longest",
+      "Unit": "steps",
+      "HigherIsBetter": false,
+      "Proxy": false,
+      "N": 3,
+      "Mean": 2815.6,
+      "StandardDeviation": 2748.9080595756564,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 1161.2
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 5988.8
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 1296.8
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.07563333333333333,
+      "StandardDeviation": 0.016885570763228587,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.09478333333333333
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.06923333333333334
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.06288333333333332
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.contact-proxy",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.20695555555555556,
+      "StandardDeviation": 0.03277287298519472,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.21801666666666666
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.1700833333333333
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.2327666666666667
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.2742611111111111,
+      "StandardDeviation": 0.03211866164593296,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.3103666666666666
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.26355
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.24886666666666665
+        }
+      ]
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Scenario": "ecology-v2",
+      "Phase": "final",
+      "Measure": "quality",
+      "Metric": "wildlife.proximity",
+      "Unit": "fraction",
+      "HigherIsBetter": false,
+      "Proxy": true,
+      "N": 3,
+      "Mean": 0.537988888888889,
+      "StandardDeviation": 0.10177056212291855,
+      "Seeds": [
+        {
+          "Seed": 42,
+          "WorldSeed": 42,
+          "Value": 0.5892166666666667
+        },
+        {
+          "Seed": 73,
+          "WorldSeed": 73,
+          "Value": 0.42078333333333334
+        },
+        {
+          "Seed": 101,
+          "WorldSeed": 101,
+          "Value": 0.6039666666666668
+        }
+      ]
+    }
+  ],
+  "study": "power-mean-pilot-01",
+  "trials": [
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Seed": 42,
+      "WorldSeed": 42,
+      "BehaviorOutcome": "failed",
+      "TrainingSteps": 20000,
+      "Updates": 4751,
+      "TrainingSeconds": 11.4618608,
+      "EvaluationSeconds": 66.9481238,
+      "FinalEvaluationReward": -0.3662018205585653
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Seed": 73,
+      "WorldSeed": 73,
+      "BehaviorOutcome": "failed",
+      "TrainingSteps": 20000,
+      "Updates": 4751,
+      "TrainingSeconds": 11.4511694,
+      "EvaluationSeconds": 66.5905861,
+      "FinalEvaluationReward": -0.363785097489837
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p1--dqn-reference",
+      "Seed": 101,
+      "WorldSeed": 101,
+      "BehaviorOutcome": "failed",
+      "TrainingSteps": 20000,
+      "Updates": 4751,
+      "TrainingSeconds": 10.452619,
+      "EvaluationSeconds": 61.6670187,
+      "FinalEvaluationReward": -0.35529184038665546
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Seed": 42,
+      "WorldSeed": 42,
+      "BehaviorOutcome": "failed",
+      "TrainingSteps": 20000,
+      "Updates": 4751,
+      "TrainingSeconds": 10.9260009,
+      "EvaluationSeconds": 63.6000826,
+      "FinalEvaluationReward": -0.4968848034589105
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Seed": 73,
+      "WorldSeed": 73,
+      "BehaviorOutcome": "failed",
+      "TrainingSteps": 20000,
+      "Updates": 4751,
+      "TrainingSeconds": 10.6132463,
+      "EvaluationSeconds": 62.1614207,
+      "FinalEvaluationReward": -0.7234603644223658
+    },
+    {
+      "Protocol": "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE",
+      "Variant": "power-p4--dqn-reference",
+      "Seed": 101,
+      "WorldSeed": 101,
+      "BehaviorOutcome": "failed",
+      "TrainingSteps": 20000,
+      "Updates": 4751,
+      "TrainingSeconds": 10.6555815,
+      "EvaluationSeconds": 60.670117,
+      "FinalEvaluationReward": -0.551192698796244
+    }
+  ],
+  "warnings": [],
+  "independentTrainingSeeds": 3,
+  "decision": "negative: no promotion"
+}

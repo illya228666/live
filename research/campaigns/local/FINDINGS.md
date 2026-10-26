@@ -28,3 +28,9 @@ Next: Прочитать механизм нелинейной конкурен�
 До оценки зарегистрирован power-mean-pilot-01: 2 мотивации x3 seed, 20k training, 5x12k evaluation, неизменный DQN. 179/179 fast tests прошли; p1 совпадает с legacy rewards и физика p1/p4 идентична на фиксированных действиях. При отсутствии численного лимита применён сохранённый sessionMinutes=30, дедлайн 13:44 UTC без автопродления. Первый запуск не начал trials из-за консервативной оценки RAM: доступно 3.55 GiB, reserve2+worker2. Установлен один worker с оценкой1 GiB, reserve2 сохранён; проверить реальное потребление первого trial. Это техническая остановка, не отрицательный научный результат.
 
 Next: Выполнить pilot одним CPU worker, проверить память и per-seed результаты; применить предзаписанное правило p4, не выбирать checkpoint задним числом.
+
+## 2026-10-26T13:23:00.6997534+00:00 — power-mean-pilot-01
+
+Pilot завершён 6/6 без ошибок, по3 training seed и5 evaluation worlds x12k. p4 не прошёл gate: temperature MAE p1=5.958+/-0.022, p4=2.869+/-1.790; hunger .95275 vs .94554; proximity .27426 vs .53799; contact proxy .07563 vs .20696. Худший criterion ratio p1 [9.478,9.322,9.334], p4 [21.802,17.008,23.277] для42/73/101: улучшений0/3. Все6 финальных политик провалили критерии. Это обмен терморегуляции на угрозу, не освоение потребностей. Короткий20k horizon не опровергает p4 вообще. Compact evidence research/campaigns/local/results/power-mean-pilot-01-summary.json; исходные результаты и frozen bundle сохранены в artifacts. Исследование p4 не продвигать в full.
+
+Next: Отдельная learning-only гипотеза: exploration с capped zeta(2) repeats max32 вместо одношагового шума, исходная homeostasis, прежние DQN updates/gamma/replay. Сначала тесты baseline RNG, легальности и изоляции frozen evaluation, затем зарегистрировать paired pilot. Учесть nominal occupancy correction и реальные прерывания у границ.
