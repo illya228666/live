@@ -26,4 +26,4 @@ jobs:
       - name: Package runtime modules
         run: ./tools/package.ps1 -NoBuild
       - name: Run tests
-        run: dotnet test tests/ArtificialLife.Tests -c Release --no-build --logger "trx;LogFileName=tests.trx"
+        run: dotnet test --project tests/ArtificialLife.Tests -c Release --no-build --report-xunit-trx --report-xunit-trx-filename tests.trx

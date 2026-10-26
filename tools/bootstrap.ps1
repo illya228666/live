@@ -66,7 +66,7 @@ if (!$Headless) {
 }
 Invoke-Dotnet restore ArtificialLife.sln --force
 # Check the native tensor backend, not just NuGet restore.
-Invoke-Dotnet test tests/ArtificialLife.Tests -c Release --filter 'FullyQualifiedName~EncoderAndScorerAcceptVariableSets' --verbosity minimal
+Invoke-Dotnet test --project tests/ArtificialLife.Tests -c Release --filter-method '*EncoderAndScorerAcceptVariableSets' --minimum-expected-tests 3 --verbosity minimal
 Write-Host "Ready: SDK $($ToolVersions.dotnet.version), runtime $($ToolVersions.dotnet.runtimeVersion). No global software was installed."
 Write-Host './tools/build.ps1'
 Write-Host './tools/test.ps1'

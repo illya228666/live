@@ -241,6 +241,8 @@ Tests cover legal movement, world bounds, seeded trajectories, thermal equations
 
 GitHub Actions restores the centrally pinned packages, builds every C# project including the Godot adapter, and runs tests. Actions are pinned by commit. The workflow does not download or launch the editor; the Godot runtime smoke command is available locally.
 
+`global.json` selects [Microsoft.Testing.Platform for .NET 10](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-dotnet-test). Run `dotnet test --project tests/ArtificialLife.Tests -c Release`; select xUnit tests with `--filter-method` or `--filter-trait`. CI writes its TRX report with the built-in xUnit reporter (`--report-xunit-trx`). The repository scripts continue to use the pinned local SDK.
+
 ## Limitations and future work
 
 This is a controlled numerical experiment, not a biologically realistic organism. Learning has been validated on this small family of thermal worlds; arbitrary new physics or modules need new evaluation. Observations are fully available local samples, not noisy sensors. There is one CPU agent, fixed feature widths and finite embedding capacities. There is no model migration or exact optimizer/replay resume. The full workflow was also run from a clean source copy with no local SDK, Godot, package cache or build outputs: bootstrap downloaded and verified both tools, all 26 tests passed, retraining reproduced the evaluation metrics and Godot loaded the checkpoint. This was on the development PC, not a pristine Windows VM.
