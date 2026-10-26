@@ -16,3 +16,15 @@ Next: Начинать новые сравнения с configs/research-baselin
 Repository consolidation: campaign moved from codex/research-campaign-infrastructure to master after integrating research infrastructure and legacy fix branch histories. Study registrations, recorded evidence and past journal entries are unchanged.
 
 Next: Continue on master; recover context, check the current baseline and obtain a new explicit session budget before launching research.
+
+## 2026-10-26T13:10:20.7549985+00:00 — local
+
+Контекст согласован с ecology-v2: master f4f279c содержит origin/master b89b4f2; научных studies в local и результатов/активных workers нет. Старый thermal-v2 совет в FINDINGS исторический: текущая база configs/research-ecology-v2.json, review AD148C10A11E01AF388780A8F4E461BD74340E37ABCCB1D1C4898A2ED692DC30, три фактора проверены. Исходное пользовательское изменение Godot packages.lock.json сохранено. Начальный вопрос: уменьшает ли нелинейное усиление наибольшего нормированного дефицита провалы конкурирующих потребностей при неизменном learner? Вычисления ожидают явного бюджета сессии.
+
+Next: Прочитать механизм нелинейной конкуренции в Keramati & Gutkin 2014; проверить p=1 против p=4 weighted power mean при общей reward mapping; аналитические тесты и одинаковая физика, затем зарегистрировать pilot после задания бюджета.
+
+## 2026-10-26T13:14:37.1768342+00:00 — power-mean-pilot-01
+
+До оценки зарегистрирован power-mean-pilot-01: 2 мотивации x3 seed, 20k training, 5x12k evaluation, неизменный DQN. 179/179 fast tests прошли; p1 совпадает с legacy rewards и физика p1/p4 идентична на фиксированных действиях. При отсутствии численного лимита применён сохранённый sessionMinutes=30, дедлайн 13:44 UTC без автопродления. Первый запуск не начал trials из-за консервативной оценки RAM: доступно 3.55 GiB, reserve2+worker2. Установлен один worker с оценкой1 GiB, reserve2 сохранён; проверить реальное потребление первого trial. Это техническая остановка, не отрицательный научный результат.
+
+Next: Выполнить pilot одним CPU worker, проверить память и per-seed результаты; применить предзаписанное правило p4, не выбирать checkpoint задним числом.

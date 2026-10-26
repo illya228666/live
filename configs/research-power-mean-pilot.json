@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "runtime": {
+    "packageRoot": "../artifacts/packages",
+    "world": {
+      "width": 40,
+      "height": 40,
+      "timeStep": 1,
+      "movementSpeed": 1.5,
+      "episodeSteps": 400
+    },
+    "packages": [
+      {
+        "id": "movement",
+        "version": "1.0.0"
+      },
+      {
+        "id": "vision",
+        "version": "1.0.0"
+      },
+      {
+        "id": "temperature",
+        "version": "1.0.0"
+      },
+      {
+        "id": "homeostasis",
+        "version": "1.0.0"
+      },
+      {
+        "version": "1.0.0",
+        "id": "hunger"
+      },
+      {
+        "version": "1.0.0",
+        "id": "food"
+      },
+      {
+        "version": "1.1.0",
+        "id": "wildlife"
+      }
+    ],
+    "settings": {
+      "vision": {
+        "maxPerAppearance": 8
+      },
+      "temperature": {
+        "ambient": 28.1,
+        "fireStrength": 32,
+        "fireRadius": 6,
+        "oscillationPeriod": 240,
+        "oscillationAmplitude": 0.65,
+        "heatProduction": 0.3,
+        "heatTransfer": 0.12,
+        "target": 36.6,
+        "sensorDistance": 3,
+        "driveScale": 6,
+        "comfortHalfWidth": 1
+      },
+      "hunger": {
+        "growthPerSecond": 0.001,
+        "eatRadius": 2
+      },
+      "food": {
+        "spawnIntervalTicks": 160,
+        "minSpawnDistanceFromAgent": 6,
+        "maxApples": 3
+      },
+      "wildlife": {
+        "speedFactor": 0.65,
+        "maxTurnSeconds": 10,
+        "approachSpreadDegrees": 60,
+        "minSpawnDistance": 12,
+        "initialCount": 6,
+        "minTurnSeconds": 4,
+        "approachProbability": 0.1,
+        "dangerRadius": 6
+      }
+    }
+  },
+  "motivations": [
+    {
+      "settings": {
+        "improvementWeight": 0.2,
+        "maximumDriveWeight": 10,
+        "exponent": 1
+      },
+      "id": "power-p1",
+      "package": {
+        "version": "1.0.0",
+        "id": "power-homeostasis"
+      }
+    },
+    {
+      "settings": {
+        "improvementWeight": 0.2,
+        "maximumDriveWeight": 10,
+        "exponent": 4
+      },
+      "id": "power-p4",
+      "package": {
+        "version": "1.0.0",
+        "id": "power-homeostasis"
+      }
+    }
+  ],
+  "learners": [
+    {
+      "id": "dqn-reference",
+      "controller": {
+        "algorithm": "dqn",
+        "parameters": {
+          "learning": {},
+          "network": {}
+        }
+      }
+    }
+  ],
+  "trainingSeeds": [
+    42,
+    73,
+    101
+  ],
+  "evaluationSeeds": [
+    91001,
+    92003,
+    93011,
+    94009,
+    95003
+  ],
+  "episodesPerSeed": 1,
+  "evaluationSteps": 12000,
+  "evaluateEvery": 10000,
+  "phases": [
+    {
+      "id": "ecology-v2",
+      "steps": 20000
+    }
+  ],
+  "behavior": {
+    "evaluators": [
+      {
+        "id": "drives"
+      },
+      {
+        "id": "physical",
+        "parameters": {
+          "temperatureTarget": 36.6,
+          "temperatureTolerance": 1,
+          "hungerThreshold": 0.8,
+          "boarRadius": 6
+        }
+      },
+      {
+        "id": "stability-v1",
+        "parameters": {
+          "temperatureTolerance": 1,
+          "hungerThreshold": 0.8,
+          "temperatureTarget": 36.6,
+          "boarRadius": 6
+        }
+      },
+      {
+        "id": "ecology-v1",
+        "parameters": {
+          "boarRadius": 6,
+          "contactRadius": 3
+        }
+      }
+    ],
+    "criteria": [
+      {
+        "scenario": "ecology-v2",
+        "metric": "temperature.mae",
+        "maximum": 1.2
+      },
+      {
+        "scenario": "ecology-v2",
+        "metric": "temperature.outside",
+        "maximum": 0.35
+      },
+      {
+        "scenario": "ecology-v2",
+        "metric": "hunger.mean",
+        "maximum": 0.35
+      },
+      {
+        "scenario": "ecology-v2",
+        "metric": "hunger.above",
+        "maximum": 0.1
+      },
+      {
+        "scenario": "ecology-v2",
+        "metric": "wildlife.proximity",
+        "maximum": 0.12
+      },
+      {
+        "scenario": "ecology-v2",
+        "metric": "wildlife.contact-proxy",
+        "maximum": 0.01
+      }
+    ]
+  }
+}

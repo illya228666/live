@@ -1,0 +1,37 @@
+{
+  "statement": "In ecology-v2, changing only weighted deficit aggregation from power mean p=1 to p=4 reduces the worst behavioral criterion ratio after 20000 training steps without sacrificing another need.",
+  "direction": "motivation-only",
+  "rationale": "Earlier studies showed hunger improvement at the expense of other needs. A power mean gives a larger marginal influence to the larger normalized deficit while retaining weights, normalization, clipping and the existing reward mapping. This is an original bounded adaptation, not a replication of the source model.",
+  "falsification": "Do not promote p=4 if fewer than two of three paired training seeds improve worst criterion ratio by at least 10%, or if mean hunger, thermal MAE or wildlife proximity worsens by more than 10% relative to p=1. Also require improvement over untrained on hunger and temperature in at least two seeds. All six fixed behavior criteria must be reported; reward cannot override failure.",
+  "sources": [
+    {
+      "title": "Homeostatic reinforcement learning for integrating reward collection and physiological stability",
+      "authors": "Keramati and Gutkin (2014)",
+      "urlOrDoi": "https://doi.org/10.7554/eLife.04811",
+      "readOn": "2026-10-26",
+      "sectionsRead": "Results: Theory sketch, Eq.1-5; Behavioral plausibility of drive, Eq.6-9; competition between motivational systems; Stepping back from the brink",
+      "mechanism": "Nonlinear aggregation of physiological deviations changes relative marginal incentives and competition between needs.",
+      "limitations": "The paper studies a family with separate m,n and drive reduction. The chosen p=4 weighted normalized power mean and legacy level/improvement reward mapping are our hypothesis; the paper does not establish their effectiveness. Live safety is a spatial proxy, and physical normalization is not equal biological urgency. No claim about survival or risk aversion follows from this pilot."
+    },
+    {
+      "title": "Live prior drive-motivation results",
+      "urlOrDoi": "docs/drive-motivation-report.md",
+      "readOn": "2026-10-26",
+      "sectionsRead": "Results, per-need tradeoffs and seed variability",
+      "limitations": "Historical physics differ from ecology-v2; use to identify a question, not as comparable performance data."
+    }
+  ],
+  "protocol": {
+    "baseline": "ecology-v2",
+    "config": "configs/research-power-mean-pilot.json",
+    "trainingSeeds": [42,73,101],
+    "evaluationSeeds": [91001,92003,93011,94009,95003],
+    "trainingSteps": 20000,
+    "evaluationSteps": 12000,
+    "checkpointRule": "Use the final 20000-step policy for decisions. Report 0/10000/20000 curves; do not select best checkpoints.",
+    "controls": "Paired p=1; runner random, untrained and initial frozen inference policies; validated ecology-v2 passive/active audit. A one-phase experiment labels the frozen-at-start control initial.",
+    "primary": "Per training seed, average each metric across evaluation seeds then max(value/threshold) for temperature.mae/1.2, temperature.outside/.35, hunger.mean/.35, hunger.above/.1, wildlife.proximity/.12, wildlife.contact-proxy/.01. Do not pool evaluation seeds as independent training replicates.",
+    "secondary": "All physical and ecology metrics, prolonged hunger and thermal excursions, food eaten, movement reversal and learning curves. No joint learning changes.",
+    "decision": "Apply falsification gate before any independent full study. If negative, inspect credit horizon/exploration before choosing the next separately registered learning hypothesis."
+  }
+}

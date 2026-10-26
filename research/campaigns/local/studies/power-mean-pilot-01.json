@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "id": "power-mean-pilot-01",
+  "stage": "pilot",
+  "registeredUtc": "2026-10-26T13:13:00.6805793+00:00",
+  "hypothesis": {
+    "statement": "In ecology-v2, changing only weighted deficit aggregation from power mean p=1 to p=4 reduces the worst behavioral criterion ratio after 20000 training steps without sacrificing another need.",
+    "direction": "motivation-only",
+    "rationale": "Earlier studies showed hunger improvement at the expense of other needs. A power mean gives a larger marginal influence to the larger normalized deficit while retaining weights, normalization, clipping and the existing reward mapping. This is an original bounded adaptation, not a replication of the source model.",
+    "falsification": "Do not promote p=4 if fewer than two of three paired training seeds improve worst criterion ratio by at least 10%, or if mean hunger, thermal MAE or wildlife proximity worsens by more than 10% relative to p=1. Also require improvement over untrained on hunger and temperature in at least two seeds. All six fixed behavior criteria must be reported; reward cannot override failure.",
+    "sources": [
+      {
+        "title": "Homeostatic reinforcement learning for integrating reward collection and physiological stability",
+        "authors": "Keramati and Gutkin (2014)",
+        "urlOrDoi": "https://doi.org/10.7554/eLife.04811",
+        "readOn": "2026-10-26",
+        "sectionsRead": "Results: Theory sketch, Eq.1-5; Behavioral plausibility of drive, Eq.6-9; competition between motivational systems; Stepping back from the brink",
+        "mechanism": "Nonlinear aggregation of physiological deviations changes relative marginal incentives and competition between needs.",
+        "limitations": "The paper studies a family with separate m,n and drive reduction. The chosen p=4 weighted normalized power mean and legacy level/improvement reward mapping are our hypothesis; the paper does not establish their effectiveness. Live safety is a spatial proxy, and physical normalization is not equal biological urgency. No claim about survival or risk aversion follows from this pilot."
+      },
+      {
+        "title": "Live prior drive-motivation results",
+        "urlOrDoi": "docs/drive-motivation-report.md",
+        "readOn": "2026-10-26",
+        "sectionsRead": "Results, per-need tradeoffs and seed variability",
+        "limitations": "Historical physics differ from ecology-v2; use to identify a question, not as comparable performance data."
+      }
+    ],
+    "protocol": {
+      "baseline": "ecology-v2",
+      "config": "configs/research-power-mean-pilot.json",
+      "trainingSeeds": [
+        42,
+        73,
+        101
+      ],
+      "evaluationSeeds": [
+        91001,
+        92003,
+        93011,
+        94009,
+        95003
+      ],
+      "trainingSteps": 20000,
+      "evaluationSteps": 12000,
+      "checkpointRule": "Use the final 20000-step policy for decisions. Report 0/10000/20000 curves; do not select best checkpoints.",
+      "controls": "Paired p=1; runner random, untrained and initial frozen inference policies; validated ecology-v2 passive/active audit. A one-phase experiment labels the frozen-at-start control initial.",
+      "primary": "Per training seed, average each metric across evaluation seeds then max(value/threshold) for temperature.mae/1.2, temperature.outside/.35, hunger.mean/.35, hunger.above/.1, wildlife.proximity/.12, wildlife.contact-proxy/.01. Do not pool evaluation seeds as independent training replicates.",
+      "secondary": "All physical and ecology metrics, prolonged hunger and thermal excursions, food eaten, movement reversal and learning curves. No joint learning changes.",
+      "decision": "Apply falsification gate before any independent full study. If negative, inspect credit horizon/exploration before choosing the next separately registered learning hypothesis."
+    }
+  },
+  "decisionRule": "Final policy only. Promote p4 only if worst fixed-criterion ratio improves >=10% in >=2/3 paired training seeds, aggregate hunger/thermal MAE/proximity each worsen <=10%, and hunger plus temperature beat untrained in >=2 seeds. Otherwise record negative and investigate a separate learning mechanism. Report all six criteria and curves; reward is diagnostic.",
+  "metrics": [
+    "temperature.mae",
+    "temperature.outside",
+    "hunger.mean",
+    "hunger.above",
+    "wildlife.proximity",
+    "wildlife.contact-proxy"
+  ],
+  "plan": {
+    "SchemaVersion": 1,
+    "ExpectedRuns": 6,
+    "Protocols": [
+      "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE"
+    ],
+    "ConfigurationHash": "83299BC214F13B75A7D6253DB0D36C846697D61AE372E4A8D5EFC10EF466A031",
+    "TrainingSeeds": [
+      42,
+      73,
+      101
+    ],
+    "EvaluationSeeds": [
+      91001,
+      92003,
+      93011,
+      94009,
+      95003
+    ],
+    "TrainingStepsPerTrial": 20000,
+    "PreparedUtc": "2026-10-26T14:13:00.2986091+01:00"
+  },
+  "configSha256": "BB382BEC8D2CE8659601CC3B4D3DDEE281DE04FC985432FDEB58476441225C2D",
+  "bundle": "artifacts\\research\\local\\bundles\\9071A73432EA00E54FD09F8B43B78B36583530745459F1639B6C28FD3EE06CA3",
+  "output": "artifacts\\research\\local\\studies\\power-mean-pilot-01\\results",
+  "sourceRevision": "f4f279cc1ec84308f0bf44dccfc8ddcc81b5156d",
+  "sourceStatus": "M research/campaigns/local/CONTEXT.md\n M research/campaigns/local/FINDINGS.md\n M research/campaigns/local/journal.jsonl\n M src/ArtificialLife.Godot.Contracts/packages.lock.json\n M src/ArtificialLife.Presentation.Godot/packages.lock.json\n M tools/package.ps1\n?? configs/research-power-mean-pilot.json\n?? research/campaigns/local/power-mean-hypothesis.json\n?? src/ArtificialLife.Modules.DriveMotivation/RuntimePowerHomeostasis.cs\n?? tests/ArtificialLife.Tests/PowerHomeostasisTests.cs",
+  "scenarioReviewSha256": "95953BA3D908FE7696A7E6A85240BA15E33C01A0ABDEFF25268EEE60571AAED2",
+  "scenarioCleared": true
+}
