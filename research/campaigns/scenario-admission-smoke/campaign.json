@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "scenario-admission-smoke",
-  "branch": "codex/research-campaign-infrastructure",
+  "branch": "master",
   "createdUtc": "2026-10-25T10:45:29.5764490+00:00",
   "maxParallel": 2,
   "threadsPerWorker": 1,

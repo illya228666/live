@@ -1,6 +1,6 @@
 # Campaign infrastructure-smoke
 
-Branch: codex/research-campaign-infrastructure. Current: codex/research-campaign-infrastructure.
+Branch: master. Current: master.
 
 Read research/RESEARCHER.md, research/BASELINE.md, campaign.json, FINDINGS.md (if present) and the most recent journal entries before acting.
 
@@ -10,6 +10,8 @@ Last session deadline (UTC): 10/24/2026 10:12:17. An expired deadline needs a ne
 
 Stop requested: False.
 
+Current comparison baseline: thermal-v2, configs/research-baseline.json. Scope: Temperature only. Additional factors must pass their own passive/active checks before scientific comparison. Review: research/scenarios/temperature-v2-review.json. Additional factors require their own passing review; repair trivial scenarios before scientific pilot/full runs.
+
 | Study | Stage | Status | Hypothesis | Full artifacts |
 |---|---|---|---|---|
 | pilot-01 | pilot | completed | Отдельные процессы с одинаковой сборкой и seed дают одинаковые действия и метрики при последовательном и параллельном исполнении; пауза и запись исследовательской памяти не заставляют пересчитывать готовые trials. | artifacts\research\infrastructure-smoke\studies\pilot-01\results |
@@ -17,7 +19,6 @@ Stop requested: False.
 
 ## Recent decisions/events
 
-{"kind":"stop-requested","data":{"next":"Resume explicitly; incomplete trials restart from their seed.","force":false},"utc":"2026-10-24T08:08:49.4154244+00:00"}
 {"kind":"stop-requested","data":{"next":"Resume explicitly; incomplete trials restart from their seed.","force":true},"utc":"2026-10-24T08:08:50.7588424+00:00"}
 {"kind":"stop-requested","data":{"next":"Resume explicitly; incomplete trials restart from their seed.","force":false},"utc":"2026-10-24T08:09:08.7891594+00:00"}
 {"kind":"decision","data":{"text":"Sequential reference saved. A deliberate stop request interrupted admission; immutable configs and completed evidence are retained.","study":"pilot-02","next":"Resume the registered study and compare with the sequential reference."},"utc":"2026-10-24T08:09:09.7294045+00:00"}
@@ -29,7 +30,8 @@ Stop requested: False.
 {"data":{"next":"Не начинать длинную кампанию до следующего запроса. В новой сессии прочитать BASELINE.md, выбрать вопрос, проверить различающую способность сценария и зарегистрировать pilot до оценки.","study":"pilot-02","text":"Финальная проверка: 4/4 пары совпали, фактический parallel=2, проверена force-остановка orphan worker по PID+времени+пути, completed result.json не переписались, новый процесс восстановил анализ и следующий шаг. Полный набор: 158 тестов без ошибок."},"kind":"decision","utc":"2026-10-24T08:11:07.2451297+00:00"}
 {"kind":"session-started","data":{"minutes":1E-06},"utc":"2026-10-24T08:12:17.6281645+00:00"}
 {"kind":"decision","data":{"study":"pilot-02","next":"Для реальной следующей кампании использовать local; явно задать новый бюджет сессии и зарегистрировать выбранный pilot.","text":"Проверен истёкший дедлайн сессии: вычислительный срез отклонён, новые trials не стартовали. Проверка backup во время занятой блокировки также отклоняет копирование."},"utc":"2026-10-24T08:12:17.9830440+00:00"}
+{"utc":"2026-10-26T11:22:07.1669083+00:00","data":{"next":"Continue on master; recover context, check the current baseline and obtain a new explicit session budget before launching research.","text":"Repository consolidation: campaign moved from codex/research-campaign-infrastructure to master after integrating research infrastructure and legacy fix branch histories. Study registrations, recorded evidence and past journal entries are unchanged.","study":""},"kind":"decision"}
 
 ## Resume in Codex
 
-Continue campaign 'infrastructure-smoke' on branch 'codex/research-campaign-infrastructure'. Read this file, research/RESEARCHER.md, research/BASELINE.md, the immutable study registrations and referenced evidence. Reconcile suite.json/result.json with journal before launching anything. Preserve completed runs; do not treat reward as success. Check the session deadline. Record the next decision and next action before ending the session.
+Continue campaign 'infrastructure-smoke' on branch 'master'. Read this file, research/RESEARCHER.md, research/BASELINE.md, the immutable study registrations and referenced evidence. Reconcile suite.json/result.json with journal before launching anything. Preserve completed runs; do not treat reward as success. Check the session deadline. Record the next decision and next action before ending the session.

@@ -28,3 +28,9 @@ Next: Не начинать длинную кампанию до следующ�
 Проверен истёкший дедлайн сессии: вычислительный срез отклонён, новые trials не стартовали. Проверка backup во время занятой блокировки также отклоняет копирование.
 
 Next: Для реальной следующей кампании использовать local; явно задать новый бюджет сессии и зарегистрировать выбранный pilot.
+
+## 2026-10-26T11:22:07.1759162+00:00 — infrastructure-smoke
+
+Repository consolidation: campaign moved from codex/research-campaign-infrastructure to master after integrating research infrastructure and legacy fix branch histories. Study registrations, recorded evidence and past journal entries are unchanged.
+
+Next: Continue on master; recover context, check the current baseline and obtain a new explicit session budget before launching research.

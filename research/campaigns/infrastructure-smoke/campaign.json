@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "infrastructure-smoke",
-  "branch": "codex/research-campaign-infrastructure",
+  "branch": "master",
   "createdUtc": "2026-10-24T09:49:31.4696356+02:00",
   "maxParallel": 2,
   "threadsPerWorker": 1,

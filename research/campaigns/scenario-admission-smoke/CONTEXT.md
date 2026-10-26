@@ -1,6 +1,6 @@
 # Campaign scenario-admission-smoke
 
-Branch: codex/research-campaign-infrastructure. Current: codex/research-campaign-infrastructure.
+Branch: master. Current: master.
 
 Read research/RESEARCHER.md, research/BASELINE.md, campaign.json, FINDINGS.md (if present) and the most recent journal entries before acting.
 
@@ -26,7 +26,8 @@ Current comparison baseline: thermal-v2, configs/research-baseline.json. Scope: 
 {"data":{"stage":"pilot","study":"stable-baseline-admission","next":"Run a bounded compute slice; inspect baselines and per-seed behavior.","rule":"Accept unchanged validated temperature-only physics after deterministic build metadata stabilization; do not start a learner.","hypothesis":"Admission accepts the audited thermal baseline and rejects old trivial physics before scientific experiments."},"kind":"registered","utc":"2026-10-25T11:09:28.3873920+00:00"}
 {"data":{"next":"Resume explicitly; incomplete trials restart from their seed.","force":false},"kind":"stop-requested","utc":"2026-10-25T11:09:28.4644897+00:00"}
 {"data":{"text":"Повторный admission на окончательной стабильной сборке прошёл; новый fingerprint соответствует неизменной физике. Проверено отсутствие запуска learner. Предыдущий admission сохранён как историческая проверка сборки с Git-метаданными.","study":"stable-baseline-admission","next":"Сохранять этот smoke остановленным; использовать thermal-v2 registry для будущих научных сравнений."},"kind":"decision","utc":"2026-10-25T11:09:28.5083729+00:00"}
+{"data":{"next":"Continue on master; recover context, check the current baseline and obtain a new explicit session budget before launching research.","study":"","text":"Repository consolidation: campaign moved from codex/research-campaign-infrastructure to master after integrating research infrastructure and legacy fix branch histories. Study registrations, recorded evidence and past journal entries are unchanged."},"utc":"2026-10-26T11:22:07.6325487+00:00","kind":"decision"}
 
 ## Resume in Codex
 
-Continue campaign 'scenario-admission-smoke' on branch 'codex/research-campaign-infrastructure'. Read this file, research/RESEARCHER.md, research/BASELINE.md, the immutable study registrations and referenced evidence. Reconcile suite.json/result.json with journal before launching anything. Preserve completed runs; do not treat reward as success. Check the session deadline. Record the next decision and next action before ending the session.
+Continue campaign 'scenario-admission-smoke' on branch 'master'. Read this file, research/RESEARCHER.md, research/BASELINE.md, the immutable study registrations and referenced evidence. Reconcile suite.json/result.json with journal before launching anything. Preserve completed runs; do not treat reward as success. Check the session deadline. Record the next decision and next action before ending the session.

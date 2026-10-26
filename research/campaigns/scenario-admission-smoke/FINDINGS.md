@@ -10,3 +10,9 @@ Next: Сохранить этот smoke остановленным; текуща
 Повторный admission на окончательной стабильной сборке прошёл; новый fingerprint соответствует неизменной физике. Проверено отсутствие запуска learner. Предыдущий admission сохранён как историческая проверка сборки с Git-метаданными.
 
 Next: Сохранять этот smoke остановленным; использовать thermal-v2 registry для будущих научных сравнений.
+
+## 2026-10-26T11:22:07.6421676+00:00 — scenario-admission-smoke
+
+Repository consolidation: campaign moved from codex/research-campaign-infrastructure to master after integrating research infrastructure and legacy fix branch histories. Study registrations, recorded evidence and past journal entries are unchanged.
+
+Next: Continue on master; recover context, check the current baseline and obtain a new explicit session budget before launching research.

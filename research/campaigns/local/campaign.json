@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "local",
-  "branch": "codex/research-campaign-infrastructure",
+  "branch": "master",
   "createdUtc": "2026-10-24T07:49:30.2222225+00:00",
   "maxParallel": 2,
   "threadsPerWorker": 1,
