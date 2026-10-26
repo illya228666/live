@@ -123,7 +123,7 @@ function Get-Bundle {
 if ($Action -eq 'hardware') { Get-Hardware | ConvertTo-Json -Depth 5; return }
 if ($Action -eq 'init') {
     if (Test-Path -LiteralPath $campaignPath) { Write-Context; return }
-    if (!$Branch) { $Branch = 'codex/research-' + $Campaign }
+    if (!$Branch) { $Branch = 'master' }
     $current = Git-Value @('branch','--show-current')
     if ($current -ne $Branch) {
         $existing = & git -C $RepoRoot branch --list $Branch

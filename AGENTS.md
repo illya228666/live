@@ -4,6 +4,10 @@
 если это поможет понять цель, ограничения или предпочтения. Если ответ не нужен
 для продолжения, продолжай полезную работу параллельно с ожиданием ответа.
 
+По умолчанию работать в главной ветке `master`, включая исследования и обычные
+исправления. Отдельную ветку создавать только при конкретной необходимости
+изоляции работы; новая задача или эксперимент сами по себе не являются причиной.
+
 For autonomous research campaigns, first read `research/RESEARCHER.md` and
 `research/BASELINE.md`, then recover the named campaign with
 `./tools/research.ps1 -Action context -Campaign <id>`. The default campaign is `local`.
