@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "id": "long-exposure-pilot-01",
+  "stage": "pilot",
+  "registeredUtc": "2026-10-26T14:35:45.3797352+00:00",
+  "hypothesis": {
+    "statement": "At unchanged fixed-normalization relational Sarsa settings, one million training transitions resolve the food/thermal tradeoff seen at100k and produce balanced needs across3 training seeds.",
+    "direction": "learning-only: exposure/convergence test",
+    "rationale": "Fixed normalization acquired food and safety on all3 seeds, but lambda0 temperature remained poor; lambda.9 preserved thermal control but acquired food on only one seed. More experience may fit competing state-dependent action values without new motivation or hyperparameter tuning. This is a new hypothesis after the100k non-regression gate failed, not promotion of the failed pilot.",
+    "falsification": "Reject satisfactory acquisition unless all six unchanged criteria pass on every one of3 training seeds at the final1M policy. Report every100k point and all evaluation worlds. A candidate must then pass a separately registered independent confirmation with new training/evaluation seeds; no single-seed success, mean-only success or retrospective checkpoint replacement.",
+    "sources": [
+      {
+        "title": "Live normalization-pilot-01 preregistered results",
+        "urlOrDoi": "research/campaigns/local/results/normalization-pilot-01-summary.json",
+        "readOn": "2026-10-26",
+        "mechanism": "Longer exposure alone, while preserving independently acquired needs; investigate continued-learning curves rather than alter several mechanisms together.",
+        "limitations": "This is a convergence hypothesis, not a guarantee that the chosen representation or scalar discounted objective admits the required policy. Reused pilot seeds are exploratory, not independent confirmation."
+      }
+    ],
+    "protocol": {
+      "config": "configs/research-long-exposure-pilot.json",
+      "baseline": "ecology-v2",
+      "trainingSeeds": [
+        42,
+        73,
+        101
+      ],
+      "evaluationSeeds": [
+        91001,
+        92003,
+        93011,
+        94009,
+        95003
+      ],
+      "trainingSteps": 1000000,
+      "evaluationSteps": 12000,
+      "evaluateEvery": 100000,
+      "controls": "Fixed lambda0/.9, exact prior parameters alpha.03/gamma.97/epsilon1->.05 in50k. Runner random/untrained/initial frozen. The100k point must reproduce the prior pilot exactly, despite additional later training and a different evaluation schedule.",
+      "checkpointRule": "Final1M only. Earlier success or collapse is reported, never used to select a replacement policy. No restarting bad seeds.",
+      "compute": "Two CPU workers while RAM reserve2GiB holds;10-minute slices, per-trial timeout8min, completed trials preserved. User removed duration cap.",
+      "nextIfNegative": "Revisit temporal objective/continuing average reward or learn a structured forward model of needs; do not keep extending this learner indefinitely."
+    }
+  },
+  "decisionRule": "Final1M policy only. All6 unchanged behavior criteria must pass on all3 training seeds before independent full confirmation. Report all100k curves and evaluation worlds, no best-checkpoint/seed selection. If negative change temporal objective or learning mechanism, not endless exposure.",
+  "metrics": [
+    "temperature.mae",
+    "temperature.outside",
+    "hunger.mean",
+    "hunger.above",
+    "wildlife.proximity",
+    "wildlife.contact-proxy"
+  ],
+  "plan": {
+    "SchemaVersion": 1,
+    "ExpectedRuns": 6,
+    "Protocols": [
+      "D58B081A1EF7E4E2DAD586AB584633FBCECDCE8964ECFA9C1BF0379C11DFA994"
+    ],
+    "ConfigurationHash": "B5F4E97368C34FB1485B7DA7F1C9A1129C7E7120FEE263F16EDB8CAAEC9469F3",
+    "TrainingSeeds": [
+      42,
+      73,
+      101
+    ],
+    "EvaluationSeeds": [
+      91001,
+      92003,
+      93011,
+      94009,
+      95003
+    ],
+    "TrainingStepsPerTrial": 1000000,
+    "PreparedUtc": "2026-10-26T15:35:44.9945311+01:00"
+  },
+  "configSha256": "E9D92602970D93EE3F1AFFF15A48A291FC394CDD94656DDE07A5CC3F95CFD889",
+  "bundle": "artifacts\\research\\local\\bundles\\D9E5D0F6C025F6210509292713A714271496379CD69E17CFAD32DA8390B8FCE0",
+  "output": "artifacts\\research\\local\\studies\\long-exposure-pilot-01\\results",
+  "sourceRevision": "187ae3093266537e291b51ea9a212ad4b351ab95",
+  "sourceStatus": "M src/ArtificialLife.Presentation.Godot/packages.lock.json",
+  "scenarioReviewSha256": "95953BA3D908FE7696A7E6A85240BA15E33C01A0ABDEFF25268EEE60571AAED2",
+  "scenarioCleared": true
+}
