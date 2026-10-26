@@ -1,0 +1,28 @@
+{
+  "statement": "Moderately increasing safety's motivational weight resolves the last proximity failure of the predictive/persistent learner while preserving its independently acquired food and thermal regulation across seeds.",
+  "direction": "motivation-only: relative safety weight",
+  "rationale": "With learned thermal features and persistent exploration, all3 pilot seeds now satisfy hunger, thermal and contact criteria, but proximity is consistently13.1-13.6% against12%. Change only safety weight, retaining the complete learner, exposure and original physics. The earlier temperature-weight study used a different learner with a different remaining failure; its negative result remains recorded.",
+  "falsification": "Weight1.5 is the preferred candidate only if every one of six unchanged ecology-v2 criteria passes on every3 training seeds at final1M. Otherwise weight2 may be chosen only under the same complete gate. If both fail, no candidate promotion. Do not round away failures or select favorable seeds/checkpoints. Any candidate then needs a separate fresh-seed full confirmation.",
+  "sources": [
+    {
+      "title": "Live predictive-exploration-pilot-01",
+      "urlOrDoi": "research/campaigns/local/results/predictive-exploration-pilot-01-summary.json",
+      "readOn": "2026-10-26",
+      "mechanism": "Isolate the cost tradeoff after food/thermal acquisition on3/3 seeds; prediction and exploration remain fixed.",
+      "limitations": "This is original pilot calibration, not a biological optimum or independent confirmation. Relative weighting and reward normalization scale change together. Safety is spatial proximity, not actual harm."
+    }
+  ],
+  "protocol": {
+    "config": "configs/research-safety-weight-pilot.json",
+    "baseline": "ecology-v2",
+    "trainingSeeds": [42,73,101],
+    "evaluationSeeds": [91001,92003,93011,94009,95003],
+    "trainingSteps": 1000000,
+    "evaluationSteps": 12000,
+    "evaluateEvery": 100000,
+    "learner": "Unchanged model-persistent: fixed lambda0 Sarsa alpha.03/gamma.97,2000 identical model warmup, capped zeta2 max32 afterward, nominal occupancy correction and unchanged epsilon schedule.",
+    "controls": "Safety multipliers1/1.5/2; temperature/hunger multipliers1, exponent1, same reward mapping. Identity1 must reproduce the previous learned policy hashes. Random/untrained/initial frozen controls remain.",
+    "physics": "Private motivational copies of physical drives only; no altered boar radius, body target, hunger rate, observation, action or behavioral threshold.",
+    "selection": "Final1M; choose1.5 if all3 seeds pass all6, otherwise2 only if all3 pass. Never use a best intermediate checkpoint. Independent confirmation must use new training and evaluation seeds and report per-world outcomes."
+  }
+}
