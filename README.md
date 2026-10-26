@@ -1,5 +1,11 @@
 # ArtificialLife
 
+The [interim research report (26 October 2026)](docs/research-local-interim-report.md)
+records 11 completed studies and 82 training runs on ecology-v2. The agent learned
+substantial joint food/temperature/avoidance behavior, but independent confirmation
+failed the preregistered reliability rule (4/5 training seeds, 18/25 evaluation worlds).
+The report includes negative results, implementation limits and reproduction commands.
+
 New approach comparisons use the validated [ecology-v2 baseline](configs/research-ecology-v2.json):
 unchanged thermal-v2, foraging and avoidable wildlife proximity. See the
 [five-seed passive/active audit](docs/ecology-v2-report.md). Standalone thermal-v2,
