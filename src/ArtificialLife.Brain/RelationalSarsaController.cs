@@ -12,12 +12,13 @@ public sealed record RelationalSarsaOptions
     public double EpsilonEnd { get; init; } = 0.05;
     public int EpsilonDecaySteps { get; init; } = 50000;
     public double MovementScale { get; init; } = 1.5;
+    public string Normalization { get; init; } = "l2";
     public void Validate()
     {
         if (!double.IsFinite(Alpha) || Alpha <= 0 || Alpha > 1 || !double.IsFinite(Gamma) || Gamma is < 0 or > 1 ||
             !double.IsFinite(Lambda) || Lambda is < 0 or > 1 || !double.IsFinite(EpsilonStart) || !double.IsFinite(EpsilonEnd) ||
             EpsilonEnd is < 0 or > 1 || EpsilonStart < EpsilonEnd || EpsilonStart > 1 || EpsilonDecaySteps < 1 ||
-            !double.IsFinite(MovementScale) || MovementScale <= 0) throw new InvalidDataException("Invalid relational Sarsa options.");
+            !double.IsFinite(MovementScale) || MovementScale <= 0 || Normalization is not ("l2" or "fixed")) throw new InvalidDataException("Invalid relational Sarsa options.");
     }
 }
 
@@ -92,8 +93,17 @@ public sealed class RelationalSarsaController : IAgentController
                 x[b] = current; x[b + 1] = progress; x[b + 2] = progress * hunger; x[b + 3] = progress * body * 3;
             }
         }
-        double norm = Math.Max(1, Math.Sqrt(x.Sum(v => v * v)));
-        for (int i = 0; i < x.Length; i++) x[i] /= norm;
+        if (options.Normalization == "fixed")
+        {
+            // Keep the intercept constant: normalizing it by an action-dependent norm
+            // prevents a single intercept weight from representing the reward offset.
+            for (int i = 1; i < x.Length; i++) x[i] = Math.Clamp(x[i], -1, 1) / 4;
+        }
+        else
+        {
+            double norm = Math.Max(1, Math.Sqrt(x.Sum(v => v * v)));
+            for (int i = 0; i < x.Length; i++) x[i] /= norm;
+        }
         return x;
     }
 

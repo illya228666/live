@@ -40,6 +40,21 @@ public sealed class RelationalSarsaTests
     }
 
     [Fact]
+    public void FixedNormalizationPreservesAnActionIndependentIntercept()
+    {
+        using var fixedController = new RelationalSarsaController(new() { Normalization = "fixed" }, 42);
+        using var l2Controller = new RelationalSarsaController(new(), 42);
+        foreach (var c in new[] { fixedController, l2Controller }) c.SchemaChanged(["vision.appearance.object", "hunger.body.v1"], []);
+        ObservationToken[] state = [new(0, [1, 0, 0.8f]), new(1, [0.8f])];
+        var towards = new ActionCandidate(0, [1, 0]);
+        var away = new ActionCandidate(0, [-1, 0]);
+        Assert.Equal(1, fixedController.Features(state, towards)[0]);
+        Assert.Equal(1, fixedController.Features(state, away)[0]);
+        Assert.NotEqual(l2Controller.Features(state, towards)[0], l2Controller.Features(state, away)[0]);
+        Assert.All(fixedController.Features(state, towards).Skip(1), value => Assert.InRange(value, -0.25, 0.25));
+    }
+
+    [Fact]
     public void FrozenEvaluationPreservesCachedOnPolicyActionAndRoundTripWorks()
     {
         var options = new RelationalSarsaOptions { EpsilonStart = 1, EpsilonEnd = 1 };
