@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "id": "persistent-exploration-pilot-01",
+  "stage": "pilot",
+  "registeredUtc": "2026-10-26T13:24:29.2571396+00:00",
+  "hypothesis": {
+    "statement": "At fixed original weighted-homeostasis motivation, capped temporally persistent exploration improves balanced learned behavior over stepwise epsilon-greedy within 20000 ecology-v2 training steps.",
+    "direction": "learning-only: data collection/exploration",
+    "rationale": "The motivation pilot learned little foraging and p4 traded safety for temperature. This does not prove exploration is the cause. Live's globally consistent movement directions make persistent random trajectories a concrete alternative to local dithering. Keep reward, discount, optimizer, replay, network, training steps and evaluation fixed.",
+    "falsification": "No full-study promotion unless worst behavioral criterion ratio improves at least 10% in two of three paired training seeds, hunger.mean decreases at least .05 in two seeds, and aggregate temperature MAE, proximity and contact proxy each worsen at most 10%. All fixed criteria and per-seed curves must be reported. Food acquisition during frozen greedy evaluation, rather than exploratory random movement alone, must improve.",
+    "sources": [
+      {
+        "title": "Temporally-Extended epsilon-Greedy Exploration",
+        "authors": "Dabney, Ostrovski and Barreto",
+        "urlOrDoi": "https://arxiv.org/html/2006.01782",
+        "versionRead": "arXiv v1, 2020-06-02; conference version ICLR 2021 identified separately",
+        "readOn": "2026-10-26",
+        "sectionsRead": "Sections 4, 4.1, 4.2; section 6 Generality and Limitations; Appendix B.1 pseudo-code, B.3 implementation details",
+        "mechanism": "Repeat a uniformly selected exploratory primitive action for a duration sampled from a distribution, preserving single-step greedy exploitation. Capped zeta(2) supports mostly short moves and occasional long consistent motion.",
+        "limitations": "Source experiments do not establish effectiveness in Live. We cap duration at32 rather than Atari100 or10000; interrupt a repeat when the action is illegal or conditions change. We additionally correct start probability for nominal primitive-step exploration occupancy. This is an adaptation, not a replication. Walls and changing epsilon break exact stationary occupancy matching; export actual exploration counts and illegal terminations. Persistent direction may be harmful near moving threats."
+      }
+    ],
+    "protocol": {
+      "baseline": "ecology-v2",
+      "config": "configs/research-persistent-exploration-pilot.json",
+      "motivation": "Original weighted-homeostasis; equivalent to power p1 established separately. No p4 combination.",
+      "trainingSeeds": [
+        42,
+        73,
+        101
+      ],
+      "evaluationSeeds": [
+        91001,
+        92003,
+        93011,
+        94009,
+        95003
+      ],
+      "trainingSteps": 20000,
+      "evaluationSteps": 12000,
+      "controls": "Duration1 paired control, random/untrained/initial frozen. Compare duration1 hashes/metrics with prior pilot p1 as a technical regression check; repetitions are not independent scientific evidence.",
+      "checkpointRule": "Only final20000-step policy for decision; show curves0/10000/20000 without selecting best.",
+      "primary": "Per training seed max of evaluation-world averaged six metric/threshold ratios from unchanged baseline criteria.",
+      "exploration": "P(duration=n) proportional to n^-2 for n=1..32. If mean duration L and desired epsilon e, start probability=e/(L-e*(L-1)); nominal stationary primitive-step fraction=e when repeats complete. Duration1 takes the exact old RNG path. Train after each primitive transition as before; frozen inference never repeats exploratory actions.",
+      "diagnostics": "Final checkpoint InferenceState.exploration records Choices, ExploratoryActions, Bursts, IllegalTerminations, MeanDuration. These are training diagnostics, not optimizer/RNG continuation state. Source and imported inference both restore observation weights; diagnostics need not resume."
+    }
+  },
+  "decisionRule": "Final20000 only. Promote only if worst criterion ratio improves>=10% in>=2/3 seeds, hunger decreases>=.05 in>=2 seeds, and aggregate thermal MAE/proximity/contact worsen<=10%. Inspect learned frozen behavior, all six criteria, curves and actual exploration counters. Duration1 replay of prior p1 is regression evidence only.",
+  "metrics": [
+    "temperature.mae",
+    "temperature.outside",
+    "hunger.mean",
+    "hunger.above",
+    "wildlife.proximity",
+    "wildlife.contact-proxy"
+  ],
+  "plan": {
+    "SchemaVersion": 1,
+    "ExpectedRuns": 6,
+    "Protocols": [
+      "45C093511A128F9EEF1D67208B92C60A9D80D0E35D570150736A2ECD8335CDBE"
+    ],
+    "ConfigurationHash": "3929B04E82D5B5B25867CDB90348AF5DC531D544D5D7C45DF03A658669A18B78",
+    "TrainingSeeds": [
+      42,
+      73,
+      101
+    ],
+    "EvaluationSeeds": [
+      91001,
+      92003,
+      93011,
+      94009,
+      95003
+    ],
+    "TrainingStepsPerTrial": 20000,
+    "PreparedUtc": "2026-10-26T14:24:28.8806864+01:00"
+  },
+  "configSha256": "238F78EEE7B34A3D6B7FA2C1353F310FC546FDE8D1441354D9B6AE69C03832B7",
+  "bundle": "artifacts\\research\\local\\bundles\\CAC2C66345A25B79B517A1421B6FC7D56CA1C2DE60C7EA9B2401EA81467C22C6",
+  "output": "artifacts\\research\\local\\studies\\persistent-exploration-pilot-01\\results",
+  "sourceRevision": "40dfdbefc8f988ee6f7f6cb97747fb21e0e32ab9",
+  "sourceStatus": "M src/ArtificialLife.Presentation.Godot/packages.lock.json",
+  "scenarioReviewSha256": "95953BA3D908FE7696A7E6A85240BA15E33C01A0ABDEFF25268EEE60571AAED2",
+  "scenarioCleared": true
+}
