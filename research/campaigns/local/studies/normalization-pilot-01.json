@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "id": "normalization-pilot-01",
+  "stage": "pilot",
+  "registeredUtc": "2026-10-26T14:29:43.8527059+00:00",
+  "hypothesis": {
+    "statement": "Keeping the linear action-value intercept constant improves learning useful food acquisition over full-vector L2 normalization at fixed features, reward and learner.",
+    "direction": "learning-only: feature normalization ablation",
+    "rationale": "In the preceding learner all features, including the intercept, were divided by an action-dependent norm. A constant reward offset cannot then be represented by one bias coefficient; a large learned baseline may create spurious action preferences from feature magnitudes. A unit case proves the intercept varies between approaching/retreating an object. This algebraic issue motivates an empirical ablation, not a prior claim that it explains all failures.",
+    "falsification": "No promotion unless a fixed-normalization learner passes every fixed criterion in all3 training seeds. Retain a partial lead only if hunger decreases>=.1 in>=2/3 seeds versus paired L2-lambda0 without aggregate thermal MAE, proximity or contact regression>10%. A normalization effect is assessed only in lambda0 pair; fixed lambda.9 separately tests traces. Final100k only; transient improvements cannot substitute for final policy.",
+    "sources": [
+      {
+        "title": "Original analysis of Live relational feature normalization",
+        "urlOrDoi": "src/ArtificialLife.Brain/RelationalSarsaController.cs",
+        "readOn": "2026-10-26",
+        "mechanism": "If x0=1/sqrt(sum_j x_j(a)^2), a change in other action features changes the intercept. Fixed x0=1 avoids this coupling.",
+        "limitations": "Fixed normalization changes the scale of non-intercept features and effective step sizes too. This pilot tests the complete normalization treatment; attribution solely to the intercept needs a further scale-matched ablation if promising."
+      },
+      {
+        "title": "True Online Temporal-Difference Learning",
+        "urlOrDoi": "https://www.jmlr.org/papers/volume17/15-599/15-599.pdf",
+        "readOn": "2026-10-26",
+        "sectionsRead": "4.3, Algorithm3; inherited exact update from relational-sarsa-pilot-01"
+      }
+    ],
+    "protocol": {
+      "config": "configs/research-normalization-pilot.json",
+      "baseline": "ecology-v2",
+      "trainingSeeds": [
+        42,
+        73,
+        101
+      ],
+      "evaluationSeeds": [
+        91001,
+        92003,
+        93011,
+        94009,
+        95003
+      ],
+      "trainingSteps": 100000,
+      "evaluationSteps": 12000,
+      "evaluateEvery": 25000,
+      "controls": "L2 lambda0, fixed lambda0, fixed lambda.9; original weighted-homeostasis; random/untrained/initial frozen. L2 lambda0 should reproduce the previous study exactly; repetitions do not add N.",
+      "normalization": "Fixed:x0=1, all other components clamp[-1,1]/4. L2:unchanged old full-vector norm. Same alpha.03, gamma.97, epsilon1->.05/50k, generic visual kernels.",
+      "primary": "Unchanged six physical behavior criteria, hunger and food consumption, per-seed worst criterion ratio and full curves; final100k decision."
+    }
+  },
+  "decisionRule": "Final100k. Confirm only all6 criteria pass on all3 training seeds. Partial lead: paired hunger improves>=.1 in>=2/3 seeds without aggregate MAE/proximity/contact regression>10%. Normalization attribution uses lambda0 pair only; fixed-trace is separate. Repeat L2 control is technical reproduction, not independent confirmation.",
+  "metrics": [
+    "temperature.mae",
+    "temperature.outside",
+    "hunger.mean",
+    "hunger.above",
+    "wildlife.proximity",
+    "wildlife.contact-proxy"
+  ],
+  "plan": {
+    "SchemaVersion": 1,
+    "ExpectedRuns": 9,
+    "Protocols": [
+      "3400E9CCFF8FE72291AB3138FA4EF7D70DFFA807C36829AFCD87FB50318C4DE3"
+    ],
+    "ConfigurationHash": "FFBF8CB7BD498C39C9AD408B331138BBA851D908C56605A474372CAAD56EC959",
+    "TrainingSeeds": [
+      42,
+      73,
+      101
+    ],
+    "EvaluationSeeds": [
+      91001,
+      92003,
+      93011,
+      94009,
+      95003
+    ],
+    "TrainingStepsPerTrial": 100000,
+    "PreparedUtc": "2026-10-26T15:29:43.4900381+01:00"
+  },
+  "configSha256": "FCE1DC06360310433DC8D4E9FDEBAE0729F9E6A5695B6111387E4884C70160E7",
+  "bundle": "artifacts\\research\\local\\bundles\\D9E5D0F6C025F6210509292713A714271496379CD69E17CFAD32DA8390B8FCE0",
+  "output": "artifacts\\research\\local\\studies\\normalization-pilot-01\\results",
+  "sourceRevision": "0975769ad53634c06a83697e7f88dc004ae9cbdb",
+  "sourceStatus": "M src/ArtificialLife.Presentation.Godot/packages.lock.json",
+  "scenarioReviewSha256": "95953BA3D908FE7696A7E6A85240BA15E33C01A0ABDEFF25268EEE60571AAED2",
+  "scenarioCleared": true
+}

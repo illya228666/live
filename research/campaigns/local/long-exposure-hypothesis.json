@@ -1,0 +1,28 @@
+{
+  "statement": "At unchanged fixed-normalization relational Sarsa settings, one million training transitions resolve the food/thermal tradeoff seen at100k and produce balanced needs across3 training seeds.",
+  "direction": "learning-only: exposure/convergence test",
+  "rationale": "Fixed normalization acquired food and safety on all3 seeds, but lambda0 temperature remained poor; lambda.9 preserved thermal control but acquired food on only one seed. More experience may fit competing state-dependent action values without new motivation or hyperparameter tuning. This is a new hypothesis after the100k non-regression gate failed, not promotion of the failed pilot.",
+  "falsification": "Reject satisfactory acquisition unless all six unchanged criteria pass on every one of3 training seeds at the final1M policy. Report every100k point and all evaluation worlds. A candidate must then pass a separately registered independent confirmation with new training/evaluation seeds; no single-seed success, mean-only success or retrospective checkpoint replacement.",
+  "sources": [
+    {
+      "title": "Live normalization-pilot-01 preregistered results",
+      "urlOrDoi": "research/campaigns/local/results/normalization-pilot-01-summary.json",
+      "readOn": "2026-10-26",
+      "mechanism": "Longer exposure alone, while preserving independently acquired needs; investigate continued-learning curves rather than alter several mechanisms together.",
+      "limitations": "This is a convergence hypothesis, not a guarantee that the chosen representation or scalar discounted objective admits the required policy. Reused pilot seeds are exploratory, not independent confirmation."
+    }
+  ],
+  "protocol": {
+    "config": "configs/research-long-exposure-pilot.json",
+    "baseline": "ecology-v2",
+    "trainingSeeds": [42,73,101],
+    "evaluationSeeds": [91001,92003,93011,94009,95003],
+    "trainingSteps": 1000000,
+    "evaluationSteps": 12000,
+    "evaluateEvery": 100000,
+    "controls": "Fixed lambda0/.9, exact prior parameters alpha.03/gamma.97/epsilon1->.05 in50k. Runner random/untrained/initial frozen. The100k point must reproduce the prior pilot exactly, despite additional later training and a different evaluation schedule.",
+    "checkpointRule": "Final1M only. Earlier success or collapse is reported, never used to select a replacement policy. No restarting bad seeds.",
+    "compute": "Two CPU workers while RAM reserve2GiB holds;10-minute slices, per-trial timeout8min, completed trials preserved. User removed duration cap.",
+    "nextIfNegative": "Revisit temporal objective/continuing average reward or learn a structured forward model of needs; do not keep extending this learner indefinitely."
+  }
+}
