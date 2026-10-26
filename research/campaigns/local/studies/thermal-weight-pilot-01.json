@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "id": "thermal-weight-pilot-01",
+  "stage": "pilot",
+  "registeredUtc": "2026-10-26T14:45:27.9225134+00:00",
+  "hypothesis": {
+    "statement": "With the fixed-normalization lambda0 learner and1M exposure held fixed, a moderate increase in temperature's motivational weight resolves its remaining thermal discomfort while retaining acquired food and avoidance.",
+    "direction": "motivation-only: relative drive weight",
+    "rationale": "The robust lambda0 learner now acquires food and avoidance on all3 seeds, but spends43.8% outside thermal comfort against a35% limit. The trace learner has an unresolved starving seed, so do not select its two favorable seeds. Test the single remaining systematic tradeoff of the robust learner by changing only temperature weight1/1.5/2. No physical target/scale/threshold or learner changes.",
+    "falsification": "A candidate must pass every one of the six fixed ecology-v2 criteria on all3 training seeds at final1M. Otherwise reject balanced acquisition. Main candidate is weight1.5; weight2 is a preregistered sensitivity candidate. If both pass, choose1.5; if only2 passes, choose2. If neither passes, do not advance. Any chosen candidate needs independent full confirmation with new training and evaluation seeds. No best-checkpoint or seed selection.",
+    "sources": [
+      {
+        "title": "Live long-exposure-pilot-01 results",
+        "urlOrDoi": "research/campaigns/local/results/long-exposure-pilot-01-summary.json",
+        "readOn": "2026-10-26",
+        "mechanism": "Rebalance a learned multi-objective control tradeoff without altering the task or the learning algorithm.",
+        "limitations": "This is an original calibration hypothesis on pilot seeds, not evidence that one multiplier is biologically correct. Weighted-mean normalization also changes the global reward scale/effective update scale; a separate scale-matched attribution would be needed to distinguish it. This treatment must transfer to new seeds before success is claimed."
+      },
+      {
+        "title": "Homeostatic reinforcement learning for integrating reward collection and physiological stability",
+        "urlOrDoi": "https://doi.org/10.7554/eLife.04811",
+        "readOn": "2026-10-26",
+        "sectionsRead": "Previously read Theory sketch/Behavioral plausibility; background for drive-space motivation only",
+        "limitations": "The source does not prescribe these normalized weights or establish effectiveness in Live."
+      }
+    ],
+    "protocol": {
+      "config": "configs/research-thermal-weight-pilot.json",
+      "baseline": "ecology-v2",
+      "trainingSeeds": [
+        42,
+        73,
+        101
+      ],
+      "evaluationSeeds": [
+        91001,
+        92003,
+        93011,
+        94009,
+        95003
+      ],
+      "trainingSteps": 1000000,
+      "evaluationSteps": 12000,
+      "evaluateEvery": 100000,
+      "learner": "Fixed-normalization linear Sarsa lambda0, alpha.03 gamma.97, epsilon1->.05/50k; exact previously tested parameters.",
+      "controls": "Motivational temperature multipliers1/1.5/2, all other multipliers1, exponent1 and unchanged reward mapping. Identity multiplier must reproduce original weighted-homeostasis behavior exactly. Random/untrained/initial frozen present.",
+      "physics": "Physical DriveState targets/scales/weights, observations and world parameters are untouched. Only motivation makes a private reweighted copy of its inputs; passing scenario review remains required.",
+      "selection": "Final1M; candidate1.5 preferred if all3 seeds pass every criterion, otherwise2 only if all3 pass. Independent full study required, no pooled pilot/confirmation statistics."
+    }
+  },
+  "decisionRule": "Final1M only. Candidate w1.5 if all6 ecology criteria pass on every3 training seeds; else w2 only if same full gate passes; else negative. Identityw1 reproduces original. Any chosen candidate requires independent confirmation on fresh training/evaluation seeds before satisfactory acquisition.",
+  "metrics": [
+    "temperature.mae",
+    "temperature.outside",
+    "hunger.mean",
+    "hunger.above",
+    "wildlife.proximity",
+    "wildlife.contact-proxy"
+  ],
+  "plan": {
+    "SchemaVersion": 1,
+    "ExpectedRuns": 9,
+    "Protocols": [
+      "D58B081A1EF7E4E2DAD586AB584633FBCECDCE8964ECFA9C1BF0379C11DFA994"
+    ],
+    "ConfigurationHash": "746B1A942361C8D085E420311A066A110662CC4CB024C6B7BB834123F2E6D173",
+    "TrainingSeeds": [
+      42,
+      73,
+      101
+    ],
+    "EvaluationSeeds": [
+      91001,
+      92003,
+      93011,
+      94009,
+      95003
+    ],
+    "TrainingStepsPerTrial": 1000000,
+    "PreparedUtc": "2026-10-26T15:45:27.5296281+01:00"
+  },
+  "configSha256": "873D5E612702984583CA670E73F18AE65AE929A13E6C80D2A0752CF14C196BEA",
+  "bundle": "artifacts\\research\\local\\bundles\\D9E5D0F6C025F6210509292713A714271496379CD69E17CFAD32DA8390B8FCE0",
+  "output": "artifacts\\research\\local\\studies\\thermal-weight-pilot-01\\results",
+  "sourceRevision": "296b640a1f8d1bb8e2f586ed9a10a54b1cbfa0bd",
+  "sourceStatus": "M src/ArtificialLife.Presentation.Godot/packages.lock.json",
+  "scenarioReviewSha256": "95953BA3D908FE7696A7E6A85240BA15E33C01A0ABDEFF25268EEE60571AAED2",
+  "scenarioCleared": true
+}

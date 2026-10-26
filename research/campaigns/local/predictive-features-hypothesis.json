@@ -1,0 +1,38 @@
+{
+  "statement": "Learning a one-step interoceptive transition model from the agent's own sensory transitions supplies action features that permit balanced thermal/food/safety learning where generic relational Sarsa failed.",
+  "direction": "learning-only: self-supervised predictive representation",
+  "rationale": "The fixed lambda0 learner reliably forages and avoids but misses thermal comfort; increasing thermal reward weight alone did not solve the tradeoff and could return starvation. Generic linear action interactions may poorly represent absolute predicted thermal error. Learn a three-parameter observable transition model, then expose predicted absolute/squared error and action-relative differences to the same reward-trained critic. No hand-coded utility sign or model-based expert actions.",
+  "falsification": "No full promotion unless the learned-model variant passes every one of six unchanged criteria on all3 training seeds at final1M. A mechanistic partial lead requires temperature.outside improves by>=.05 in>=2/3 seeds versus both paired controls, with hunger<=.35 and no aggregate proximity/contact regression>10%. Base and zero-model should reproduce each other exactly. Model accuracy or scalar reward alone cannot establish behavioral success.",
+  "sources": [
+    {
+      "title": "Learning to Act by Predicting the Future",
+      "authors": "Dosovitskiy and Koltun (ICLR2017)",
+      "urlOrDoi": "https://vladlen.info/papers/learning-to-act.pdf",
+      "readOn": "2026-10-26",
+      "sectionsRead": "3 Model,3.1 Training,3.2 Architecture, pp3-5; vector measurements and supervised predictions from own experience",
+      "mechanism": "Use observed future measurements as dense self-supervision for action-conditioned representations.",
+      "limitations": "Our model is ridge-initialized3-variable RLS and predicts only one-step normalized temperature; predictions augment an unchanged scalar Sarsa critic. It is not the source's deep multi-horizon DFP architecture or its direct vector-goal control. Local Taylor field approximation, known motor scale1.5 and sensor spacing3 are explicit domain priors. No access to hidden physics parameters, world snapshots, random state or teacher policy."
+    },
+    {
+      "title": "Live thermal-weight-pilot-01",
+      "urlOrDoi": "research/campaigns/local/results/thermal-weight-pilot-01-summary.json",
+      "readOn": "2026-10-26",
+      "limitations": "Repeated pilot seeds guide the question; only new independent confirmation can establish transfer."
+    }
+  ],
+  "protocol": {
+    "config": "configs/research-predictive-features-pilot.json",
+    "baseline": "ecology-v2",
+    "trainingSeeds": [42,73,101],
+    "evaluationSeeds": [91001,92003,93011,94009,95003],
+    "trainingSteps": 1000000,
+    "evaluationSteps": 12000,
+    "evaluateEvery": 100000,
+    "motivation": "Original weighted-homeostasis, no altered weights or intrinsic rewards.",
+    "learner": "Fixed-normalization lambda0 Sarsa, alpha.03 gamma.97, epsilon1->.05/50k; all variants skip TD updates during first2000 transitions and then perform998000 updates.",
+    "model": "Observe bodyBefore,nextFieldCenter,nextBody during2000 warmup steps; fit nextBody=a*bodyBefore+b*observedNextField+c by RLS (initial covariance10000I, zero coefficients). Freeze thereafter, avoiding a nonstationary feature map during TD learning. At decision time approximate nextField only from current five sensors and candidate motor displacement; next observations are targets only during training.",
+    "controls": "Base with matched warmup, zero-coefficient frozen predictor, learned predictor. Zero model contributes only zero additional features, so base/zero exact hash equality is expected and is not extra independent evidence. Runner random/untrained/initial frozen included.",
+    "checkpointRule": "Final1M only; all100k curves, all evaluation worlds and model coefficients/samples in manifest ControllerState. No best seed/checkpoint selection.",
+    "fullRule": "New training/evaluation seeds, preregistered final budget and per-need/per-world confirmation before claiming satisfactory acquisition."
+  }
+}

@@ -13,12 +13,18 @@ public sealed record RelationalSarsaOptions
     public int EpsilonDecaySteps { get; init; } = 50000;
     public double MovementScale { get; init; } = 1.5;
     public string Normalization { get; init; } = "l2";
+    public bool UseThermalModel { get; init; }
+    public bool LearnThermalModel { get; init; } = true;
+    public int WarmupSteps { get; init; }
+    public double SensorDistance { get; init; } = 3;
     public void Validate()
     {
         if (!double.IsFinite(Alpha) || Alpha <= 0 || Alpha > 1 || !double.IsFinite(Gamma) || Gamma is < 0 or > 1 ||
             !double.IsFinite(Lambda) || Lambda is < 0 or > 1 || !double.IsFinite(EpsilonStart) || !double.IsFinite(EpsilonEnd) ||
             EpsilonEnd is < 0 or > 1 || EpsilonStart < EpsilonEnd || EpsilonStart > 1 || EpsilonDecaySteps < 1 ||
-            !double.IsFinite(MovementScale) || MovementScale <= 0 || Normalization is not ("l2" or "fixed")) throw new InvalidDataException("Invalid relational Sarsa options.");
+            !double.IsFinite(MovementScale) || MovementScale <= 0 || Normalization is not ("l2" or "fixed") ||
+            WarmupSteps < 0 || UseThermalModel && LearnThermalModel && WarmupSteps == 0 ||
+            !double.IsFinite(SensorDistance) || SensorDistance <= 0) throw new InvalidDataException("Invalid relational Sarsa options.");
     }
 }
 
@@ -35,10 +41,14 @@ public sealed class RelationalSarsaController : IAgentController
     private long steps, updates, revision;
     private ActionCandidate? pending;
     private int pendingHash;
+    public LearnedThermalTransition ThermalModel { get; } = new();
     public ControllerLimits Limits => new(256, 256, 4);
     public double Epsilon => options.EpsilonEnd + (options.EpsilonStart - options.EpsilonEnd) * Math.Max(0, 1 - (double)steps / options.EpsilonDecaySteps);
     public ControllerStatus Status => new(steps, updates, Epsilon, loss, 0, 0);
-    public JsonElement InferenceState => JsonSerializer.SerializeToElement(new { steps, updates, loss });
+    public JsonElement InferenceState => options.UseThermalModel
+        ? JsonSerializer.SerializeToElement(new { steps, updates, loss, thermalModel = new
+        { ThermalModel.Coefficients, ThermalModel.Samples, ThermalModel.SquaredError } })
+        : JsonSerializer.SerializeToElement(new { steps, updates, loss });
 
     public RelationalSarsaController(RelationalSarsaOptions options, int seed)
     { options.Validate(); this.options = options; random = new(seed); }
@@ -73,6 +83,18 @@ public sealed class RelationalSarsaController : IAgentController
         x[13] = field; x[14] = field * field; x[15] = body * field;
         x[16] = along; x[17] = along * body * 5; x[18] = along * field; x[19] = curvature;
         x[20] = Math.Abs(body) * along; x[21] = hunger * body; x[22] = safety * hunger;
+        if (options.UseThermalModel)
+        {
+            double ratio = options.MovementScale / options.SensorDistance;
+            double predictedField = field + 0.5 * ratio * along + 0.5 * ratio * ratio * curvature;
+            double predictedBody = ThermalModel.Predict(body, predictedField);
+            double stayBody = ThermalModel.Predict(body, field);
+            x[23] = 4 * Math.Abs(predictedBody);
+            x[24] = 16 * predictedBody * predictedBody;
+            x[25] = 4 * predictedBody;
+            x[26] = 40 * (Math.Abs(predictedBody) - Math.Abs(stayBody));
+            x[27] = 100 * (predictedBody * predictedBody - stayBody * stayBody);
+        }
         foreach (var block in visualBlocks)
         {
             var objects = state.Where(t => t.Type == block.Key && t.Features.Length >= 3).ToArray();
@@ -128,6 +150,19 @@ public sealed class RelationalSarsaController : IAgentController
     public void Receive(AgentTransition transition)
     {
         if (transition.Revision != revision) throw new InvalidOperationException("Stale transition.");
+        if (steps < options.WarmupSteps)
+        {
+            if (options.UseThermalModel && options.LearnThermalModel)
+            {
+                ObservationToken? Token(ObservationToken[] state, string key) => state.FirstOrDefault(t => t.Type < keys.Length && keys[t.Type] == key);
+                var beforeBody = Token(transition.State, "temperature.body.v1");
+                var afterBody = Token(transition.NextState, "temperature.body.v1");
+                var afterField = transition.NextState.FirstOrDefault(t => t.Type < keys.Length && keys[t.Type] == "temperature.sensor.v1" && t.Features.Length >= 3 && t.Features[1] == 0 && t.Features[2] == 0);
+                if (beforeBody is not null && afterBody is not null && afterField is not null)
+                    ThermalModel.Observe(beforeBody.Features[0], afterField.Features[0], afterBody.Features[0]);
+            }
+            steps++; ResetTrace(); return;
+        }
         var x = Features(transition.State, transition.Action);
         double q = Dot(weights, x), nextQ = 0;
         if (!transition.Terminal)
@@ -167,12 +202,15 @@ public sealed class RelationalSarsaController : IAgentController
         if (state.TryGetProperty("steps", out var s)) steps = s.GetInt64();
         if (state.TryGetProperty("updates", out var u)) updates = u.GetInt64();
         if (state.TryGetProperty("loss", out var l)) loss = l.GetDouble();
+        if (state.TryGetProperty("thermalModel", out var m))
+            ThermalModel.Import(m.GetProperty("Coefficients").Deserialize<double[]>()!, m.GetProperty("Samples").GetInt64(), m.GetProperty("SquaredError").GetDouble());
     }
     public IAgentController CreateInferenceController()
     {
         var clone = new RelationalSarsaController(options, 0);
         clone.SchemaChanged(keys, []); clone.weights = (double[])weights.Clone();
         clone.steps = steps; clone.updates = updates; clone.loss = loss; clone.revision = revision;
+        clone.ThermalModel.Import(ThermalModel.Coefficients, ThermalModel.Samples, ThermalModel.SquaredError);
         return clone;
     }
     public void Dispose() { }
