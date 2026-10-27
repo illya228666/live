@@ -1,0 +1,52 @@
+{
+  "protocol": {
+    "fixedCheckpoints": "Entry/final per phase, no best-checkpoint selection",
+    "evaluationSeeds": [
+      941101,
+      942103,
+      943111
+    ],
+    "limitations": [
+      "Thermal initial baseline is not established",
+      "Remote control is not navigation/tool composition",
+      "No causal isolation of neutral pre-exposure benefit",
+      "One order, one new interaction, not universal adaptation"
+    ],
+    "phases": [
+      "initial",
+      "interaction",
+      "need"
+    ],
+    "stepsPerPhase": 100000,
+    "controllerFreeze": "research/campaigns/local/generic-ac-freeze-01.json",
+    "lifeMetricWindow": 2000,
+    "audit": "research/scenarios/expanding-life-v1-audit.json",
+    "trainingSeeds": [
+      1049,
+      1061,
+      1091
+    ]
+  },
+  "direction": "first expanding-world learning and exploration pilot",
+  "falsification": "Final300k only. Specific new-need acquisition requires on at least2/3 seeds: pressure q>=0.5 against preregistered strongest nonadaptive and joint-active audit means, and pressure improvement over the matched coverage-frozen policy >=0.2 of that audit gap. Full expanding-life adequacy additionally requires an acquired initial thermal skill and retention>=80% of its advantage. Otherwise full adequacy fails. Compare coverage/uniform descriptively per seed; do not infer causal pre-exposure transfer because exploration also differs after need introduction. Commands/both directions or reward alone cannot pass. FreezeAfter100k coverage prefix world/action hashes and entry weights must match coverage. Keep all seeds and final checkpoints; no tuning to this challenge.",
+  "statement": "A controller frozen before the new workbench was authored can learn a newly valuable non-movement interaction during one continuous life; coverage-guided exploration is assessed separately from external drive motivation.",
+  "rationale": "The original thermal preflight was behaviorally negative, so retention of an established thermal skill is explicitly not assumed. The new challenge tests genuinely new observation and action slots, a neutral interaction phase, and later an unweighted need. No brain edits after controller-freeze-01.",
+  "sources": [
+    {
+      "sections": "First end-to-end experiment and decision rules",
+      "title": "Live accepted research direction",
+      "readOn": "2026-10-26",
+      "evidence": "User-approved continuing expansion and independent autonomous exploration.",
+      "urlOrDoi": "docs/research-direction.md",
+      "implementationDifference": "First minimal prototype has fixed generic random features, no prediction model and no full-life persistence."
+    },
+    {
+      "sections": "1-3",
+      "title": "Unifying Count-Based Exploration and Intrinsic Motivation",
+      "readOn": "2026-10-26",
+      "evidence": "Counts in large state spaces need generalization; counts are not transition knowledge.",
+      "urlOrDoi": "https://papers.nips.cc/paper/6383-unifying-count-based-exploration-and-intrinsic-motivation.pdf",
+      "implementationDifference": "Bounded quantized observation-action counts choose exploratory candidates; no pseudo-count density model or reward bonus."
+    }
+  ]
+}

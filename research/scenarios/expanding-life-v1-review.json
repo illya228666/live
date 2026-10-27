@@ -1,0 +1,31 @@
+{
+  "SchemaVersion": 1,
+  "Fingerprint": "5A68DAE6EAB83DECC8781608A3B13EC4B40E42B2FBDEA67577666E69504950C9",
+  "Passed": true,
+  "Factors": [
+    {
+      "Factor": "pressure",
+      "Verdict": "requires-adaptation",
+      "PassiveEvidence": "All-position thermal bound and stay/constant-command/random/thermal-only controls; see per-condition/per-seed evidence.",
+      "ActiveEvidence": "Observed gauge+body+local fields; independent and joint feedback controllers; no training or learner access to controls.",
+      "RepairRule": "Repair the shared scenario and rerun controls before comparing learning/motivation."
+    },
+    {
+      "Factor": "temperature",
+      "Verdict": "requires-adaptation",
+      "PassiveEvidence": "All-position thermal bound and stay/constant-command/random/thermal-only controls; see per-condition/per-seed evidence.",
+      "ActiveEvidence": "Observed gauge+body+local fields; independent and joint feedback controllers; no training or learner access to controls.",
+      "RepairRule": "Repair the shared scenario and rerun controls before comparing learning/motivation."
+    },
+    {
+      "Factor": "workbench-interaction",
+      "Verdict": "requires-adaptation",
+      "PassiveEvidence": "All-position thermal bound and stay/constant-command/random/thermal-only controls; see per-condition/per-seed evidence.",
+      "ActiveEvidence": "Observed gauge+body+local fields; independent and joint feedback controllers; no training or learner access to controls.",
+      "RepairRule": "Repair the shared scenario and rerun controls before comparing learning/motivation."
+    }
+  ],
+  "Evidence": "expanding-life-v1-audit.json",
+  "EvidenceSha256": "B52314471EAA0EAEAABA8CAC54E5CC01DFD5E4F6373B672E6FD26210DA37FFDB",
+  "ScheduleFingerprint": "8AB2F94F0288E8EFE0A2E897EC16E114AE13515F05BDEE254CE4EB74A215B894"
+}

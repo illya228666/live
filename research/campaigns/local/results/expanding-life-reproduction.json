@@ -1,0 +1,11 @@
+{
+  "TrainingActionsEqual": true,
+  "MaxAbsoluteMetricDifference": 0.0,
+  "Seed": 1049,
+  "NullMismatches": 0,
+  "IndependentSampleCountAdded": 0,
+  "WorldHashesEqual": true,
+  "Transitions": 300000,
+  "EvaluationActionsEqual": true,
+  "Status": "completed"
+}

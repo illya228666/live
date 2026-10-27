@@ -112,3 +112,27 @@ Next: После разрешённого возобновления: новая
 Оформлен единый промежуточный отчёт docs/research-local-interim-report.md: 11 завершённых studies, 82 trials, 51.34M обучающих переходов; статусы suite и все result.json сверены. Независимое подтверждение остаётся отрицательным: 4/5 training averages,18/25 joint worlds, один food failure; без объявления надёжного или универсального решения. Добавлена CSV-таблица всех50 финальных миров контроля и кандидата; исходные регистрации и JSON не изменены. Перед публикацией Release build без ошибок/предупреждений и193/193 fast tests прошли. Пользовательский Godot lockfile сохранён и исключён из коммита. Публикация не является новым научным циклом.
 
 Next: Продолжение по прежнему решению: новая регистрация независимой проверки safety2 против1.5 на новых seed при том же полном gate; прежний full сохраняется failed. Затем generic encoding внутренних наблюдений и автоматические predictors с отдельной validated новой механикой. Новый full пока не зарегистрирован и не запущен; цель не достигнута. Для восстановления читать сводный отчёт, CONTEXT/FINDINGS и реальные suite/result, соблюдать доступный бюджет.
+
+## 2026-10-26T18:21:26.2571613+00:00 — local
+
+User-approved pivot: expanding-world continual adaptation, autonomous exploration before need value, no fixed predictive horizons or mechanic-specific predictors. Supersedes safety-weight continuation; preserve every old result. Implement minimal actor-critic experiment before persistence or complex memory.
+
+Next: Build and test a generic online controller on existing modules; freeze its source before authoring the new interaction challenge. Register bounded diagnostics, audit suitability before scientific comparisons.
+
+## 2026-10-26T18:32:40.3698696+00:00 — expansion-preflight-01
+
+3/3 technical completion;193 existing+3 new tests pass. Thermal-v2 final MAE for771/883/997 =5.89980/4.51584/5.97904 versus5.98126 initial; only1/3 improves20%, so baseline behavior NOT established. This is a negative bounded diagnostic, not a ranking of actor-critic or random features. Frozen generic-ac-freeze-01 source/parameters before any new challenge is authored.
+
+Next: Keep controller frozen; author and audit one new non-movement interaction, first without a drive then with a need. Run diagnostic expanding-life series; retention remains not established if the initial skill is absent.
+
+## 2026-10-26T19:09:11.3180189+00:00 — expanding-life-pilot-01
+
+9/9 completed,2.7M transitions. Quiet workbench challenge was authored after controller freeze;105 passive/active controls passed. Coverage pressure1049/1061/1091=.564065/.322925/.982859;uniform=.487629/.410493/.982859;matched frozen=.982859/.981690/.848169. Only1/3 coverage passes prespecified new-need final gate (required2/3); no agent has2 consecutive adequate real-life windows. Thermal acquisition/retention not established. More neutral commands (coverage33.29% vs uniform14.75%) is activity, not predictive knowledge or causal pre-exposure transfer. All3 matched prefixes equal in worlds/actions/weights; frozen brain source hashes unchanged. Exact seed1049 reproduction has0 metric difference and identical training/eval actions/world hashes.9/9 final policies load;Godot1000-step technical smoke passes;200 fast tests pass. Report docs/expanding-life-first-results.md; compact evidence retained.
+
+Next: Do not promote this configuration or tune it to pressure. Treat workbench as disclosed development evidence. Next cheap research slice: distinguish arbitrary-channel representation/learning from experience collection, and test acquisition/use of observable action consequences without drive reward. Choose future modeling form from diagnostics, no preassigned horizons or mechanism-specific predictors. Any materially changed brain must be frozen before a new structurally different interaction challenge. Persistence and complex memory remain deferred.
+
+## 2026-10-26T19:20:44.6617399+00:00 — expanding-life-pilot-01
+
+Final validation:201/201 fast tests pass; Release has0 warnings/errors. Added explicit legacy protocol-hash compatibility regression and a schedule-review portability guard; current expanding-life review still validates. Pilot execution/reproduction remain the archived frozen bundle, not a rebuilt trial. Report records2.7M environment transitions,2.1M parameter updates, negative advancement decision and next generic diagnostic question. Incoming Godot presentation lockfile blob remains b28b8e4c57a56be8b2c8112548affd0b60e4796b.
+
+Next: Continue from docs/expanding-life-first-results.md. Preserve frozen controller and disclosed challenge as comparisons. Diagnose general channel/action learning and knowledge acquisition without needs; fix a new brain before authoring a new independent interaction. No safety sweep or pressure-specific tuning.

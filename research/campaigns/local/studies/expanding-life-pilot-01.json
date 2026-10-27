@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "id": "expanding-life-pilot-01",
+  "stage": "pilot",
+  "registeredUtc": "2026-10-26T18:42:45.8012444+00:00",
+  "hypothesis": {
+    "protocol": {
+      "fixedCheckpoints": "Entry/final per phase, no best-checkpoint selection",
+      "evaluationSeeds": [
+        941101,
+        942103,
+        943111
+      ],
+      "limitations": [
+        "Thermal initial baseline is not established",
+        "Remote control is not navigation/tool composition",
+        "No causal isolation of neutral pre-exposure benefit",
+        "One order, one new interaction, not universal adaptation"
+      ],
+      "phases": [
+        "initial",
+        "interaction",
+        "need"
+      ],
+      "stepsPerPhase": 100000,
+      "controllerFreeze": "research/campaigns/local/generic-ac-freeze-01.json",
+      "lifeMetricWindow": 2000,
+      "audit": "research/scenarios/expanding-life-v1-audit.json",
+      "trainingSeeds": [
+        1049,
+        1061,
+        1091
+      ]
+    },
+    "direction": "first expanding-world learning and exploration pilot",
+    "falsification": "Final300k only. Specific new-need acquisition requires on at least2/3 seeds: pressure q>=0.5 against preregistered strongest nonadaptive and joint-active audit means, and pressure improvement over the matched coverage-frozen policy >=0.2 of that audit gap. Full expanding-life adequacy additionally requires an acquired initial thermal skill and retention>=80% of its advantage. Otherwise full adequacy fails. Compare coverage/uniform descriptively per seed; do not infer causal pre-exposure transfer because exploration also differs after need introduction. Commands/both directions or reward alone cannot pass. FreezeAfter100k coverage prefix world/action hashes and entry weights must match coverage. Keep all seeds and final checkpoints; no tuning to this challenge.",
+    "statement": "A controller frozen before the new workbench was authored can learn a newly valuable non-movement interaction during one continuous life; coverage-guided exploration is assessed separately from external drive motivation.",
+    "rationale": "The original thermal preflight was behaviorally negative, so retention of an established thermal skill is explicitly not assumed. The new challenge tests genuinely new observation and action slots, a neutral interaction phase, and later an unweighted need. No brain edits after controller-freeze-01.",
+    "sources": [
+      {
+        "sections": "First end-to-end experiment and decision rules",
+        "title": "Live accepted research direction",
+        "readOn": "2026-10-26",
+        "evidence": "User-approved continuing expansion and independent autonomous exploration.",
+        "urlOrDoi": "docs/research-direction.md",
+        "implementationDifference": "First minimal prototype has fixed generic random features, no prediction model and no full-life persistence."
+      },
+      {
+        "sections": "1-3",
+        "title": "Unifying Count-Based Exploration and Intrinsic Motivation",
+        "readOn": "2026-10-26",
+        "evidence": "Counts in large state spaces need generalization; counts are not transition knowledge.",
+        "urlOrDoi": "https://papers.nips.cc/paper/6383-unifying-count-based-exploration-and-intrinsic-motivation.pdf",
+        "implementationDifference": "Bounded quantized observation-action counts choose exploratory candidates; no pseudo-count density model or reward bonus."
+      }
+    ]
+  },
+  "decisionRule": "Final300k. New-need q>=.5 and matched-frozen pressure improvement>=.2*auditGap on2/3; full adequacy also requires acquired initial skill+80%retention. Verify equal coverage/frozen prefix hashes and entry weights. No tuning to challenge; retain every result.",
+  "metrics": [
+    "interaction.pressure-error,interaction.command-fraction,temperature.mae"
+  ],
+  "plan": {
+    "SchemaVersion": 1,
+    "ExpectedRuns": 9,
+    "Protocols": [
+      "E038F7C50A1420A2681BFE60D8FE4CCEFA11F050808FFC532DAD281A2506A079"
+    ],
+    "ConfigurationHash": "51F05F3574185DA193B3C03076723E0107E463F08104C2858C6969A9BDC6630A",
+    "TrainingSeeds": [
+      1049,
+      1061,
+      1091
+    ],
+    "EvaluationSeeds": [
+      941101,
+      942103,
+      943111
+    ],
+    "TrainingStepsPerTrial": 300000,
+    "PreparedUtc": "2026-10-26T19:42:45.3109644+01:00"
+  },
+  "configSha256": "4324EC2D8F751F939A0DE5B0FE35B012617C3E07180438B1A99DFB64199877F4",
+  "bundle": "artifacts\\research\\local\\bundles\\5AB3DF0DC509BA624FB2EEFF949D9E43121942096EEADEA06D64C2C54745BC95",
+  "output": "artifacts\\research\\local\\studies\\expanding-life-pilot-01\\results",
+  "sourceRevision": "0c412044e6e35c3132e3b7bd90d5dda9501cca50",
+  "sourceStatus": "M AGENTS.md\n M ArtificialLife.sln\n M README.md\n M research/BASELINE.md\n M research/README.md\n M research/RESEARCHER.md\n M research/campaigns/local/CONTEXT.md\n M research/campaigns/local/FINDINGS.md\n M research/campaigns/local/journal.jsonl\n M src/ArtificialLife.Application/BehaviorEvaluation.cs\n M src/ArtificialLife.Application/ControllerRegistry.cs\n M src/ArtificialLife.Application/ExperimentConfiguration.cs\n M src/ArtificialLife.Application/ExperimentRunner.cs\n M src/ArtificialLife.Application/ScenarioSuitability.cs\n M src/ArtificialLife.Cli/Program.cs\n M src/ArtificialLife.Godot.Contracts/packages.lock.json\n M src/ArtificialLife.Presentation.Godot/packages.lock.json\n M tests/ArtificialLife.Tests/ArtificialLife.Tests.csproj\n M tools/build.ps1\n M tools/research.ps1\n M tools/test.ps1\n?? configs/research-expanding-life.json\n?? configs/research-expansion-preflight.json\n?? docs/research-direction.md\n?? research/campaigns/local/expanding-life-hypothesis.json\n?? research/campaigns/local/expansion-preflight-hypothesis.json\n?? research/campaigns/local/generic-ac-freeze-01.json\n?? research/campaigns/local/studies/expansion-preflight-01.json\n?? research/scenarios/expanding-life-v1-audit.json\n?? research/scenarios/expanding-life-v1-review.json\n?? src/ArtificialLife.Application/ExpansionScenarioAudit.cs\n?? src/ArtificialLife.Application/InteractionBehaviorEvaluator.cs\n?? src/ArtificialLife.Brain/GenericActorCriticController.cs\n?? src/ArtificialLife.Modules.Workbench/\n?? tests/ArtificialLife.Tests/ExpandingLifeTests.cs\n?? tests/ArtificialLife.Tests/GenericActorCriticTests.cs\n?? tools/package-workbench.ps1",
+  "scenarioReviewSha256": "A73C0DB39697AEC256B73E898473631E7077108166FA227D534443A3705F1334",
+  "scenarioCleared": true
+}

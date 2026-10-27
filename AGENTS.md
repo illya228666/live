@@ -16,6 +16,14 @@ experiment runner, controller/motivation contracts and evaluation infrastructure
 The research procedure is a resumable working method, not a restriction to any
 algorithm, architecture, motivation theory or predefined hypothesis list.
 
+The current direction is `docs/research-direction.md`: study a continuously learning
+inhabitant of an expanding world. Ecology-v2 is a preserved reference, not the goal.
+Do not resume the superseded safety-weight sweep. Study autonomous exploration of
+new interactions independently of homeostatic needs. Freeze controller/learning
+code before authoring new generalization challenges; never specialize it to those
+challenges after seeing results. Start with a minimal end-to-end experiment; full
+life persistence, complex memory and any particular algorithm are not prerequisites.
+
 Before scientific motivation/learning comparisons, use the registered baseline in
 `research/baseline.json` or provide a passing scenario suitability review for every
 active factor. If passivity already solves a factor (or adaptive control cannot

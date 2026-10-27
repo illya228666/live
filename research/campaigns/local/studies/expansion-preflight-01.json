@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "id": "expansion-preflight-01",
+  "stage": "diagnostic",
+  "registeredUtc": "2026-10-26T18:26:49.9761584+00:00",
+  "hypothesis": {
+    "sources": [
+      {
+        "urlOrDoi": "https://web.stanford.edu/class/psych209/Readings/SuttonBartoRL.pdf",
+        "implementationDifference": "Own discounted continuing semi-gradient prototype with fixed generic random features, critic traces, clipped TD error, norm-controlled steps and exact gradient of the policy/exploration mixture. No convergence or replication claim.",
+        "evidence": "Read actor-critic updates and distinction between discounted episodic and average-reward continuing formulations.",
+        "title": "Sutton and Barto: Reinforcement Learning, second-edition draft",
+        "readOn": "2026-10-26",
+        "sections": "13.5-13.6, printed pp273-276"
+      },
+      {
+        "urlOrDoi": "https://papers.nips.cc/paper/6383-unifying-count-based-exploration-and-intrinsic-motivation.pdf",
+        "implementationDifference": "Future coverage arm uses bounded quantized observation-action counts to select exploratory actions; no density pseudo-count or intrinsic reward reproduction. Preflight uses uniform exploration.",
+        "evidence": "Read distinction between density and transition models and limitations of exact counts in large state spaces.",
+        "title": "Unifying Count-Based Exploration and Intrinsic Motivation",
+        "readOn": "2026-10-26",
+        "sections": "1-3, pp1-4"
+      }
+    ],
+    "rationale": "Test the new controller through existing runtime/factory/export/experiment contracts before freezing its implementation. Fixed random features and linear actor/critic are an inexpensive initial representation hypothesis, not Stream-X reproduction.",
+    "statement": "A mechanic-agnostic online actor-critic executes a continuous thermal-v2 life with isolated evaluation and learns a useful initial behavior before any new challenge is authored.",
+    "direction": "minimal expanding-world pipeline preflight",
+    "falsification": "Technical failure, non-finite updates, export mismatch or lack of at least 20% thermal MAE improvement over the untrained policy on 2 of 3 seeds means the initial baseline is not established. Do not claim generalization or rank algorithm families. Keep final 100k checkpoint and every seed; no parameter search on the new challenge."
+  },
+  "decisionRule": "Final100k; all3 complete, isolated inference exports; at least20% MAE improvement over initial on2/3 for baseline established. No generalization claim; diagnose representation/learning if failed.",
+  "metrics": [
+    "temperature.mae,temperature.outside"
+  ],
+  "plan": {
+    "SchemaVersion": 1,
+    "ExpectedRuns": 3,
+    "Protocols": [
+      "D56D5CB428DD15A42F3154D0441D49830EE91AA70967116451BD546BD17208D2"
+    ],
+    "ConfigurationHash": "C130E9A22BD8C223ED5E5C05DC0CE309C57A8F88983794B032D7F91CD6807E07",
+    "TrainingSeeds": [
+      771,
+      883,
+      997
+    ],
+    "EvaluationSeeds": [
+      91001,
+      92003,
+      93011,
+      94009,
+      95003
+    ],
+    "TrainingStepsPerTrial": 100000,
+    "PreparedUtc": "2026-10-26T19:26:49.9637444+01:00"
+  },
+  "configSha256": "8B6059F392ED3336CB58A35ED3AFA4267CB1D1AC1B5A1AE6F3FDB64FE0DA648E",
+  "bundle": "artifacts\\research\\local\\bundles\\B0C33E8269E5F0865845FF644678A48277908B6D954AF00B7CD5837B5DA38473",
+  "output": "artifacts\\research\\local\\studies\\expansion-preflight-01\\results",
+  "sourceRevision": "0c412044e6e35c3132e3b7bd90d5dda9501cca50",
+  "sourceStatus": "M AGENTS.md\n M README.md\n M research/BASELINE.md\n M research/README.md\n M research/RESEARCHER.md\n M research/campaigns/local/CONTEXT.md\n M research/campaigns/local/FINDINGS.md\n M research/campaigns/local/journal.jsonl\n M src/ArtificialLife.Application/ControllerRegistry.cs\n M src/ArtificialLife.Presentation.Godot/packages.lock.json\n M tools/research.ps1\n?? configs/research-expansion-preflight.json\n?? docs/research-direction.md\n?? research/campaigns/local/expansion-preflight-hypothesis.json\n?? src/ArtificialLife.Brain/GenericActorCriticController.cs\n?? tests/ArtificialLife.Tests/GenericActorCriticTests.cs",
+  "scenarioReviewSha256": null,
+  "scenarioCleared": false
+}

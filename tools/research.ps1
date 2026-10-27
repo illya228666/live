@@ -65,6 +65,7 @@ function Write-Context {
     $lines.Add("# Campaign $Campaign")
     $lines.Add("`nBranch: $($settings.branch). Current: $(Git-Value @('branch','--show-current')).")
     $lines.Add("`nRead research/RESEARCHER.md, research/BASELINE.md, campaign.json, FINDINGS.md (if present) and the most recent journal entries before acting.")
+    $lines.Add("`nCurrent direction: docs/research-direction.md (expanding-world continual adaptation, including exploration before need value). The old safety-weight continuation is superseded; historical next-step entries are not current authorization.")
     $lines.Add("`nCompute defaults: $($settings.maxParallel) workers, $($settings.threadsPerWorker) threads each; slice $($settings.computeSliceMinutes) min; reserve $($settings.reserveFreeMemoryGiB) GiB free RAM.")
     if (Test-Path -LiteralPath (Join-Path $artifactRoot 'session.json')) {
         $session = Read-Json (Join-Path $artifactRoot 'session.json')
@@ -75,7 +76,7 @@ function Write-Context {
     $baselinePath=Join-Path $RepoRoot 'research/baseline.json'
     if (Test-Path -LiteralPath $baselinePath) {
         $baseline=Read-Json $baselinePath
-        $lines.Add("`nCurrent comparison baseline: $($baseline.id), $($baseline.experiment). Scope: $($baseline.scope) Review: $($baseline.review). Additional factors require their own passing review; repair trivial scenarios before scientific pilot/full runs.")
+        $lines.Add("`nPreserved validated reference: $($baseline.id), $($baseline.experiment). Scope: $($baseline.scope) Review: $($baseline.review). Select new expansion studies from the current direction, with their own passing review; repair trivial scenarios before scientific pilot/full runs.")
     }
     $lines.Add("`n| Study | Stage | Status | Hypothesis | Full artifacts |`n|---|---|---|---|---|")
     foreach ($entry in Get-Entries) {

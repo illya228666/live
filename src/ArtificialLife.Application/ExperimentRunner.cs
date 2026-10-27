@@ -11,12 +11,18 @@ namespace ArtificialLife.Application;
 public sealed record EvaluationEpisode(long AtStep, string Phase, string Scenario, string Kind, int Seed, int Episode,
     int WorldSeed, int Steps, Dictionary<string, BehaviorMetric> Metrics, double MeanReward, string ActionHash);
 public sealed record LearningPoint(long Step, string Phase, long Age, long Revision, ControllerStatus Controller,
-    double MeanReward, double TrainingSeconds, double EvaluationSeconds);
+    double MeanReward, double TrainingSeconds, double EvaluationSeconds)
+{
+    public string WorldHash { get; init; } = "";
+    public string ActionPrefixHash { get; init; } = "";
+}
+public sealed record LifeMetricsPoint(long Step, string Phase, int WindowSteps, Dictionary<string, BehaviorMetric> Metrics);
 public sealed record ExperimentRunResult(int SchemaVersion, string Variant, int Seed, int WorldSeed, string ConfigurationHash,
     string ProtocolHash, string ExecutionHash, string Status, string? Error, string BehaviorOutcome, long TrainingSteps,
     double TrainingSeconds, double EvaluationSeconds, string TrainingActionHash, EvaluationEpisode[] Evaluations, LearningPoint[] Learning)
 {
     public string TreatmentHash { get; init; } = "";
+    public LifeMetricsPoint[] LifeMetrics { get; init; } = [];
 }
 public sealed record ExperimentSuiteResult(int SchemaVersion, string Status, int ExpectedRuns, string[] Runs, string[] Errors);
 
@@ -214,6 +220,7 @@ public static class ExperimentRunner
         using var workerLock = new FileStream(Path.Combine(directory, "worker.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
         var evaluations = new List<EvaluationEpisode>();
         var points = new List<LearningPoint>();
+        var lifePoints = new List<LifeMetricsPoint>();
         var scenarios = new List<(string Id, RuntimeOptions Options)>();
         var trainTime = new Stopwatch(); var evaluationTime = new Stopwatch();
         using var actionHash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
@@ -223,7 +230,7 @@ public static class ExperimentRunner
         string? error = null;
         ExperimentRunResult Result(string digest) => new(1, job.Variant, job.Seed, job.WorldSeed, job.ConfigurationHash, job.ProtocolHash,
             job.ExecutionHash, status, error, outcome, steps, trainTime.Elapsed.TotalSeconds, evaluationTime.Elapsed.TotalSeconds,
-            digest, evaluations.ToArray(), points.ToArray()) { TreatmentHash = job.TreatmentHash };
+            digest, evaluations.ToArray(), points.ToArray()) { TreatmentHash = job.TreatmentHash, LifeMetrics = lifePoints.ToArray() };
         void WriteEvent<T>(T value) => events.WriteLine(JsonSerializer.Serialize(value, ExperimentJson.Lines));
         ExperimentJson.Atomic(Path.Combine(directory, "result.json"), Result(""));
         try
@@ -275,17 +282,35 @@ public static class ExperimentRunner
                 {
                     Evaluate("policy", runtime.Controller, scenarios);
                     var point = new LearningPoint(steps, phase.Id, runtime.Snapshot().Age, runtime.Revision, runtime.Controller.Status,
-                        reward, trainTime.Elapsed.TotalSeconds, evaluationTime.Elapsed.TotalSeconds);
+                        reward, trainTime.Elapsed.TotalSeconds, evaluationTime.Elapsed.TotalSeconds)
+                    {
+                        WorldHash = ExperimentJson.Hash(runtime.Snapshot()),
+                        ActionPrefixHash = Convert.ToHexString(actionHash.GetCurrentHash())
+                    };
                     points.Add(point); WriteEvent(new { Kind = "learning", Result = point });
                     ExperimentJson.Atomic(Path.Combine(directory, "result.json"), Result(""));
                     Console.WriteLine($"POINT variant={job.Variant} seed={job.Seed} phase={phase.Id} steps={steps} updates={point.Controller.Updates}");
                 }
                 MeasurePoint(0);
                 double rewardSum = 0; int interval = 0;
+                var lifeEvaluators = job.Definition.LifeMetricWindowSteps > 0 ? BehaviorEvaluators.Create(job.Definition.Behavior) : [];
+                int lifeWindow = 0;
                 for (int i = 1; i <= phase.Steps; i++)
                 {
                     trainTime.Start();
                     var sample = runtime.AdvanceOne();
+                    if (lifeEvaluators.Length > 0)
+                    {
+                        var frame = runtime.Snapshot();
+                        foreach (var evaluator in lifeEvaluators) evaluator.Observe(frame, sample.Homeostasis);
+                        lifeWindow++;
+                        if (lifeWindow == job.Definition.LifeMetricWindowSteps || i == phase.Steps)
+                        {
+                            var window = new LifeMetricsPoint(steps + 1, phase.Id, lifeWindow, BehaviorEvaluators.Complete(lifeEvaluators));
+                            lifePoints.Add(window); WriteEvent(new { Kind = "life-metrics", Result = window });
+                            lifeEvaluators = BehaviorEvaluators.Create(job.Definition.Behavior); lifeWindow = 0;
+                        }
+                    }
                     trainTime.Stop();
                     steps++; rewardSum += sample.Reward; interval++;
                     if (i % job.Definition.EvaluateEvery == 0 || i == phase.Steps)
@@ -337,7 +362,7 @@ public static class ExperimentRunner
         if (values.Length == 0 || values.Any(m => m?.Value is null || m.Samples == 0)) return null;
         return values.Average(m => m!.Value!.Value);
     }
-    private static void HashAction(IncrementalHash hash, ActionCandidate action) =>
+    internal static void HashAction(IncrementalHash hash, ActionCandidate action) =>
         hash.AppendData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(action, ExperimentJson.Lines) + "\n"));
 
     private sealed class RandomEvaluationController(ControllerLimits limits, int seed) : IAgentController
@@ -375,13 +400,23 @@ public static class ExperimentRunner
         var packages = References(job).Where(p => p.Reference.Id != motivation && p.Reference.Id != job.Definition.MotivationSlot)
             .Select(p => new PackageCatalog(p.Options.PackageRoot).Read(p.Reference))
             .Select(m => new { m.Id, m.Version, m.LogicHash, m.LogicFiles, m.Settings, m.Schemas, m.Requires, m.Provides, m.Dependencies }).ToArray();
-        return ExperimentJson.Hash(new
+        var protocol = new
         {
             SchemaVersion = 1, Environment = EnvironmentOf(job.Runtime), job.Definition.TrainingSeeds, job.Definition.WorldSeeds,
             job.Definition.EvaluationSeeds, job.Definition.EpisodesPerSeed, job.Definition.EvaluationSteps, job.Definition.EvaluateEvery,
+            job.Definition.LifeMetricWindowSteps,
             Phases = job.Definition.Phases.Select(p => new { p.Id, p.Steps, p.Activate, Evaluation = p.EvaluationRuntime is null ? null : EnvironmentOf(p.EvaluationRuntime) }),
             job.Definition.Behavior, Packages = packages
-        });
+        };
+        if (job.Definition.LifeMetricWindowSteps == 0)
+        {
+            // Preserve historical protocol identities when the new optional measurement is off.
+            var legacy = JsonSerializer.SerializeToElement(protocol).EnumerateObject()
+                .Where(p => p.Name != nameof(ExperimentDefinition.LifeMetricWindowSteps))
+                .ToDictionary(p => p.Name, p => p.Value.Clone());
+            return ExperimentJson.Hash(legacy);
+        }
+        return ExperimentJson.Hash(protocol);
     }
 
     private static ExperimentJob ArchivePackages(ExperimentJob job, string packageRoot)

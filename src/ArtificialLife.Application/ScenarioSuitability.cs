@@ -4,11 +4,15 @@ using ArtificialLife.Core;
 
 namespace ArtificialLife.Application;
 
-public sealed record ScenarioDescription(string Fingerprint, string[] Factors, RuntimeOptions[] Conditions);
+public sealed record ScenarioDescription(string Fingerprint, string[] Factors, RuntimeOptions[] Conditions)
+{
+    public string ScheduleFingerprint { get; init; } = "";
+}
 public sealed record FactorSuitability(string Factor, string Verdict, string PassiveEvidence, string ActiveEvidence, string RepairRule);
 public sealed record ScenarioReview(int SchemaVersion, string Fingerprint, bool Passed, FactorSuitability[] Factors, string Evidence)
 {
     public string EvidenceSha256 { get; init; } = "";
+    public string? ScheduleFingerprint { get; init; }
 }
 
 /// <summary>Suitability is about physical tasks, independent of the studied reward and learner.</summary>
@@ -51,13 +55,18 @@ public static class ScenarioSuitability
         string runtimeSourceHash = ExperimentJson.Hash(File.ReadAllText(source).Replace("\r\n", "\n", StringComparison.Ordinal));
         string coreHash = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(typeof(RuntimeWorld).Assembly.Location)));
         return new(ExperimentJson.Hash(new { Version = 1, CoreHash = coreHash, RuntimeSourceHash = runtimeSourceHash, Conditions = evidence, definition.Behavior, definition.EvaluationSteps }),
-            factors.Order(StringComparer.Ordinal).ToArray(), conditions.ToArray());
+            factors.Order(StringComparer.Ordinal).ToArray(), conditions.ToArray())
+        // Evaluation physics is already covered by Fingerprint; archive paths and controller
+        // settings must not invalidate a physical schedule review when packages are copied.
+        { ScheduleFingerprint = ExperimentJson.Hash(new { Phases = definition.Phases.Select(p => p with { EvaluationRuntime = null }), definition.EvaluationSteps, definition.LifeMetricWindowSteps }) };
     }
 
     public static void Validate(ScenarioDescription scenario, ScenarioReview review)
     {
         if (review.SchemaVersion != 1 || !review.Passed || review.Fingerprint != scenario.Fingerprint || string.IsNullOrWhiteSpace(review.Evidence))
             throw new InvalidDataException("Scenario suitability has not passed for these physical conditions/profile/horizon. Repair and audit the scenario before scientific comparison.");
+        if (review.ScheduleFingerprint is not null && review.ScheduleFingerprint != scenario.ScheduleFingerprint)
+            throw new InvalidDataException("Scenario review does not cover this expansion schedule/window/horizon.");
         foreach (string factor in scenario.Factors)
         {
             var matches = review.Factors.Where(f => f.Factor == factor).ToArray();

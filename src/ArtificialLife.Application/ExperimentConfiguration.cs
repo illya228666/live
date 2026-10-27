@@ -37,6 +37,8 @@ public sealed record ExperimentDefinition
     public int EpisodesPerSeed { get; init; } = 1;
     public int EvaluationSteps { get; init; } = 1000;
     public int EvaluateEvery { get; init; } = 1000;
+    /// <summary>Optional independent behavior windows from the actual training life; zero preserves legacy cost.</summary>
+    public int LifeMetricWindowSteps { get; init; }
     public ExperimentPhase[] Phases { get; init; } = [new()];
     public BehaviorProfile Behavior { get; init; } = new();
 
@@ -64,7 +66,7 @@ public sealed record ExperimentDefinition
         if (SchemaVersion != 1 || TrainingSeeds.Length == 0 || TrainingSeeds.Distinct().Count() != TrainingSeeds.Length ||
             EvaluationSeeds.Length == 0 || EvaluationSeeds.Distinct().Count() != EvaluationSeeds.Length ||
             WorldSeeds is not null && WorldSeeds.Length != TrainingSeeds.Length ||
-            EpisodesPerSeed < 1 || EvaluationSteps < 1 || EvaluateEvery < 1 || Phases.Length == 0 || Motivations.Length == 0 || Learners.Length == 0 ||
+            EpisodesPerSeed < 1 || EvaluationSteps < 1 || EvaluateEvery < 1 || LifeMetricWindowSteps < 0 || Phases.Length == 0 || Motivations.Length == 0 || Learners.Length == 0 ||
             Phases.Any(p => !Id(p.Id) || p.Steps < 1) || Motivations.Any(m => !Id(m.Id) || m.Settings.ValueKind != JsonValueKind.Object) ||
             Learners.Any(l => !Id(l.Id)) || Phases.Select(p => p.Id).Distinct().Count() != Phases.Length ||
             Motivations.Select(m => m.Id).Distinct().Count() != Motivations.Length || Learners.Select(l => l.Id).Distinct().Count() != Learners.Length ||

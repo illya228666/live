@@ -1,0 +1,24 @@
+{
+  "sources": [
+    {
+      "urlOrDoi": "https://web.stanford.edu/class/psych209/Readings/SuttonBartoRL.pdf",
+      "implementationDifference": "Own discounted continuing semi-gradient prototype with fixed generic random features, critic traces, clipped TD error, norm-controlled steps and exact gradient of the policy/exploration mixture. No convergence or replication claim.",
+      "evidence": "Read actor-critic updates and distinction between discounted episodic and average-reward continuing formulations.",
+      "title": "Sutton and Barto: Reinforcement Learning, second-edition draft",
+      "readOn": "2026-10-26",
+      "sections": "13.5-13.6, printed pp273-276"
+    },
+    {
+      "urlOrDoi": "https://papers.nips.cc/paper/6383-unifying-count-based-exploration-and-intrinsic-motivation.pdf",
+      "implementationDifference": "Future coverage arm uses bounded quantized observation-action counts to select exploratory actions; no density pseudo-count or intrinsic reward reproduction. Preflight uses uniform exploration.",
+      "evidence": "Read distinction between density and transition models and limitations of exact counts in large state spaces.",
+      "title": "Unifying Count-Based Exploration and Intrinsic Motivation",
+      "readOn": "2026-10-26",
+      "sections": "1-3, pp1-4"
+    }
+  ],
+  "rationale": "Test the new controller through existing runtime/factory/export/experiment contracts before freezing its implementation. Fixed random features and linear actor/critic are an inexpensive initial representation hypothesis, not Stream-X reproduction.",
+  "statement": "A mechanic-agnostic online actor-critic executes a continuous thermal-v2 life with isolated evaluation and learns a useful initial behavior before any new challenge is authored.",
+  "direction": "minimal expanding-world pipeline preflight",
+  "falsification": "Technical failure, non-finite updates, export mismatch or lack of at least 20% thermal MAE improvement over the untrained policy on 2 of 3 seeds means the initial baseline is not established. Do not claim generalization or rank algorithm families. Keep final 100k checkpoint and every seed; no parameter search on the new challenge."
+}

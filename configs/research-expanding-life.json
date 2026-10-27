@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "runtime": {
+    "packageRoot": "../artifacts/packages",
+    "world": {
+      "width": 40,
+      "height": 40,
+      "timeStep": 1,
+      "movementSpeed": 1.5,
+      "episodeSteps": 400
+    },
+    "packages": [
+      {
+        "id": "movement",
+        "version": "1.0.0"
+      },
+      {
+        "id": "vision",
+        "version": "1.0.0"
+      },
+      {
+        "id": "temperature",
+        "version": "1.0.0"
+      },
+      {
+        "id": "homeostasis",
+        "version": "1.0.0"
+      }
+    ],
+    "settings": {
+      "vision": {
+        "maxPerAppearance": 1
+      },
+      "temperature": {
+        "ambient": 28.1,
+        "fireStrength": 32,
+        "fireRadius": 6,
+        "oscillationPeriod": 240,
+        "oscillationAmplitude": 0.65,
+        "heatProduction": 0.3,
+        "heatTransfer": 0.12,
+        "target": 36.6,
+        "sensorDistance": 3,
+        "driveScale": 6,
+        "comfortHalfWidth": 1
+      }
+    }
+  },
+  "motivations": [
+    {
+      "settings": {
+        "maximumDriveWeight": 10,
+        "improvementWeight": 0.2
+      },
+      "package": {
+        "version": "1.0.0",
+        "id": "homeostasis"
+      },
+      "id": "weighted-homeostasis"
+    }
+  ],
+  "learners": [
+    {
+      "id": "uniform",
+      "controller": {
+        "parameters": {
+          "features": 64,
+          "exploration": "uniform"
+        },
+        "algorithm": "generic-actor-critic"
+      }
+    },
+    {
+      "id": "coverage",
+      "controller": {
+        "parameters": {
+          "features": 64,
+          "exploration": "coverage"
+        },
+        "algorithm": "generic-actor-critic"
+      }
+    },
+    {
+      "id": "coverage-frozen",
+      "controller": {
+        "parameters": {
+          "exploration": "coverage",
+          "freezeAfterSteps": 100000,
+          "features": 64
+        },
+        "algorithm": "generic-actor-critic"
+      }
+    }
+  ],
+  "trainingSeeds": [
+    1049,
+    1061,
+    1091
+  ],
+  "evaluationSeeds": [
+    941101,
+    942103,
+    943111
+  ],
+  "episodesPerSeed": 1,
+  "evaluationSteps": 12000,
+  "evaluateEvery": 100000,
+  "phases": [
+    {
+      "id": "initial",
+      "steps": 100000
+    },
+    {
+      "activate": [
+        {
+          "version": "1.0.0",
+          "id": "workbench"
+        }
+      ],
+      "steps": 100000,
+      "id": "interaction"
+    },
+    {
+      "activate": [
+        {
+          "version": "2.0.0",
+          "id": "workbench"
+        }
+      ],
+      "steps": 100000,
+      "id": "need"
+    }
+  ],
+  "behavior": {
+    "evaluators": [
+      {
+        "id": "drives"
+      },
+      {
+        "parameters": {
+          "temperatureTolerance": 1,
+          "temperatureTarget": 36.6
+        },
+        "id": "physical"
+      },
+      {
+        "id": "interaction-v1"
+      }
+    ],
+    "criteria": []
+  },
+  "lifeMetricWindowSteps": 2000
+}

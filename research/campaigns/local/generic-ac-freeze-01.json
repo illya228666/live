@@ -1,0 +1,28 @@
+{
+  "parameters": {
+    "gamma": 0.97,
+    "features": 64,
+    "countCapacity": 16384,
+    "lambda": 0.7,
+    "criticStep": 0.05,
+    "actorStep": 0.03,
+    "explorationFraction": 0.1
+  },
+  "id": "generic-ac-freeze-01",
+  "rule": "Frozen before new challenge source is written. No controller/representation/exploration edits after challenge disclosure. A changed algorithm requires a new independently authored challenge. No prediction horizons or mechanism-specific model.",
+  "architecture": "generic-random-features-actor-critic.v1",
+  "createdUtc": "2026-10-26T18:32:39.9883201+00:00",
+  "sourceRevision": "0c412044e6e35c3132e3b7bd90d5dda9501cca50",
+  "allowedTreatments": [
+    "uniform",
+    "coverage",
+    "coverage with FreezeAfterSteps=100000"
+  ],
+  "schemaVersion": 1,
+  "sourceHashes": {
+    "src/ArtificialLife.Brain/GenericActorCriticController.cs": "88E881EEF9BAAC84EAA1FE127800C8C45DA59AAEB9CAC86E27806A70FBCC767C",
+    "src/ArtificialLife.Application/ControllerRegistry.cs": "E92389C817316A0A7722967F70CC317402EE40F0D943299E6F34B9D4CC405EDC",
+    "src/ArtificialLife.Core/Contracts.cs": "8728ABB1898BCA401B61BE656F4BC9365A8DEA2B24A423E7DC7A2E639D9A4A1E",
+    "src/ArtificialLife.Core/RuntimeContracts.cs": "9013294E6CF2DC3119D2F20CF363B477FB6F600E63463107A438B6F800AB6D17"
+  }
+}

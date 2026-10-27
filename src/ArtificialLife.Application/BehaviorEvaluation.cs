@@ -30,7 +30,8 @@ public static class BehaviorEvaluators
         ["drives"] = _ => new DriveEvaluator(),
         ["physical"] = settings => new PhysicalEvaluator(settings),
         ["stability-v1"] = settings => new StabilityEvaluator(settings),
-        ["ecology-v1"] = settings => new EcologyBehaviorEvaluator(settings)
+        ["ecology-v1"] = settings => new EcologyBehaviorEvaluator(settings),
+        ["interaction-v1"] = _ => new InteractionBehaviorEvaluator()
     };
     public static void Register(string id, Func<JsonElement, IBehaviorEvaluator> factory)
     {

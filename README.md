@@ -1,12 +1,24 @@
 # ArtificialLife
 
+Live is an experimental, extensible virtual universe inhabited by a continuously
+learning agent. The current [research direction](docs/research-direction.md) tests
+adaptation to new observations, needs and interactions during one life, including
+autonomous exploration before an interaction has homeostatic value. No particular
+learning algorithm is required. Ecology-v2 and earlier results remain comparative
+references; the former safety-weight continuation has been superseded.
+
+The [first expanding-life experiment](docs/expanding-life-first-results.md) is now
+implemented and reproduced: nine continuous lives, a new interaction before need
+value, and later adaptation. The first generic actor-critic failed its advancement
+rule; increased interaction coverage did not establish reliable learning or retention.
+
 The [interim research report (26 October 2026)](docs/research-local-interim-report.md)
 records 11 completed studies and 82 training runs on ecology-v2. The agent learned
 substantial joint food/temperature/avoidance behavior, but independent confirmation
 failed the preregistered reliability rule (4/5 training seeds, 18/25 evaluation worlds).
 The report includes negative results, implementation limits and reproduction commands.
 
-New approach comparisons use the validated [ecology-v2 baseline](configs/research-ecology-v2.json):
+The preserved validated [ecology-v2 reference](configs/research-ecology-v2.json) covers
 unchanged thermal-v2, foraging and avoidable wildlife proximity. See the
 [five-seed passive/active audit](docs/ecology-v2-report.md). Standalone thermal-v2,
 hunger-v2 and safety-v2 remain available through `research/baseline.json`.
@@ -32,7 +44,8 @@ technical correctness from hunger, temperature, boar proximity and retention res
 
 A small simulated creature learns to regulate its own body temperature in a changing 2D thermal environment. Its brain is a local TorchSharp neural network trained through reinforcement learning, entirely in C#.
 
-The experiment asks one question: **can a fixed neural architecture learn homeostasis while its observations and available actions remain extensible?**
+The central question is: **which combinations of motivation and learning sustain
+practical adaptation as the world expands, without mechanic-specific brain code?**
 
 The primary runtime now supports one continuous life with hot-installed/upgraded DLL packages. Temperature, vision, hunger, food supply, movement, motivation and Godot presentation use runtime contracts. The original episodic experiment remains available for comparison. Continual-learning acceptance is measured separately; runtime plumbing alone does not establish that a newly installed mechanic has been learned.
 
