@@ -31,7 +31,8 @@ public static class BehaviorEvaluators
         ["physical"] = settings => new PhysicalEvaluator(settings),
         ["stability-v1"] = settings => new StabilityEvaluator(settings),
         ["ecology-v1"] = settings => new EcologyBehaviorEvaluator(settings),
-        ["interaction-v1"] = _ => new InteractionBehaviorEvaluator()
+        ["interaction-v1"] = _ => new InteractionBehaviorEvaluator(),
+        ["signal-diagnostic-v1"] = _ => new SignalDiagnosticEvaluator()
     };
     public static void Register(string id, Func<JsonElement, IBehaviorEvaluator> factory)
     {

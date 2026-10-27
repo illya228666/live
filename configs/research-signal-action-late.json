@@ -1,0 +1,100 @@
+{
+  "episodesPerSeed": 1,
+  "evaluationSteps": 2048,
+  "motivations": [
+    {
+      "package": {
+        "version": "1.0.0",
+        "id": "homeostasis"
+      },
+      "settings": {
+        "improvementWeight": 0,
+        "maximumDriveWeight": 10
+      },
+      "id": "fixed-goal"
+    }
+  ],
+  "runtime": {
+    "packageRoot": "../artifacts/packages",
+    "world": {
+      "height": 4,
+      "movementSpeed": 1,
+      "width": 4,
+      "timeStep": 1,
+      "episodeSteps": 400
+    },
+    "packages": [
+      {
+        "version": "1.0.0",
+        "id": "homeostasis"
+      },
+      {
+        "version": "1.0.0",
+        "id": "signal-diagnostic"
+      }
+    ]
+  },
+  "evaluationSeeds": [
+    30101,
+    30203,
+    30307
+  ],
+  "schemaVersion": 1,
+  "learners": [
+    {
+      "controller": {
+        "parameters": {
+          "exploration": "uniform",
+          "features": 64
+        },
+        "algorithm": "generic-actor-critic"
+      },
+      "id": "learning"
+    },
+    {
+      "controller": {
+        "parameters": {
+          "features": 64,
+          "exploration": "uniform",
+          "freezeAfterSteps": 20000
+        },
+        "algorithm": "generic-actor-critic"
+      },
+      "id": "frozen"
+    }
+  ],
+  "lifeMetricWindowSteps": 1000,
+  "evaluateEvery": 5000,
+  "phases": [
+    {
+      "steps": 20000,
+      "id": "base"
+    },
+    {
+      "activate": [
+        {
+          "version": "4.0.0",
+          "id": "signal-diagnostic"
+        }
+      ],
+      "steps": 20000,
+      "id": "changed"
+    }
+  ],
+  "behavior": {
+    "evaluators": [
+      {
+        "id": "drives"
+      },
+      {
+        "id": "signal-diagnostic-v1"
+      }
+    ],
+    "criteria": []
+  },
+  "trainingSeeds": [
+    1741,
+    1753,
+    1777
+  ]
+}

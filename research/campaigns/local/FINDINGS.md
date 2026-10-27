@@ -136,3 +136,15 @@ Next: Do not promote this configuration or tune it to pressure. Treat workbench 
 Final validation:201/201 fast tests pass; Release has0 warnings/errors. Added explicit legacy protocol-hash compatibility regression and a schedule-review portability guard; current expanding-life review still validates. Pilot execution/reproduction remain the archived frozen bundle, not a rebuilt trial. Report records2.7M environment transitions,2.1M parameter updates, negative advancement decision and next generic diagnostic question. Incoming Godot presentation lockfile blob remains b28b8e4c57a56be8b2c8112548affd0b60e4796b.
 
 Next: Continue from docs/expanding-life-first-results.md. Preserve frozen controller and disclosed challenge as comparisons. Diagnose general channel/action learning and knowledge acquisition without needs; fix a new brain before authoring a new independent interaction. No safety sweep or pressure-specific tuning.
+
+## 2026-10-27T08:50:47.9839344+00:00 — local
+
+Signal identity screen passed3/3 fresh final and3/3 experienced base-final at greedy success1.0. Frozen identity control also1.0 as expected. Common signal audits passed all12 configurations (360 controls). Proceed with preregistered remaining diagnostic matrix; unchanged generic-ac-freeze-01 brain, no pressure optimization.
+
+Next: Run registered channel/action/noise8/noise32/neutral fresh and late studies, then distinguish learned vs frozen and late vs fresh.
+
+## 2026-10-27T09:01:25.9417839+00:00 — local
+
+Signal diagnostic matrix completed12/12 studies,54 executions,1.8M transitions,1.44M parameter updates,N=3/arm. All18 learner/frozen prefixes and generic-ac-freeze-01 sources match. Identity passes; new action learned3/3 but old-world policy falls1->.507. New channel: fresh1.0 vs late.752, frozen.501. Noise32 fresh~.5; noise8 greedy near1 hides actual-life success~.66. Neutral exposure slows rather than accelerates two-window acquisition (11k/10k/11k vs9k/8k/9k). Do not promote controller or claim neural plasticity loss. One exact channel trial reproduces all actions/worlds/live metrics with evaluation maxdiff0. Release headless0warnings/errors,203 fast tests pass. Report docs/signal-diagnostic-report.md.
+
+Next: Inspect exported policy channel sensitivity; test one generic typed per-channel representation without dilution by token count, holding motivation/updates fixed. If needed isolate update rule separately. No pressure/ecology optimization, no full-life persistence prerequisite. Reward-free effect acquisition remains separate; new promising brain must be frozen before a structurally new challenge.

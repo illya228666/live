@@ -12,6 +12,12 @@ implemented and reproduced: nine continuous lives, a new interaction before need
 value, and later adaptation. The first generic actor-critic failed its advancement
 rule; increased interaction coverage did not establish reliable learning or retention.
 
+The [follow-up capability diagnostics](docs/signal-diagnostic-report.md) keep that
+brain unchanged. Across54 executions, new actions can be learned, but channel
+changes, irrelevant observations, old-policy retention and useful experience before
+need value expose distinct limits. These are open diagnostics, not new evidence
+of generalization; the report fixes the next bounded research decision.
+
 The [interim research report (26 October 2026)](docs/research-local-interim-report.md)
 records 11 completed studies and 82 training runs on ecology-v2. The agent learned
 substantial joint food/temperature/avoidance behavior, but independent confirmation

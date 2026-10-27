@@ -1,0 +1,65 @@
+[
+  {
+    "Study": "signal-identity-fresh-01",
+    "Variant": "fixed-goal--learning",
+    "Seed": 1741,
+    "Base": null,
+    "Final": 1.0
+  },
+  {
+    "Study": "signal-identity-fresh-01",
+    "Variant": "fixed-goal--learning",
+    "Seed": 1753,
+    "Base": null,
+    "Final": 1.0
+  },
+  {
+    "Study": "signal-identity-fresh-01",
+    "Variant": "fixed-goal--learning",
+    "Seed": 1777,
+    "Base": null,
+    "Final": 1.0
+  },
+  {
+    "Study": "signal-identity-late-01",
+    "Variant": "fixed-goal--frozen",
+    "Seed": 1741,
+    "Base": 1.0,
+    "Final": 1.0
+  },
+  {
+    "Study": "signal-identity-late-01",
+    "Variant": "fixed-goal--frozen",
+    "Seed": 1753,
+    "Base": 1.0,
+    "Final": 1.0
+  },
+  {
+    "Study": "signal-identity-late-01",
+    "Variant": "fixed-goal--frozen",
+    "Seed": 1777,
+    "Base": 1.0,
+    "Final": 1.0
+  },
+  {
+    "Study": "signal-identity-late-01",
+    "Variant": "fixed-goal--learning",
+    "Seed": 1741,
+    "Base": 1.0,
+    "Final": 1.0
+  },
+  {
+    "Study": "signal-identity-late-01",
+    "Variant": "fixed-goal--learning",
+    "Seed": 1753,
+    "Base": 1.0,
+    "Final": 1.0
+  },
+  {
+    "Study": "signal-identity-late-01",
+    "Variant": "fixed-goal--learning",
+    "Seed": 1777,
+    "Base": 1.0,
+    "Final": 1.0
+  }
+]

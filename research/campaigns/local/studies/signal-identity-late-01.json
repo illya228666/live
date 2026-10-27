@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "id": "signal-identity-late-01",
+  "stage": "diagnostic",
+  "registeredUtc": "2026-10-27T08:44:59.1171248+00:00",
+  "hypothesis": {
+    "rationale": "The expanding-life pilot did not establish initial thermal mastery. Do not infer plasticity loss or fix pressure-specific features. Use known-resolvable exogenous signal tasks, same post-change stimulus streams for fresh/experienced controls, and the unchanged controller.",
+    "falsification": "Screen identity fresh and late first: at least2/3 fresh final and2/3 experienced base-final greedy success>=.85 is required before interpreting the other changes. If this fails, stop the full matrix and run only preregistered gamma0/lambda0 immediate-feedback diagnostic (same tasks/default actor/critic steps); do not rank algorithms. If screen passes, test channel/action/noise8/noise32/neutral, each fresh and late,3 seeds,20k per phase. Record final greedy success, live windows, AUC, time to two live windows>=.85, experienced-minus-fresh and exact learned/frozen base-prefix hashes. Stable control shows whether late deficits are specific to a change. Neutral first-phase reward is constant1; effects remain observable. Counts/activity are not knowledge. Need-free pre-exposure benefit requires faster subsequent learning than matched fresh need learning, not just commands or final reward. All outcomes exploratory diagnostic; no broad generalization claim or post-hoc seed replacement.",
+    "protocol": {
+      "liveWindow": 1000,
+      "cases": [
+        "identity",
+        "channel",
+        "action",
+        "noise8",
+        "noise32",
+        "neutral"
+      ],
+      "evaluationSeeds": [
+        30101,
+        30203,
+        30307
+      ],
+      "scope": "Open microdiagnostics; revealed workbench is not an optimization target",
+      "noBrainEdits": "generic-ac-freeze-01 source retained",
+      "evaluateEvery": 5000,
+      "seeds": [
+        1741,
+        1753,
+        1777
+      ],
+      "controls": "learned/frozen prefix and fresh post-condition; exogenous streams match; oracle/constant/random audit",
+      "success": 0.85,
+      "stepsPerPhase": 20000
+    },
+    "statement": "Open contextual diagnostics distinguish failure to learn a simple observed rule, post-experience adaptation limits, distractor sensitivity, and absence of useful neutral pre-exposure in the frozen generic actor-critic.",
+    "direction": "diagnostic of representation, adaptation and acquisition without needs",
+    "sources": [
+      {
+        "sections": "1,7",
+        "readOn": "2026-10-27",
+        "title": "Maintaining Plasticity in Deep Continual Learning",
+        "implementationDifference": "Fixed random-feature actor/critic has no learned neural representation to which continual backprop can blindly be applied; these are controlled capability diagnostics, not reproduction.",
+        "evidence": "Loss of ability to learn new data differs from forgetting old data; prior exposure versus fresh capability must be distinguished.",
+        "urlOrDoi": "https://arxiv.org/html/2306.13812"
+      },
+      {
+        "sections": "13.5, printed pp273-274",
+        "readOn": "2026-10-27",
+        "title": "Sutton and Barto RL draft",
+        "implementationDifference": "Own fixed-feature controller unchanged. Conditional gamma0/lambda0 test removes bootstrapping/traces, not a proposed universal life algorithm.",
+        "evidence": "Bootstrapped critic bias depends on function approximation; one-step feedback can be isolated in a contextual task.",
+        "urlOrDoi": "https://web.stanford.edu/class/psych209/Readings/SuttonBartoRL.pdf"
+      }
+    ]
+  },
+  "decisionRule": "Identity screen first. Fresh final and experienced base-final success>=.85 on2/3 before full matrix. Otherwise only gamma0/lambda0 diagnostic; preserve all seeds and final checkpoints.",
+  "metrics": [
+    "signal.success"
+  ],
+  "plan": {
+    "SchemaVersion": 1,
+    "ExpectedRuns": 6,
+    "Protocols": [
+      "B2BE9FC009CA96BB08456F075109659A07A96DF7B3DD69107E5BA9A408F0320D"
+    ],
+    "ConfigurationHash": "BAEFA511FDED30BEA8CEB6D6D629D14339FA8C937101E861E540927D05D8F91B",
+    "TrainingSeeds": [
+      1741,
+      1753,
+      1777
+    ],
+    "EvaluationSeeds": [
+      30101,
+      30203,
+      30307
+    ],
+    "TrainingStepsPerTrial": 40000,
+    "PreparedUtc": "2026-10-27T09:44:59.0938617+01:00"
+  },
+  "configSha256": "7A3637F4F0C2F048453F940BA25D7DBA82A365C7F34D4287D59B48E34A4D995B",
+  "bundle": "artifacts\\research\\local\\bundles\\1DC56A66163A98E4028229CDD1B25C3F06D6DD6F28524AD0D5442B57695176EF",
+  "output": "artifacts\\research\\local\\studies\\signal-identity-late-01\\results",
+  "sourceRevision": "e1e02fd2e4f172547ada0f29a92255c495ffd437",
+  "sourceStatus": "M src/ArtificialLife.Application/BehaviorEvaluation.cs\n M src/ArtificialLife.Cli/Program.cs\n M src/ArtificialLife.Presentation.Godot/packages.lock.json\n M tests/ArtificialLife.Tests/ArtificialLife.Tests.csproj\n M tools/build.ps1\n M tools/test.ps1\n?? configs/research-signal-action-fresh.json\n?? configs/research-signal-action-late.json\n?? configs/research-signal-channel-fresh.json\n?? configs/research-signal-channel-late.json\n?? configs/research-signal-identity-fresh.json\n?? configs/research-signal-identity-late.json\n?? configs/research-signal-neutral-fresh.json\n?? configs/research-signal-neutral-late.json\n?? configs/research-signal-noise32-fresh.json\n?? configs/research-signal-noise32-late.json\n?? configs/research-signal-noise8-fresh.json\n?? configs/research-signal-noise8-late.json\n?? research/campaigns/local/signal-diagnostic-hypothesis.json\n?? src/ArtificialLife.Application/SignalDiagnosticEvaluator.cs\n?? src/ArtificialLife.Application/SignalScenarioAudit.cs\n?? src/ArtificialLife.Modules.SignalDiagnostic/\n?? tests/ArtificialLife.Tests/SignalDiagnosticTests.cs\n?? tools/package-signal-diagnostic.ps1\n?? tools/prepare-signal-diagnostics.ps1",
+  "scenarioReviewSha256": "033F14A739424BA3C5962EF547541ADE25DDB3518434CC3CBB34C1FD00199BBF",
+  "scenarioCleared": false
+}

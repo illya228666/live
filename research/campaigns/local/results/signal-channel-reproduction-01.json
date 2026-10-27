@@ -1,0 +1,10 @@
+{
+  "Study": "signal-channel-late-01",
+  "Variant": "fixed-goal--learning",
+  "Seed": 1741,
+  "TrainingActionsEqual": true,
+  "LearningWorldsEqual": true,
+  "EvaluationActionsEqual": true,
+  "MaximumEvaluationMetricDifference": 0.0,
+  "LiveMetricsEqual": true
+}

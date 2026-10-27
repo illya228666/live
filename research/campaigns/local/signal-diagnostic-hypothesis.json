@@ -1,0 +1,51 @@
+{
+  "rationale": "The expanding-life pilot did not establish initial thermal mastery. Do not infer plasticity loss or fix pressure-specific features. Use known-resolvable exogenous signal tasks, same post-change stimulus streams for fresh/experienced controls, and the unchanged controller.",
+  "falsification": "Screen identity fresh and late first: at least2/3 fresh final and2/3 experienced base-final greedy success>=.85 is required before interpreting the other changes. If this fails, stop the full matrix and run only preregistered gamma0/lambda0 immediate-feedback diagnostic (same tasks/default actor/critic steps); do not rank algorithms. If screen passes, test channel/action/noise8/noise32/neutral, each fresh and late,3 seeds,20k per phase. Record final greedy success, live windows, AUC, time to two live windows>=.85, experienced-minus-fresh and exact learned/frozen base-prefix hashes. Stable control shows whether late deficits are specific to a change. Neutral first-phase reward is constant1; effects remain observable. Counts/activity are not knowledge. Need-free pre-exposure benefit requires faster subsequent learning than matched fresh need learning, not just commands or final reward. All outcomes exploratory diagnostic; no broad generalization claim or post-hoc seed replacement.",
+  "protocol": {
+    "liveWindow": 1000,
+    "cases": [
+      "identity",
+      "channel",
+      "action",
+      "noise8",
+      "noise32",
+      "neutral"
+    ],
+    "evaluationSeeds": [
+      30101,
+      30203,
+      30307
+    ],
+    "scope": "Open microdiagnostics; revealed workbench is not an optimization target",
+    "noBrainEdits": "generic-ac-freeze-01 source retained",
+    "evaluateEvery": 5000,
+    "seeds": [
+      1741,
+      1753,
+      1777
+    ],
+    "controls": "learned/frozen prefix and fresh post-condition; exogenous streams match; oracle/constant/random audit",
+    "success": 0.85,
+    "stepsPerPhase": 20000
+  },
+  "statement": "Open contextual diagnostics distinguish failure to learn a simple observed rule, post-experience adaptation limits, distractor sensitivity, and absence of useful neutral pre-exposure in the frozen generic actor-critic.",
+  "direction": "diagnostic of representation, adaptation and acquisition without needs",
+  "sources": [
+    {
+      "sections": "1,7",
+      "readOn": "2026-10-27",
+      "title": "Maintaining Plasticity in Deep Continual Learning",
+      "implementationDifference": "Fixed random-feature actor/critic has no learned neural representation to which continual backprop can blindly be applied; these are controlled capability diagnostics, not reproduction.",
+      "evidence": "Loss of ability to learn new data differs from forgetting old data; prior exposure versus fresh capability must be distinguished.",
+      "urlOrDoi": "https://arxiv.org/html/2306.13812"
+    },
+    {
+      "sections": "13.5, printed pp273-274",
+      "readOn": "2026-10-27",
+      "title": "Sutton and Barto RL draft",
+      "implementationDifference": "Own fixed-feature controller unchanged. Conditional gamma0/lambda0 test removes bootstrapping/traces, not a proposed universal life algorithm.",
+      "evidence": "Bootstrapped critic bias depends on function approximation; one-step feedback can be isolated in a contextual task.",
+      "urlOrDoi": "https://web.stanford.edu/class/psych209/Readings/SuttonBartoRL.pdf"
+    }
+  ]
+}

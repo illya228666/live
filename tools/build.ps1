@@ -10,3 +10,4 @@ else { Invoke-Dotnet build ArtificialLife.sln -c Release }
 & (Join-Path $PSScriptRoot 'package.ps1') -Headless:$Headless
 & (Join-Path $PSScriptRoot 'package-ecology.ps1')
 & (Join-Path $PSScriptRoot 'package-workbench.ps1') -NoBuild
+& (Join-Path $PSScriptRoot 'package-signal-diagnostic.ps1') -NoBuild

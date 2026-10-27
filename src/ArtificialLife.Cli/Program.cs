@@ -12,6 +12,7 @@ try
     if (command == "scenario-audit") return TemperatureScenarioAudit.Command(args.Skip(1).ToArray());
     if (command == "ecology-audit") return EcologyScenarioAudit.Command(args.Skip(1).ToArray());
     if (command == "expansion-audit") return ExpansionScenarioAudit.Command(args.Skip(1).ToArray());
+    if (command == "signal-audit") return SignalScenarioAudit.Command(args.Skip(1).ToArray());
     if (command == "experiment") return ExperimentRunner.Run(args.Skip(1).ToArray());
     if (command == "experiment-prepare") return ExperimentRunner.Prepare(args.Skip(1).ToArray());
     if (command == "experiment-worker") return ExperimentRunner.Worker(args.Skip(1).ToArray());
@@ -31,6 +32,7 @@ try
         Console.WriteLine("scenario-audit --config PATH --protocol PATH --output NEW_DIR\nscenario-describe --config PATH [--output PATH]\nscenario-validate-review --config PATH --review PATH");
         Console.WriteLine("ecology-audit --config PATH --protocol PATH --output NEW_DIR");
         Console.WriteLine("expansion-audit --config PATH --output NEW_DIR");
+        Console.WriteLine("signal-audit --config PATH --output NEW_DIR");
         Console.WriteLine("ArtificialLife: live [--config configs/runtime.json] [--steps N] [--checkpoint PATH] [--trajectory PATH]\ncontinual [--config configs/continual.json] [--output PATH] [--pilot true]\ntrain [--config configs/default.json] [--steps N] [--checkpoint PATH]\nevaluate [--checkpoint PATH]");
         return 0;
     }
