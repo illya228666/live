@@ -122,8 +122,11 @@ public sealed class ExpandingLifeTests
     public void LegacyProtocolIdentitySurvivesOptionalLiveMeasurements()
     {
         string root = RuntimeDefaults.RepositoryRoot();
-        var definition = ExperimentDefinition.Load(Path.Combine(root, "configs/research-balanced-confirmation.json"));
         using var registration = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "research/campaigns/local/studies/balanced-confirmation-01.json")));
+        // An archived identity belongs to the registered configuration and package
+        // catalogue, not the mutable development catalogue used for new launches.
+        string output = registration.RootElement.GetProperty("output").GetString()!;
+        var definition = ExperimentDefinition.Load(Path.Combine(root, Path.GetDirectoryName(output)!, "config.json"));
         string expected = registration.RootElement.GetProperty("plan").GetProperty("Protocols")[0].GetString()!;
         Assert.Equal(expected, ExperimentRunner.ProtocolHash(definition.Jobs().First()));
     }

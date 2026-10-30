@@ -60,6 +60,18 @@
           "ArtificialLife.Core": "[1.0.0, )"
         }
       },
+      "artificiallife.observation.contracts": {
+        "type": "Project",
+        "dependencies": {
+          "ArtificialLife.Core": "[1.0.0, )"
+        }
+      },
+      "artificiallife.packages": {
+        "type": "Project",
+        "dependencies": {
+          "ArtificialLife.Core": "[1.0.0, )"
+        }
+      },
       "libtorch-cpu-win-x64": {
         "type": "CentralTransitive",
         "requested": "[2.10.0, )",

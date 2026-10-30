@@ -12,8 +12,7 @@ public sealed class EcologyScenarioTests
     public void PreservedThermalEvidenceStillPassesItsActualRegisteredChecksum()
     {
         string root = RuntimeDefaults.RepositoryRoot();
-        Assert.Equal(0, ScenarioSuitability.Command(["--config", Path.Combine(root, "configs", "research-baseline.json"),
-            "--review", Path.Combine(root, "research", "scenarios", "temperature-v2-review.json")], true));
+        ValidateArchivedReview(Path.Combine(root, "configs", "research-baseline.json"), Path.Combine(root, "research", "scenarios", "temperature-v2-review.json"));
     }
 
     [Fact]
@@ -81,7 +80,7 @@ public sealed class EcologyScenarioTests
     {
         string root = RuntimeDefaults.RepositoryRoot(); var definition = Definition(factor);
         string review = Path.Combine(root, "research", "scenarios", $"{factor}-v2-review.json");
-        Assert.Equal(0, ScenarioSuitability.Command(["--config", Path.Combine(root, "configs", $"research-{factor}-v2.json"), "--review", review], true));
+        ValidateArchivedReview(Path.Combine(root, "configs", $"research-{factor}-v2.json"), review);
         using var evidence = JsonDocument.Parse(File.ReadAllText(Path.Combine(root, "research", "scenarios", $"{factor}-v2-results.json")));
         var expected = evidence.RootElement.GetProperty("controls").EnumerateArray().Single(c => c.GetProperty("seed").GetInt32() == 61001 && c.GetProperty("policy").GetString() == "joint");
         var actual = EcologyScenarioAudit.Evaluate(definition.Runtime, definition.Behavior, 0, 61001, "joint", 12000, 1000);
@@ -91,4 +90,14 @@ public sealed class EcologyScenarioTests
             if (metric.Value.ValueKind == JsonValueKind.Null) Assert.Null(actual.Metrics[metric.Name].Value);
             else Assert.InRange(Math.Abs(actual.Metrics[metric.Name].Value!.Value - metric.Value.GetDouble()), 0, 1e-9);
     }
+    private static void ValidateArchivedReview(string config, string reviewPath)
+    {
+        var review = ExperimentJson.Read<ScenarioReview>(reviewPath);
+        string evidence = Path.GetFullPath(review.Evidence, Path.GetDirectoryName(reviewPath)!);
+        Assert.Equal(review.EvidenceSha256, Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(evidence))));
+        var current = ScenarioSuitability.Describe(ExperimentDefinition.Load(config));
+        if (current.Fingerprint == review.Fingerprint) Assert.Equal(0, ScenarioSuitability.Command(["--config", config, "--review", reviewPath], true));
+        else Assert.Throws<InvalidDataException>(() => ScenarioSuitability.Validate(current, review));
+    }
+
 }

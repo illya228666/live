@@ -1,4 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
-  <ItemGroup><ProjectReference Include="../ArtificialLife.Application/ArtificialLife.Application.csproj" /></ItemGroup>
+  <ItemGroup><ProjectReference Include="../ArtificialLife.Hosting/ArtificialLife.Hosting.csproj" /><ProjectReference Include="../ArtificialLife.Application/ArtificialLife.Application.csproj" /></ItemGroup>
 </Project>

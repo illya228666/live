@@ -30,6 +30,7 @@ public sealed class GodotPresentationContext(Node2D canvas, Rect2 viewport, doub
         if (attached) Canvas.AddChild(node);
         return node;
     }
+    public void Release(Node node) { nodes.Remove(node); if (GodotObject.IsInstanceValid(node)) node.Free(); }
     public void OnDispose(Action action) => cleanup.Add(action);
     public T OwnResource<T>(T resource) where T : RefCounted
     {
@@ -53,3 +54,6 @@ public sealed class GodotPresentationContext(Node2D canvas, Rect2 viewport, doub
         if (failure is not null) throw new InvalidOperationException("Presentation cleanup failed: " + failure);
     }
 }
+
+public interface IPreparedPresentation : IDisposable { void Commit(); }
+public interface IRuntimePresentationHost { IPreparedPresentation Prepare(IReadOnlyList<PresentationPackage> packages, RuntimeFrame frame); }

@@ -53,14 +53,14 @@ A small simulated creature learns to regulate its own body temperature in a chan
 The central question is: **which combinations of motivation and learning sustain
 practical adaptation as the world expands, without mechanic-specific brain code?**
 
-The primary runtime now supports one continuous life with hot-installed/upgraded DLL packages. Temperature, vision, hunger, food supply, movement, motivation and Godot presentation use runtime contracts. The original episodic experiment remains available for comparison. Continual-learning acceptance is measured separately; runtime plumbing alone does not establish that a newly installed mechanic has been learned.
+The primary runtime now supports one continuous life with hot-installed/upgraded DLL packages. Temperature, vision, hunger, food supply, movement, motivation and Godot presentation use runtime contracts. The episodic training policy uses the same modular execution pipeline. Continual-learning acceptance is measured separately; runtime plumbing alone does not establish that a newly installed mechanic has been learned.
 
 ```powershell
 ./tools/build.ps1
 ./tools/live.ps1                         # headless continuous learning
-./tools/run-godot.ps1 -Train             # same RuntimeSession in Godot
+./tools/run-godot.ps1 -Train             # separate Host and Viewer
 ./tools/activate.ps1 -Package hunger@1.0.0,food@1.0.0
-./tools/runtime-smoke.ps1                # install, upgrade, render and unload in one life
+./tools/runtime-smoke.ps1                # runtime checks and protected Host/Viewer smoke
 ```
 
 `configs/runtime.json` selects startup packages; the existing `configs/default.json` remains supported through an adapter. To install Hunger/Food later, start a configuration without those packages. Use exact new package versions for upgrades. See [runtime module authoring and guarantees](docs/runtime-modules.md) for state migration, activation requests, extensible presentation, motivation and controller contracts.
@@ -88,7 +88,7 @@ The controlled [continual-learning acceptance experiment](docs/continual-learnin
 - Fast headless training, frozen-policy evaluation and verified checkpoint loading.
 - A Godot .NET view with a heat field, movement trail, generic homeostasis history and a dynamic needs HUD.
 
-No LLM, external AI service, sprite assets or additional game mechanics are involved.
+Controllers run locally in C#. Graphical resources are independent from physical modules.
 
 ## Quick start: Windows x64
 
@@ -140,7 +140,7 @@ Official references: [.NET 10 releases](https://builds.dotnet.microsoft.com/dotn
 ./tools/train.ps1 -Steps 100000
 ./tools/train.ps1 -Config configs/default.json -Checkpoint artifacts/checkpoints/thermal
 ./tools/evaluate.ps1                    # reload weights; exploration is disabled
-./tools/run-godot.ps1 -Smoke             # load checkpoint, advance 1,000 steps, exit
+./tools/run-godot.ps1 -Smoke             # start Host, attach Viewer, exercise UI, exit
 ```
 
 The CLI also works directly with a compatible SDK:
@@ -152,53 +152,35 @@ dotnet run --project src/ArtificialLife.Cli -c Release -- evaluate --checkpoint 
 
 The project includes conditional Linux x64 LibTorch support. Linux is not part of the verified bootstrap workflow: install SDK 10.0.402, run `dotnet restore` to resolve Linux packages, then build/run the CLI. CI verifies Windows x64.
 
-## Training and visualization
+## World Host and independent Viewer
 
-Training advances fixed simulation timesteps as fast as the CPU allows; it never waits for wall-clock time or opens Godot. Every 5,000 steps it reports exploration, mean balance, mean reward, per-drive satisfaction, loss and replay size.
-
-`train.ps1` saves these files under `artifacts/checkpoints/thermal/`:
-
-- `weights.bin`: TorchSharp network weights.
-- `manifest.json`: full configuration, ordered observation/action registries, training step count and weight SHA256.
-- `evaluation.json`: random, untrained and trained results, including per-seed metrics.
-
-`evaluate.ps1` writes `reevaluation.json` without overwriting the original training report. Checkpoints are for inference; optimizer state and replay are not saved for exact training resumption.
-
-Godot loads the same checkpoint and consumes neutral snapshots. It advances simulation time at 12× by default. **Space** pauses, **+ / −** changes speed and **R** restarts the world. The view runs continuously beyond the trainer's episode length. If launched from the editor without a checkpoint, it displays the training command.
-
-## Watching learning live
-
-Start a fresh network and watch real simulation, replay and optimizer updates in Godot:
+All CLI modes execute modular RuntimeSession steps. Godot is a separate 2D
+WebSocket observer; closing it does not stop a world. See
+[architecture, protocol and commands](docs/observation-runtime.md).
 
 ```powershell
-./tools/run-godot.ps1 -Train
-./tools/run-godot.ps1 -Train -TrainingSpeed Max
-./tools/run-godot.ps1 -Train -Config configs/default.json -VisualConfig configs/live-training.json
-./tools/run-godot.ps1 -Train -Smoke       # optimize 1,000 steps, save, exit
+./tools/world.ps1 run --mode world-only --config configs/world-only.json --directory artifacts/worlds/demo
+# In another terminal:
+./tools/world.ps1 list
+./tools/viewer.ps1 -Session SESSION_ID
+./tools/world.ps1 stop --session SESSION_ID
 ```
 
-Live Training starts a single continuous life with newly initialized weights. Position, body temperature, world time, fire phase, optimizer, replay and epsilon progression continue across the configured `EpisodeSteps` boundaries; those boundaries produce no terminal transitions or resets. The original `./tools/run-godot.ps1` still displays a saved policy. Headless `train.ps1` remains episodic and `evaluate.ps1` retains its existing behavior.
+Learning: `world run --mode learning --config configs/runtime.json --directory DIR`.
+Inference/evaluation: `world run --mode inference --policy CHECKPOINT --directory DIR`
+(or `--mode evaluation`). Research retains its existing experiment/campaign commands;
+each worker exposes its training and evaluation worlds through the same protocol.
+`train.ps1` runs the episodic policy over this same modular runtime.
 
-| Key | Live Training action |
-| --- | --- |
-| Space | Pause / resume simulation and training |
-| + / − (including numpad) | Switch between 1×, 10×, 100× and Max |
-| E | Freeze learning and observe ε = 0 in a separate world; press again to resume |
-| S | Save the current policy using the existing checkpoint format |
-| Ctrl + Shift + R | Start a new life: fresh weights, optimizer, replay, body, world, counters and histories |
+The convenience `run-godot.ps1 -Train` starts a separate protected Host and Viewer.
+The Viewer itself accepts only observation/session/capture options. Its keys are
+Space (pause), 1–4 (1x/10x/100x/Max), S (policy/world checkpoint), E (isolated
+frozen evaluation), R (world reset), Ctrl+Shift+R (new learning life), F12 (PNG).
+Host capabilities determine which commands are permitted.
 
-Default rates are 60, 600 and 6,000 requested training steps/s. Max requests up to 256 steps per frame; every preset also has an 8 ms cooperative work budget. Actual throughput depends on the PC and is displayed in the HUD. Work returns to Godot between complete training steps; the physics timestep is unchanged. The displayed world and short trail show actual positions, while the graphs show overall balance and reward, with satisfaction histories for each active need. Metrics use the most recent 1,000 steps. Trails and graphs remain bounded, evicting old samples without clearing at former episode boundaries.
-
-Settings live in `configs/live-training.json`, separately from DQN/physics configuration. Live learning continues until paused or closed; `learning.trainingSteps` remains the budget for the headless command. The HUD shows Life, Age (physical steps in the training life) and TrainingStep. Ctrl + Shift + R increments the life number and resets age and training counters using the configured deterministic seed. The frozen evaluation world neither appends replay nor consumes the training RNG; resuming restores the suspended training world exactly. Histories clear on evaluation mode switches to avoid joining separate worlds.
-
-**S** saves to `artifacts/checkpoints/live-thermal` by default, leaving the original thermal checkpoint intact. Use `-Checkpoint PATH` to choose a different destination. `-Train -Smoke` also saves there before exiting. Load a live policy through the existing pipeline:
-
-```powershell
-./tools/evaluate.ps1 -Checkpoint artifacts/checkpoints/live-thermal
-./tools/run-godot.ps1 -Checkpoint artifacts/checkpoints/live-thermal
-```
-
-Saves record the actual completed step count and remain inference checkpoints; they do not resume optimizer/replay state. Live saves use format v3: an atomic `current` pointer selects an immutable policy generation with weights, controller/architecture/registry metadata and archived package versions. Compatible format-v1/v2 DQN policies still import. Full reset intentionally restarts the configured deterministic seed. Application owns the single synchronous runtime; Godot requests bounded work and draws copied snapshots through package-owned presentation. See [runtime notes](docs/runtime-modules.md).
+Policy checkpoints remain inference exports, without optimizer/replay persistence.
+World-only checkpoints preserve physical state and RNG. A crashed learning worker
+is reported as failed rather than silently restarting its optimizer.
 
 ## Measured experiment
 
@@ -216,40 +198,44 @@ The recorded training loop took 44.54 seconds on the development PC; evaluation 
 
 ## Architecture
 
-Arrows below denote project references:
+Arrows below denote project references. Simulation state reaches Viewer only through WebSocket.
 
 ```mermaid
 flowchart LR
-    Godot[Godot presentation] --> Application
-    CLI[Headless CLI] --> Application
-    Application --> Core[Simulation Core]
-    Application --> Brain[TorchSharp Brain]
-    Application --> Temperature[Temperature module]
-    Application --> Vision[Vision module]
-    Application --> Hunger[Hunger module]
+    CLI --> Hosting
+    Hosting --> Application
+    Hosting --> Observation.Contracts
+    Application --> Core
+    Application --> Brain
+    Application --> Packages
     Brain --> Core
-    Temperature --> Core
-    Vision --> Core
-    Hunger --> Core
+    Packages --> Core
+    Godot[Godot Viewer] --> Observation.Contracts
+    Godot --> Packages
+    Godot --> Godot.Contracts
+    Godot.Contracts --> Core
 ```
 
-`Core`, `Brain`, `Temperature`, `Vision`, `Hunger` and `Application` contain no Godot references. Simulation coordinates are ordinary numbers. The Godot adapter alone uses `Node2D`, rendering APIs and engine vectors. Another frontend could consume `WorldViewModel` without changing physics or learning code.
+Core and Application contain no Godot references. Viewer has no Application,
+Brain or TorchSharp dependency. Another frontend can consume the same versioned
+Observation API without implementing a simulator or learning loop.
 
 ```text
 src/
-  ArtificialLife.Core/                 world, movement, contracts, registries, reward
-  ArtificialLife.Brain/                neural encoder, candidate Q scorer, Double DQN
-  ArtificialLife.Modules.Temperature/  field, body dynamics, senses and drive
-  ArtificialLife.Modules.Vision/       appearance, replaceable backend, egocentric sensory tokens
-  ArtificialLife.Modules.Hunger/       hunger dynamics, nutrition/contact feeding, sense and drive
-  ArtificialLife.Application/          composition, trainer, evaluator, checkpoints, snapshots
-  ArtificialLife.Cli/                  train/evaluate commands
-  ArtificialLife.Godot/                scene and rendering/input adapter
-tests/ArtificialLife.Tests/            core, temperature, neural and learning tests
-configs/default.json                  typed simulation and learning options
-tools/                                repository-local development workflow
-docs/                                 architecture and experiment documentation
-.github/workflows/ci.yml               pinned Windows build and test workflow
+  ArtificialLife.Core/                   neutral world/module/controller contracts
+  ArtificialLife.Brain/                  learning algorithms and policy implementations
+  ArtificialLife.Modules.*/              physical mechanics and motivation packages
+  ArtificialLife.Application/            common runtime steps, lifecycle policies, checkpoints, experiments
+  ArtificialLife.Hosting/                Supervisor/Worker, protected commands, WebSocket and discovery
+  ArtificialLife.Observation.Contracts/  JSON messages and independent observation client
+  ArtificialLife.Packages/               shared catalogue/import/integrity/assembly loading
+  ArtificialLife.Godot.Contracts/        graphics-only presentation interfaces
+  ArtificialLife.Godot/                  independent 2D Viewer and visual foundation
+  ArtificialLife.Launcher/               World/Viewer launch and local session selection
+tests/ArtificialLife.Tests/              regression and real transport tests; numerical legacy reference
+configs/                                runtime, lifecycle and research configurations
+tools/                                  launch, package and integration checks
+docs/                                   architecture, protocol and research documentation
 ```
 
 One test project keeps this small repository easy to navigate. Test files separate the concerns without multiplying project boilerplate.

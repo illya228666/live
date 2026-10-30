@@ -47,7 +47,7 @@ public sealed class RuntimePackageImporterTests
     public void InvalidSelectionDoesNotPublishItsValidSiblingOrChangeAnInstalledVersion()
     {
         using var fixture = new Fixture(); string a = fixture.Package("first"), b = fixture.Package("second");
-        File.WriteAllText(Path.Combine(b, "assets/sprite.png"), "changed");
+        File.WriteAllText(Path.Combine(b, "Fixture.dll"), "changed");
         Assert.Throws<InvalidDataException>(() => new RuntimePackageImporter(fixture.Catalogue).Import([a, b]));
         Assert.False(Directory.Exists(Path.Combine(fixture.Catalogue, "first")));
         new RuntimePackageImporter(fixture.Catalogue).Import([a]);

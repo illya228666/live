@@ -7,4 +7,5 @@
     <RootNamespace>ArtificialLife.Launcher</RootNamespace>
     <AssemblyName>ArtificialLife.Launcher</AssemblyName>
   </PropertyGroup>
+  <ItemGroup><ProjectReference Include="../ArtificialLife.Observation.Contracts/ArtificialLife.Observation.Contracts.csproj" /></ItemGroup>
 </Project>

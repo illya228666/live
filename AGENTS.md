@@ -30,3 +30,11 @@ active factor. If passivity already solves a factor (or adaptive control cannot
 solve it), repair the common scenario parameters and rerun controls before the
 comparison. Merely documenting the defect is insufficient. Diagnostic runs may
 investigate broken scenarios; they are not scientific evidence for approach rankings.
+
+Runtime architecture: all production simulation execution belongs to
+RuntimeSession.Step. Godot is an independent WebSocket viewer and must not
+reference Application or Brain. Observation contracts are shared via
+Observation.Contracts; package IO belongs to Packages, process/network hosting
+to Hosting. LegacyReference under tests is numerical/checkpoint reference code,
+not a production entrypoint. Read docs/observation-runtime.md before changing
+execution, observation, viewer or launch behavior.

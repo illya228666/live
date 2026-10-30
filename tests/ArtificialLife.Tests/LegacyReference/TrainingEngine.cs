@@ -1,12 +1,6 @@
 using ArtificialLife.Brain;
 using ArtificialLife.Core;
-
 namespace ArtificialLife.Application;
-
-/// <summary>An actual completed transition, captured before an episode reset.</summary>
-public sealed record TrainingSample(long Step, int Episode, long EpisodeStep, double X, double Y,
-    HomeostasisReport Homeostasis, double Reward, bool Terminal);
-
 /// <summary>One incremental training loop shared by the CLI and presentation sessions.</summary>
 /// <remarks>The caller owns the supplied brain. This engine must have one synchronous owner.</remarks>
 public sealed class TrainingEngine

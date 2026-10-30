@@ -199,7 +199,9 @@
           "ArtificialLife.Core": "[1.0.0, )",
           "ArtificialLife.Modules.Hunger": "[1.0.0, )",
           "ArtificialLife.Modules.Temperature": "[1.0.0, )",
-          "ArtificialLife.Modules.Vision": "[1.0.0, )"
+          "ArtificialLife.Modules.Vision": "[1.0.0, )",
+          "ArtificialLife.Observation.Contracts": "[1.0.0, )",
+          "ArtificialLife.Packages": "[1.0.0, )"
         }
       },
       "artificiallife.brain": {
@@ -212,6 +214,14 @@
       },
       "artificiallife.core": {
         "type": "Project"
+      },
+      "artificiallife.hosting": {
+        "type": "Project",
+        "dependencies": {
+          "ArtificialLife.Application": "[1.0.0, )",
+          "ArtificialLife.Observation.Contracts": "[1.0.0, )",
+          "ArtificialLife.Packages": "[1.0.0, )"
+        }
       },
       "artificiallife.modules.drivemotivation": {
         "type": "Project",
@@ -232,6 +242,18 @@
         }
       },
       "artificiallife.modules.vision": {
+        "type": "Project",
+        "dependencies": {
+          "ArtificialLife.Core": "[1.0.0, )"
+        }
+      },
+      "artificiallife.observation.contracts": {
+        "type": "Project",
+        "dependencies": {
+          "ArtificialLife.Core": "[1.0.0, )"
+        }
+      },
+      "artificiallife.packages": {
         "type": "Project",
         "dependencies": {
           "ArtificialLife.Core": "[1.0.0, )"

@@ -35,7 +35,7 @@ public static class EcologyScenarioAudit
     {
         if (!PolicyNames.Contains(policy) || steps < 1 || blockSteps < 1) throw new ArgumentException("Invalid control/budget.");
         using var controller = new EcologyControl(policy, options, seed);
-        using var runtime = new RuntimeSession(options with { WorldSeed = seed }, controller);
+        using var runtime = RuntimeSessionFactory.Create(options with { WorldSeed = seed }, controller);
         using var actionHash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         using var stateHash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         runtime.TrajectorySink = transition => actionHash.AppendData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(transition.Action, ExperimentJson.Lines) + "\n"));
@@ -83,7 +83,7 @@ public static class EcologyScenarioAudit
         }
         foreach (int condition in Enumerable.Range(0, description.Conditions.Length))
         {
-            using var inspection = new RuntimeSession(description.Conditions[condition], new EcologyControl("stay", description.Conditions[condition], 0));
+            using var inspection = RuntimeSessionFactory.Create(description.Conditions[condition], new EcologyControl("stay", description.Conditions[condition], 0));
             var factors = inspection.Report().Drives.Keys.ToArray();
             var rows = controls.Where(c => c.Condition == condition).ToArray();
             double Value(EcologyControlResult r, string key) => r.Metrics.TryGetValue(key, out var m) && m.Value is double v && double.IsFinite(v) ? v : double.NaN;

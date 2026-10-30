@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([Parameter(Position=0,Mandatory=$true)][ValidateSet('run','status','snapshot','checkpoint','update','rollback','screenshot','stop','help')][string]$Action, [Parameter(ValueFromRemainingArguments=$true)][string[]]$WorldArguments)
+param([Parameter(Position=0,Mandatory=$true)][ValidateSet('run','status','snapshot','checkpoint','update','rollback','screenshot','stop','help','list','pause','resume','speed','reset','new-life','evaluation')][string]$Action, [Parameter(ValueFromRemainingArguments=$true)][string[]]$WorldArguments)
 . (Join-Path $PSScriptRoot 'common.ps1')
 Initialize-Dotnet
 $worldCli = Join-Path $RepoRoot 'src/ArtificialLife.Cli/bin/Release/net10.0/ArtificialLife.Cli.exe'

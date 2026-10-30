@@ -238,7 +238,7 @@ public static class ExperimentRunner
             job.Definition.Validate();
             // Construct the untrained baseline first, so the training controller initializes its own RNG last.
             using var untrained = ControllerRegistry.Create(job.Runtime);
-            using var runtime = new RuntimeSession(job.Runtime, ControllerRegistry.Create(job.Runtime));
+            using var runtime = RuntimeSessionFactory.Create(job.Runtime, trialId: $"{job.Variant}/seed-{job.Seed}-world-{job.WorldSeed}");
             runtime.TrajectorySink = transition => HashAction(actionHash, transition.Action);
             foreach (var phase in job.Definition.Phases)
             {
@@ -340,8 +340,8 @@ public static class ExperimentRunner
         int steps, long atStep, string phase, string scenario, string kind, int seed, int episode, int worldSeed, bool random = false)
     {
         var controller = random ? new RandomEvaluationController(source.Limits, worldSeed) : source.CreateInferenceController();
-        using var runtime = new RuntimeSession(options with { WorldSeed = worldSeed }, controller,
-            observationKeys: training.ObservationKeys, actionKeys: training.ActionKeys);
+        using var runtime = RuntimeSessionFactory.Create(options with { WorldSeed = worldSeed, Mode = RuntimeMode.Evaluation }, controller,
+            observationKeys: training.ObservationKeys, actionKeys: training.ActionKeys, parentSessionId: training.ObservationSessionId);
         var evaluators = BehaviorEvaluators.Create(profile);
         using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         runtime.TrajectorySink = transition => HashAction(hash, transition.Action);
@@ -466,7 +466,10 @@ public static class ExperimentRunner
             var start = new ProcessStartInfo("git") { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true };
             foreach (string argument in arguments) start.ArgumentList.Add(argument);
             using var process = Process.Start(start)!;
-            var result = process.StandardOutput.ReadToEnd(); _ = process.StandardError.ReadToEnd(); process.WaitForExit();
+            var stdout = process.StandardOutput.ReadToEndAsync();
+            var stderr = process.StandardError.ReadToEndAsync();
+            Task.WhenAll(stdout, stderr).GetAwaiter().GetResult(); process.WaitForExit();
+            var result = stdout.Result;
             return process.ExitCode == 0 ? result.TrimEnd() : "unavailable";
         }
         File.WriteAllText(Path.Combine(output, "source.patch"), Git("diff", "HEAD", "--binary"));

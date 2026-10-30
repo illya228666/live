@@ -60,7 +60,7 @@ public static class WorldCheckpoint
     {
         var save = Read(directory);
         if (save.Options.Mode != RuntimeMode.WorldOnly && controller is null) throw new InvalidOperationException("Provide an explicit controller to restore an inhabited world; optimizer/replay are not restored.");
-        var runtime = new RuntimeSession(save.Options, controller, observationKeys: save.ObservationKeys, actionKeys: save.ActionKeys, restoredWorld: save.World, restoredModules: save.Modules);
+        var runtime = RuntimeSessionFactory.Create(save.Options, controller, observationKeys: save.ObservationKeys, actionKeys: save.ActionKeys, restoredWorld: save.World, restoredModules: save.Modules);
         try { runtime.RestoreState(save.World, save.Revision, save.ObservationKeys, save.ActionKeys, save.LastReward); return runtime; }
         catch { runtime.Dispose(); throw; }
     }
@@ -70,7 +70,20 @@ public static class WorldCheckpoint
         Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path))!);
         string temporary = path + "." + Guid.NewGuid().ToString("N") + ".tmp";
         using (var stream = new FileStream(temporary, FileMode.CreateNew, FileAccess.Write, FileShare.None)) { JsonSerializer.Serialize(stream, value, PackageCatalog.Json); stream.Flush(true); }
-        File.Move(temporary, path, true);
+        try
+        {
+            for (int attempt = 0; ; attempt++)
+            {
+                try { File.Move(temporary, path, true); break; }
+                // Windows readers without FileShare.Delete can briefly prevent replacement.
+                catch (Exception ex) when (OperatingSystem.IsWindows() && attempt < 8 &&
+                    ex is IOException or UnauthorizedAccessException && (ex.HResult & 0xffff) is 5 or 32 or 33)
+                {
+                    Thread.Sleep(1 << attempt);
+                }
+            }
+        }
+        finally { if (File.Exists(temporary)) File.Delete(temporary); }
     }
     private sealed record Pointer(string Generation, string Sha256);
 }

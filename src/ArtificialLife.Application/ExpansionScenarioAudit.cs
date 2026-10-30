@@ -33,7 +33,7 @@ public static class ExpansionScenarioAudit
             foreach (string policy in new[] { "stay", "always-plus", "always-minus", "random", "thermal-only", "interaction-only", "joint" })
             {
                 using var controller = new AuditController(policy, options.World, thermal, seed);
-                using var runtime = new RuntimeSession(options with { WorldSeed = seed }, controller);
+                using var runtime = RuntimeSessionFactory.Create(options with { WorldSeed = seed }, controller);
                 var evaluators = BehaviorEvaluators.Create(definition.Behavior);
                 using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
                 runtime.TrajectorySink = t => ExperimentRunner.HashAction(hash, t.Action);

@@ -84,7 +84,7 @@ public static class TemperatureScenarioAudit
         for (int condition = 0; condition < description.Conditions.Length; condition++)
         {
             var options = description.Conditions[condition];
-            using var inspect = new RuntimeSession(options, new AuditController("stay", options.World, new(), 0, 0));
+            using var inspect = RuntimeSessionFactory.Create(options, new AuditController("stay", options.World, new(), 0, 0));
             var temperature = inspect.Packages.Single(m => m.Id == "temperature");
             var emitters = inspect.Snapshot().Entities.Where(e => e.Components.ContainsKey("temperature.emitter")).ToArray();
             if (temperature.EntryType != "ArtificialLife.Modules.Temperature.RuntimeTemperature" || emitters.Length != 1 ||
@@ -122,7 +122,7 @@ public static class TemperatureScenarioAudit
         int condition, int seed, string policy, double radius, int steps)
     {
         using var controller = new AuditController(policy, options.World, t, seed, radius);
-        using var runtime = new RuntimeSession(options with { WorldSeed = seed }, controller);
+        using var runtime = RuntimeSessionFactory.Create(options with { WorldSeed = seed }, controller);
         using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         runtime.TrajectorySink = transition => hash.AppendData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(transition.Action, ExperimentJson.Lines) + "\n"));
         int inside = 0, tailInside = 0, tailCount = 0, streak = 0, longest = 0, moved = 0;

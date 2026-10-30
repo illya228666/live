@@ -1,37 +1,19 @@
-[CmdletBinding()]
-param(
-    [string]$Checkpoint = '',
-    [switch]$Train,
-    [string]$Config = 'configs/runtime.json',
-    [string]$VisualConfig = 'configs/live-training.json',
-    [ValidateSet('1x', '10x', '100x', 'Max')][string]$TrainingSpeed,
-    [switch]$Smoke,
-    [ValidateRange(1, [int]::MaxValue)][int]$SmokeSteps = 1000
-)
+param([string]$Checkpoint='', [switch]$Train, [string]$Config='configs/runtime.json', [string]$TrainingSpeed='Max', [switch]$Smoke)
 . (Join-Path $PSScriptRoot 'common.ps1')
 Initialize-Dotnet
-if (!(Test-Path (Join-Path $RepoRoot 'artifacts/packages/movement/1.0.0/module.json'))) { throw 'Prepare packages explicitly with tools/package.ps1 before launch.' }
-$godot = Get-Godot
-$project = Join-Path $RepoRoot 'src/ArtificialLife.Godot'
-if ([string]::IsNullOrWhiteSpace($Checkpoint)) {
-    $Checkpoint = if ($Train) { 'artifacts/checkpoints/live-thermal' } else { 'artifacts/checkpoints/thermal' }
-}
-$checkpointPath = if ([IO.Path]::IsPathRooted($Checkpoint)) { $Checkpoint } else { Join-Path $RepoRoot $Checkpoint }
-if (!$Train -and !(Test-Path -LiteralPath (Join-Path $checkpointPath 'manifest.json')) -and !(Test-Path -LiteralPath (Join-Path $checkpointPath 'current'))) { throw 'No checkpoint found. Run ./tools/train.ps1 first.' }
-Invoke-Dotnet build (Join-Path $project 'ArtificialLife.Godot.csproj') -c Debug
-$userArgs = @('--checkpoint', $checkpointPath)
-if ($Train) {
-    $configPath = if ([IO.Path]::IsPathRooted($Config)) { $Config } else { Join-Path $RepoRoot $Config }
-    $visualPath = if ([IO.Path]::IsPathRooted($VisualConfig)) { $VisualConfig } else { Join-Path $RepoRoot $VisualConfig }
-    $userArgs += @('--train', '--config', $configPath, '--visual-config', $visualPath)
-    if ($TrainingSpeed) { $userArgs += @('--training-speed', $TrainingSpeed) }
-}
-if ($Smoke) {
-    $smokeOption = if ($Train) { '--training-smoke-steps' } else { '--smoke-steps' }
-    $userArgs += @($smokeOption, "$SmokeSteps")
-    & $godot --headless --audio-driver Dummy --path $project -- @userArgs
-}
-else {
-    & $godot --audio-driver Dummy --path $project -- @userArgs
-}
-if ($LASTEXITCODE -ne 0) { throw "Godot failed with exit code $LASTEXITCODE" }
+$worldDirectory = Join-Path $RepoRoot ('artifacts/worlds/interactive-' + [Guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $worldDirectory -Force | Out-Null
+$cli = Join-Path $RepoRoot 'src/ArtificialLife.Cli/bin/Release/net10.0/ArtificialLife.Cli.exe'
+$arguments = @('world','run','--directory',$worldDirectory,'--speed',$TrainingSpeed)
+if ($Train) { $arguments += @('--mode','learning','--config',[IO.Path]::GetFullPath($Config)); if($Checkpoint){$arguments+=@('--checkpoint',[IO.Path]::GetFullPath($Checkpoint))} }
+else { if (!$Checkpoint) { $Checkpoint='artifacts/checkpoints/thermal' }; $arguments += @('--mode','inference','--policy',[IO.Path]::GetFullPath($Checkpoint)) }
+$start = [Diagnostics.ProcessStartInfo]::new($cli)
+$start.WorkingDirectory=$RepoRoot; $start.UseShellExecute=$false; $start.CreateNoWindow=$true
+foreach ($argument in $arguments) { $start.ArgumentList.Add($argument) }
+$process = [Diagnostics.Process]::Start($start)
+$watch=[Diagnostics.Stopwatch]::StartNew()
+$identity=Join-Path $worldDirectory 'session-id'
+while (!(Test-Path $identity)) { if($process.HasExited -or $watch.Elapsed.TotalSeconds -gt 30){throw 'World startup failed.'}; Start-Sleep -Milliseconds 100 }
+$session=(Get-Content $identity -Raw).Trim()
+try { & (Join-Path $PSScriptRoot 'viewer.ps1') -Session $session -Smoke:$Smoke }
+finally { if($Smoke -and !$process.HasExited) { & $cli world stop --directory $worldDirectory; if(!$process.WaitForExit(15000)){$process.Kill($true)} } }

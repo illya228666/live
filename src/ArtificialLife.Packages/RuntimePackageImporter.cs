@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using ArtificialLife.Core;
 
-namespace ArtificialLife.Application;
+namespace ArtificialLife.Packages;
 
 public sealed record ImportedPackage(PackageReference Reference, bool AlreadyPresent);
 

@@ -1,16 +1,25 @@
 [CmdletBinding()]
-param([Parameter(Mandatory=$true)][string[]]$Package, [string]$Inbox='artifacts/activation')
+param([string[]]$Package=@(), [string[]]$Sources=@(), [string]$Session='', [string]$Directory='', [string]$PackageRoot='artifacts/packages')
 . (Join-Path $PSScriptRoot 'common.ps1')
-$activationPackages = @()
-foreach ($activationPackage in $Package) {
-    $activationParts = $activationPackage.Split('@')
-    if ($activationParts.Length -ne 2 -or [string]::IsNullOrWhiteSpace($activationParts[0]) -or [string]::IsNullOrWhiteSpace($activationParts[1])) { throw 'Use exact id@version package references.' }
-    $activationPackages += @{id=$activationParts[0];version=$activationParts[1]}
+Initialize-Dotnet
+$cli=Join-Path $RepoRoot 'src/ArtificialLife.Cli/bin/Release/net10.0/ArtificialLife.Cli.exe'
+$catalog=if([IO.Path]::IsPathRooted($PackageRoot)){$PackageRoot}else{Join-Path $RepoRoot $PackageRoot}
+$inputs=@($Sources | ForEach-Object {[IO.Path]::GetFullPath($_)})
+foreach($reference in $Package) {
+    $parts=$reference.Split('@')
+    if($parts.Length -ne 2 -or $parts[0] -notmatch '^[a-zA-Z0-9_.-]+$' -or $parts[1] -notmatch '^[a-zA-Z0-9_.-]+$' -or $parts[0] -in @('.','..') -or $parts[1] -in @('.','..')){throw 'Use exact id@version package references.'}
+    $inputs+=Join-Path $catalog ($parts[0]+'/'+$parts[1])
 }
-$activationId = [Guid]::NewGuid().ToString('N')
-$activationDirectory = if ([IO.Path]::IsPathRooted($Inbox)) { $Inbox } else { Join-Path $RepoRoot $Inbox }
-New-Item -ItemType Directory -Force -Path $activationDirectory | Out-Null
-$activationTemporary = Join-Path $activationDirectory ($activationId + '.tmp')
-@{id=$activationId;packages=$activationPackages} | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $activationTemporary -Encoding UTF8
-Move-Item -LiteralPath $activationTemporary -Destination (Join-Path $activationDirectory ($activationId + '.ready.json'))
-Write-Output ('Submitted activation ' + $activationId + '; result: ' + (Join-Path $activationDirectory ($activationId + '.result.json')))
+if($inputs.Count -eq 0){throw 'Specify -Package id@version or -Sources package folders, manifests or ZIPs.'}
+if($Directory) {
+    & $cli world update --directory ([IO.Path]::GetFullPath($Directory)) --sources ($inputs -join ';')
+} else {
+    if(!$Session) {
+        $sessions=& $cli world list | ConvertFrom-Json
+        $eligible=@($sessions | Where-Object {$_.Mode -in @('Learning','WorldOnly','Inference') -and !$_.ParentId})
+        if($eligible.Count -ne 1){throw 'Specify -Session or -Directory to choose one active world.'}
+        $Session=$eligible[0].SessionId
+    }
+    & $cli world update --session $Session --value ($inputs -join ';')
+}
+if($LASTEXITCODE -ne 0){throw 'Package update request was rejected.'}

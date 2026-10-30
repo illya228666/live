@@ -10,14 +10,44 @@ namespace ArtificialLife.Tests;
 
 public sealed class RuntimeTests
 {
+    [Theory]
+    [InlineData(RuntimeMode.Inference)]
+    [InlineData(RuntimeMode.Evaluation)]
+    public void FixedPolicyModesCannotLearnEvenWhenDefaultStepIsUsed(RuntimeMode mode)
+    {
+        using var runtime = Create(Options() with { Mode = mode });
+        for (int i = 0; i < 80; i++) runtime.Step();
+        Assert.Equal(80, runtime.Age);
+        Assert.Equal(0, runtime.Controller.Status.Steps);
+        Assert.Equal(0, runtime.Controller.Status.Updates);
+        Assert.Equal(0, runtime.Controller.Status.ReplayCount);
+    }
+    [Fact]
+    public void SeededEvaluationUsesAllEpisodesAndDoesNotChangeSubsequentLearning()
+    {
+        var options = Options() with { Evaluation = new() { Seeds = [1001, 2002], EpisodesPerSeed = 2 } };
+        using var control = Create(options);
+        using var actual = Create(options);
+        for (int i = 0; i < 100; i++) { control.Step(); actual.Step(); }
+        var frame = actual.Snapshot(); var status = actual.Controller.Status;
+        var evaluated = RuntimeEvaluator.Run(actual);
+        Assert.Equal(40, evaluated.Aggregate.Steps);
+        Assert.All(evaluated.Seeds.Values, metrics => Assert.Equal(20, metrics.Steps));
+        Assert.Equal(frame, actual.Snapshot()); Assert.Equal(status, actual.Controller.Status);
+        for (int i = 0; i < 50; i++) { control.Step(); actual.Step(); }
+        Assert.Equal(control.Snapshot(), actual.Snapshot());
+        Assert.Equal(control.Controller.Status, actual.Controller.Status);
+        Assert.Equal(((DqnController)control.Controller).Brain.Scores(control.Observe(), control.LegalActions()),
+            ((DqnController)actual.Controller).Brain.Scores(actual.Observe(), actual.LegalActions()));
+    }
     private static RuntimeOptions Options(bool hunger = false) => RuntimeDefaults.FromLegacy(new()
     {
         World = new() { EpisodeSteps = 10 },
         FoodSpawner = new() { SpawnIntervalTicks = 5 },
         Learning = new() { WarmupSteps = 64, BatchSize = 16, ReplayCapacity = 512 }
     }, hunger);
-    private static RuntimeSession Create(RuntimeOptions options, PackageCatalog? catalog = null, IRuntimePresentationHost? host = null) =>
-        new(options, new DqnController(options.Network, options.Learning), catalog, presentationHost: host);
+    private static RuntimeSession Create(RuntimeOptions options, PackageCatalog? catalog = null) =>
+        new(options, new DqnController(options.Network, options.Learning), catalog);
 
     [Fact]
     public void HeadlessRuntimeDoesNotLoadGodotAssemblies()
@@ -152,7 +182,7 @@ public sealed class RuntimeTests
         string path = Path.Combine(Path.GetTempPath(), "ArtificialLife-runtime-v1-" + Guid.NewGuid().ToString("N"));
         try
         {
-            Checkpoint.Save(path, original, brain, 123);
+            LegacyCheckpoint.Save(path, original, brain, 123);
             using var runtime = RuntimeCheckpoint.Open(path);
             Assert.Equal(original.Observations.Keys, runtime.ObservationKeys);
             Assert.Equal(original.Actions.Keys, runtime.ActionKeys);
@@ -272,22 +302,21 @@ public sealed class RuntimeTests
     }
 
     [Fact]
-    public void PresentationOnlyUpdatePreservesRevisionAndFailedPrepareRejectsWholeUpdate()
+    public void PresentationOnlyUpdatePreservesLearningState()
     {
         using var fixture = new FixtureCatalog(Options());
         fixture.Publish("fixture", "1"); fixture.Publish("fixture", "2");
-        var host = new FakePresentationHost();
-        using var runtime = Create(Options(), fixture.Catalog, host);
+        using var runtime = Create(Options(), fixture.Catalog);
         Assert.True(runtime.Activate(new("install", [new("fixture", "1")])).Accepted);
         runtime.AdvanceOne();
         var before = runtime.Snapshot(); var status = runtime.Controller.Status;
-        host.Fail = true;
-        Assert.False(runtime.Activate(new("rejected-view", [new("fixture", "2")])).Accepted);
+        long metadata = runtime.MetadataRevision;
+        Assert.True(runtime.Activate(new("rejected-view", [new("fixture", "2")])).Accepted);
         Assert.Equal(before, runtime.Snapshot()); Assert.Equal(status, runtime.Controller.Status);
-        host.Fail = false;
+        Assert.Equal(metadata + 1, runtime.MetadataRevision);
         Assert.True(runtime.Activate(new("view", [new("fixture", "2")])).Accepted);
         Assert.Equal(before, runtime.Snapshot()); Assert.Equal(status, runtime.Controller.Status);
-        Assert.Equal(3, host.Commits);
+        Assert.Equal(metadata + 1, runtime.MetadataRevision);
     }
 
     [Fact]
@@ -361,16 +390,6 @@ public sealed class RuntimeTests
         return runtime.RetiredContexts.ToArray();
     }
 
-    private sealed class FakePresentationHost : IRuntimePresentationHost
-    {
-        public bool Fail; public int Commits;
-        public IPreparedPresentation Prepare(IReadOnlyList<PresentationPackage> packages, RuntimeFrame frame) => Fail ? throw new InvalidOperationException("Bad renderer") : new Prepared(this);
-        private sealed class Prepared(FakePresentationHost host) : IPreparedPresentation
-        {
-            public void Commit() => host.Commits++;
-            public void Dispose() { }
-        }
-    }
     private sealed class MutatingController : IAgentController
     {
         public bool Received;

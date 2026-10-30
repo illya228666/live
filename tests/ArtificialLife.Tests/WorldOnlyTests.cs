@@ -6,6 +6,26 @@ namespace ArtificialLife.Tests;
 
 public sealed class WorldOnlyTests
 {
+    [Fact]
+    public async Task AtomicPublicationSurvivesAConcurrentWindowsReader()
+    {
+        string root = Root();
+        string path = Path.Combine(root, "heartbeat.json");
+        try
+        {
+            WorldCheckpoint.Atomic(path, 1);
+            Task publication;
+            using (var reader = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                publication = Task.Run(() => WorldCheckpoint.Atomic(path, 2), TestContext.Current.CancellationToken);
+                await Task.Delay(40, TestContext.Current.CancellationToken);
+            }
+            await publication;
+            Assert.Equal("2", File.ReadAllText(path));
+            Assert.Empty(Directory.GetFiles(root, "*.tmp"));
+        }
+        finally { Directory.Delete(root, true); }
+    }
     private static string Root() => Path.Combine(Path.GetTempPath(), "live-world-" + Guid.NewGuid().ToString("N"));
     private static RuntimeOptions Empty() => new() { Mode = RuntimeMode.WorldOnly, World = new() { EpisodeSteps = 2 } };
     [Fact]

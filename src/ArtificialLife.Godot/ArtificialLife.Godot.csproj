@@ -1,4 +1,4 @@
 <Project Sdk="Godot.NET.Sdk/4.7.2">
   <PropertyGroup><EnableDynamicLoading>true</EnableDynamicLoading></PropertyGroup>
-  <ItemGroup><ProjectReference Include="../ArtificialLife.Application/ArtificialLife.Application.csproj" /><ProjectReference Include="../ArtificialLife.Godot.Contracts/ArtificialLife.Godot.Contracts.csproj" /></ItemGroup>
+  <ItemGroup><ProjectReference Include="../ArtificialLife.Packages/ArtificialLife.Packages.csproj" /><ProjectReference Include="../ArtificialLife.Godot.Contracts/ArtificialLife.Godot.Contracts.csproj" /><ProjectReference Include="../ArtificialLife.Observation.Contracts/ArtificialLife.Observation.Contracts.csproj" /></ItemGroup>
 </Project>

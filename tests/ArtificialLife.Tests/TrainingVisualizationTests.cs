@@ -123,7 +123,7 @@ public sealed class TrainingVisualizationTests
             using (var brain = new DqnBrain(options.Network, options.Learning))
             {
                 Trainer.Run(session, brain);
-                Checkpoint.Save(headlessPath, session, brain);
+                LegacyCheckpoint.Save(headlessPath, session, brain);
             }
             var reference = new SimulationSession(options);
             using var referenceBrain = new DqnBrain(options.Network, options.Learning);
@@ -151,8 +151,8 @@ public sealed class TrainingVisualizationTests
             Assert.Equal(reference.Simulation.World.Time, session.Simulation.World.Time);
             Assert.Equal(reference.Simulation.Agent.Position, session.Simulation.Agent.Position);
             string referencePath = Path.Combine(directory, "reference");
-            Checkpoint.Save(referencePath, reference, referenceBrain);
-            Assert.Equal(Checkpoint.Read(headlessPath).WeightSha256, Checkpoint.Read(referencePath).WeightSha256);
+            LegacyCheckpoint.Save(referencePath, reference, referenceBrain);
+            Assert.Equal(LegacyCheckpoint.Read(headlessPath).WeightSha256, LegacyCheckpoint.Read(referencePath).WeightSha256);
         }
         finally { Directory.Delete(directory, recursive: true); }
     }

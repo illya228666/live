@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using ArtificialLife.Core;
 
-namespace ArtificialLife.Application;
+namespace ArtificialLife.Packages;
 
 public sealed class PackageCatalog(string root)
 {
@@ -24,12 +24,7 @@ public sealed class PackageCatalog(string root)
         if (manifest.Id != reference.Id || manifest.Version != reference.Version || manifest.ApiVersion != 1)
             throw new InvalidDataException("Package identity or API version mismatch.");
         Verify(directory, manifest.Assembly, manifest.LogicHash);
-        foreach (var file in manifest.LogicFiles.Concat(manifest.PresentationFiles)) Verify(directory, file.Key, file.Value);
-        if (manifest.PresentationAssembly is not null)
-        {
-            if (manifest.PresentationType is null) throw new InvalidDataException("Missing presentation type.");
-            Verify(directory, manifest.PresentationAssembly, manifest.PresentationHash ?? "");
-        }
+        foreach (var file in manifest.LogicFiles) Verify(directory, file.Key, file.Value);
         return manifest;
     }
     public static string FileWithin(string directory, string relative)

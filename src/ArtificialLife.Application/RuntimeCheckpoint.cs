@@ -85,16 +85,16 @@ public static class RuntimeCheckpoint
         };
         return manifest;
     }
-    public static RuntimeSession Open(string directory)
+    public static RuntimeSession Open(string directory, RuntimeMode mode = RuntimeMode.Inference)
     {
         string path = Resolve(directory);
         using var document = JsonDocument.Parse(File.ReadAllText(Path.Combine(path, "manifest.json")));
         if (document.RootElement.GetProperty("FormatVersion").GetInt32() == 1)
         {
             var old = Checkpoint.Read(path);
-            var options = RuntimeDefaults.FromLegacy(old.Options);
-            var session = new RuntimeSession(options, new DqnController(options.Network, options.Learning), observationKeys: old.ObservationKeys, actionKeys: old.ActionKeys);
-            try { Checkpoint.Load(path, new SimulationSession(old.Options), ((DqnController)session.Controller).Brain); return session; }
+            var options = RuntimeDefaults.FromLegacy(old.Options) with { Mode = mode };
+            var session = RuntimeSessionFactory.Create(options, new DqnController(options.Network, options.Learning), observationKeys: old.ObservationKeys, actionKeys: old.ActionKeys);
+            try { if (!session.ObservationKeys.SequenceEqual(old.ObservationKeys) || !session.ActionKeys.SequenceEqual(old.ActionKeys)) throw new InvalidDataException("Legacy policy registry mismatch."); session.Controller.Import(Path.Combine(path, "weights.bin")); return session; }
             catch { session.Dispose(); throw; }
         }
         var manifest = Read(directory);
@@ -104,7 +104,7 @@ public static class RuntimeCheckpoint
             var installed = catalog.Read(new(expected.Id, expected.Version));
             if (!RuntimeSession.SameLogic(expected, installed with { Settings = expected.Settings })) throw new InvalidDataException($"Policy module changed: {expected.Id}.");
         }
-        var runtime = new RuntimeSession(manifest.Options, ControllerRegistry.Create(manifest.Options), catalog,
+        var runtime = RuntimeSessionFactory.Create(manifest.Options with { Mode = mode }, ControllerRegistry.Create(manifest.Options), catalog,
             manifest.ObservationKeys, manifest.ActionKeys);
         try
         {

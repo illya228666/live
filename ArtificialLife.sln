@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -48,6 +48,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Modules.Workbench", "src\ArtificialLife.Modules.Workbench\ArtificialLife.Modules.Workbench.csproj", "{E6C7AFD6-69A5-45F0-9E04-8D6CC569399C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Modules.SignalDiagnostic", "src\ArtificialLife.Modules.SignalDiagnostic\ArtificialLife.Modules.SignalDiagnostic.csproj", "{68D4B0CF-D2D9-47D1-A2D4-ECA0B79FB440}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Hosting", "src\ArtificialLife.Hosting\ArtificialLife.Hosting.csproj", "{F753D94B-BA64-4AFD-8266-1B90F6855712}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Observation.Contracts", "src\ArtificialLife.Observation.Contracts\ArtificialLife.Observation.Contracts.csproj", "{DEBBB1D1-1323-4D29-95A4-D9734F6DF48B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Packages", "src\ArtificialLife.Packages\ArtificialLife.Packages.csproj", "{D9FBCCB9-3B17-433C-9502-5D3EEC032A1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,6 +144,18 @@ Global
 		{5D7CC430-04C3-41AF-81FE-8139EB0E8925}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D7CC430-04C3-41AF-81FE-8139EB0E8925}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D7CC430-04C3-41AF-81FE-8139EB0E8925}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F753D94B-BA64-4AFD-8266-1B90F6855712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F753D94B-BA64-4AFD-8266-1B90F6855712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F753D94B-BA64-4AFD-8266-1B90F6855712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F753D94B-BA64-4AFD-8266-1B90F6855712}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEBBB1D1-1323-4D29-95A4-D9734F6DF48B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEBBB1D1-1323-4D29-95A4-D9734F6DF48B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEBBB1D1-1323-4D29-95A4-D9734F6DF48B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEBBB1D1-1323-4D29-95A4-D9734F6DF48B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9FBCCB9-3B17-433C-9502-5D3EEC032A1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9FBCCB9-3B17-433C-9502-5D3EEC032A1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9FBCCB9-3B17-433C-9502-5D3EEC032A1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9FBCCB9-3B17-433C-9502-5D3EEC032A1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{68D4B0CF-D2D9-47D1-A2D4-ECA0B79FB440} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
@@ -160,5 +178,8 @@ Global
 		{557FE461-616D-4C77-8328-F58BA6F7A1DA} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 		{8BEB21F0-E0CB-495B-A812-8E429216E458} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 		{5D7CC430-04C3-41AF-81FE-8139EB0E8925} = {5709A66F-E874-4EAE-8F86-369D9234B37D}
+		{F753D94B-BA64-4AFD-8266-1B90F6855712} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
+		{DEBBB1D1-1323-4D29-95A4-D9734F6DF48B} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
+		{D9FBCCB9-3B17-433C-9502-5D3EEC032A1D} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 	EndGlobalSection
 EndGlobal

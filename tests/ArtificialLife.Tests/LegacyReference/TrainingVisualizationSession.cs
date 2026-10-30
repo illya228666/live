@@ -86,10 +86,9 @@ public sealed class TrainingVisualizationSession : IDisposable
     public void ResetTraining()
     {
         ObjectDisposedException.ThrowIf(disposed, this);
-        var presentation = runtime?.PresentationHost;
         evaluation?.Dispose(); evaluation = null; evaluationMetrics = null;
         runtime?.Dispose();
-        runtime = new(options, ControllerRegistry.Create(options), presentationHost: presentation);
+        runtime = new(options, ControllerRegistry.Create(options));
         metrics = new(visualOptions.RollingMetricWindow);
         history.Clear(); trail.Clear(); life++;
     }

@@ -1,39 +1,41 @@
 # Architecture
 
-## Primary continuous runtime
-
-`RuntimeSession` is the shared owner used by CLI `live` and Godot training. It loads exact package versions, stages migrations on copied host-owned value state, validates the complete candidate, then switches between decisions without resetting the life or brain. `IAgentController`, `IMotivationPolicy`, module/component/provider contracts and neutral snapshots live in Core. The current DQN adapter owns tensors, replay, optimizer and learning schedules. Package-owned Godot code uses a separate shared presentation contract.
-
-See [runtime-modules.md](runtime-modules.md) for the authoritative runtime interfaces, activation/error semantics, revisioned replay, v2 exports and authoring workflow. The following detailed numerical descriptions also document the original static **episodic compatibility adapter**, retained for benchmarks and v1 policy import. New extensions use the runtime package path rather than that adapter.
-
-## Responsibility and dependency boundaries
-
-The simulation can run without Godot. A future server would use the same `SimulationSession`, action selection and physics; it would replace the current presentation adapter. No engine lifecycle or pixel coordinate participates in training.
+All production modes use `RuntimeSessionFactory` and `RuntimeSession.Step` in Application.
+World Only omits the controller; Inference/Evaluation disable learning; continuous
+Learning keeps the world alive; bounded training passes terminal before replacing
+an episode. Research composes phases and independent evaluation worlds over this
+same step. The old static orchestration exists only in tests/LegacyReference for
+numerical/checkpoint regression; policy v1 import uses a format adapter.
 
 | Project | Responsibility | References |
 | --- | --- | --- |
-| Core | Spatial world, entity component storage, contracts, legal movement, reward | BCL |
-| Modules.Temperature | Thermal body/field, sensory tokens and drive | Core |
-| Modules.Vision | Visual appearance, replaceable backend, relative perceptions and sensory tokens | Core |
-| Modules.Hunger | Bounded hunger, nutrition/contact feeding, sensory token and drive | Core |
-| Brain | Generic tensors, Q model, replay and learning | Core, TorchSharp/LibTorch |
-| Application | Composition, configuration, training/evaluation, checkpoint schema, snapshots | Core, Brain, Temperature, Vision, Hunger |
-| Cli | Command parsing and console diagnostics | Application |
-| Godot | Rendering, input and human-speed stepping | Application, Godot SDK |
+| Core | Physical/module contracts, value state, neutral RuntimeFrame | BCL |
+| Modules | Physics, observations, actions and motivation | Core |
+| Brain | Controllers, tensors, optimizer and replay | Core, TorchSharp |
+| Packages | Catalogue, integrity, import and assembly loading | Core |
+| Application | Session factory, execution, policies, evaluations and research | Core, Brain, Packages, Observation.Contracts |
+| Hosting | Supervisor/Worker, validation, watchdog, commands and WebSocket | Application, Packages, Observation.Contracts |
+| Observation.Contracts | Versioned DTOs and independent client | Core |
+| Godot.Contracts | Scoped graphical extensions | Core, Godot SDK |
+| Godot | Independent viewer, input, camera and resources | Packages, Observation.Contracts, Godot.Contracts |
+| CLI | Launch/control wrappers | Hosting |
 
-The episodic compatibility composition root is `SimulationSession`. The primary continuous composition is package-driven through `RuntimeSession`, without mechanic-specific factories. Modules register only the capabilities they need.
+See [Runtime/Observation](observation-runtime.md) for protocol, lifecycle and
+launch commands, and [module authoring](runtime-modules.md) for activation contracts.
 
-`Entity` stores a position and module-owned components by CLR type. `AgentState` extends it with an observer orientation in radians; movement does not rotate the body. `ThermalBody` belongs to the temperature module, so Core has no body-temperature field. `WorldState` contains spatial limits, a clock and an entity collection. Providers receive this context and the relevant agent.
+## Numerical/component reference
 
-`SimulationSession` creates one fire entity with independent `HeatEmitter` and `VisualAppearance(Disc)` components. Temperature sums the fields of all heat emitters at their entity positions. It creates no fire and assumes no source location. Snapshots read the same fire entity. The root registers `FoodSpawner` and creates no initial food. Spawned apples carry `Apple`, `Nutrition(0.20)` and `VisualAppearance(Diamond)` components.
-
-`Simulation` receives the initial entity collection and restores its membership on explicit episode reset. Module systems reset their own mutable components; hunger and the agent orientation reset to zero. Continuous life has no automatic world reset or starvation death. Food arrives on an independent tick schedule.
+The descriptions below retain the original physical formulas and legacy CLR type
+names. Production packages use `RuntimeWorld` value components and registered
+systems. They preserve these formulas; they do not instantiate a second
+SimulationSession or TrainingEngine. Module migration initializes new entities;
+world restore registers systems against saved state without initialization.
 
 ## Hunger and food
 
 `HungerModule` references only Core and implements `IWorldSystem`, `IObservationProvider` and `IDriveProvider`. Its `HungerState.Level` starts at zero, grows linearly by `GrowthPerSecond * elapsedSeconds` and is bounded to [0, 1]. After growth, the system consumes any entity with `Nutrition` at distance <= `EatRadius`, subtracts its `HungerReduction` in percentage points, clamps at zero and removes the entity. Nutrition does not require an appearance, and an appearance does not imply nutrition; there is no special apple type in the module.
 
-`FoodSpawner : IWorldSystem` lives in Application, where nutrition and appearance can be composed without coupling their modules. `FoodSpawnerOptions` defaults to `SpawnIntervalTicks = 200`, `MaxApples = 8`, and `MinSpawnDistanceFromAgent = 10`. Every interval, capacity permitting, one apple appears at a random world position at least that distance from the current agent. The spawner retains the seeded simulation RNG supplied at reset. Up to 256 rejection attempts prevent restrictive or impossible distances from hanging the simulation; unsuccessful attempts wait for the next interval. Eating never schedules a replacement. Reset clears food and restarts the schedule. Defaults in `HungerOptions` are growth 0.001 per second and eating radius 2. Apples reduce hunger by 0.20 at contact; there is no eating action or direct food reward.
+The legacy `FoodSpawner : IWorldSystem` corresponds to the production Food module, which composes nutrition and appearance without coupling their modules. `FoodSpawnerOptions` defaults to `SpawnIntervalTicks = 200`, `MaxApples = 8`, and `MinSpawnDistanceFromAgent = 10`. Every interval, capacity permitting, one apple appears at a random world position at least that distance from the current agent. The spawner retains the seeded simulation RNG supplied at reset. Up to 256 rejection attempts prevent restrictive or impossible distances from hanging the simulation; unsuccessful attempts wait for the next interval. Eating never schedules a replacement. Reset clears food and restarts the schedule. Defaults in `HungerOptions` are growth 0.001 per second and eating radius 2. Apples reduce hunger by 0.20 at contact; there is no eating action or direct food reward.
 
 World snapshots copy every existing apple into an immutable value collection and include hunger and total spawned count. Godot draws every apple from this collection on each frame, so removed entities disappear without presentation timers or direct Simulation access.
 
@@ -70,28 +72,31 @@ The added observation keys require retraining older policies: checkpoint registr
 
 Diagonal movement is normalized to the same speed as cardinal movement. Boundary-crossing candidates are omitted instead of clamped into duplicate actions. Stay is always legal. Public `Simulation.Step` rejects fabricated candidates as well as invalid boundary moves.
 
-Headless training uses 400-step episodes, randomized starting positions, body temperatures and field phases. Replay receives the final state and terminal flag before the next reset. Those benchmark time-limit transitions intentionally do not bootstrap. Godot Live Training uses a continuous lifecycle, so these limits produce neither terminal transitions nor resets. Frozen checkpoint visualization also runs continuously.
+Headless training uses 400-step episodes, randomized starting positions, body temperatures and field phases. Replay receives the final state and terminal flag before the next reset. Those benchmark time-limit transitions intentionally do not bootstrap. Live Training in the Host uses a continuous lifecycle, so these limits produce neither terminal transitions nor resets. Frozen checkpoint visualization also runs continuously.
 
-## Presentation boundary
+## Presentation and execution ownership
 
-`VisualizationSession` owns a frozen policy and simulation. It returns immutable `WorldViewModel`, `AgentViewModel` and `HeatSourceViewModel` records containing only primitives. The Godot script maps those numbers into its viewport and maintains cosmetic trails and a history chart. Rendering cannot affect physical state or rewards.
+The Host owns the mutable world/controller on one thread. Commands are applied at
+step boundaries. Network tasks serialize shared immutable publications and send
+them through one sender per connection. No observers means no network snapshots;
+heartbeat and required research measurements remain independent.
 
-The Godot adapter advances fixed simulation steps using a wall-clock accumulator. The headless trainer has no accumulator or delays. Engine framerate therefore never affects the experiment's physical timestep.
+Godot runs as a separate process. Its WebSocket client receives full state and
+resources, then changes Godot objects only on the main thread. It interpolates
+presentation positions without advancing physics. Closing Viewer or Launcher
+leaves Host running. Frame rate, observation rate and simulation pacing are separate.
+There is no simulation work budget in Godot.
 
-## Incremental live training
-
-`TrainingEngine.AdvanceOne` contains the shared transition logic: epsilon selection, simulation step, replay insertion, DQN update and reset on terminal. `SimulationLifecycle` explicitly distinguishes `Episodic` (the default for CLI training) from `Continuous` (selected by `TrainingVisualizationSession`). Only episodic simulations produce terminal transitions at `EpisodeSteps`. Continuous simulations initialize once in `SimulationSession`; the engine neither initializes a second body nor resets at the old boundaries. `Trainer.Run` retains its loop/logging. Live training uses the same engine, with rolling metrics, bounded histories and copied read-only snapshots.
-
-Godot can request many training steps without changing the physical timestep. It caps each batch and checks a time budget between complete steps, then returns to input/render processing. All mutable brain/world state has one synchronous owner on the Godot thread; rendering receives primitive records, not tensor aliases or mutable simulation references. Closing the node disposes the Application session and its brain.
-
-Episodic terminal samples are recorded before reset. Live training has no automatic terminal/reset boundary: world time, position, body temperature, fire phase, brain, optimizer, replay and epsilon progression continue through the entire life. Its HUD shows Life, Age and TrainingStep; histories evict old samples without clearing at `EpisodeSteps`. Ctrl + Shift + R disposes the old brain/optimizer and creates a new seeded brain, replay, body and world, resets training counters and increments the life number. Frozen evaluation uses a separate continuous simulation and a greedy scorer that does not consume the training exploration/replay RNG; training state is suspended intact. Histories clear on mode switches and new life.
-
-The checkpoint schema stays at version 1. Its existing `TrainingSteps` metadata now accepts an explicit completed count when live training saves; the configured headless step budget remains in the original configuration. CLI evaluation reads the completed count from that metadata instead of reporting a planned training budget as completed work.
+Temporary evaluation forks a frozen controller and creates an explicitly linked
+child session. The original learner/world stays suspended and resumes intact.
+Policy checkpoints do not promise optimizer/replay/controller RNG recovery;
+Learning state loss ends the run explicitly. C# graphical upgrades can require a
+Viewer restart independently of the world.
 
 ## Reproducibility
 
 World resets use a managed seed. Torch initialization, epsilon exploration and replay sampling are seeded. Torch runs on a single CPU thread. Bit-identical results across operating systems/native library versions are not promised; tool and package pins narrow that variability.
 
-Checkpoints record ordered logical type keys and all configuration. SHA256 detects a corrupt or mismatched weights file. Individual files are replaced through temporary paths; the pair is not a transactional filesystem object, but checksum validation detects an interrupted inconsistent save. Checkpoints contain inference weights, not optimizer/replay state.
+Checkpoints record ordered logical type keys and all configuration. SHA256 detects a corrupt or mismatched weights file. Current policy/world formats publish immutable generations through an atomic checksummed pointer; the v1 read adapter retains legacy validation. Checkpoints contain inference weights, not optimizer/replay state.
 
 NuGet lock files were generated for the verified Windows platform. A future cross-platform CI matrix should maintain separate platform lock files before claiming locked Linux reproducibility.

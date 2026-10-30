@@ -99,8 +99,23 @@ public sealed record RuntimeFrame(double Width, double Height, long Age, double 
 }
 
 public sealed record ModuleDependency(string Id, string Version);
+public sealed record VisualBinding(string Property, string Component, string Field, double Scale = 1, double Offset = 0);
+public sealed record VisualDefinition(string Key, string Component)
+{
+    public string? Scene { get; init; }
+    public string? Sprite { get; init; }
+    public string? Animation { get; init; }
+    public int Frames { get; init; } = 1;
+    public double FramesPerSecond { get; init; } = 8;
+    public double Scale { get; init; } = 1;
+    public int Layer { get; init; }
+    public string Color { get; init; } = "68dfbe";
+    public bool Pulse { get; init; }
+    public VisualBinding[] Bindings { get; init; } = [];
+}
 public sealed record ModuleManifest(string Id, string Version, int ApiVersion, string Assembly, string EntryType)
 {
+    public VisualDefinition[] Visuals { get; init; } = [];
     public bool SupportsWorldOnly { get; init; }
     public ModuleDependency[] Dependencies { get; init; } = [];
     public string[] Provides { get; init; } = [];
@@ -216,10 +231,4 @@ public interface IAgentController : IDisposable
     IAgentController CreateInferenceController() => throw new NotSupportedException("This controller does not implement isolated evaluation.");
 }
 
-/// <summary>Presentation preparation must not mutate simulation or expose a live world reference.</summary>
-public interface IPreparedPresentation : IDisposable { void Commit(); }
 public sealed record PresentationPackage(ModuleManifest Manifest, string Directory);
-public interface IRuntimePresentationHost
-{
-    IPreparedPresentation Prepare(IReadOnlyList<PresentationPackage> packages, RuntimeFrame frame);
-}

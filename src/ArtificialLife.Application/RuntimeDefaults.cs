@@ -18,7 +18,7 @@ public static class RuntimeDefaults
         string root = RepositoryRoot();
         return new()
         {
-            World = options.World, Network = options.Network, Learning = options.Learning,
+            World = options.World, Network = options.Network, Learning = options.Learning, Evaluation = options.Evaluation,
             PackageRoot = Path.Combine(root, "artifacts", "packages"), Inbox = Path.Combine(root, "artifacts", "activation"),
             Packages = (hunger ? new[] { "movement", "vision", "temperature", "homeostasis", "hunger", "food" } : ["movement", "vision", "temperature", "homeostasis"])
                 .Select(id => new PackageReference(id, "1.0.0")).ToArray(),

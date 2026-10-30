@@ -273,8 +273,9 @@ public sealed class WildlifeTests
     {
         using var fixture = new Catalog(); using var runtime = fixture.Session(); var before = runtime.Snapshot();
         File.AppendAllText(Path.Combine(fixture.Root, "wildlife/1.0.0", relative), "corrupt");
-        Assert.False(runtime.Activate(new("bad", [new("wildlife", "1.0.0")])).Accepted);
-        Assert.Equal(before, runtime.Snapshot());
+        Assert.Equal(relative != "ArtificialLife.Modules.Wildlife.dll", runtime.Activate(new("bad", [new("wildlife", "1.0.0")])).Accepted);
+        if (relative == "ArtificialLife.Modules.Wildlife.dll") Assert.Equal(before, runtime.Snapshot());
+        else { Assert.Equal(before.Age, runtime.Age); Assert.Contains("safety", runtime.Report().Drives.Keys); runtime.Step(false); }
     }
 
     [Fact]

@@ -21,7 +21,7 @@ public static class ScenarioSuitability
     public static ScenarioDescription Describe(ExperimentDefinition definition)
     {
         var job = definition.Jobs().First();
-        using var runtime = new RuntimeSession(job.Runtime, new InspectionController());
+        using var runtime = RuntimeSessionFactory.Create(job.Runtime, new InspectionController());
         var conditions = new List<RuntimeOptions>();
         var factors = new HashSet<string>(StringComparer.Ordinal);
         var evidence = new List<object>();
@@ -38,7 +38,7 @@ public static class ScenarioSuitability
                 Packages = runtime.Packages.Select(m => new PackageReference(m.Id, m.Version)).ToArray(),
                 Settings = runtime.Packages.ToDictionary(m => m.Id, m => m.Settings.Clone())
             };
-            using var evaluation = new RuntimeSession(options, new InspectionController());
+            using var evaluation = RuntimeSessionFactory.Create(options, new InspectionController());
             foreach (string key in evaluation.Report().Drives.Keys) factors.Add(key);
             conditions.Add(options);
             evidence.Add(new

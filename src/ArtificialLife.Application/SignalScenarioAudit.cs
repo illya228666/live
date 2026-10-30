@@ -22,7 +22,7 @@ public static class SignalScenarioAudit
         foreach (string policy in new[] { "constant-first", "constant-last", "random", "oracle" })
         {
             using var controller = new ReferenceController(policy, seed);
-            using var runtime = new RuntimeSession(description.Conditions[condition] with { WorldSeed = seed }, controller);
+            using var runtime = RuntimeSessionFactory.Create(description.Conditions[condition] with { WorldSeed = seed }, controller);
             var evaluators = BehaviorEvaluators.Create(definition.Behavior);
             double reward = 0;
             for (int i = 0; i < definition.EvaluationSteps; i++)

@@ -39,7 +39,7 @@ public static class ContinualExperiment
         {
             var experiment = options.Experiment with { Learning = options.Experiment.Learning with { Seed = seed } };
             var beforeOptions = RuntimeDefaults.FromLegacy(experiment, hunger: false);
-            using var runtime = new RuntimeSession(beforeOptions, new DqnController(experiment.Network, experiment.Learning));
+            using var runtime = RuntimeSessionFactory.Create(beforeOptions, new DqnController(experiment.Network, experiment.Learning), trialId: $"continual/seed-{seed}");
             for (int i = 0; i < options.BeforeSteps; i++)
             {
                 runtime.AdvanceOne();
@@ -60,10 +60,10 @@ public static class ContinualExperiment
             string adaptedPath = Path.Combine(working, $"{seed}-adapted");
             RuntimeCheckpoint.Save(adaptedPath, runtime);
             int[] evaluationSeeds = pilot ? [seed + 10000, seed + 20000] : options.EvaluationSeeds;
-            var pretrained = Evaluate(pretrainedPath, evaluationSeeds, options.EvaluationSteps, false);
-            var frozen = Evaluate(frozenPath, evaluationSeeds, options.EvaluationSteps, false);
-            var random = Evaluate(frozenPath, evaluationSeeds, options.EvaluationSteps, true);
-            var adapted = Evaluate(adaptedPath, evaluationSeeds, options.EvaluationSteps, false);
+            var pretrained = Evaluate(pretrainedPath, evaluationSeeds, options.EvaluationSteps, false, runtime.ObservationSessionId);
+            var frozen = Evaluate(frozenPath, evaluationSeeds, options.EvaluationSteps, false, runtime.ObservationSessionId);
+            var random = Evaluate(frozenPath, evaluationSeeds, options.EvaluationSteps, true, runtime.ObservationSessionId);
+            var adapted = Evaluate(adaptedPath, evaluationSeeds, options.EvaluationSteps, false, runtime.ObservationSessionId);
             results.Add(new(seed, pretrained, frozen, random, adapted, ageBefore, runtime.Snapshot().Age, updatesBefore, runtime.Controller.Status.Updates));
             Console.WriteLine($"CONTINUAL seed={seed} hunger frozen={frozen.Drives["hunger"].MeanNormalizedError:F4} random={random.Drives["hunger"].MeanNormalizedError:F4} adapted={adapted.Drives["hunger"].MeanNormalizedError:F4} temperature pretrained={pretrained.Drives["temperature"].MeanNormalizedError:F4} frozen={frozen.Drives["temperature"].MeanNormalizedError:F4} adapted={adapted.Drives["temperature"].MeanNormalizedError:F4}");
             // Partial reports preserve expensive completed runs if a later run fails.
@@ -97,15 +97,15 @@ public static class ContinualExperiment
         var report = new ContinualReport(pilot, complete && ratioFrozen <= 0.8 && ratioRandom <= 0.8 && thermal <= limit, seconds, ratioFrozen, ratioRandom, thermal, limit, config, results.ToArray());
         return report;
     }
-    private static EvaluationMetrics Evaluate(string policyPath, int[] seeds, int steps, bool random)
+    private static EvaluationMetrics Evaluate(string policyPath, int[] seeds, int steps, bool random, string? parentSessionId)
     {
         var manifest = RuntimeCheckpoint.Read(policyPath);
         var metrics = new MetricAccumulator();
         foreach (int seed in seeds)
         {
-            var options = manifest.Options with { WorldSeed = seed, ControllerSeed = seed, Learning = manifest.Options.Learning with { Seed = seed } };
-            using var runtime = new RuntimeSession(options, new DqnController(options.Network, options.Learning),
-                observationKeys: manifest.ObservationKeys, actionKeys: manifest.ActionKeys);
+            var options = manifest.Options with { Mode = RuntimeMode.Evaluation, WorldSeed = seed, ControllerSeed = seed, Learning = manifest.Options.Learning with { Seed = seed } };
+            using var runtime = RuntimeSessionFactory.Create(options, new DqnController(options.Network, options.Learning),
+                observationKeys: manifest.ObservationKeys, actionKeys: manifest.ActionKeys, parentSessionId: parentSessionId);
             runtime.Controller.Import(Path.Combine(RuntimeCheckpoint.Resolve(policyPath), "weights.bin"));
             runtime.Controller.ImportInferenceState(manifest.ControllerState);
             if (random) ((DqnController)runtime.Controller).EvaluationRandom = new(seed);

@@ -1,6 +1,15 @@
 # Live Training
 
-The current implementation uses the shared package-driven `RuntimeSession` in both Godot and CLI `live`. The detailed lifecycle description below also records the earlier static implementation; its `TrainingEngine`/`SimulationSession` composition now serves the episodic compatibility benchmark. The authoritative current contracts, generic snapshots, package-owned graphics and v2 policy export are described in [runtime-modules.md](runtime-modules.md).
+Current live training runs in a protected World Host through RuntimeSession.Step;
+Godot is an independent WebSocket Viewer. Closing Viewer does not dispose the
+learner. Use [current launch/controls](launcher.ru.md) and
+[Runtime/Observation](observation-runtime.md) for the executable workflow.
+
+The lifecycle descriptions and measured results below document the earlier static
+implementation and are retained as historical evidence. Its orchestration types
+now live only under tests/LegacyReference. Old smoke flags and Godot ownership
+statements below are historical, not current launch instructions. No scientific
+results have been rerun or reapproved by the runtime refactor.
 
 `./tools/run-godot.ps1 -Train` starts one continuous life. The agent, thermal body and world initialize once. Position, body temperature, world time and fire phase continue through every former `EpisodeSteps` boundary. The brain, optimizer, replay and epsilon schedule also continue; transitions at those boundaries are nonterminal.
 

@@ -105,14 +105,14 @@ public sealed class BrainTests
             var session = new SimulationSession(new ExperimentOptions());
             using var brain = new DqnBrain(session.Options.Network, session.Options.Learning);
             float[] before = brain.Scores(session.Simulation.Observe(), session.Simulation.LegalActions());
-            Checkpoint.Save(directory, session, brain);
+            LegacyCheckpoint.Save(directory, session, brain);
             using var loaded = new DqnBrain(session.Options.Network, session.Options.Learning with { Seed = 99 });
-            Checkpoint.Load(directory, session, loaded);
+            LegacyCheckpoint.Load(directory, session, loaded);
             Assert.Equal(before, loaded.Scores(session.Simulation.Observe(), session.Simulation.LegalActions()));
             session.Observations.Register("new-sense");
-            Assert.Throws<InvalidDataException>(() => Checkpoint.Load(directory, session, loaded));
+            Assert.Throws<InvalidDataException>(() => LegacyCheckpoint.Load(directory, session, loaded));
             File.AppendAllText(Path.Combine(directory, "weights.bin"), "corrupt");
-            Assert.Throws<InvalidDataException>(() => Checkpoint.Read(directory));
+            Assert.Throws<InvalidDataException>(() => LegacyCheckpoint.Read(directory));
         }
         finally
         {

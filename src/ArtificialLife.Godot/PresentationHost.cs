@@ -1,4 +1,4 @@
-using ArtificialLife.Application;
+using ArtificialLife.Packages;
 using ArtificialLife.Core;
 using ArtificialLife.Godot.Contracts;
 using Godot;
@@ -18,9 +18,9 @@ public sealed class PresentationHost(Node2D canvas, Rect2 viewport) : IRuntimePr
         {
             foreach (var package in packages.OrderBy(p => p.Manifest.PresentationOrder).ThenBy(p => p.Manifest.Id, StringComparer.Ordinal))
             {
-                if (package.Manifest.PresentationAssembly is null) continue;
-                var loaded = new LoadedPresentation(package, canvas, viewport, frame);
-                prepared.Add(loaded);
+                if (package.Manifest.PresentationAssembly is null && package.Manifest.Visuals.Length == 0) continue;
+                try { var loaded = new LoadedPresentation(package, canvas, viewport, frame); prepared.Add(loaded); }
+                catch (Exception ex) { LastError = ex.Message; GD.PushWarning("Presentation fallback: " + ex.Message); }
             }
             return new Prepared(this, prepared);
         }
@@ -69,11 +69,32 @@ public sealed class PresentationHost(Node2D canvas, Rect2 viewport) : IRuntimePr
         public WeakReference Reference { get; }
         public LoadedPresentation(PresentationPackage package, Node2D canvas, Rect2 viewport, RuntimeFrame frame)
         {
+            Context = new(canvas, viewport, frame.Width, frame.Height, package.Directory, package.Manifest);
+            if (package.Manifest.Visuals.Length > 0)
+            {
+                Reference = new(new object());
+                var items = new List<IGodotPresentation>();
+                try
+                {
+                    if (package.Manifest.PresentationAssembly is string dependency)
+                    {
+                        // Godot C# scene types register in the default context. Replacing
+                        // such an assembly can require a Viewer restart, independently of World.
+                        var assembly = System.Reflection.Assembly.LoadFrom(PackageCatalog.FileWithin(package.Directory, dependency));
+                        if (package.Manifest.PresentationType is string entry)
+                            items.Add((IGodotPresentation)Activator.CreateInstance(assembly.GetType(entry, true)!)!);
+                    }
+                    items.Add(new DeclarativePresentation());
+                    renderer = new CombinedPresentation(items);
+                    renderer.Prepare(Context, frame);
+                }
+                catch { Dispose(); throw; }
+                return;
+            }
             string path = PackageCatalog.FileWithin(package.Directory, package.Manifest.PresentationAssembly!);
             string type = package.Manifest.PresentationType!;
             context = new(path, typeof(IGodotPresentation).Assembly, typeof(Node2D).Assembly);
             Reference = new(context);
-            Context = new(canvas, viewport, frame.Width, frame.Height, package.Directory, package.Manifest);
             try
             {
                 renderer = (IGodotPresentation)Activator.CreateInstance(context.LoadPluginAssembly(path).GetType(type, true)!)!;
@@ -91,5 +112,12 @@ public sealed class PresentationHost(Node2D canvas, Rect2 viewport) : IRuntimePr
                 finally { context?.Unload(); context = null; }
             }
         }
+    }
+    private sealed class CombinedPresentation(List<IGodotPresentation> items) : IGodotPresentation
+    {
+        public void Prepare(GodotPresentationContext context, RuntimeFrame initial) { foreach (var item in items) item.Prepare(context, initial); }
+        public void Update(RuntimeFrame frame) { foreach (var item in items) item.Update(frame); }
+        public void Draw() { foreach (var item in items) item.Draw(); }
+        public void Dispose() { foreach (var item in items) try { item.Dispose(); } catch (Exception ex) { GD.PushWarning(ex.Message); } items.Clear(); }
     }
 }

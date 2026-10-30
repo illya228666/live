@@ -1,9 +1,11 @@
 using System.Globalization;
 using System.Text.Json;
 using ArtificialLife.Application;
+using ArtificialLife.Hosting;
 using ArtificialLife.Brain;
 
 CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+using var observationHost = args.Contains("verify") ? null : new ObservationHost(args.FirstOrDefault() is "experiment" or "experiment-worker" or "continual" || args.FirstOrDefault()?.Contains("audit") == true);
 try
 {
     string command = args.FirstOrDefault() ?? "help";
@@ -18,16 +20,12 @@ try
     if (command == "experiment-worker") return ExperimentRunner.Worker(args.Skip(1).ToArray());
     if (command == "compare") return ExperimentComparison.Run(args.Skip(1).ToArray());
     if (command == "world") return WorldCommands.Run(args.Skip(1).ToArray());
-    if (command == "live") return RuntimeCommands.Live(args.Skip(1).ToArray());
+    if (command == "live") return WorldCommands.Run(new[] { "run", "--mode", "learning", "--directory", Path.Combine("artifacts", "worlds", "live-" + Guid.NewGuid().ToString("N")) }.Concat(args.Skip(1)).ToArray());
     if (command == "continual") return ContinualExperiment.Run(args.Skip(1).ToArray());
-    if (command == "evaluate" && args.Contains("--checkpoint"))
-    {
-        int checkpointIndex = Array.IndexOf(args, "--checkpoint");
-        if (checkpointIndex + 1 < args.Length && File.Exists(Path.Combine(args[checkpointIndex + 1], "current")))
-            return RuntimeCommands.EvaluatePolicy(args.Skip(1).ToArray());
-    }
+    if (command == "evaluate") return RuntimeCommands.EvaluatePolicy(args.Skip(1).ToArray());
     if (command == "help")
     {
+        Console.WriteLine("world run --mode world-only|learning|inference|evaluation --directory DIR [--config CONFIG | --policy CHECKPOINT | --restore WORLD_CHECKPOINT]\nworld list\nworld status|snapshot|pause|resume|speed|checkpoint|update|rollback|stop --session ID\nworld help");
         Console.WriteLine("experiment --config PATH --output DIR [--variant MOTIVATION--LEARNER]\ncompare --inputs DIR1,DIR2 --output DIR");
         Console.WriteLine("experiment options: --parallel N --threads-per-worker N --max-minutes N --trial-timeout-minutes N --stop-file PATH\nexperiment-prepare --config PATH --output NEW_DIR");
         Console.WriteLine("scenario-audit --config PATH --protocol PATH --output NEW_DIR\nscenario-describe --config PATH [--output PATH]\nscenario-validate-review --config PATH --review PATH");
@@ -54,7 +52,7 @@ try
         throw new ArgumentException("Evaluation uses the checkpoint configuration; --config is only valid for training.");
     }
     string checkpointPath = Path.GetFullPath(arguments.GetValueOrDefault("--checkpoint", "artifacts/checkpoints/thermal"));
-    ExperimentOptions options = command == "evaluate" ? Checkpoint.Read(checkpointPath).Options : ExperimentOptions.Load(arguments.GetValueOrDefault("--config", "configs/default.json"));
+    var options = RuntimeCommands.ReadOptions(arguments.GetValueOrDefault("--config", "configs/default.json"));
     if (arguments.TryGetValue("--steps", out string? steps))
     {
         if (command != "train")
@@ -63,45 +61,11 @@ try
         }
         options = options with { Learning = options.Learning with { TrainingSteps = int.Parse(steps, CultureInfo.InvariantCulture) } };
     }
-    var session = new SimulationSession(options);
-    using var brain = new DqnBrain(options.Network, options.Learning);
-    int[] seeds = options.Evaluation.Seeds;
-    EvaluationMetrics random = Evaluator.Run(session, null, seeds);
-    EvaluationMetrics untrained = Evaluator.Run(session, brain, seeds);
-    double seconds = 0;
-    if (command == "train")
-    {
-        Print("Random", random);
-        Print("Untrained", untrained);
-        seconds = Trainer.Run(session, brain, progress => Console.WriteLine(
-            $"step={progress.Step,7} epsilon={progress.Epsilon:F3} balance={progress.Metrics.MeanBalance:P1} reward={progress.Metrics.MeanReward:F3} needs=[{Needs(progress.Metrics)}] loss={progress.Loss:F4} replay={progress.ReplaySize} elapsed={progress.Seconds:F1}s"));
-        Checkpoint.Save(checkpointPath, session, brain);
-    }
-    else
-    {
-        Checkpoint.Load(checkpointPath, session, brain);
-    }
-    EvaluationMetrics trained = Evaluator.Run(session, brain, seeds);
-    Print("Trained", trained);
-    var perSeed = new List<SeedEvaluation>();
-    using var fresh = new DqnBrain(options.Network, options.Learning);
-    foreach (int seed in seeds)
-    {
-        perSeed.Add(new SeedEvaluation(seed, Evaluator.Run(session, null, [seed]), Evaluator.Run(session, fresh, [seed]), Evaluator.Run(session, brain, [seed])));
-    }
-    int completedTrainingSteps = command == "evaluate" ? Checkpoint.Read(checkpointPath).TrainingSteps : options.Learning.TrainingSteps;
-    var report = new EvaluationReport(DateTimeOffset.UtcNow, completedTrainingSteps, seconds, random, untrained, trained, perSeed.ToArray());
-    Directory.CreateDirectory(checkpointPath);
-    File.WriteAllText(Path.Combine(checkpointPath, command == "train" ? "evaluation.json" : "reevaluation.json"), JsonSerializer.Serialize(report, ExperimentOptions.Json));
-    Console.WriteLine($"Checkpoint: {checkpointPath}");
-    return 0;
+    return RuntimeTraining.Run(options, checkpointPath);
+
 }
 catch (Exception exception)
 {
     Console.Error.WriteLine($"ArtificialLife: {exception.Message}");
     return 1;
 }
-
-static void Print(string label, EvaluationMetrics metrics) => Console.WriteLine($"{label,-10} balance={metrics.MeanBalance:P1} reward={metrics.MeanReward:F4} needs=[{Needs(metrics)}]");
-
-static string Needs(EvaluationMetrics metrics) => string.Join(", ", metrics.Drives.Select(pair => $"{pair.Key}={pair.Value.MeanSatisfaction:P1}"));

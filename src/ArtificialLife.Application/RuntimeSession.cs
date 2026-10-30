@@ -5,7 +5,7 @@ using ArtificialLife.Core;
 namespace ArtificialLife.Application;
 
 [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<RuntimeMode>))]
-public enum RuntimeMode { Learning, WorldOnly }
+public enum RuntimeMode { Learning, WorldOnly, Inference, Evaluation, Research }
 
 public sealed record RuntimeOptions
 {
@@ -13,6 +13,7 @@ public sealed record RuntimeOptions
     public WorldOptions World { get; init; } = new();
     public ArtificialLife.Brain.NetworkOptions Network { get; init; } = new();
     public ArtificialLife.Brain.LearningOptions Learning { get; init; } = new();
+    public EvaluationOptions Evaluation { get; init; } = new();
     public ControllerSelection? Controller { get; init; }
     public int? ControllerSeed { get; init; }
     public int? WorldSeed { get; init; }
@@ -38,15 +39,22 @@ public sealed class RuntimeSession : IDisposable
     private readonly List<WeakReference> retired = [];
     private IReadOnlyList<ModuleManifest>? restoration;
     private bool disposed;
+    private IRuntimeObservation? observation;
     private readonly int ownerThread = Environment.CurrentManagedThreadId;
-    private readonly IAgentController? controller;
+    private IAgentController? controller;
+    private readonly bool ownsController;
     public IAgentController Controller => controller ?? throw new InvalidOperationException("World Only has no controller.");
+    public bool OwnsController => ownsController;
     public bool WorldOnly => Options.Mode == RuntimeMode.WorldOnly;
     public IReadOnlyDictionary<string, double> SystemMilliseconds => systemMilliseconds;
     private readonly Dictionary<string, double> systemMilliseconds = new();
-    public IRuntimePresentationHost? PresentationHost { get; set; }
     public long Age => world.Age;
     public long Revision { get; private set; }
+    public long MetadataRevision { get; private set; }
+    public long ObservationFramesCaptured => observation?.FramesCaptured ?? 0;
+    public string? ObservationSessionId => observation?.SessionId;
+    public string? ParentSessionId { get; }
+    public string? TrialId { get; }
     public string? Fault { get; private set; }
     public double LastReward { get; private set; }
     public IReadOnlyList<string> ObservationKeys => observations.Keys;
@@ -58,14 +66,16 @@ public sealed class RuntimeSession : IDisposable
     public Action<AgentTransition>? TrajectorySink { get; set; }
 
     public RuntimeSession(RuntimeOptions options, IAgentController? controller = null, PackageCatalog? catalog = null,
-        IEnumerable<string>? observationKeys = null, IEnumerable<string>? actionKeys = null, IRuntimePresentationHost? presentationHost = null, RuntimeWorld? restoredWorld = null, IReadOnlyList<ModuleManifest>? restoredModules = null)
+        IEnumerable<string>? observationKeys = null, IEnumerable<string>? actionKeys = null, RuntimeWorld? restoredWorld = null, IReadOnlyList<ModuleManifest>? restoredModules = null, bool ownsController = true, string? parentSessionId = null, string? trialId = null)
     {
         if (!Enum.IsDefined(options.Mode)) throw new ArgumentException("Unknown runtime mode.");
         Options = options;
+        ParentSessionId = parentSessionId;
+        TrialId = trialId;
         options.World.Validate();
         if ((options.Mode == RuntimeMode.WorldOnly) != (controller is null)) throw new ArgumentException("World Only requires no controller; learning requires one.");
         this.controller = controller;
-        PresentationHost = presentationHost;
+        this.ownsController = ownsController;
         this.catalog = catalog ?? new(options.PackageRoot);
         observations = new(controller?.Limits.ObservationTypes ?? int.MaxValue);
         actions = new(controller?.Limits.ActionTypes ?? int.MaxValue);
@@ -83,6 +93,7 @@ public sealed class RuntimeSession : IDisposable
         var outcome = Activate(new("initial", options.Packages));
         restoration = null;
         if (!outcome.Accepted) { Dispose(); throw new InvalidDataException(outcome.Message); }
+        try { observation = RuntimeObservation.Attach?.Invoke(this); } catch (Exception ex) { Console.Error.WriteLine("Observation unavailable: " + ex.Message); }
     }
 
     public void Enqueue(ActivationRequest request) { CheckOwner(); ObjectDisposedException.ThrowIf(disposed, this); pending.Enqueue(request); }
@@ -103,7 +114,7 @@ public sealed class RuntimeSession : IDisposable
         var loaded = new List<LoadedRuntimeModule>();
         List<LoadedRuntimeModule>? replaced = null;
         bool committed = false;
-        IPreparedPresentation? prepared = null;
+
         try
         {
             if (string.IsNullOrWhiteSpace(request.Id) || (!WorldOnly && request.Packages.Length == 0) || request.Packages.Select(p => p.Id).Distinct().Count() != request.Packages.Length)
@@ -178,9 +189,7 @@ public sealed class RuntimeSession : IDisposable
             ValidateTokens(Observe(loaded, candidate), nextObservations.Keys.Count);
             ValidateCandidates(LegalActions(loaded, candidate), nextActions.Keys.Count);
             long revision = changed ? checked(Revision + 1) : Revision;
-            prepared = PresentationHost?.Prepare(loaded.Select(m => new PresentationPackage(CopyManifest(m.Manifest), m.Directory)).ToArray(), Capture(candidate, revision));
-            // Prepare/Commit contract: all fallible allocations happen in Prepare; Commit only attaches prepared resources.
-            prepared?.Commit();
+            bool metadataChanged = changed || !modules.Select(m => (m.Manifest.Id, m.Manifest.Version)).SequenceEqual(loaded.Select(m => (m.Manifest.Id, m.Manifest.Version)));
             replaced = modules;
             modules = loaded;
             loaded = [];
@@ -190,11 +199,13 @@ public sealed class RuntimeSession : IDisposable
             actions = nextActions;
             componentKeys = knownComponents;
             Revision = revision;
+            if (metadataChanged) MetadataRevision++;
             committed = true;
             controller?.SchemaChanged(observations.Keys, actions.Keys);
             if (changed) controller?.ConditionsChanged(Revision);
             foreach (var old in replaced) Retire(old);
             replaced = null;
+            Notify("modules-activated");
             return LastActivation = new(request.Id, true, changed ? "Conditions activated." : "Presentation activated; learning conditions preserved.", Revision);
         }
         catch (Exception ex)
@@ -208,22 +219,27 @@ public sealed class RuntimeSession : IDisposable
         }
         finally
         {
-            prepared?.Dispose();
+
             foreach (var item in loaded) Retire(item);
             if (replaced is not null) foreach (var item in replaced) Retire(item);
             if (retired.Count > 256) retired.RemoveAll(r => !r.IsAlive);
         }
     }
 
-    public TrainingSample AdvanceOne(bool learning = true)
+    public TrainingSample AdvanceOne(bool learning = true) => Step(learning);
+
+    public TrainingSample Step(bool learning = true, bool terminal = false)
     {
+        learning = learning && (Options.Mode is RuntimeMode.Learning or RuntimeMode.Research);
         CheckOwner();
         ObjectDisposedException.ThrowIf(disposed, this);
         if (Fault is not null) throw new InvalidOperationException(Fault);
         while (pending.TryDequeue(out var request)) Activate(request);
         if (Fault is not null) throw new InvalidOperationException(Fault);
+        observation?.BeforeStep();
         try
         {
+            if (WorldOnly) { AdvancePhysics(); TickObservation(); return new(world.Age, 1, world.Age, 0, 0, HomeostasisReport.Measure([]), 0, false); }
             var state = Observe();
             var legal = LegalActions();
             var action = Controller.Choose(CloneTokens(state), CloneActions(legal), learning);
@@ -237,28 +253,42 @@ public sealed class RuntimeSession : IDisposable
             var next = Observe();
             var candidates = LegalActions();
             var report = Report();
-            var transition = new AgentTransition(state, action, LastReward, next, candidates, false, Revision);
+            var transition = new AgentTransition(state, action, LastReward, next, candidates, terminal, Revision);
             if (learning) Controller.Receive(transition);
             TrajectorySink?.Invoke(transition with
             {
-                State = CloneTokens(state), NextState = CloneTokens(next),
-                Action = action with { Parameters = (float[])action.Parameters.Clone() }, NextActions = CloneActions(candidates)
+                State = CloneTokens(state),
+                NextState = CloneTokens(next),
+                Action = action with { Parameters = (float[])action.Parameters.Clone() },
+                NextActions = CloneActions(candidates)
             });
-            return new(world.Age, 1, world.Age, world.Agent.Position.X, world.Agent.Position.Y, report, LastReward, false);
+            TickObservation();
+            return new(world.Age, 1, world.Age, world.Agent.Position.X, world.Agent.Position.Y, report, LastReward, terminal);
         }
         catch (Exception ex) { Fault = $"Runtime paused at age {world.Age}: {ex.Message}"; throw new InvalidOperationException(Fault); }
     }
 
-    public void AdvanceWorld()
+    private void TickObservation() { try { observation?.Tick(); } catch (Exception ex) { Console.Error.WriteLine("Observation unavailable: " + ex.Message); observation = null; } }
+    public void Notify(string kind) { try { observation?.Notify(kind); } catch (Exception ex) { Console.Error.WriteLine("Observation error: " + ex.Message); } }
+    public Action? IdleHeartbeat { get; set; }
+    public Func<ArtificialLife.Observation.ObservationCommand, ArtificialLife.Observation.CommandResult>? ExternalCommand { get; set; }
+    public void ResetLife(bool resetController)
     {
-        CheckOwner(); ObjectDisposedException.ThrowIf(disposed, this);
-        if (!WorldOnly) throw new InvalidOperationException("Use AdvanceOne for a learning world.");
-        if (Fault is not null) throw new InvalidOperationException(Fault);
-        while (pending.TryDequeue(out var request)) Activate(request);
-        if (Fault is not null) throw new InvalidOperationException(Fault);
-        try { AdvancePhysics(); }
-        catch (Exception ex) { Fault = $"Runtime paused at age {world.Age}: {ex.Message}"; throw new InvalidOperationException(Fault, ex); }
+        CheckOwner();
+        if (resetController && !WorldOnly) { controller?.Dispose(); controller = ControllerRegistry.Create(Options); }
+        foreach (var module in modules) Retire(module);
+        modules = []; systems = []; componentKeys.Clear();
+        observations = new(controller?.Limits.ObservationTypes ?? int.MaxValue);
+        actions = new(controller?.Limits.ActionTypes ?? int.MaxValue);
+        world = new() { Options = Options.World, Agent = WorldOnly ? null! : new() { Id = 1 } };
+        world.State("rng:initial").Write("state", unchecked((ulong)(Options.WorldSeed ?? Options.Learning.Seed)));
+        if (!WorldOnly) world.Agent.Position = new(world.Random("initial") * Options.World.Width, world.Random("initial") * Options.World.Height);
+        world.Time = world.Random("initial") * 600;
+        Fault = null; LastReward = 0;
+        var result = Activate(new("reset", Options.Packages));
+        if (!result.Accepted) throw new InvalidOperationException(result.Message);
     }
+    public void AdvanceWorld() => Step(false);
     private void AdvancePhysics()
     {
         world.Time += world.Options.TimeStep;
@@ -288,14 +318,16 @@ public sealed class RuntimeSession : IDisposable
             if (!saved.ModuleState.TryGetValue(module.Manifest.Id, out var state) || state.Version != module.Manifest.StateSchemaVersion) throw new InvalidDataException("Invalid restored module schema.");
         world = saved.Copy(); Revision = revision; LastReward = reward;
         controller?.ConditionsChanged(revision);
+        Notify("restored");
     }
-    public IReadOnlyDictionary<string, double> CaptureMetrics(Action<string>? error = null)
+    public IReadOnlyDictionary<string, double> CaptureMetrics(Action<string>? error = null, RuntimeFrame? frame = null)
     {
         var result = new Dictionary<string, double>();
+        frame ??= Snapshot();
         foreach (var module in modules)
-        foreach (var provider in module.Builder.Metrics)
-            try { foreach (var value in provider(Snapshot())) { if (!double.IsFinite(value.Value)) throw new InvalidDataException("Nonfinite metric."); result.Add(module.Manifest.Id + ":" + value.Key, value.Value); } }
-            catch (Exception ex) { error?.Invoke(module.Manifest.Id + ": " + ex.Message); }
+            foreach (var provider in module.Builder.Metrics)
+                try { foreach (var value in provider(frame)) { if (!double.IsFinite(value.Value)) throw new InvalidDataException("Nonfinite metric."); result.Add(module.Manifest.Id + ":" + value.Key, value.Value); } }
+                catch (Exception ex) { error?.Invoke(module.Manifest.Id + ": " + ex.Message); }
         return result;
     }
     public ObservationToken[] Observe()
@@ -313,11 +345,6 @@ public sealed class RuntimeSession : IDisposable
     public HomeostasisReport Report() => HomeostasisReport.Measure(modules.SelectMany(m => m.Builder.Drives).SelectMany(p => p(world)), modules.SelectMany(m => m.Builder.Descriptors));
     public RuntimeFrame Snapshot() => Capture(world, Revision);
     public IReadOnlyList<PresentationPackage> PresentationPackages => modules.Select(m => new PresentationPackage(CopyManifest(m.Manifest), m.Directory)).ToArray();
-    public void PreparePresentation()
-    {
-        using var prepared = PresentationHost?.Prepare(PresentationPackages, Snapshot());
-        prepared?.Commit();
-    }
     private static RuntimeFrame Capture(RuntimeWorld state, long revision)
     {
         EntitySnapshot Entity(RuntimeEntity e) => new(e.Id, e.Position, new ReadOnlyDictionary<string, ComponentSnapshot>(
@@ -364,28 +391,28 @@ public sealed class RuntimeSession : IDisposable
     private static void ValidateRestoredComponents(RuntimeWorld state, IEnumerable<ComponentRegistration> registrations)
     {
         foreach (var registration in registrations)
-        foreach (var entity in state.AllEntities)
-        {
-            bool present = entity.Components.TryGetValue(registration.Key, out var data);
-            if ((!present && registration.Applies(state, entity)) || (present && data!.Version != registration.Version))
-                throw new InvalidDataException($"Incomplete or incompatible restored component {registration.Key} on {entity.Id}.");
-        }
+            foreach (var entity in state.AllEntities)
+            {
+                bool present = entity.Components.TryGetValue(registration.Key, out var data);
+                if ((!present && registration.Applies(state, entity)) || (present && data!.Version != registration.Version))
+                    throw new InvalidDataException($"Incomplete or incompatible restored component {registration.Key} on {entity.Id}.");
+            }
     }
     private static void EnsureComponents(RuntimeWorld state, IEnumerable<ComponentRegistration> registrations)
     {
         var entities = state.AllEntities.ToArray();
         foreach (var registration in registrations)
-        foreach (var entity in entities)
-        {
-            if (!entity.Components.TryGetValue(registration.Key, out var data))
+            foreach (var entity in entities)
             {
-                if (!registration.Applies(state, entity)) continue;
-                data = new() { Version = registration.Version };
-                entity.Components.Add(registration.Key, data);
-                registration.Initialize(state, entity, data);
+                if (!entity.Components.TryGetValue(registration.Key, out var data))
+                {
+                    if (!registration.Applies(state, entity)) continue;
+                    data = new() { Version = registration.Version };
+                    entity.Components.Add(registration.Key, data);
+                    registration.Initialize(state, entity, data);
+                }
+                if (data.Version != registration.Version) throw new InvalidDataException($"Unmigrated component {registration.Key} on {entity.Id}.");
             }
-            if (data.Version != registration.Version) throw new InvalidDataException($"Unmigrated component {registration.Key} on {entity.Id}.");
-        }
     }
     private static TypeRegistry CopyRegistry(TypeRegistry source)
     {
@@ -437,19 +464,24 @@ public sealed class RuntimeSession : IDisposable
     }
     private static ModuleManifest CopyManifest(ModuleManifest manifest) => manifest with
     {
-        Settings = manifest.Settings.Clone(), Dependencies = (ModuleDependency[])manifest.Dependencies.Clone(),
-        Provides = (string[])manifest.Provides.Clone(), Requires = (string[])manifest.Requires.Clone(),
-        Schemas = new(manifest.Schemas), LogicFiles = new(manifest.LogicFiles), PresentationFiles = new(manifest.PresentationFiles)
+        Visuals = manifest.Visuals.Select(v => v with { Bindings = (VisualBinding[])v.Bindings.Clone() }).ToArray(),
+        Settings = manifest.Settings.Clone(),
+        Dependencies = (ModuleDependency[])manifest.Dependencies.Clone(),
+        Provides = (string[])manifest.Provides.Clone(),
+        Requires = (string[])manifest.Requires.Clone(),
+        Schemas = new(manifest.Schemas),
+        LogicFiles = new(manifest.LogicFiles),
+        PresentationFiles = new(manifest.PresentationFiles)
     };
     public void Dispose()
     {
         if (disposed) return;
+        observation?.Dispose();
         disposed = true;
         systems = [];
         foreach (var module in modules) Retire(module);
         modules.Clear();
-        controller?.Dispose();
+        if (ownsController) controller?.Dispose();
         TrajectorySink = null;
-        PresentationHost = null;
     }
 }
