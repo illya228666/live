@@ -17,6 +17,7 @@ try
     if (command == "experiment-prepare") return ExperimentRunner.Prepare(args.Skip(1).ToArray());
     if (command == "experiment-worker") return ExperimentRunner.Worker(args.Skip(1).ToArray());
     if (command == "compare") return ExperimentComparison.Run(args.Skip(1).ToArray());
+    if (command == "world") return WorldCommands.Run(args.Skip(1).ToArray());
     if (command == "live") return RuntimeCommands.Live(args.Skip(1).ToArray());
     if (command == "continual") return ContinualExperiment.Run(args.Skip(1).ToArray());
     if (command == "evaluate" && args.Contains("--checkpoint"))

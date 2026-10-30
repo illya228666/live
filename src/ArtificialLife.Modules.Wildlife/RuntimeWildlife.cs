@@ -67,7 +67,7 @@ public sealed class RuntimeWildlife : IRuntimeModule
         for (int attempt = 0; attempt < 256; attempt++)
         {
             var at = new Position(world.Random(stream) * world.Options.Width, world.Random(stream) * world.Options.Height);
-            if (at.DistanceTo(world.Agent.Position) >= spawnDistance) return at;
+            if (!world.HasAgent || at.DistanceTo(world.Agent.Position) >= spawnDistance) return at;
         }
         Position[] corners = [new(0, 0), new(world.Options.Width, 0), new(0, world.Options.Height), new(world.Options.Width, world.Options.Height)];
         var farthest = corners.MaxBy(p => p.DistanceTo(world.Agent.Position));
@@ -76,7 +76,7 @@ public sealed class RuntimeWildlife : IRuntimeModule
         return farthest;
     }
 
-    private double Danger(RuntimeWorld world) => world.Entities.Where(e => e.Components.ContainsKey(Boar))
+    private double Danger(RuntimeWorld world) => !world.HasAgent ? 0 : world.Entities.Where(e => e.Components.ContainsKey(Boar))
         .Select(e => Math.Clamp(1 - e.Position.DistanceTo(world.Agent.Position) / radius, 0, 1)).DefaultIfEmpty(0).Max();
 
     private double Interval(RuntimeWorld world) => turnMin + (turnMax - turnMin) * world.Random(stream);
@@ -97,7 +97,7 @@ public sealed class RuntimeWildlife : IRuntimeModule
                     // Occasional investigation, sampled only at ordinary turn times. No continuous
                     // pursuit, interception or privileged response to the agent's chosen action.
                     // Probability zero consumes no additional RNG and preserves legacy trajectories.
-                    if (approachProbability > 0 && world.Random(stream) < approachProbability)
+                    if (world.HasAgent && approachProbability > 0 && world.Random(stream) < approachProbability)
                     {
                         double dx = world.Agent.Position.X - animal.Position.X, dy = world.Agent.Position.Y - animal.Position.Y;
                         target = Normalize(Math.Atan2(dy, dx) + (2 * world.Random(stream) - 1) * approachSpread);

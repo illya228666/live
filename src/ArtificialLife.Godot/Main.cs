@@ -20,6 +20,7 @@ public partial class Main : Node2D
     private bool paused;
     private string? error;
     private string checkpoint = "";
+    private string? observationPath;
     private string? capture;
     private bool captureScheduled;
     private int frames;
@@ -39,6 +40,16 @@ public partial class Main : Node2D
         {
             ParseLaunchArguments(root);
             InitializePackageUi(root);
+            if (observationPath is not null)
+            {
+                var observation = System.Text.Json.JsonSerializer.Deserialize<WorldObservation>(System.IO.File.ReadAllText(observationPath), PackageCatalog.Json) ?? throw new InvalidDataException("Empty observation.");
+                snapshot = new(observation.Frame, 0, "World Only", HomeostasisReport.Measure([]));
+                presentations = new PresentationHost(this, worldRect);
+                var catalog = new PackageCatalog(observation.PackageRoot);
+                var packages = observation.Packages.Select(p => { var manifest = catalog.Read(new(p.Id, p.Version)); return new ArtificialLife.Core.PresentationPackage(manifest with { Settings = p.Settings }, catalog.DirectoryFor(new(p.Id, p.Version))); }).ToArray();
+                using var prepared = presentations.Prepare(packages, observation.Frame);
+                prepared.Commit(); QueueRedraw(); return;
+            }
             if (trainMode)
             {
                 StartLiveTraining();
@@ -65,7 +76,7 @@ public partial class Main : Node2D
         {
             error = exception.Message;
             GD.PushError(error);
-            if (smokeSteps > 0 || trainingSmokeSteps > 0)
+            if (observationPath is not null || smokeSteps > 0 || trainingSmokeSteps > 0)
             {
                 GetTree().Quit(1);
             }
@@ -128,7 +139,7 @@ public partial class Main : Node2D
             void SaveCapture()
             {
                 RenderingServer.FramePostDraw -= SaveCapture;
-                Error result = GetViewport().GetTexture().GetImage().SavePng(path);
+                Error result = presentations?.LastError is not null ? Error.Failed : GetViewport().GetTexture().GetImage().SavePng(path);
                 GD.Print($"CAPTURE {result}: {path}");
                 GetTree().Quit(result == Error.Ok ? 0 : 1);
             }
@@ -159,6 +170,7 @@ public partial class Main : Node2D
         {
             return;
         }
+        if (observationPath is not null) return;
         if (trainMode)
         {
             HandleTrainingKey(key);
@@ -185,7 +197,7 @@ public partial class Main : Node2D
     {
         Label("ArtificialLife", 40, 40, 28, TextColor);
         Label("Симуляция живого существа", 40, 66, 15, Muted);
-        Label(trainMode ? "ОБУЧЕНИЕ DQN  /  ЦП" : "НЕЙРОСЕТЬ  /  ЦП", 830, 44, 14, Accent);
+        Label(observationPath is not null ? "WORLD ONLY" : trainMode ? "ОБУЧЕНИЕ DQN  /  ЦП" : "НЕЙРОСЕТЬ  /  ЦП", 830, 44, 14, Accent);
         DrawRect(worldRect, new Color("101b29"));
         DrawRect(worldRect, new Color("304356"), filled: false, width: 1);
         if (snapshot is null)
@@ -209,6 +221,7 @@ public partial class Main : Node2D
             DrawTrainingHud(state);
             return;
         }
+        if (observationPath is not null) { Label($"World / age: {state.Step} / time: {state.SimulationTime:F2}", 786, 120, 16, TextColor); return; }
         DrawHomeostasisHud(state);
     }
 

@@ -86,3 +86,10 @@ The main view owns the grid, trails, charts and generic diagnostics. Temperature
 ## Research acceptance
 
 `continual --config configs/continual.json` pretrains without hunger, hot-installs Hunger/Food, continues the same life, and compares adapted, frozen and random policies. Full training seeds are 42, 73, 101, 211, 509; evaluation seeds are fixed independently. `--pilot true` uses only training-derived evaluation seeds and one training run for tuning. Reports include pre-installation thermoregulation as well as both post-installation needs, counters and complete settings. Passing technical tests alone does not establish continual learning: the hunger and retention thresholds in the report must pass too.
+
+## Autonomous world operation
+
+See [World Only, full world checkpoints and protected external control](autonomous-world.md).
+Use `world run` for a supervised world without a controller. Packages explicitly
+opt into World Only and use the existing state contracts. Policy exports retain
+their existing inference-only meaning; complete physical saves use `WorldCheckpoint`.

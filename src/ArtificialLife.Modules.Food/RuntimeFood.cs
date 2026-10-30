@@ -22,7 +22,7 @@ public sealed class RuntimeFood : IRuntimeModule
             for (int attempt = 0; attempt < 256; attempt++)
             {
                 var position = new Position(world.Random(builder.Manifest.Id) * world.Options.Width, world.Random(builder.Manifest.Id) * world.Options.Height);
-                if (position.DistanceTo(world.Agent.Position) < options.MinSpawnDistanceFromAgent) continue;
+                if (world.HasAgent && position.DistanceTo(world.Agent.Position) < options.MinSpawnDistanceFromAgent) continue;
                 var entity = world.CreateEntity(position);
                 entity.Components["food.apple"] = new();
                 entity.Components["nutrition"] = new(); entity.Require("nutrition").Write("reduction", 0.20);

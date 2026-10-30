@@ -17,6 +17,7 @@ public sealed class AgentPresentation : WorldPresentation
 {
     public override void Draw()
     {
+        if (!Frame.HasAgent) return;
         var point = Context.ToScreen(Frame.Agent.Position);
         Context.Canvas.DrawCircle(point, 8, new Color("68dfbe"));
         Context.Canvas.DrawArc(point, 12, 0, Mathf.Tau, 40, new Color(0.4f, 0.87f, 0.74f, 0.35f), 1, true);

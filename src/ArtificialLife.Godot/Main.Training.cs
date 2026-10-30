@@ -62,6 +62,7 @@ public partial class Main
                 case "--config": experimentConfig = value; break;
                 case "--visual-config": visualConfig = value; break;
                 case "--training-speed": initialTrainingSpeed = value; break;
+                case "--observe": observationPath = value; break;
                 case "--capture": capture = value; break;
                 case "--activation-schedule": activationSchedule = new(value); break;
                 case "--capture-training-progress": progressCaptureDirectory = value; break;

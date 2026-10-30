@@ -4,8 +4,12 @@ using ArtificialLife.Core;
 
 namespace ArtificialLife.Application;
 
+[System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter<RuntimeMode>))]
+public enum RuntimeMode { Learning, WorldOnly }
+
 public sealed record RuntimeOptions
 {
+    public RuntimeMode Mode { get; init; }
     public WorldOptions World { get; init; } = new();
     public ArtificialLife.Brain.NetworkOptions Network { get; init; } = new();
     public ArtificialLife.Brain.LearningOptions Learning { get; init; } = new();
@@ -32,10 +36,16 @@ public sealed class RuntimeSession : IDisposable
     private readonly PackageCatalog catalog;
     private readonly Queue<ActivationRequest> pending = new();
     private readonly List<WeakReference> retired = [];
+    private IReadOnlyList<ModuleManifest>? restoration;
     private bool disposed;
     private readonly int ownerThread = Environment.CurrentManagedThreadId;
-    public IAgentController Controller { get; }
+    private readonly IAgentController? controller;
+    public IAgentController Controller => controller ?? throw new InvalidOperationException("World Only has no controller.");
+    public bool WorldOnly => Options.Mode == RuntimeMode.WorldOnly;
+    public IReadOnlyDictionary<string, double> SystemMilliseconds => systemMilliseconds;
+    private readonly Dictionary<string, double> systemMilliseconds = new();
     public IRuntimePresentationHost? PresentationHost { get; set; }
+    public long Age => world.Age;
     public long Revision { get; private set; }
     public string? Fault { get; private set; }
     public double LastReward { get; private set; }
@@ -47,23 +57,31 @@ public sealed class RuntimeSession : IDisposable
     public ActivationOutcome? LastActivation { get; private set; }
     public Action<AgentTransition>? TrajectorySink { get; set; }
 
-    public RuntimeSession(RuntimeOptions options, IAgentController controller, PackageCatalog? catalog = null,
-        IEnumerable<string>? observationKeys = null, IEnumerable<string>? actionKeys = null, IRuntimePresentationHost? presentationHost = null)
+    public RuntimeSession(RuntimeOptions options, IAgentController? controller = null, PackageCatalog? catalog = null,
+        IEnumerable<string>? observationKeys = null, IEnumerable<string>? actionKeys = null, IRuntimePresentationHost? presentationHost = null, RuntimeWorld? restoredWorld = null, IReadOnlyList<ModuleManifest>? restoredModules = null)
     {
+        if (!Enum.IsDefined(options.Mode)) throw new ArgumentException("Unknown runtime mode.");
         Options = options;
         options.World.Validate();
-        Controller = controller;
+        if ((options.Mode == RuntimeMode.WorldOnly) != (controller is null)) throw new ArgumentException("World Only requires no controller; learning requires one.");
+        this.controller = controller;
         PresentationHost = presentationHost;
         this.catalog = catalog ?? new(options.PackageRoot);
-        observations = new(controller.Limits.ObservationTypes);
-        actions = new(controller.Limits.ActionTypes);
+        observations = new(controller?.Limits.ObservationTypes ?? int.MaxValue);
+        actions = new(controller?.Limits.ActionTypes ?? int.MaxValue);
         foreach (string key in observationKeys ?? []) observations.Register(key);
         foreach (string key in actionKeys ?? []) actions.Register(key);
-        world = new() { Options = options.World };
-        world.State("rng:initial").Write("state", unchecked((ulong)(options.WorldSeed ?? options.Learning.Seed)));
-        world.Agent.Position = new(world.Random("initial") * options.World.Width, world.Random("initial") * options.World.Height);
-        world.Time = world.Random("initial") * 600;
+        world = new() { Options = options.World, Agent = WorldOnly ? null! : new() { Id = 1 } };
+        if (restoredWorld is null)
+        {
+            world.State("rng:initial").Write("state", unchecked((ulong)(options.WorldSeed ?? options.Learning.Seed)));
+            if (!WorldOnly) world.Agent.Position = new(world.Random("initial") * options.World.Width, world.Random("initial") * options.World.Height);
+            world.Time = world.Random("initial") * 600;
+        }
+        else world = restoredWorld.Copy();
+        restoration = restoredModules;
         var outcome = Activate(new("initial", options.Packages));
+        restoration = null;
         if (!outcome.Accepted) { Dispose(); throw new InvalidDataException(outcome.Message); }
     }
 
@@ -88,12 +106,13 @@ public sealed class RuntimeSession : IDisposable
         IPreparedPresentation? prepared = null;
         try
         {
-            if (string.IsNullOrWhiteSpace(request.Id) || request.Packages.Length == 0 || request.Packages.Select(p => p.Id).Distinct().Count() != request.Packages.Length)
+            if (string.IsNullOrWhiteSpace(request.Id) || (!WorldOnly && request.Packages.Length == 0) || request.Packages.Select(p => p.Id).Distinct().Count() != request.Packages.Length)
                 throw new InvalidDataException("Activation identity is empty or packages are duplicated.");
             var desired = modules.ToDictionary(m => m.Manifest.Id, m => m.Manifest, StringComparer.Ordinal);
             foreach (var reference in request.Packages)
             {
                 var manifest = catalog.Read(reference);
+                if (WorldOnly && !manifest.SupportsWorldOnly) throw new InvalidDataException($"Package {manifest.Id} does not declare World Only support.");
                 var active = modules.FirstOrDefault(m => m.Manifest.Id == reference.Id)?.Manifest;
                 if (active is null && Options.Settings.TryGetValue(reference.Id, out var settings)) manifest = manifest with { Settings = settings.Clone() };
                 else if (active?.Version == reference.Version) manifest = manifest with { Settings = active.Settings.Clone() };
@@ -114,7 +133,7 @@ public sealed class RuntimeSession : IDisposable
                 var item = new LoadedRuntimeModule(catalog, manifest, nextObservations, nextActions);
                 loaded.Add(item);
                 bool logicChanged = old is null || !SameLogic(old, manifest);
-                if (logicChanged)
+                if (logicChanged && restoration is null)
                 {
                     changed = true;
                     if (!candidate.ModuleState.ContainsKey("rng:" + manifest.Id))
@@ -142,19 +161,20 @@ public sealed class RuntimeSession : IDisposable
             }
             foreach (var item in loaded)
                 if (item.Manifest.Schemas.Count != item.Builder.Components.Count) throw new InvalidDataException($"Unregistered schema in {item.Manifest.Id}.");
-            EnsureComponents(candidate, registrations);
+            if (restoration is null) EnsureComponents(candidate, registrations);
+            else ValidateRestoredComponents(candidate, registrations);
             var knownComponents = registrations.Select(c => c.Key).ToHashSet(StringComparer.Ordinal);
             if (candidate.AllEntities.Any(e => e.Components.Keys.Any(key => !knownComponents.Contains(key))))
                 throw new InvalidDataException("World contains an undeclared component.");
-            if (candidate.Age != world.Age || candidate.Time != world.Time || candidate.Agent.Id != world.Agent.Id ||
-                candidate.Agent.Position != world.Agent.Position || world.Entities.Any(old => !candidate.Entities.Any(e => e.Id == old.Id && e.Position == old.Position)))
+            if (candidate.Age != world.Age || candidate.Time != world.Time || candidate.Agent?.Id != world.Agent?.Id ||
+                candidate.Agent?.Position != world.Agent?.Position || world.Entities.Any(old => !candidate.Entities.Any(e => e.Id == old.Id && e.Position == old.Position)))
                 throw new InvalidDataException("Activation must preserve age, time, entity identities and existing positions.");
             var nextSystems = OrderSystems(loaded.SelectMany(m => m.Builder.Systems));
-            if (loaded.Count(m => m.Builder.Motivation is not null) != 1) throw new InvalidDataException("Exactly one motivation policy is required.");
+            if (!WorldOnly && loaded.Count(m => m.Builder.Motivation is not null) != 1) throw new InvalidDataException("Exactly one motivation policy is required.");
             var providers = loaded.SelectMany(m => m.Builder.ActionProviders).ToArray();
             if (providers.Select(a => a.Type).Distinct().Count() != providers.Length) throw new InvalidDataException("Duplicate action handler.");
             ValidateWorld(candidate);
-            ValidateSignals(loaded, candidate);
+            if (!WorldOnly) ValidateSignals(loaded, candidate);
             ValidateTokens(Observe(loaded, candidate), nextObservations.Keys.Count);
             ValidateCandidates(LegalActions(loaded, candidate), nextActions.Keys.Count);
             long revision = changed ? checked(Revision + 1) : Revision;
@@ -171,8 +191,8 @@ public sealed class RuntimeSession : IDisposable
             componentKeys = knownComponents;
             Revision = revision;
             committed = true;
-            Controller.SchemaChanged(observations.Keys, actions.Keys);
-            if (changed) Controller.ConditionsChanged(Revision);
+            controller?.SchemaChanged(observations.Keys, actions.Keys);
+            if (changed) controller?.ConditionsChanged(Revision);
             foreach (var old in replaced) Retire(old);
             replaced = null;
             return LastActivation = new(request.Id, true, changed ? "Conditions activated." : "Presentation activated; learning conditions preserved.", Revision);
@@ -210,19 +230,7 @@ public sealed class RuntimeSession : IDisposable
             if (!legal.Any(c => c.Type == action.Type && c.Parameters.SequenceEqual(action.Parameters))) throw new InvalidOperationException("Controller selected an illegal action.");
             var before = Motivation(modules, world);
             modules.SelectMany(m => m.Builder.ActionProviders).Single(p => p.Type == action.Type).Execute(world, action);
-            world.Time += world.Options.TimeStep;
-            world.Age = checked(world.Age + 1);
-            foreach (var system in systems)
-            {
-                system.Update(world);
-                EnsureComponents(world, modules.SelectMany(m => m.Builder.Components));
-            }
-            ValidateWorld(world);
-            if (world.AllEntities.Any(e => e.Components.Keys.Any(key => !componentKeys.Contains(key))))
-                throw new InvalidDataException("A system created an undeclared component.");
-            foreach (var item in modules)
-                if (!world.ModuleState.TryGetValue(item.Manifest.Id, out var data) || data.Version != item.Manifest.StateSchemaVersion)
-                    throw new InvalidDataException($"Invalid module state schema: {item.Manifest.Id}.");
+            AdvancePhysics();
             var after = Motivation(modules, world);
             LastReward = modules.Select(m => m.Builder.Motivation).Single(m => m is not null)!.Evaluate(before, after);
             if (!double.IsFinite(LastReward)) throw new InvalidOperationException("Non-finite motivation signal.");
@@ -241,6 +249,55 @@ public sealed class RuntimeSession : IDisposable
         catch (Exception ex) { Fault = $"Runtime paused at age {world.Age}: {ex.Message}"; throw new InvalidOperationException(Fault); }
     }
 
+    public void AdvanceWorld()
+    {
+        CheckOwner(); ObjectDisposedException.ThrowIf(disposed, this);
+        if (!WorldOnly) throw new InvalidOperationException("Use AdvanceOne for a learning world.");
+        if (Fault is not null) throw new InvalidOperationException(Fault);
+        while (pending.TryDequeue(out var request)) Activate(request);
+        if (Fault is not null) throw new InvalidOperationException(Fault);
+        try { AdvancePhysics(); }
+        catch (Exception ex) { Fault = $"Runtime paused at age {world.Age}: {ex.Message}"; throw new InvalidOperationException(Fault, ex); }
+    }
+    private void AdvancePhysics()
+    {
+        world.Time += world.Options.TimeStep;
+        world.Age = checked(world.Age + 1);
+        foreach (var system in systems)
+        {
+            var started = System.Diagnostics.Stopwatch.GetTimestamp();
+            try { system.Update(world); }
+            catch (Exception ex) { throw new InvalidOperationException($"System {system.Key}: {ex.Message}", ex); }
+            systemMilliseconds[system.Key] = System.Diagnostics.Stopwatch.GetElapsedTime(started).TotalMilliseconds;
+            EnsureComponents(world, modules.SelectMany(m => m.Builder.Components));
+        }
+        ValidateWorld(world);
+        if (world.AllEntities.Any(e => e.Components.Keys.Any(key => !componentKeys.Contains(key))))
+            throw new InvalidDataException("A system created an undeclared component.");
+        foreach (var item in modules)
+            if (!world.ModuleState.TryGetValue(item.Manifest.Id, out var data) || data.Version != item.Manifest.StateSchemaVersion)
+                throw new InvalidDataException($"Invalid module state schema: {item.Manifest.Id}.");
+    }
+    internal RuntimeWorld CaptureWorld() { CheckOwner(); if (Fault is not null) throw new InvalidOperationException("Cannot save a faulted world."); return world.Copy(); }
+    internal void RestoreState(RuntimeWorld saved, long revision, string[] observationKeys, string[] actionKeys, double reward)
+    {
+        ValidateWorld(saved);
+        if (!observations.Keys.SequenceEqual(observationKeys) || !actions.Keys.SequenceEqual(actionKeys)) throw new InvalidDataException("World registry mismatch.");
+        ValidateRestoredComponents(saved, modules.SelectMany(m => m.Builder.Components));
+        foreach (var module in modules)
+            if (!saved.ModuleState.TryGetValue(module.Manifest.Id, out var state) || state.Version != module.Manifest.StateSchemaVersion) throw new InvalidDataException("Invalid restored module schema.");
+        world = saved.Copy(); Revision = revision; LastReward = reward;
+        controller?.ConditionsChanged(revision);
+    }
+    public IReadOnlyDictionary<string, double> CaptureMetrics(Action<string>? error = null)
+    {
+        var result = new Dictionary<string, double>();
+        foreach (var module in modules)
+        foreach (var provider in module.Builder.Metrics)
+            try { foreach (var value in provider(Snapshot())) { if (!double.IsFinite(value.Value)) throw new InvalidDataException("Nonfinite metric."); result.Add(module.Manifest.Id + ":" + value.Key, value.Value); } }
+            catch (Exception ex) { error?.Invoke(module.Manifest.Id + ": " + ex.Message); }
+        return result;
+    }
     public ObservationToken[] Observe()
     {
         var result = Observe(modules, world);
@@ -265,7 +322,7 @@ public sealed class RuntimeSession : IDisposable
     {
         EntitySnapshot Entity(RuntimeEntity e) => new(e.Id, e.Position, new ReadOnlyDictionary<string, ComponentSnapshot>(
             e.Components.ToDictionary(p => p.Key, p => ComponentSnapshot.Capture(p.Value), StringComparer.Ordinal)));
-        return new(state.Options.Width, state.Options.Height, state.Age, state.Time, revision, Entity(state.Agent),
+        return new(state.Options.Width, state.Options.Height, state.Age, state.Time, revision, state.HasAgent ? Entity(state.Agent) : null!,
             Array.AsReadOnly(state.Entities.Select(Entity).ToArray()), new ReadOnlyDictionary<string, ComponentSnapshot>(
                 state.ModuleState.ToDictionary(p => p.Key, p => ComponentSnapshot.Capture(p.Value), StringComparer.Ordinal)));
     }
@@ -279,12 +336,12 @@ public sealed class RuntimeSession : IDisposable
     private static ActionCandidate[] CloneActions(ActionCandidate[] candidates) => candidates.Select(a => a with { Parameters = (float[])a.Parameters.Clone() }).ToArray();
     private void ValidateTokens(ObservationToken[] tokens, int count)
     {
-        if (tokens.Length < Controller.Limits.MinimumObservations || tokens.Any(t => t.Type < 0 || t.Type >= count || t.Features.Length > Controller.Limits.FeatureWidth || t.Features.Any(f => !float.IsFinite(f) || f is < -1 or > 1)))
+        if (tokens.Length < (controller?.Limits.MinimumObservations ?? 0) || tokens.Any(t => t.Type < 0 || t.Type >= count || t.Features.Length > (controller?.Limits.FeatureWidth ?? int.MaxValue) || t.Features.Any(f => !float.IsFinite(f) || f is < -1 or > 1)))
             throw new InvalidDataException("Invalid observation token or controller feature capacity exceeded.");
     }
     private void ValidateCandidates(ActionCandidate[] candidates, int count)
     {
-        if (candidates.Length == 0 || candidates.Any(t => t.Type < 0 || t.Type >= count || t.Parameters.Length > Controller.Limits.FeatureWidth || t.Parameters.Any(f => !float.IsFinite(f) || f is < -1 or > 1)))
+        if ((!WorldOnly && candidates.Length == 0) || candidates.Any(t => t.Type < 0 || t.Type >= count || t.Parameters.Length > (controller?.Limits.FeatureWidth ?? int.MaxValue) || t.Parameters.Any(f => !float.IsFinite(f) || f is < -1 or > 1)))
             throw new InvalidDataException("No legal action or invalid action schema.");
     }
     private static MotivationInput Motivation(IEnumerable<LoadedRuntimeModule> modules, RuntimeWorld state) => new(
@@ -299,10 +356,20 @@ public sealed class RuntimeSession : IDisposable
     }
     private static void ValidateWorld(RuntimeWorld state)
     {
-        if (!state.Contains(state.Agent.Position) || !double.IsFinite(state.Time) || state.Age < 0 ||
-            state.AllEntities.Any(e => !state.Contains(e.Position) || e.Id < 1) || state.AllEntities.Select(e => e.Id).Distinct().Count() != state.Entities.Count + 1 ||
-            state.NextEntityId <= state.AllEntities.Max(e => e.Id))
+        if ((state.HasAgent && !state.Contains(state.Agent.Position)) || !double.IsFinite(state.Time) || state.Age < 0 ||
+            state.AllEntities.Any(e => !state.Contains(e.Position) || e.Id < 1) || state.AllEntities.Select(e => e.Id).Distinct().Count() != state.Entities.Count + (state.HasAgent ? 1 : 0) ||
+            state.NextEntityId <= state.AllEntities.Select(e => e.Id).DefaultIfEmpty(0).Max())
             throw new InvalidDataException("Invalid world state.");
+    }
+    private static void ValidateRestoredComponents(RuntimeWorld state, IEnumerable<ComponentRegistration> registrations)
+    {
+        foreach (var registration in registrations)
+        foreach (var entity in state.AllEntities)
+        {
+            bool present = entity.Components.TryGetValue(registration.Key, out var data);
+            if ((!present && registration.Applies(state, entity)) || (present && data!.Version != registration.Version))
+                throw new InvalidDataException($"Incomplete or incompatible restored component {registration.Key} on {entity.Id}.");
+        }
     }
     private static void EnsureComponents(RuntimeWorld state, IEnumerable<ComponentRegistration> registrations)
     {
@@ -381,7 +448,7 @@ public sealed class RuntimeSession : IDisposable
         systems = [];
         foreach (var module in modules) Retire(module);
         modules.Clear();
-        Controller.Dispose();
+        controller?.Dispose();
         TrajectorySink = null;
         PresentationHost = null;
     }

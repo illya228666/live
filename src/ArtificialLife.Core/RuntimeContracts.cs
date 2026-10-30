@@ -39,13 +39,19 @@ public sealed class RuntimeEntity
 public sealed class RuntimeWorld
 {
     public WorldOptions Options { get; init; } = new();
+    [System.Text.Json.Serialization.JsonInclude]
     public long Age { get; internal set; }
+    [System.Text.Json.Serialization.JsonInclude]
     public double Time { get; internal set; }
-    public long NextEntityId { get; private set; } = 2;
+    [System.Text.Json.Serialization.JsonInclude]
+    public long NextEntityId { get; internal set; } = 2;
+    [System.Text.Json.Serialization.JsonIgnore]
+    public bool HasAgent => Agent is not null;
     public RuntimeEntity Agent { get; init; } = new() { Id = 1 };
     public List<RuntimeEntity> Entities { get; init; } = [];
     public Dictionary<string, ComponentData> ModuleState { get; init; } = new(StringComparer.Ordinal);
-    public IEnumerable<RuntimeEntity> AllEntities => new[] { Agent }.Concat(Entities);
+    [System.Text.Json.Serialization.JsonIgnore]
+    public IEnumerable<RuntimeEntity> AllEntities => (HasAgent ? new[] { Agent } : Array.Empty<RuntimeEntity>()).Concat(Entities);
     public RuntimeEntity CreateEntity(Position position)
     {
         var entity = new RuntimeEntity { Id = NextEntityId++, Position = position };
@@ -66,7 +72,7 @@ public sealed class RuntimeWorld
     }
     public RuntimeWorld Copy() => new()
     {
-        Options = Options, Age = Age, Time = Time, NextEntityId = NextEntityId, Agent = Agent.Copy(),
+        Options = Options, Age = Age, Time = Time, NextEntityId = NextEntityId, Agent = HasAgent ? Agent.Copy() : null!,
         Entities = Entities.Select(e => e.Copy()).ToList(),
         ModuleState = ModuleState.ToDictionary(p => p.Key, p => p.Value.Copy(), StringComparer.Ordinal)
     };
@@ -86,13 +92,16 @@ public sealed record EntitySnapshot(long Id, Position Position, IReadOnlyDiction
 public sealed record RuntimeFrame(double Width, double Height, long Age, double Time, long Revision,
     EntitySnapshot Agent, IReadOnlyList<EntitySnapshot> Entities, IReadOnlyDictionary<string, ComponentSnapshot> ModuleState)
 {
+    [System.Text.Json.Serialization.JsonIgnore]
+    public bool HasAgent => Agent is not null;
     public bool Equals(RuntimeFrame? other) => other is not null && JsonSerializer.Serialize(this) == JsonSerializer.Serialize(other);
-    public override int GetHashCode() => HashCode.Combine(Width, Height, Age, Time, Revision, Agent.Id);
+    public override int GetHashCode() => HashCode.Combine(Width, Height, Age, Time, Revision, Agent?.Id);
 }
 
 public sealed record ModuleDependency(string Id, string Version);
 public sealed record ModuleManifest(string Id, string Version, int ApiVersion, string Assembly, string EntryType)
 {
+    public bool SupportsWorldOnly { get; init; }
     public ModuleDependency[] Dependencies { get; init; } = [];
     public string[] Provides { get; init; } = [];
     public string[] Requires { get; init; } = [];
@@ -154,6 +163,7 @@ public sealed class ModuleBuilder(ModuleManifest manifest, TypeRegistry observat
     public RegistrationList<RuntimeAction> ActionProviders { get; } = [];
     public RegistrationList<Func<RuntimeWorld, ActionCandidate, bool>> ActionFilters { get; } = [];
     public RegistrationList<Func<RuntimeWorld, IEnumerable<DriveState>>> Drives { get; } = [];
+    public RegistrationList<Func<RuntimeFrame, IEnumerable<KeyValuePair<string, double>>>> Metrics { get; } = [];
     public RegistrationList<DriveDescriptor> Descriptors { get; } = [];
     public RegistrationList<Func<RuntimeWorld, IEnumerable<KeyValuePair<string, double>>>> Signals { get; } = [];
     public IMotivationPolicy? Motivation
@@ -164,7 +174,7 @@ public sealed class ModuleBuilder(ModuleManifest manifest, TypeRegistry observat
     public void Freeze()
     {
         frozen = true;
-        Components.Freeze(); Systems.Freeze(); Sensors.Freeze(); ActionProviders.Freeze(); ActionFilters.Freeze();
+        Metrics.Freeze(); Components.Freeze(); Systems.Freeze(); Sensors.Freeze(); ActionProviders.Freeze(); ActionFilters.Freeze();
         Drives.Freeze(); Descriptors.Freeze(); Signals.Freeze();
     }
     public RuntimeSettings Settings { get; } = new(manifest.Settings);

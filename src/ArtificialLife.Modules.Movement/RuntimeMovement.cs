@@ -17,10 +17,10 @@ public sealed class RuntimeMovement : IRuntimeModule
                 world.Agent.Position.Y + action.Parameters[1] * speed * world.Options.TimeStep);
         }
         builder.ActionProviders.Add(new(type,
-            world => directions.Select(d => new ActionCandidate(type, [d.X, d.Y])).Where(a => world.Contains(Destination(world, a))),
+            world => !world.HasAgent ? [] : directions.Select(d => new ActionCandidate(type, [d.X, d.Y])).Where(a => world.Contains(Destination(world, a))),
             (world, action) => world.Agent.Position = Destination(world, action)));
-        builder.Components.Add(new("movement.heading", 1, (w, e) => e.Id == w.Agent.Id, (_, _, data) => data.Write("radians", 0.0)));
-        builder.Components.Add(new("movement.control", 1, (w, e) => e.Id == w.Agent.Id, (w, _, data) => data.Write("speed", w.Options.MovementSpeed)));
+        builder.Components.Add(new("movement.heading", 1, (w, e) => w.HasAgent && e.Id == w.Agent.Id, (_, _, data) => data.Write("radians", 0.0)));
+        builder.Components.Add(new("movement.control", 1, (w, e) => w.HasAgent && e.Id == w.Agent.Id, (w, _, data) => data.Write("speed", w.Options.MovementSpeed)));
     }
     public void Migrate(RuntimeWorld candidate, ModuleManifest? previous) { }
 }

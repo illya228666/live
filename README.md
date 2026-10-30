@@ -279,9 +279,13 @@ This is a controlled numerical experiment, not a biologically realistic organism
 The following are **future milestones, not implemented**:
 
 - General continual learning beyond the measured controlled scenario and migration to different neural architectures.
-- Multiple agents and restoration of a complete life after process termination.
+- Multiple agents and exact restoration of optimizer/replay/controller temporal state.
 - LLM director and LLM-generated modules.
 - Remote server execution, a web frontend and WebSocket streaming.
 - Sharing worlds with other people.
 
 The preserved legacy/default world uses the same Hunger/Food module contracts: one apple every 200 ticks, up to eight at once, at least ten units from the agent. Eating frees capacity; reset clears food and restarts the independent schedule. New research uses the separately validated ecology-v2 supply and threat parameters described above. Existing thermal-only benchmark numbers describe the earlier experiment. Policies saved before Hunger require retraining for the added observation keys.
+
+World Only and protected Codex-driven development are available through
+[`tools/world.ps1`](tools/world.ps1). See the [operation and recovery guide](docs/autonomous-world.md)
+for complete physical checkpoints, isolated DLL validation, rollback, JSON and PNG.

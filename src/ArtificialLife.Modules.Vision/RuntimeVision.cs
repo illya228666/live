@@ -11,6 +11,7 @@ public sealed class RuntimeVision : IRuntimeModule
         builder.Components.Add(new("vision.appearance", 1, (_, _) => false, (_, _, _) => { }));
         builder.Sensors.Add(world =>
         {
+            if (!world.HasAgent) return Array.Empty<ObservationToken>();
             double heading = world.Agent.Components.TryGetValue("movement.heading", out var h) ? h.Read<double>("radians") : 0;
             double cosine = Math.Cos(heading), sine = Math.Sin(heading);
             var result = new List<ObservationToken>();

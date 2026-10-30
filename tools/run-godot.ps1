@@ -10,7 +10,7 @@ param(
 )
 . (Join-Path $PSScriptRoot 'common.ps1')
 Initialize-Dotnet
-& (Join-Path $PSScriptRoot 'package.ps1')
+if (!(Test-Path (Join-Path $RepoRoot 'artifacts/packages/movement/1.0.0/module.json'))) { throw 'Prepare packages explicitly with tools/package.ps1 before launch.' }
 $godot = Get-Godot
 $project = Join-Path $RepoRoot 'src/ArtificialLife.Godot'
 if ([string]::IsNullOrWhiteSpace($Checkpoint)) {

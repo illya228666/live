@@ -19,11 +19,12 @@ public sealed class RuntimeTemperature : IRuntimeModule
         int body = builder.Observations.Register("temperature.body.v1");
         int sensor = builder.Observations.Register("temperature.sensor.v1");
         builder.Observations.Register("vision.appearance.disc.v1");
-        builder.Components.Add(new("temperature.body", 1, (w, e) => e.Id == w.Agent.Id, (w, _, data) =>
+        builder.Components.Add(new("temperature.body", 1, (w, e) => w.HasAgent && e.Id == w.Agent.Id, (w, _, data) =>
             data.Write("temperature", options.Target + w.Random(builder.Manifest.Id) * 4 - 2)));
         builder.Components.Add(new("temperature.emitter", 1, (_, _) => false, (_, _, _) => { }));
         builder.Systems.Add(new("temperature.update", w =>
         {
+            if (!w.HasAgent) return;
             var data = w.Agent.Require("temperature.body");
             double environment = Environment(w, w.Agent.Position);
             double equilibrium = environment + options.HeatProduction / options.HeatTransfer;
@@ -31,13 +32,14 @@ public sealed class RuntimeTemperature : IRuntimeModule
         }, []));
         builder.Sensors.Add(w =>
         {
+            if (!w.HasAgent) return Array.Empty<ObservationToken>();
             double temperature = w.Agent.Require("temperature.body").Read<double>("temperature");
             var tokens = new List<ObservationToken> { new(body, [Normalize(temperature, options.Target, 20)]) };
             foreach (var (x, y) in new (double, double)[] { (0,0), (0,-1), (1,0), (0,1), (-1,0) })
                 tokens.Add(new(sensor, [Normalize(Environment(w, new(Math.Clamp(w.Agent.Position.X + x * options.SensorDistance, 0, w.Options.Width), Math.Clamp(w.Agent.Position.Y + y * options.SensorDistance, 0, w.Options.Height))), 30, 40), (float)x, (float)y]));
             return tokens;
         });
-        builder.Drives.Add(w => [new("temperature", w.Agent.Require("temperature.body").Read<double>("temperature"), options.Target, options.DriveScale, 1)]);
+        builder.Drives.Add(w => !w.HasAgent ? [] : [new("temperature", w.Agent.Require("temperature.body").Read<double>("temperature"), options.Target, options.DriveScale, 1)]);
         builder.Descriptors.Add(new("temperature", "Body temperature", "°C"));
     }
     private static float Normalize(double value, double target, double scale) => (float)Math.Clamp((value - target) / scale, -1, 1);
