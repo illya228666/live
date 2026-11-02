@@ -8,6 +8,57 @@ namespace ArtificialLife.Tests;
 
 public sealed class ObservationTests
 {
+    [Fact]
+    public async Task CliSnapshotWaitsForFreshStateAfterReconnect()
+    {
+        using var host = new ObservationHost();
+        using var stop = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(20));
+        long currentAge = 0;
+        var owner = Task.Run(() =>
+        {
+            using var runtime = new RuntimeSession(new() { Mode = RuntimeMode.WorldOnly });
+            while (!stop.IsCancellationRequested)
+            {
+                runtime.Step(); Interlocked.Exchange(ref currentAge, runtime.Age); Thread.Sleep(1);
+            }
+        }, stop.Token);
+        try
+        {
+            using var http = new HttpClient();
+            SessionDescriptor[] sessions = [];
+            while (sessions.Length == 0)
+            {
+                sessions = JsonSerializer.Deserialize<SessionDescriptor[]>(await http.GetStringAsync(host.Endpoint + "/sessions", timeout.Token), ObservationProtocol.Json)!;
+                await Task.Delay(10, timeout.Token);
+            }
+            async Task<long> Snapshot()
+            {
+                string root = RuntimeDefaults.RepositoryRoot();
+                var start = new System.Diagnostics.ProcessStartInfo(Path.Combine(root, "src/ArtificialLife.Cli/bin/Release/net10.0/ArtificialLife.Cli.exe"))
+                { WorkingDirectory = root, UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true };
+                foreach (string argument in new[] { "world", "snapshot", "--session", sessions[0].SessionId }) start.ArgumentList.Add(argument);
+                using var process = System.Diagnostics.Process.Start(start)!;
+                try
+                {
+                    Task<string> output = process.StandardOutput.ReadToEndAsync(timeout.Token);
+                    Task<string> error = process.StandardError.ReadToEndAsync(timeout.Token);
+                    await process.WaitForExitAsync(timeout.Token);
+                    Assert.True(process.ExitCode == 0, await error);
+                    using var json = JsonDocument.Parse(await output);
+                    return json.RootElement.GetProperty("state").GetProperty("frame").GetProperty("age").GetInt64();
+                }
+                finally { if (!process.HasExited) { process.Kill(true); process.WaitForExit(); } }
+            }
+            long first = await Snapshot();
+            await Task.Delay(150, timeout.Token); // No observer: the old publication remains cached.
+            long beforeReconnect = Interlocked.Read(ref currentAge);
+            Assert.True(beforeReconnect > first);
+            Assert.True(await Snapshot() >= beforeReconnect);
+        }
+        finally { stop.Cancel(); host.Dispose(); await owner.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken); }
+    }
+
     [Theory]
     [InlineData(RuntimeMode.WorldOnly, true)]
     [InlineData(RuntimeMode.Evaluation, false)]

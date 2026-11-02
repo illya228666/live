@@ -7,7 +7,7 @@ over WebSocket as a separate process. See [protocol and modes](observation-runti
 ## Start and connect
 
 ```powershell
-./tools/build.ps1
+./tools/host.ps1 -Action publish
 ./tools/world.ps1 run --mode world-only --directory artifacts/worlds/main --config configs/world-only.json
 ./tools/world.ps1 list
 ./tools/viewer.ps1 -Session SESSION_ID
@@ -17,6 +17,7 @@ over WebSocket as a separate process. See [protocol and modes](observation-runti
 ./tools/world.ps1 stop --session SESSION_ID
 ```
 
+For targeted builds and safe Host switching, see [evolution workflow](world-evolution-workflow.md).
 Prepare packages explicitly before launching. Published versions are immutable;
 use a new version and a separate staging catalogue for updates. Packaging preserves
 an existing 1.0.0 baseline and rejects overwriting other published versions.

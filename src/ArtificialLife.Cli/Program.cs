@@ -5,10 +5,11 @@ using ArtificialLife.Hosting;
 using ArtificialLife.Brain;
 
 CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
-using var observationHost = args.Contains("verify") ? null : new ObservationHost(args.FirstOrDefault() is "experiment" or "experiment-worker" or "continual" || args.FirstOrDefault()?.Contains("audit") == true);
+using var observationHost = args.Contains("verify") || args.FirstOrDefault() == "package" ? null : new ObservationHost(args.FirstOrDefault() is "experiment" or "experiment-worker" or "continual" || args.FirstOrDefault()?.Contains("audit") == true);
 try
 {
     string command = args.FirstOrDefault() ?? "help";
+    if (command == "package") return ArtificialLife.Cli.PackageCommands.Run(args.Skip(1).ToArray());
     if (command == "scenario-describe") return ScenarioSuitability.Command(args.Skip(1).ToArray(), false);
     if (command == "scenario-validate-review") return ScenarioSuitability.Command(args.Skip(1).ToArray(), true);
     if (command == "scenario-audit") return TemperatureScenarioAudit.Command(args.Skip(1).ToArray());

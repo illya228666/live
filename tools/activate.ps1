@@ -1,8 +1,8 @@
 [CmdletBinding()]
-param([string[]]$Package=@(), [string[]]$Sources=@(), [string]$Session='', [string]$Directory='', [string]$PackageRoot='artifacts/packages')
+param([string[]]$Package=@(), [string[]]$Sources=@(), [string]$Session='', [string]$Directory='', [string]$PackageRoot='artifacts/packages', [string]$Id=([Guid]::NewGuid().ToString('N')), [string]$Cli='')
 . (Join-Path $PSScriptRoot 'common.ps1')
 Initialize-Dotnet
-$cli=Join-Path $RepoRoot 'src/ArtificialLife.Cli/bin/Release/net10.0/ArtificialLife.Cli.exe'
+$cli=Get-LiveCli $Cli
 $catalog=if([IO.Path]::IsPathRooted($PackageRoot)){$PackageRoot}else{Join-Path $RepoRoot $PackageRoot}
 $inputs=@($Sources | ForEach-Object {[IO.Path]::GetFullPath($_)})
 foreach($reference in $Package) {
@@ -12,7 +12,7 @@ foreach($reference in $Package) {
 }
 if($inputs.Count -eq 0){throw 'Specify -Package id@version or -Sources package folders, manifests or ZIPs.'}
 if($Directory) {
-    & $cli world update --directory ([IO.Path]::GetFullPath($Directory)) --sources ($inputs -join ';')
+    & $cli world update --directory ([IO.Path]::GetFullPath($Directory)) --sources ($inputs -join ';') --id $Id
 } else {
     if(!$Session) {
         $sessions=& $cli world list | ConvertFrom-Json
@@ -20,6 +20,6 @@ if($Directory) {
         if($eligible.Count -ne 1){throw 'Specify -Session or -Directory to choose one active world.'}
         $Session=$eligible[0].SessionId
     }
-    & $cli world update --session $Session --value ($inputs -join ';')
+    & $cli world update --session $Session --value ($inputs -join ';') --id $Id
 }
 if($LASTEXITCODE -ne 0){throw 'Package update request was rejected.'}

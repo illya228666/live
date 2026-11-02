@@ -20,9 +20,10 @@ not a production launch path.
 
 ## Launch
 
-Build the solution and the Godot Debug project before launch. Prepare packages
-explicitly. Run commands from the repository root; independent worlds require
-different directories.
+Publish a pinned Host with `./tools/host.ps1 -Action publish`; build the Godot Debug
+project when Viewer code changes. Prepare packages explicitly. Run commands from
+the repository root; independent worlds require different directories. Module
+iteration does not rebuild Host: see [evolution workflow](world-evolution-workflow.md).
 
 ```powershell
 ./tools/world.ps1 run --mode world-only --config configs/world-only.json --directory artifacts/worlds/a

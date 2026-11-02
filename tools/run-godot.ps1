@@ -3,7 +3,7 @@ param([string]$Checkpoint='', [switch]$Train, [string]$Config='configs/runtime.j
 Initialize-Dotnet
 $worldDirectory = Join-Path $RepoRoot ('artifacts/worlds/interactive-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $worldDirectory -Force | Out-Null
-$cli = Join-Path $RepoRoot 'src/ArtificialLife.Cli/bin/Release/net10.0/ArtificialLife.Cli.exe'
+$cli = Get-LiveCli -Pinned
 $arguments = @('world','run','--directory',$worldDirectory,'--speed',$TrainingSpeed)
 if ($Train) { $arguments += @('--mode','learning','--config',[IO.Path]::GetFullPath($Config)); if($Checkpoint){$arguments+=@('--checkpoint',[IO.Path]::GetFullPath($Checkpoint))} }
 else { if (!$Checkpoint) { $Checkpoint='artifacts/checkpoints/thermal' }; $arguments += @('--mode','inference','--policy',[IO.Path]::GetFullPath($Checkpoint)) }

@@ -38,3 +38,20 @@ Observation.Contracts; package IO belongs to Packages, process/network hosting
 to Hosting. LegacyReference under tests is numerical/checkpoint reference code,
 not a production entrypoint. Read docs/observation-runtime.md before changing
 execution, observation, viewer or launch behavior.
+
+## World Evolution Workflow
+
+- Discover with `./tools/world.ps1 list`. Restore a stopped World from its recorded
+  directory; use `host.ps1 -Action start -Restore CHECKPOINT -Directory NEW_DIR` for
+  an isolated copy. Never infer that a new directory is the continuing World.
+- New mechanics: implement the existing `IRuntimeModule` contract and add a local
+  `package.json`; no central packager edit. Publish via `package-module.ps1 -Description ...`.
+- `evolve.ps1 -Action check -Description ... -Version NEW_VERSION -Checkpoint ... -Output ...`
+  builds/packages/tests only the candidate. Reuse `-Sources`/`-NoBuild` when appropriate.
+- Deploy with `evolve.ps1 -Action deploy -Directory WORLD -Session ID -Sources PACKAGE -Output ...`;
+  success means validation + probation + active version + observation/save, not command admission.
+- `evolve.ps1 -Action observe -Directory WORLD [-Capture] [-Save] -Output ...` returns
+  compact JSON and artifact paths. Confirm increasing age, expected revision and no new event faults.
+- Publish Host with `host.ps1 -Action publish`; start from pinned releases, not dev `bin`.
+  Use `host.ps1 -Action switch` only for World Only; never restart Learning as exact continuation.
+- Commands, retry rules, package examples and E2E: `docs/world-evolution-workflow.md`.

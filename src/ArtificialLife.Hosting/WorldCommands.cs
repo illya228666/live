@@ -59,7 +59,9 @@ public static class WorldCommands
         foreach (var host in ObservationHost.Discover())
         {
             var sessions = JsonSerializer.Deserialize<ArtificialLife.Observation.SessionDescriptor[]>(http.GetStringAsync(host.Endpoint + "/sessions").GetAwaiter().GetResult(), ArtificialLife.Observation.ObservationProtocol.Json)!;
-            var session = sessions.FirstOrDefault(s => s.SessionId == arguments["--session"]);
+            // Supervisor's initial restore can briefly retain a completed frame with the same id.
+            // Commands/observations must reach the live Worker, not that disposed startup session.
+            var session = sessions.FirstOrDefault(s => s.SessionId == arguments["--session"] && s.Status != "completed");
             if (session is null) continue;
             if (operation == "status") { Console.WriteLine(JsonSerializer.Serialize(session)); return 0; }
             if (operation == "screenshot")
@@ -73,9 +75,23 @@ public static class WorldCommands
             socket.ConnectAsync(new Uri(host.Endpoint.Replace("http://", "ws://") + "/observe/" + session.SessionId + "?version=1"), timeout.Token).GetAwaiter().GetResult();
             if (operation == "snapshot")
             {
-                var frameBuffer = new byte[16384]; using var frameData = new MemoryStream(); System.Net.WebSockets.WebSocketReceiveResult fragment;
-                do { fragment = socket.ReceiveAsync(frameBuffer, timeout.Token).GetAwaiter().GetResult(); frameData.Write(frameBuffer, 0, fragment.Count); } while (!fragment.EndOfMessage);
-                Console.WriteLine(System.Text.Encoding.UTF8.GetString(frameData.ToArray())); return 0;
+                // A reconnect first receives the cached publication. Wait for a newly sampled
+                // full state before reporting age, metrics or the actually active packages.
+                var frameBuffer = new byte[16384];
+                string latestFrame = "";
+                long firstSequence = -1;
+                while (true)
+                {
+                    using var frameData = new MemoryStream(); System.Net.WebSockets.WebSocketReceiveResult fragment;
+                    do { fragment = socket.ReceiveAsync(frameBuffer, timeout.Token).GetAwaiter().GetResult(); frameData.Write(frameBuffer, 0, fragment.Count); } while (!fragment.EndOfMessage);
+                    using var frameJson = JsonDocument.Parse(frameData.ToArray());
+                    if (!frameJson.RootElement.TryGetProperty("state", out _)) continue;
+                    long sequence = frameJson.RootElement.GetProperty("sequence").GetInt64();
+                    latestFrame = System.Text.Encoding.UTF8.GetString(frameData.ToArray());
+                    if (firstSequence >= 0 && sequence > firstSequence) break;
+                    firstSequence = sequence;
+                }
+                Console.WriteLine(latestFrame); return 0;
             }
             string? value = arguments.GetValueOrDefault("--value") ?? (operation switch
             {
@@ -113,6 +129,7 @@ public static class WorldCommands
     private static int Supervise(string root, Dictionary<string, string> a)
     {
         using var ownership = new FileStream(Path.Combine(root, "owner.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+        WorldCheckpoint.Atomic(Path.Combine(root, "host-release.json"), new { cli = Environment.ProcessPath, processId = Environment.ProcessId });
         double timeout = Positive(a, "--heartbeat-seconds", 60);
         if (!File.Exists(State(root)))
         {

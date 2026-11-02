@@ -1,0 +1,47 @@
+{
+  "project": "ArtificialLife.Modules.Garden.csproj",
+  "testClasses": ["ArtificialLife.Tests.GardenTests"],
+  "packages": [
+    {
+      "manifest": {
+        "id": "flora", "version": "1.0.0", "apiVersion": 1, "supportsWorldOnly": true,
+        "entryType": "ArtificialLife.Modules.Garden.RuntimeFlora",
+        "provides": ["flora"], "requires": ["nutrition", "vision.appearance"],
+        "schemas": {"flora.plant": 1}, "stateSchemaVersion": 1, "settings": {},
+        "visuals": [{"key": "plant", "component": "flora.plant", "scene": "res://@id@/@version@/flora.tscn", "layer": 55,
+          "bindings": [{"property": "scale", "component": "flora.plant", "field": "biomass", "scale": 0.65, "offset": 0.35}]}]
+      },
+      "visualPack": {"source": "../../assets/garden", "file": "garden.pck"}
+    },
+    {
+      "manifest": {
+        "id": "grazing", "version": "1.0.0", "apiVersion": 1, "supportsWorldOnly": true,
+        "entryType": "ArtificialLife.Modules.Garden.RuntimeGrazing",
+        "provides": ["grazing"], "requires": ["flora", "wildlife"],
+        "schemas": {"grazing.animal": 1, "grazing.scar": 1}, "stateSchemaVersion": 1, "settings": {},
+        "visuals": [
+          {"key": "grazer", "component": "grazing.animal", "scene": "res://@id@/@version@/grazer.tscn", "layer": 76,
+            "bindings": [{"property": "rotation", "component": "wildlife.boar", "field": "heading"}, {"property": "alpha", "component": "grazing.animal", "field": "hunger", "scale": 0.6, "offset": 0.4}]},
+          {"key": "scar", "component": "grazing.scar", "scene": "res://@id@/@version@/scar.tscn", "layer": 57,
+            "bindings": [{"property": "alpha", "component": "grazing.scar", "field": "pressure"}]}
+        ]
+      },
+      "visualPack": {"source": "../../assets/garden", "file": "garden.pck"}
+    },
+    {
+      "manifest": {
+        "id": "pollination", "version": "1.0.0", "apiVersion": 1, "supportsWorldOnly": true,
+        "entryType": "ArtificialLife.Modules.Garden.RuntimePollination",
+        "provides": ["pollination"], "requires": ["flora", "grazing", "vision.appearance"],
+        "schemas": {"pollination.moth": 1, "pollination.bloom": 1}, "stateSchemaVersion": 1, "settings": {},
+        "visuals": [
+          {"key": "moth", "component": "pollination.moth", "scene": "res://@id@/@version@/moth.tscn", "layer": 80,
+            "bindings": [{"property": "rotation", "component": "pollination.moth", "field": "heading"}]},
+          {"key": "bloom", "component": "pollination.bloom", "scene": "res://@id@/@version@/bloom.tscn", "layer": 58,
+            "bindings": [{"property": "alpha", "component": "pollination.bloom", "field": "glow"}]}
+        ]
+      },
+      "visualPack": {"source": "../../assets/garden", "file": "garden.pck"}
+    }
+  ]
+}
