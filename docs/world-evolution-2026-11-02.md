@@ -57,3 +57,113 @@ checkpoint continuation. Защищённая активация прошла 10
 Реальный `checkpoint-2` прошёл независимый roundtrip/1000 шагов/continuation
 (`artifacts/ev2-verify/validated.json`). Кадр: `iteration-2.png`, состояние:
 `iteration-2.json`, промежуточные наблюдения: `grazing-1.json`–`grazing-3.json`.
+
+## Итерация 3 — ночные опылители
+
+`pollination@1.0.0` добавил шесть постоянных мотыльков. Они берут нектар/пыльцу
+с развитых растений (стоимость 0.04 биомассы) и выбирают менее восстановившиеся
+цветы для переноса пыльцы. Опыление стимулирует рост на величину до 0.18, не
+выходя за полную биомассу. Это модель стимуляции роста, не замкнутый баланс вещества.
+Действующий выпас создаёт новые цели для опылителей. При отсутствии цветов
+мотыльки ждут, не вызывая сброса мира или исключений. Цель, последний цветок,
+пыльца, heading, время отдыха и отдельный RNG — сохраняемые значения мира.
+
+В Godot появились розово-сиреневые мотыльки с анимированными крыльями и ореолами,
+а у посещённых цветов — затухающие кольца/пыльца. Позиция и ориентация берутся
+из RuntimeFrame; визуальная анимация не меняет физику. Исправлен перенос текста
+HUD, чтобы расширившиеся метрики не налезали на список модулей. Для этой правки
+перезапускался только Viewer; Supervisor/мир продолжили работу.
+
+Динамика после подключения:
+
+| Возраст | Мотыльки | Посещения | Опыления | Добавленная биомасса | Укусы, всего |
+|---|---:|---:|---:|---:|---:|
+| 358750 | 6 | 374 | 22 | 3.9600 | 108 |
+| 359223 | 6 | 542 | 32 | 5.7600 | 113 |
+| 359705 | 6 | 715 | 38 | 6.8158 | 116 |
+| 366750, итоговый кадр | 6 | 3343 | 155 | 27.6037 | 174 |
+| 416332, продолженный прогон | 6 | 21678 | 974 | 172.9357 | 580 |
+
+Все прежние 50 ID сохранены; добавлено ровно шесть новых. Численность растений
+осталась 48, полный размер мира — 56 сущностей. Fault отсутствует. Опылители
+часто концентрируются возле медленно восстанавливающихся цветов: выбор по
+биомассе создаёт скопления без прописанного маршрута. Рост/опыление сильнее
+одиночного выпаса, поэтому общая биомасса большую часть времени близка к 48.
+Это не доказательство сложного экологического равновесия: в следующем цикле
+уместны ресурсное ограничение или сезонность, а не дальнейший рост численности.
+
+## Проверки и сохранность
+
+| Requirement | Evidence |
+|---|---|
+| Рост, тепловая чувствительность, предел популяции, сохранение исходных объектов | `FloraPreservesExistingObjectsSpreadsWithinCapAndRestoresExactly` |
+| Реальный выпас, повреждение и последующее отрастание без удаления колоний | `GrazingUsesExistingWildlifeAndPlantsRecoverAfterBites` |
+| Перелёты между колониями, стимуляция восстановления, постоянная численность, сохранение полётного состояния | `PollinatorsConnectColoniesPreservePopulationAndRestoreFlightState` |
+| Безопасное ожидание опылителей при отсутствии пищи и начало посещений после её появления | `PollinatorsWaitSafelyUntilFirstFoodAppears` |
+| Независимость от Viewer и восстановление реального мира после каждой итерации | `artifacts/ev1-verify/validated.json`, `ev2-verify/validated.json`, `ev3-verify/validated.json`: по 1000 headless-шагов, точный roundtrip и совпадающий следующий шаг |
+| Защищённое внедрение всех трёх пакетов | `world/events.jsonl`: три `version-working`, последняя revision 4, `Pending=null`, без fault |
+| Реальный rollback на отдельной копии мира | `tools/evolution-rollback-smoke.ps1`, `artifacts/ev-rollback-2/summary.json`: 6 мотыльков после установки; затем revision 3, прежние 50 объектов и продолжение с сохранённого возраста |
+| Существующий learning/runtime не сломан проверяемыми сценариями | 25/25 существующих `RuntimeTests`, TRX `runtime-regression/` |
+| Godot отображает реальное состояние | три PNG и JSON-sidecar с возрастом/revision/session/epoch/sequence; вручную просмотрены все три кадра |
+
+Узкие тесты запускались репозиторным SDK / native MTP:
+
+```powershell
+. ./tools/common.ps1
+Initialize-Dotnet
+Invoke-Dotnet build tests/ArtificialLife.Tests -c Release '--property:BuildProjectReferences=false' --verbosity quiet
+Invoke-Dotnet test --project tests/ArtificialLife.Tests -c Release --no-build --filter-class '*GardenTests' --report-xunit-trx --results-directory artifacts/evolution-20261102/tests-3-final
+Invoke-Dotnet test --project tests/ArtificialLife.Tests -c Release --no-build --filter-class 'ArtificialLife.Tests.RuntimeTests' --report-xunit-trx --results-directory artifacts/evolution-20261102/runtime-regression
+```
+
+Итог: новые тесты **Passed: 4, Failed: 0, Skipped: 0**; существующие runtime-тесты
+**Passed: 25, Failed: 0, Skipped: 0**. TRX разобраны, число/исходы проверены.
+Solution-level discovery (`test --solution ArtificialLife.sln -c Release --no-build
+--list-tests --filter-class '*GardenTests'`) также обнаружил все четыре новых теста.
+Первый тест опыления ошибочно ожидал полную порцию при почти полной биомассе;
+исправлено ожидание с учётом насыщения, производственная логика не ослаблялась.
+Первый rollback smoke остановился из-за StrictMode и обращения к отсутствующему
+свойству JSON; исправлена проверка наличия ключа, повторный smoke прошёл.
+Один захват кадра совпал с отключением тестового Host и завершился ошибкой
+discovery; повторный реальный захват после остановки тестовой копии прошёл.
+
+Первичная полная Release-сборка решения, сборка Godot Debug и последующие
+целевые сборки Garden/tests/Viewer прошли без ошибок и предупреждений.
+Полная научная матрица, GitHub CI и многодневный прогон не выполнялись.
+Новые механики не включены в прежние scientific configs: archived baselines
+и код контроллеров/обучения не менялись. Все три пакета используют существующие
+IRuntimeModule/ComponentData, protected update и декларативные PCK-сцены;
+новых runtime, контрактов сохранения или зависимостей не добавлено.
+
+## Продолжение этого мира
+
+Мир и визуализатор оставлены запущенными. Для повторного подключения:
+
+```powershell
+./tools/viewer.ps1 -Session 29c59e97a0454f5db2b2e9618e520ecc
+```
+
+После явной остановки продолжать **тот же каталог**, а не создавать новый:
+
+```powershell
+./tools/world.ps1 run --directory artifacts/evolution-20261102/world --speed 10x
+```
+
+Действующее состояние и версии берутся из `recovery.json` и архивов пакетов.
+Экспортированные точки каждой итерации: `checkpoint-1/`, `checkpoint-2/`,
+`checkpoint-3/` в корне серии. Их проверка, не затрагивающая живой мир:
+
+```powershell
+./tools/check-evolution.ps1 -Checkpoint artifacts/evolution-20261102/checkpoint-3 -Output artifacts/another-short-verify
+```
+
+Для повторения с нуля в новом каталоге нужно явно подготовить базовые пакеты
+через `package.ps1 -NoBuild -Version evolution-base-1 -OutputRoot <new-catalog>`,
+а новые пакеты — через `package-garden.ps1 -Mechanic flora|grazing|pollination`.
+Опубликованные каталоги/версии не перезаписывать. Общая Garden DLL содержит
+независимые entrypoint трёх модулей; каждая публикация архивирует свою сборку.
+
+Скриншоты дополнительно сохранены в Git: [сад](images/world-evolution/01-garden.png),
+[выпас](images/world-evolution/02-grazing.png), [опыление](images/world-evolution/03-pollination.png).
+Внешние артефакты остаются в `artifacts/evolution-20261102/` и коротких каталогах
+проверок. Эта серия — наблюдение конкретного мира, не научное сравнение подходов.

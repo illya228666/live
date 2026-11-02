@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([ValidateSet('flora','grazing')][string]$Mechanic = 'flora', [string]$Version = '1.0.0',
+param([ValidateSet('flora','grazing','pollination')][string]$Mechanic = 'flora', [string]$Version = '1.0.0',
       [string]$OutputRoot = 'artifacts/evolution-20261102/packages')
 . (Join-Path $PSScriptRoot 'common.ps1')
 Initialize-Dotnet
@@ -36,6 +36,17 @@ if ($Mechanic -eq 'grazing') {
             bindings=@(@{property='rotation';component='wildlife.boar';field='heading'},@{property='alpha';component='grazing.animal';field='hunger';scale=0.6;offset=0.4})},
         @{key='scar';component='grazing.scar';scene=('res://grazing/' + $Version + '/scar.tscn');layer=57;
             bindings=@(@{property='alpha';component='grazing.scar';field='pressure'})})
+}
+if ($Mechanic -eq 'pollination') {
+    $gardenManifest.entryType = $gardenAssembly + '.RuntimePollination'
+    $gardenManifest.provides = @('pollination')
+    $gardenManifest.requires = @('flora','grazing','vision.appearance')
+    $gardenManifest.schemas = @{'pollination.moth'=1;'pollination.bloom'=1}
+    $gardenManifest.visuals = @(
+        @{key='moth';component='pollination.moth';scene=('res://pollination/' + $Version + '/moth.tscn');layer=80;
+            bindings=@(@{property='rotation';component='pollination.moth';field='heading'})},
+        @{key='bloom';component='pollination.bloom';scene=('res://pollination/' + $Version + '/bloom.tscn');layer=58;
+            bindings=@(@{property='alpha';component='pollination.bloom';field='glow'})})
 }
 $gardenManifest | ConvertTo-Json -Depth 15 | Set-Content -LiteralPath (Join-Path $gardenStage 'module.json') -Encoding UTF8
 [IO.Directory]::Move($gardenStage, $gardenDestination)

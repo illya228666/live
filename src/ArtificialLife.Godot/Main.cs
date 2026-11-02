@@ -57,7 +57,7 @@ public partial class Main : Node2D
         packageButton.Pressed += () => files.PopupCentered(new(900,600));
         files.FilesSelected += paths => client.Send("update", string.Join(";", paths));
         GetWindow().FilesDropped += paths => client.Send("update", string.Join(";", paths));
-        hud = new global::Godot.Label { Position = new(16, 54), MouseFilter = Control.MouseFilterEnum.Ignore }; ui.AddChild(hud);
+        hud = new global::Godot.Label { Position = new(16, 54), Size = new(810, 230), AutowrapMode = TextServer.AutowrapMode.WordSmart, MouseFilter = Control.MouseFilterEnum.Ignore }; ui.AddChild(hud);
         inspector = new global::Godot.Label { Position = new(850, 80), MouseFilter = Control.MouseFilterEnum.Ignore }; ui.AddChild(inspector);
         metricsPanel = new MetricsPanel { Position = new(16, 300), MouseFilter = Control.MouseFilterEnum.Ignore }; ui.AddChild(metricsPanel);
         _ = client.Run(session, endpoint);

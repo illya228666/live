@@ -84,6 +84,53 @@ public sealed class GardenTests
         AssertExactContinuation(world);
     }
 
+    [Fact]
+    public void PollinatorsConnectColoniesPreservePopulationAndRestoreFlightState()
+    {
+        using var packages = new GardenPackages();
+        using var world = new RuntimeSession(packages.Options);
+        Assert.True(world.Activate(new("flora", [new("flora", "1.0.0")])).Accepted);
+        for (int i = 0; i < 4000; i++) world.AdvanceWorld();
+        Assert.True(world.Activate(new("graze", [new("grazing", "1.0.0")])).Accepted);
+        for (int i = 0; i < 1000; i++) world.AdvanceWorld();
+        var before = world.Snapshot();
+        var outcome = world.Activate(new("moths", [new("pollination", "1.0.0")]));
+        Assert.True(outcome.Accepted, outcome.Message);
+        Assert.Equal(before.Age, world.Age);
+        Assert.Equal(before.Entities.Count + 6, world.Snapshot().Entities.Count);
+        var visited = new HashSet<long>();
+        for (int i = 0; i < 2000; i++)
+        {
+            world.AdvanceWorld();
+            foreach (var plant in world.Snapshot().Entities.Where(e => e.Components.TryGetValue("pollination.bloom", out var bloom) && bloom.Read<double>("glow") > 0.3)) visited.Add(plant.Id);
+        }
+        var after = world.Snapshot();
+        Assert.Equal(6, after.Entities.Count(e => e.Components.ContainsKey("pollination.moth")));
+        Assert.True(visited.Count > 2);
+        var state = after.ModuleState["pollination"];
+        Assert.True(state.Read<long>("visits") > 100);
+        Assert.True(state.Read<long>("fertilizations") > 5);
+        // Nearly recovered plants receive only the space remaining below full biomass.
+        Assert.InRange(state.Read<double>("recoveryAdded"), state.Read<long>("fertilizations") * 0.1, state.Read<long>("fertilizations") * 0.18);
+        Assert.All(after.Entities.Where(e => e.Components.ContainsKey("flora.plant")), e => Assert.InRange(e.Components["flora.plant"].Read<double>("biomass"), 0.12, 1));
+        Assert.All(before.Entities, e => Assert.Contains(after.Entities, retained => retained.Id == e.Id));
+        AssertExactContinuation(world);
+    }
+
+    [Fact]
+    public void PollinatorsWaitSafelyUntilFirstFoodAppears()
+    {
+        using var packages = new GardenPackages();
+        using var world = new RuntimeSession(packages.Options);
+        var outcome = world.Activate(new("garden", [new("flora", "1.0.0"), new("grazing", "1.0.0"), new("pollination", "1.0.0")]));
+        Assert.True(outcome.Accepted, outcome.Message);
+        for (int i = 0; i < 100; i++) world.AdvanceWorld();
+        Assert.Equal(0, world.Snapshot().ModuleState["pollination"].Read<long>("visits"));
+        Assert.Equal(6, world.Snapshot().Entities.Count(e => e.Components.ContainsKey("pollination.moth")));
+        for (int i = 0; i < 400; i++) world.AdvanceWorld();
+        Assert.True(world.Snapshot().ModuleState["pollination"].Read<long>("visits") > 0);
+    }
+
     // Build the tiny catalogue from build outputs, not from a developer's experimental saves.
     private sealed class GardenPackages : IDisposable
     {
@@ -98,7 +145,8 @@ public sealed class GardenTests
                 (Id: "temperature", Project: "Temperature", Entry: "RuntimeTemperature", Schemas: new[] { "temperature.body", "temperature.emitter" }),
                 (Id: "wildlife", Project: "Wildlife", Entry: "RuntimeWildlife", Schemas: new[] { "wildlife.boar" }),
                 (Id: "flora", Project: "Garden", Entry: "RuntimeFlora", Schemas: new[] { "flora.plant" }),
-                (Id: "grazing", Project: "Garden", Entry: "RuntimeGrazing", Schemas: new[] { "grazing.animal", "grazing.scar" })
+                (Id: "grazing", Project: "Garden", Entry: "RuntimeGrazing", Schemas: new[] { "grazing.animal", "grazing.scar" }),
+                (Id: "pollination", Project: "Garden", Entry: "RuntimePollination", Schemas: new[] { "pollination.moth", "pollination.bloom" })
             };
             foreach (var definition in definitions)
             {
@@ -116,7 +164,7 @@ public sealed class GardenTests
                 WorldCheckpoint.Atomic(Path.Combine(destination, "module.json"), manifest);
             }
             Options = new() { Mode = RuntimeMode.WorldOnly, World = new() { TimeStep = 0.25 }, PackageRoot = directory,
-                Packages = definitions.Where(d => d.Id is not ("flora" or "grazing")).Select(d => new PackageReference(d.Id, "1.0.0")).ToArray() };
+                Packages = definitions.Where(d => d.Id is not ("flora" or "grazing" or "pollination")).Select(d => new PackageReference(d.Id, "1.0.0")).ToArray() };
         }
         public void Dispose() => Directory.Delete(directory, true);
     }
