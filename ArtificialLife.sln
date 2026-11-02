@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Observation.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Packages", "src\ArtificialLife.Packages\ArtificialLife.Packages.csproj", "{D9FBCCB9-3B17-433C-9502-5D3EEC032A1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArtificialLife.Modules.Garden", "src\ArtificialLife.Modules.Garden\ArtificialLife.Modules.Garden.csproj", "{B8CA07B9-4799-4929-93B7-3EF4C0445D29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8CA07B9-4799-4929-93B7-3EF4C0445D29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8CA07B9-4799-4929-93B7-3EF4C0445D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8CA07B9-4799-4929-93B7-3EF4C0445D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8CA07B9-4799-4929-93B7-3EF4C0445D29}.Release|Any CPU.Build.0 = Release|Any CPU
 		{68D4B0CF-D2D9-47D1-A2D4-ECA0B79FB440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{68D4B0CF-D2D9-47D1-A2D4-ECA0B79FB440}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68D4B0CF-D2D9-47D1-A2D4-ECA0B79FB440}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -158,6 +164,7 @@ Global
 		{D9FBCCB9-3B17-433C-9502-5D3EEC032A1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{B8CA07B9-4799-4929-93B7-3EF4C0445D29} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 		{68D4B0CF-D2D9-47D1-A2D4-ECA0B79FB440} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 		{E6C7AFD6-69A5-45F0-9E04-8D6CC569399C} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}
 		{B2A81057-90F3-449D-A104-E6293B40E772} = {DA04DD3D-0081-4AFF-ABC5-B26120E25714}

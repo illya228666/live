@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="Gradient" id="Gradient_glow"]
+colors = PackedColorArray(0.3, 1, 0.82, 0.28, 0.2, 0.6, 0.7, 0)
+
+[sub_resource type="GradientTexture2D" id="Texture_glow"]
+gradient = SubResource("Gradient_glow")
+width = 80
+height = 80
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[node name="LanternPlant" type="Node2D"]
+
+[node name="Halo" type="Sprite2D" parent="."]
+texture = SubResource("Texture_glow")
+
+[node name="Leaves" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, 2, -16, -3, -8, 10, 0, 6, 8, 10, 16, -3)
+color = Color(0.13, 0.65, 0.64, 1)
+
+[node name="Petals" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, -18, 5, -10, 13, -13, 10, -4, 16, 1, 6, 4, 0, 12, -5, 4, -14, 1, -9, -5, -12, -13, -4, -10)
+color = Color(0.44, 1, 0.82, 1)
+
+[node name="Heart" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, -7, 5, -2, 0, 3, -5, -2)
+color = Color(1, 0.68, 0.87, 1)

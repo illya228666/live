@@ -1,0 +1,13 @@
+{
+  "mode": "WorldOnly",
+  "packageRoot": "artifacts/evolution-20261102/packages",
+  "world": { "width": 100, "height": 100, "timeStep": 0.25 },
+  "packages": [
+    { "id": "vision", "version": "evolution-base-1" },
+    { "id": "temperature", "version": "evolution-base-1" },
+    { "id": "hunger", "version": "evolution-base-1" },
+    { "id": "food", "version": "evolution-base-1" },
+    { "id": "homeostasis", "version": "evolution-base-1" },
+    { "id": "wildlife", "version": "evolution-base-1" }
+  ]
+}
