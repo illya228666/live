@@ -52,7 +52,7 @@ public sealed class RuntimePackageImporter(string packageRoot)
             foreach (var package in prepared.Where(p => !p.Exists))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(package.Target)!);
-                Directory.Move(package.Source, package.Target); // Never overwrite a published version.
+                WithWindowsSharingRetry(() => Directory.Move(package.Source, package.Target)); // Never overwrite a published version.
             }
             return prepared.Select(p => new ImportedPackage(p.Reference, p.Exists)).ToArray();
         }
@@ -61,7 +61,22 @@ public sealed class RuntimePackageImporter(string packageRoot)
             // Only the exact, locally generated staging directory can be recursively removed.
             if (!Within(catalog.Root, stage) || !Path.GetFileName(stage).StartsWith(".import-", StringComparison.Ordinal))
                 throw new InvalidOperationException("Unexpected package staging path.");
-            Directory.Delete(stage, true);
+            WithWindowsSharingRetry(() => Directory.Delete(stage, true));
+        }
+    }
+
+    private static void WithWindowsSharingRetry(Action operation)
+    {
+        const int maximumRetries = 10;
+        for (int attempt = 0; ; attempt++)
+        {
+            try { operation(); return; }
+            // A scanner can briefly hold a copied directory without FILE_SHARE_DELETE.
+            catch (Exception ex) when (OperatingSystem.IsWindows() && attempt < maximumRetries &&
+                ex is IOException or UnauthorizedAccessException && (ex.HResult & 0xffff) is 5 or 32 or 33)
+            {
+                Thread.Sleep(1 << attempt);
+            }
         }
     }
 

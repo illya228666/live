@@ -1,6 +1,8 @@
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
 using ArtificialLife.Application;
 using ArtificialLife.Core;
 using Xunit;
@@ -9,6 +11,46 @@ namespace ArtificialLife.Tests;
 
 public sealed class RuntimePackageImporterTests
 {
+    public static bool IsWindows => OperatingSystem.IsWindows();
+
+    [Fact(SkipUnless = nameof(IsWindows), Skip = "Windows directory publication must tolerate transient readers.")]
+    public async Task PackagePublicationSurvivesATransientWindowsReader()
+    {
+        using var fixture = new Fixture();
+        string source = fixture.Package("sample");
+        // Leave copying work after the manifest so the watcher can acquire a real OS handle before publication.
+        File.WriteAllBytes(Path.Combine(source, "padding.bin"), new byte[32 * 1024 * 1024]);
+        Directory.CreateDirectory(fixture.Catalogue);
+        var opened = new TaskCompletionSource<SafeFileHandle>(TaskCreationOptions.RunContinuationsAsynchronously);
+        using var watcher = new FileSystemWatcher(fixture.Catalogue, "module.json") { IncludeSubdirectories = true };
+        watcher.Created += (_, e) =>
+        {
+            for (int attempt = 0; attempt < 100 && !opened.Task.IsCompleted; attempt++)
+            {
+                try
+                {
+                    // A directory scanner may omit FILE_SHARE_DELETE even while sharing child-file reads.
+                    var reader = OpenDirectory(Path.GetDirectoryName(e.FullPath)!, 0x80000000, 3, IntPtr.Zero, 3, 0x02000000, IntPtr.Zero);
+                    if (reader.IsInvalid) { reader.Dispose(); Thread.Sleep(1); continue; }
+                    if (!opened.TrySetResult(reader)) reader.Dispose();
+                    return;
+                }
+                catch (IOException) { Thread.Sleep(1); }
+            }
+        };
+        watcher.EnableRaisingEvents = true;
+        var publication = Task.Run(() => new RuntimePackageImporter(fixture.Catalogue).Import([source]), TestContext.Current.CancellationToken);
+        using (var reader = await opened.Task.WaitAsync(TimeSpan.FromSeconds(10), TestContext.Current.CancellationToken))
+            await Task.Delay(400, TestContext.Current.CancellationToken);
+        var result = Assert.Single(await publication);
+        Assert.Equal(new("sample", "1.0.0"), result.Reference);
+        Assert.Equal("logic", File.ReadAllText(Path.Combine(fixture.Catalogue, "sample/1.0.0/Fixture.dll")));
+        Assert.Empty(Directory.GetDirectories(fixture.Catalogue, ".import-*"));
+    }
+
+    [DllImport("kernel32.dll", EntryPoint = "CreateFileW", CharSet = CharSet.Unicode, SetLastError = true)]
+    private static extern SafeFileHandle OpenDirectory(string name, uint access, uint sharing, IntPtr security, uint creation, uint flags, IntPtr template);
+
     [Theory]
     [InlineData(false)] [InlineData(true)]
     public void FolderAndManifestImportCompletePackageAndRepeatIsIdempotent(bool manifest)
