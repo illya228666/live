@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[node name="GrazedPlant" type="Node2D"]
+
+[node name="Bite" type="Line2D" parent="."]
+points = PackedVector2Array(-8, -11, -3, -5, 1, -10, 5, -5, 10, -11)
+width = 3
+default_color = Color(1, 0.65, 0.36, 0.95)

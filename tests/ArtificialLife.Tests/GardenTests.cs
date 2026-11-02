@@ -53,6 +53,37 @@ public sealed class GardenTests
         finally { Directory.Delete(checkpoint, true); }
     }
 
+    [Fact]
+    public void GrazingUsesExistingWildlifeAndPlantsRecoverAfterBites()
+    {
+        using var packages = new GardenPackages();
+        using var world = new RuntimeSession(packages.Options);
+        Assert.True(world.Activate(new("flora", [new("flora", "1.0.0")])).Accepted);
+        for (int i = 0; i < 3000; i++) world.AdvanceWorld();
+        var before = world.Snapshot();
+        var outcome = world.Activate(new("graze", [new("grazing", "1.0.0")]));
+        Assert.True(outcome.Accepted, outcome.Message);
+        Assert.Equal(before.Age, world.Age);
+        Assert.Equal(before.Entities.Select(e => e.Id), world.Snapshot().Entities.Select(e => e.Id));
+        bool sawBite = false, sawRecovery = false;
+        var lowPoints = new Dictionary<long, double>();
+        for (int i = 0; i < 4000; i++)
+        {
+            world.AdvanceWorld();
+            var frame = world.Snapshot();
+            sawBite |= frame.ModuleState["grazing"].Read<long>("bites") > 0;
+            foreach (var plant in frame.Entities.Where(e => e.Components.ContainsKey("grazing.scar")))
+            {
+                double biomass = plant.Components["flora.plant"].Read<double>("biomass");
+                if (plant.Components["grazing.scar"].Read<double>("pressure") > 0.9) lowPoints[plant.Id] = biomass;
+                if (lowPoints.TryGetValue(plant.Id, out double low) && biomass > low + 0.1) sawRecovery = true;
+            }
+        }
+        Assert.True(sawBite); Assert.True(sawRecovery);
+        Assert.All(before.Entities, e => Assert.Contains(world.Snapshot().Entities, retained => retained.Id == e.Id));
+        AssertExactContinuation(world);
+    }
+
     // Build the tiny catalogue from build outputs, not from a developer's experimental saves.
     private sealed class GardenPackages : IDisposable
     {
@@ -65,7 +96,9 @@ public sealed class GardenTests
                 (Id: "hunger", Project: "Hunger", Entry: "RuntimeHunger", Schemas: new[] { "hunger.body", "nutrition" }),
                 (Id: "food", Project: "Food", Entry: "RuntimeFood", Schemas: new[] { "food.apple" }),
                 (Id: "temperature", Project: "Temperature", Entry: "RuntimeTemperature", Schemas: new[] { "temperature.body", "temperature.emitter" }),
-                (Id: "flora", Project: "Garden", Entry: "RuntimeFlora", Schemas: new[] { "flora.plant" })
+                (Id: "wildlife", Project: "Wildlife", Entry: "RuntimeWildlife", Schemas: new[] { "wildlife.boar" }),
+                (Id: "flora", Project: "Garden", Entry: "RuntimeFlora", Schemas: new[] { "flora.plant" }),
+                (Id: "grazing", Project: "Garden", Entry: "RuntimeGrazing", Schemas: new[] { "grazing.animal", "grazing.scar" })
             };
             foreach (var definition in definitions)
             {
@@ -77,12 +110,13 @@ public sealed class GardenTests
                 var manifest = new ModuleManifest(definition.Id, "1.0.0", 1, assembly + ".dll", assembly + "." + definition.Entry)
                 {
                     SupportsWorldOnly = true, Schemas = definition.Schemas.ToDictionary(key => key, _ => 1),
+                    Provides = new[] { "vision.appearance", "nutrition", "flora", "wildlife" }.Where(key => key.StartsWith(definition.Id == "vision" ? "vision" : definition.Id == "hunger" ? "nutrition" : definition.Id, StringComparison.Ordinal)).ToArray(),
                     LogicHash = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(File.ReadAllBytes(binary)))
                 };
                 WorldCheckpoint.Atomic(Path.Combine(destination, "module.json"), manifest);
             }
             Options = new() { Mode = RuntimeMode.WorldOnly, World = new() { TimeStep = 0.25 }, PackageRoot = directory,
-                Packages = definitions.Where(d => d.Id != "flora").Select(d => new PackageReference(d.Id, "1.0.0")).ToArray() };
+                Packages = definitions.Where(d => d.Id is not ("flora" or "grazing")).Select(d => new PackageReference(d.Id, "1.0.0")).ToArray() };
         }
         public void Dispose() => Directory.Delete(directory, true);
     }

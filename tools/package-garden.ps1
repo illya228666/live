@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([ValidateSet('flora')][string]$Mechanic = 'flora', [string]$Version = '1.0.0',
+param([ValidateSet('flora','grazing')][string]$Mechanic = 'flora', [string]$Version = '1.0.0',
       [string]$OutputRoot = 'artifacts/evolution-20261102/packages')
 . (Join-Path $PSScriptRoot 'common.ps1')
 Initialize-Dotnet
@@ -25,6 +25,17 @@ $gardenManifest = [ordered]@{
     presentationFiles=@{ 'garden.pck'=(Garden-Hash 'garden.pck') }
     visuals=@(@{key='plant';component='flora.plant';scene=('res://' + $Mechanic + '/' + $Version + '/flora.tscn');layer=55;
         bindings=@(@{property='scale';component='flora.plant';field='biomass';scale=0.65;offset=0.35})})
+}
+if ($Mechanic -eq 'grazing') {
+    $gardenManifest.entryType = $gardenAssembly + '.RuntimeGrazing'
+    $gardenManifest.provides = @('grazing')
+    $gardenManifest.requires = @('flora','wildlife')
+    $gardenManifest.schemas = @{'grazing.animal'=1;'grazing.scar'=1}
+    $gardenManifest.visuals = @(
+        @{key='grazer';component='grazing.animal';scene=('res://grazing/' + $Version + '/grazer.tscn');layer=76;
+            bindings=@(@{property='rotation';component='wildlife.boar';field='heading'},@{property='alpha';component='grazing.animal';field='hunger';scale=0.6;offset=0.4})},
+        @{key='scar';component='grazing.scar';scene=('res://grazing/' + $Version + '/scar.tscn');layer=57;
+            bindings=@(@{property='alpha';component='grazing.scar';field='pressure'})})
 }
 $gardenManifest | ConvertTo-Json -Depth 15 | Set-Content -LiteralPath (Join-Path $gardenStage 'module.json') -Encoding UTF8
 [IO.Directory]::Move($gardenStage, $gardenDestination)
