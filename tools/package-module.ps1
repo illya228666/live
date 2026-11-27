@@ -92,6 +92,6 @@ foreach ($definition in $packages) {
     if ($LASTEXITCODE -ne 0) { throw ('Package validation/publication failed; staging retained: '+$stage) }
     $published+=Join-Path ([IO.Path]::GetFullPath($OutputRoot)) ($manifest.id+'/'+$manifest.version)
     # Delete only our exact generated staging path, never a published version.
-    Remove-Item -LiteralPath $stage -Recurse
+    Remove-Item -LiteralPath $stage -Recurse -Force
 }
 [ordered]@{status='passed';packages=$published} | ConvertTo-Json -Compress
