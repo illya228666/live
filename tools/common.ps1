@@ -27,7 +27,7 @@ function Initialize-Dotnet {
     try {
         $version = & $script:Dotnet --version
         if ($LASTEXITCODE -ne 0 -or $version -ne $ToolVersions.dotnet.version) {
-            throw "Run ./tools/bootstrap.ps1 first: repository-local SDK $($ToolVersions.dotnet.version) is required."
+            throw "SDK $($ToolVersions.dotnet.version) is required. '$local' selected '$version'. See ./tools/bootstrap.ps1."
         }
     }
     finally { Pop-Location }
