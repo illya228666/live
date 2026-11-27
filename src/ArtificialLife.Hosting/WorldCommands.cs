@@ -32,7 +32,7 @@ public static class WorldCommands
         string operation = args.FirstOrDefault() ?? "help";
         if (operation == "help") { Console.WriteLine("world run --directory DIR [--config configs/world-only.json] [--steps N]\nworld status|snapshot|checkpoint|rollback|screenshot|stop --directory DIR\nworld update --directory DIR --sources PATH1;PATH2 [--id ID]\nworld screenshot --directory DIR [--target PNG]\nrun options: --checkpoint-seconds 30 --heartbeat-seconds 60 --validation-seconds 60 --probation-steps 1000"); return 0; }
         var a = RuntimeCommands.Arguments(args.Skip(1).ToArray());
-        string[] allowed = ["--speed", "--trajectory", "--mode", "--policy", "--restore", "--session", "--value", "--directory", "--config", "--steps", "--checkpoint-seconds", "--heartbeat-seconds", "--validation-seconds", "--probation-steps", "--id", "--sources", "--target", "--checkpoint", "--sources-file", "--output", "--observation-copy"];
+        string[] allowed = ["--speed", "--trajectory", "--mode", "--policy", "--restore", "--session", "--value", "--directory", "--config", "--steps", "--checkpoint-seconds", "--heartbeat-seconds", "--validation-seconds", "--probation-steps", "--id", "--sources", "--target", "--checkpoint", "--sources-file", "--output", "--observation-copy", "--scene-directory"];
         if (a.Keys.Any(key => !allowed.Contains(key))) throw new ArgumentException("Unknown world option.");
         if (operation == "list") { using var http = new HttpClient(); var available = new List<ArtificialLife.Observation.SessionDescriptor>(); foreach (var host in ObservationHost.Discover()) try { available.AddRange(JsonSerializer.Deserialize<ArtificialLife.Observation.SessionDescriptor[]>(http.GetStringAsync(host.Endpoint + "/sessions").GetAwaiter().GetResult(), ArtificialLife.Observation.ObservationProtocol.Json) ?? []); } catch (HttpRequestException) { } Console.WriteLine(JsonSerializer.Serialize(available, PackageCatalog.Json)); return 0; }
         if (a.ContainsKey("--session")) return SessionCommand(operation, a);
@@ -161,7 +161,7 @@ public static class WorldCommands
                 string heartbeat = Path.Combine(root, "heartbeat.json");
                 File.Delete(heartbeat);
                 var arguments = new List<string> { "world", "worker", "--directory", root };
-                foreach (var key in new[] { "--steps", "--checkpoint-seconds", "--validation-seconds", "--probation-steps", "--checkpoint", "--trajectory", "--speed", "--observation-copy" })
+                foreach (var key in new[] { "--steps", "--checkpoint-seconds", "--validation-seconds", "--probation-steps", "--checkpoint", "--trajectory", "--speed", "--observation-copy", "--scene-directory" })
                     if (a.TryGetValue(key, out var value)) { arguments.Add(key); arguments.Add(value); }
                 using var child = StartCli(arguments.ToArray());
                 var startup = Stopwatch.StartNew();
@@ -305,6 +305,9 @@ public static class WorldCommands
         string observation = Path.Combine(root, "observation.json");
         string? observationCopy = a.GetValueOrDefault("--observation-copy");
         bool observationCopyFailed = false;
+        var publicScene = a.TryGetValue("--scene-directory", out var sceneDirectory)
+            ? new PublicScenePublisher(Path.GetFullPath(sceneDirectory)) : null;
+        double nextScene = 0;
         var captures = new Dictionary<string, Task>();
         void Complete(string file, WorldCommand command, bool accepted, string message, string? artifact = null)
         {
@@ -436,10 +439,12 @@ public static class WorldCommands
                         else if (!File.Exists(Path.Combine(commands, id + ".ready.json"))) WorldCheckpoint.Atomic(Path.Combine(commands, id + ".ready.json"), new WorldCommand(id, "update", item.Request.Packages.Select(p => new PackageCatalog(catalogRoot).DirectoryFor(p)).ToArray(), null));
                     }
                 }
+                RuntimeFrame? frame = null;
                 if (timer.Elapsed.TotalSeconds >= nextObservation)
                 {
                     nextObservation = timer.Elapsed.TotalSeconds + 1;
                     var snapshot = WriteObservation(observation, live, updating?.Id, new[] { recovery.Current, recovery.Previous, recovery.Pending }.OfType<string>().Distinct().ToArray(), (live.Age - initialAge) / Math.Max(0.001, timer.Elapsed.TotalSeconds), stepMs);
+                    frame = snapshot.Frame;
                     if (observationCopy is not null)
                     {
                         try
@@ -462,6 +467,11 @@ public static class WorldCommands
                         }
                     }
                     WorldCheckpoint.Atomic(Path.Combine(root, "heartbeat.json"), new { At = DateTimeOffset.UtcNow, live.Age, ProcessId = Environment.ProcessId });
+                }
+                if (publicScene is not null && timer.Elapsed.TotalSeconds >= nextScene)
+                {
+                    nextScene = timer.Elapsed.TotalSeconds + 0.25;
+                    publicScene.Publish(live, frame ?? live.Snapshot());
                 }
                 if (timer.Elapsed.TotalSeconds >= nextSave) { Save(); Prune(root, recovery); nextSave = timer.Elapsed.TotalSeconds + Positive(a, "--checkpoint-seconds", 30); }
                 long started = Stopwatch.GetTimestamp(); live.Step(live.Options.Mode == RuntimeMode.Learning); stepMs = Stopwatch.GetElapsedTime(started).TotalMilliseconds;

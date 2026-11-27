@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import tarfile
 import tempfile
@@ -54,17 +55,27 @@ def smoke(cli, manifest, output, scratch, previous=None):
     write_json(scratch / "world.json", config)
     args = (cli, "world", "run", "--directory", restore, "--config", scratch / "world.json",
             "--mode", "world-only", "--speed", "Max", "--steps", "24")
-    run(*args, "--observation-copy", scratch / "public.json")
+    run(*args, "--observation-copy", scratch / "public.json", "--scene-directory", scratch / "scene")
     before = json.loads((restore / "observation.json").read_text())
     public = json.loads((scratch / "public.json").read_text())
     if (before["Frame"]["Agent"] is not None or public["mode"] != "WorldOnly"
             or before["Frame"]["Age"] != 24):
         raise RuntimeError("World Only did not start with the requested packages")
-    run(*args)
+    first = json.loads((scratch / "scene/scene.json").read_text())
+    boar = next(entity for entity in first["entities"] if entity["kind"] == "boar")
+    sprite, = [appearance["sprite"] for appearance in boar["appearance"] if appearance["sprite"]]
+    sprite_file = scratch / "scene/sprites" / sprite.rsplit("/", 1)[1]
+    if sprite_file.stem != sha256(sprite_file):
+        raise RuntimeError("The scene must publish the verified wildlife sprite")
+    run(*args, "--scene-directory", scratch / "scene")
     after = json.loads((restore / "observation.json").read_text())
     if (before["SessionId"] != after["SessionId"] or after["Frame"]["Age"] != 48
             or before["Frame"]["Revision"] != after["Frame"]["Revision"]):
         raise RuntimeError("World Only did not resume the same checkpoint")
+    restored = json.loads((scratch / "scene/scene.json").read_text())
+    if (restored["sessionId"] != first["sessionId"] or restored["epoch"] == first["epoch"]
+            or restored["age"] < 24):
+        raise RuntimeError("The public frame did not identify the restored world generation")
     if not previous:
         return
     changes = [package for package in manifest["modules"] if package["tag"] == manifest["tag"]]
@@ -123,11 +134,12 @@ def main():
         host_inputs = fingerprint("src/ArtificialLife.Cli", "src/ArtificialLife.Hosting",
                                   "src/ArtificialLife.Application", "src/ArtificialLife.Core",
                                   "src/ArtificialLife.Observation.Contracts", "src/ArtificialLife.Packages",
-                                  "src/ArtificialLife.Brain")
+                                  "src/ArtificialLife.Brain", "deploy/web")
         # Publishing the apphost with a pinned runtime also routes child processes back to this build.
         run("dotnet", "publish", "src/ArtificialLife.Cli", "-c", "Release", "-r", "linux-x64",
             "--self-contained", "true", "-o", host)
         cli = host / "ArtificialLife.Cli"
+        shutil.copytree(ROOT / "deploy/web", host / "web")
         if new_base:
             run("pwsh", "-NoProfile", "-File", "tools/package.ps1", "-LogicOnly",
                 "-Version", version, "-OutputRoot", catalog)
@@ -141,14 +153,20 @@ def main():
         tested = set()
         for entry in config["modules"]:
             name, description = entry["id"], Path(entry["description"])
-            digest = fingerprint(description.parent, "tools/package-module.ps1")
+            description_data = json.loads(description.read_text())
+            definition = next(p for p in description_data["packages"] if p["manifest"]["id"] == name)
+            files = definition.get("files", {})
+            sprites = [(description.parent / files[visual["sprite"]]).resolve().relative_to(ROOT).as_posix()
+                       for visual in definition["manifest"].get("visuals", [])
+                       if visual.get("sprite") in files and Path(visual["sprite"]).suffix.lower() in (".png", ".webp")]
+            digest = fingerprint(description.parent, "tools/package-module.ps1", *sprites)
             if old.get(name, {}).get("input") == digest:
                 modules.append(old[name])
                 continue
             run("pwsh", "-NoProfile", "-File", "tools/package-module.ps1", "-Description",
-                description, "-Id", name, "-Version", version, "-LogicOnly", "-OutputRoot",
+                description, "-Id", name, "-Version", version, "-PortableVisuals", "-OutputRoot",
                 catalog, "-Cli", cli)
-            for test_class in json.loads(description.read_text()).get("testClasses", []):
+            for test_class in description_data.get("testClasses", []):
                 if test_class not in tested:
                     run("dotnet", "test", "--project", "tests/ArtificialLife.Tests", "-c",
                         "Release", "--filter-class", test_class)

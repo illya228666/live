@@ -12,14 +12,23 @@ from pathlib import Path
 from release_lib import REPOSITORY, TAG
 
 OBSERVATION = Path(os.getenv("LIVE_OBSERVATION", "/var/lib/live-observation/world.json"))
+SCENE = Path(os.getenv("LIVE_SCENE_DIRECTORY", "/run/live-scene"))
+WEB = Path(os.getenv("LIVE_WEB_DIRECTORY", "/opt/live/host/current/web"))
 WAKE = Path(os.getenv("LIVE_WAKE", "/run/live-inbox/reconcile"))
 ALLOWED = {"127.0.0.1", os.getenv("LIVE_TUNNEL_IP", "192.168.178.71")}
 MAX_BODY = 128 * 1024
+WEB_FILES = {
+    "/": ("index.html", "text/html; charset=utf-8"),
+    "/viewer/viewer.css": ("viewer.css", "text/css; charset=utf-8"),
+    "/viewer/viewer.mjs": ("viewer.mjs", "text/javascript; charset=utf-8"),
+    "/viewer/scene.mjs": ("scene.mjs", "text/javascript; charset=utf-8"),
+}
+SPRITE_ROUTE = re.compile(r"/api/scene/sprites/([0-9a-f]{64}\.(png|webp))")
 
 
-def world_status():
+def world_status(path):
     try:
-        snapshot = json.loads(OBSERVATION.read_text())
+        snapshot = json.loads(path.read_text(encoding="utf-8"))
         observed = datetime.fromisoformat(snapshot["observedAt"])
         if (datetime.now(timezone.utc) - observed).total_seconds() > 15:
             return 503, {"schemaVersion": 1, "status": "stale", "observedAt": snapshot["observedAt"]}
@@ -73,21 +82,47 @@ class Origin(ThreadingHTTPServer):
 
 
 class RequestHandler(BaseHTTPRequestHandler):
-    def reply(self, status, payload=None, *, head=False):
-        body = json.dumps(payload, allow_nan=False).encode() if payload is not None else b""
+    def reply_bytes(self, status, body, media_type, cache="no-store"):
         self.send_response(status)
-        self.send_header("Cache-Control", "no-store")
-        self.send_header("Content-Type", "application/json")
+        self.send_header("Cache-Control", cache)
+        self.send_header("Content-Type", media_type)
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("Content-Security-Policy", "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
-        if not head and body:
+        if self.command != "HEAD" and body:
             self.wfile.write(body)
 
-    def do_GET(self):
-        if self.path not in ("/", "/api/world"):
+    def reply(self, status, payload=None):
+        body = json.dumps(payload, allow_nan=False).encode() if payload is not None else b""
+        self.reply_bytes(status, body, "application/json")
+
+    def file_response(self, file, media_type, cache="no-store"):
+        try:
+            body = file.read_bytes()
+        except OSError:
             self.reply(404)
             return
-        self.reply(*world_status(), head=self.command == "HEAD")
+        self.reply_bytes(200, body, media_type, cache)
+
+    def log_request(self, code="-", size="-"):
+        # Frequent public frame reads should not fill the service journal.
+        if self.command not in ("GET", "HEAD"):
+            super().log_request(code, size)
+
+    def do_GET(self):
+        if self.path in WEB_FILES and (self.path != "/" or (WEB / "index.html").is_file()):
+            file, kind = WEB_FILES[self.path]
+            self.file_response(WEB / file, kind)
+        elif self.path in ("/", "/api/world"):
+            self.reply(*world_status(OBSERVATION))
+        elif self.path == "/api/scene":
+            self.reply(*world_status(SCENE / "scene.json"))
+        elif (sprite := SPRITE_ROUTE.fullmatch(self.path)):
+            self.file_response(SCENE / "sprites" / sprite[1], "image/" + sprite[2],
+                               "public, max-age=31536000, immutable")
+        else:
+            self.reply(404)
 
     do_HEAD = do_GET
 

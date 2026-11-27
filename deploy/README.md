@@ -3,7 +3,8 @@
 The deployment uses Proxmox LXC 106 (Debian 12, 192.168.178.206) and the
 Window-to-Europe Cloudflare Tunnel on CT 101. The public origin is TCP 8080.
 The server accepts origin traffic from the tunnel's LAN address and container
-loopback. The tunnel serves JSON at / and /api/world. Its only POST route is
+loopback. The tunnel serves the live viewer at /, status JSON at /api/world
+and the public rendering snapshot at /api/scene. Its only POST route is
 /hooks/github, which validates the signed release notification.
 
 The first deployment starts World Only with the base set in modules.json.
@@ -22,8 +23,11 @@ the module change into master. For example, for the first flora release specify
 in the modules array. The builder uses the package's declared test classes
 and keeps prior versions of unchanged modules. Foundation packages ship as a
 group because food has exact-version dependencies on hunger and vision. The
-deployed catalogue contains simulation packages. Godot and PCK generation
-are outside the server build.
+deployed catalogue includes portable visuals declared in `visuals` and `files`.
+Use a loose PNG or WebP sprite and the existing rotation, scale, alpha and
+visibility bindings. A Godot scene can declare a loose sprite alongside its
+scene path. The browser receives a marker for entities without a portable
+visual. Godot and PCK generation are outside the server build.
 
 The release manifest describes a cumulative desired set of modules. Each
 package references its original immutable release asset. The published
@@ -40,6 +44,8 @@ pipeline. An accepted command is provisional until probation has completed.
   latest delivery outcome and the world's activation history.
 - systemctl start live-reconcile.service performs the same check as an incoming
   webhook and the ten-minute timer.
+- Use `python3 /opt/live/deploy/live_deploy.py stage-host --tag live-N` to
+  verify and install a candidate. It includes the browser files.
 - Pin the Host release in /opt/live/host/current. For a Host change, record the
   active session and revision, stop the simulation gracefully, preserve the
   current checkpoint, test it in an isolated copy under the candidate Host, then

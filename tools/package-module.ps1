@@ -1,8 +1,9 @@
 [CmdletBinding()]
 param([Parameter(Mandatory=$true)][string]$Description, [string]$Id='', [string]$Version='',
-      [string]$OutputRoot='artifacts/packages', [switch]$NoBuild, [switch]$LogicOnly, [string]$Cli='')
+      [string]$OutputRoot='artifacts/packages', [switch]$NoBuild, [switch]$LogicOnly, [switch]$PortableVisuals, [string]$Cli='')
 . (Join-Path $PSScriptRoot 'common.ps1')
 Initialize-Dotnet
+if ($LogicOnly -and $PortableVisuals) { throw 'Choose either LogicOnly or PortableVisuals.' }
 $descriptionPath=[IO.Path]::GetFullPath($Description)
 $sourceRoot=Split-Path $descriptionPath
 $descriptionData=Get-Content -LiteralPath $descriptionPath -Raw | ConvertFrom-Json -AsHashtable
@@ -23,6 +24,30 @@ $published=@()
 foreach ($definition in $packages) {
     $manifest=$definition.manifest
     if ($Version) { $manifest.version=$Version }
+    $portableFiles = @()
+    if ($PortableVisuals) {
+        foreach ($key in @('presentationAssembly', 'presentationType', 'presentationHash', 'presentationOrder')) {
+            $null = $manifest.Remove($key)
+        }
+        if ($manifest.ContainsKey('visuals')) {
+            $manifest.visuals = @($manifest.visuals | Where-Object {
+                !$_.ContainsKey('scene') -or ($_.ContainsKey('sprite') -and $_.sprite -match '\.(png|webp)$')
+            })
+            foreach ($visual in $manifest.visuals) {
+                foreach ($field in @('scene', 'animation', 'frames', 'framesPerSecond', 'pulse')) {
+                    $null = $visual.Remove($field)
+                }
+                if ($visual.ContainsKey('sprite') -and $visual.sprite -match '\.(png|webp)$' -and $visual.sprite -notmatch ':') {
+                    if (!$definition.ContainsKey('files') -or !$definition.files.ContainsKey($visual.sprite)) {
+                        throw "Declare the portable sprite in files: $($visual.sprite)"
+                    }
+                    $portableFiles += $visual.sprite
+                } else {
+                    $null = $visual.Remove('sprite')
+                }
+            }
+        }
+    }
     if ($LogicOnly) {
         foreach ($key in @('presentationAssembly', 'presentationType', 'presentationHash', 'presentationOrder', 'visuals')) {
             $null = $manifest.Remove($key)
@@ -44,6 +69,7 @@ foreach ($definition in $packages) {
     $manifest.presentationFiles=@{}
     if (!$LogicOnly -and $definition.ContainsKey('files')) {
         foreach ($entry in $definition.files.GetEnumerator()) {
+            if ($PortableVisuals -and $entry.Key -notin $portableFiles) { continue }
             $destination=[IO.Path]::GetFullPath((Join-Path $stage $entry.Key))
             if (!$destination.StartsWith($stage+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)) { throw 'Asset path escapes package.' }
             New-Item -ItemType Directory -Path (Split-Path $destination) -Force | Out-Null
@@ -51,7 +77,7 @@ foreach ($definition in $packages) {
             $manifest.presentationFiles[$entry.Key]=(Get-FileHash -LiteralPath $destination).Hash
         }
     }
-    if (!$LogicOnly -and $definition.ContainsKey('visualPack')) {
+    if (!$LogicOnly -and !$PortableVisuals -and $definition.ContainsKey('visualPack')) {
         $pack=$definition.visualPack
         if ($pack.file -ne [IO.Path]::GetFileName($pack.file)) { throw 'PCK file must be a simple file name.' }
         & (Join-Path $PSScriptRoot 'pack-visuals.ps1') -Source (Join-Path $sourceRoot $pack.source) -Output (Join-Path $stage $pack.file) -Prefix ($manifest.id+'/'+$manifest.version) | Out-Null

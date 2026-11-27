@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101c18">
+  <title>MyPocketWorld</title>
+  <link rel="stylesheet" href="/viewer/viewer.css">
+  <script type="module" src="/viewer/viewer.mjs"></script>
+</head>
+<body>
+  <main class="observatory">
+    <header class="header">
+      <h1>MyPocketWorld</h1>
+      <div id="connection" class="connection" data-state="connecting" role="status">
+        <span class="signal" aria-hidden="true"></span><span id="connection-label">Подключение</span>
+      </div>
+    </header>
+    <div class="layout">
+      <figure class="window">
+        <canvas id="world" role="img" aria-label="Живая карта мира сверху. Легенда расположена рядом со сценой."></canvas>
+        <div id="empty" class="empty">Ожидаем первый кадр мира</div>
+      </figure>
+      <aside class="details" aria-label="Состояние мира и легенда">
+        <dl>
+          <div class="datum"><dt>Возраст мира</dt><dd id="age">—</dd></div>
+          <div class="datum"><dt>Объекты</dt><dd id="count">—</dd></div>
+        </dl>
+        <h2>На карте</h2>
+        <ul class="legend">
+          <li><span class="mark heat" aria-hidden="true"></span>Источник тепла</li>
+          <li><span class="mark apple" aria-hidden="true"></span>Яблоко</li>
+          <li><span class="mark boar" aria-hidden="true"></span>Кабан</li>
+          <li id="other" hidden><span class="mark object" aria-hidden="true"></span>Другие объекты</li>
+        </ul>
+        <p id="last-observation" class="last" hidden></p>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

@@ -41,9 +41,7 @@ def extract_host(archive, directory):
                 raise ValueError("Host archive must contain regular files and directories")
 
 
-def bootstrap(manifest, scratch):
-    if (WORLD / "recovery.json").exists():
-        raise RuntimeError("World exists. Host replacement requires a checkpoint and planned switch")
+def stage_host(manifest, scratch):
     release = manifest["host"]
     name = release["tag"]
     if not TAG.fullmatch(name):
@@ -54,6 +52,14 @@ def bootstrap(manifest, scratch):
         with tempfile.TemporaryDirectory(dir=HOST, prefix=".host-") as directory:
             extract_host(archive, Path(directory))
             (Path(directory) / "host").rename(HOST / name)
+    return binary
+
+
+def bootstrap(manifest, scratch):
+    if (WORLD / "recovery.json").exists():
+        raise RuntimeError("World exists. Host replacement requires a checkpoint and planned switch")
+    binary = stage_host(manifest, scratch)
+    name = binary.parent.name
     catalog = STATE / "bootstrap-packages"
     run("chown", "live:live", catalog.parent)
     archives = []
@@ -142,11 +148,12 @@ def reconcile(manifest, scratch):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("operation", choices=("bootstrap", "reconcile"))
+    parser.add_argument("operation", choices=("bootstrap", "stage-host", "reconcile"))
     parser.add_argument("--tag")
     args = parser.parse_args()
     if args.tag and args.operation != "bootstrap":
-        parser.error("--tag is only for installing the first Host")
+        if args.operation != "stage-host":
+            parser.error("--tag is only for installing a Host")
     with (STATE / ".reconcile.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         if args.operation == "reconcile":
@@ -166,6 +173,8 @@ def main():
             manifest = fetch_manifest(tag, scratch)
             if args.operation == "bootstrap":
                 bootstrap(manifest, scratch)
+            elif args.operation == "stage-host":
+                print(stage_host(manifest, scratch), flush=True)
             else:
                 reconcile(manifest, scratch)
 
