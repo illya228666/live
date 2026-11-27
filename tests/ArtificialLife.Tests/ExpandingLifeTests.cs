@@ -119,6 +119,7 @@ public sealed class ExpandingLifeTests
     }
 
     [Fact]
+    [Trait("Category", "ArchivedArtifacts")]
     public void LegacyProtocolIdentitySurvivesOptionalLiveMeasurements()
     {
         string root = RuntimeDefaults.RepositoryRoot();

@@ -1,0 +1,25 @@
+[Unit]
+Description=MyPocketWorld simulation supervisor
+After=network.target
+StartLimitIntervalSec=120
+StartLimitBurst=6
+
+[Service]
+User=live
+Group=live
+UMask=0027
+WorkingDirectory=/var/lib/live
+ExecStart=/opt/live/host/current/ArtificialLife.Cli world run --directory /var/lib/live/world --config /etc/live/world.json --mode world-only --speed 10x --observation-copy /var/lib/live-observation/world.json
+Restart=on-failure
+RestartSec=3
+KillMode=mixed
+KillSignal=SIGINT
+TimeoutStopSec=35
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/live /var/lib/live-observation
+
+[Install]
+WantedBy=multi-user.target

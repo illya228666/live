@@ -1,0 +1,10 @@
+[Unit]
+Description=Wake Live release reconciliation on a GitHub notification
+After=systemd-tmpfiles-setup.service
+
+[Path]
+PathExists=/run/live-inbox/reconcile
+Unit=live-reconcile.service
+
+[Install]
+WantedBy=multi-user.target

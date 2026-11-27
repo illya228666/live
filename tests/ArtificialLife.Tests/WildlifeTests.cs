@@ -39,7 +39,8 @@ public sealed class WildlifeTests
         var boar = Assert.Single(initial.Entities, e => e.Components.ContainsKey("wildlife.boar"));
         Assert.Contains("safety", runtime.Report().Drives.Keys);
         var package = new PackageCatalog(options.PackageRoot).Read(new("wildlife", "1.0.0"));
-        Assert.Equal(View + ".dll", package.PresentationAssembly);
+        if (package.PresentationAssembly is not null) Assert.Equal(View + ".dll", package.PresentationAssembly);
+        else Assert.Contains(package.Visuals, visual => visual.Component == "wildlife.boar" && visual.Sprite == "assets/boar.png");
         Assert.Contains("assets/boar.png", package.PresentationFiles.Keys);
         for (int i = 0; i < 20; i++) runtime.AdvanceOne(false);
         var moved = Assert.Single(runtime.Snapshot().Entities, e => e.Components.ContainsKey("wildlife.boar"));

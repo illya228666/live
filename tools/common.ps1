@@ -12,13 +12,17 @@ $env:NUGET_PLUGINS_CACHE_PATH = Join-Path $nugetRoot 'plugins-cache'
 $env:NUGET_SCRATCH = Join-Path $nugetRoot 'scratch'
 
 function Initialize-Dotnet {
-    $local = Join-Path $RepoRoot (Join-Path $ToolVersions.dotnet.localDirectory 'dotnet.exe')
+    $executable = if ([Environment]::OSVersion.Platform -eq 'Win32NT') { 'dotnet.exe' } else { 'dotnet' }
+    $local = Join-Path $RepoRoot (Join-Path $ToolVersions.dotnet.localDirectory $executable)
+    if ($env:LIVE_DOTNET) {
+        $local = [IO.Path]::GetFullPath($env:LIVE_DOTNET)
+    }
     if (!(Test-Path -LiteralPath $local)) {
         throw "Run ./tools/bootstrap.ps1 first: repository-local .NET SDK $($ToolVersions.dotnet.version) is missing."
     }
     $script:Dotnet = $local
     $env:DOTNET_ROOT = Split-Path $local
-    $env:PATH = "$env:DOTNET_ROOT;$env:PATH"
+    $env:PATH = $env:DOTNET_ROOT + [IO.Path]::PathSeparator + $env:PATH
     Push-Location $RepoRoot
     try {
         $version = & $script:Dotnet --version

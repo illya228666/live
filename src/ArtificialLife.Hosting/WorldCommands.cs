@@ -9,7 +9,7 @@ public sealed record WorldCommand(string Id, string Operation, string[] Sources,
 public sealed record WorldCommandResult(string Id, bool Accepted, string Message, long Age, long Revision, string? Artifact = null);
 public sealed record WorldObservation(RuntimeFrame Frame, RuntimeMode Mode, ModuleManifest[] Packages, string PackageRoot,
     string? Operation, string? Fault, string[] Checkpoints, double StepsPerSecond, double StepMilliseconds,
-    IReadOnlyDictionary<string, double> Systems, IReadOnlyDictionary<string, double> Metrics);
+    IReadOnlyDictionary<string, double> Systems, IReadOnlyDictionary<string, double> Metrics, string? SessionId = null);
 public sealed record WorldRecovery(string Current, string? Previous = null, string? Pending = null, string[]? Rejected = null, string? Candidate = null);
 
 /// <summary>File control plane and process supervision around the single existing RuntimeSession.</summary>
@@ -32,7 +32,7 @@ public static class WorldCommands
         string operation = args.FirstOrDefault() ?? "help";
         if (operation == "help") { Console.WriteLine("world run --directory DIR [--config configs/world-only.json] [--steps N]\nworld status|snapshot|checkpoint|rollback|screenshot|stop --directory DIR\nworld update --directory DIR --sources PATH1;PATH2 [--id ID]\nworld screenshot --directory DIR [--target PNG]\nrun options: --checkpoint-seconds 30 --heartbeat-seconds 60 --validation-seconds 60 --probation-steps 1000"); return 0; }
         var a = RuntimeCommands.Arguments(args.Skip(1).ToArray());
-        string[] allowed = ["--speed", "--trajectory", "--mode", "--policy", "--restore", "--session", "--value", "--directory", "--config", "--steps", "--checkpoint-seconds", "--heartbeat-seconds", "--validation-seconds", "--probation-steps", "--id", "--sources", "--target", "--checkpoint", "--sources-file", "--output"];
+        string[] allowed = ["--speed", "--trajectory", "--mode", "--policy", "--restore", "--session", "--value", "--directory", "--config", "--steps", "--checkpoint-seconds", "--heartbeat-seconds", "--validation-seconds", "--probation-steps", "--id", "--sources", "--target", "--checkpoint", "--sources-file", "--output", "--observation-copy"];
         if (a.Keys.Any(key => !allowed.Contains(key))) throw new ArgumentException("Unknown world option.");
         if (operation == "list") { using var http = new HttpClient(); var available = new List<ArtificialLife.Observation.SessionDescriptor>(); foreach (var host in ObservationHost.Discover()) try { available.AddRange(JsonSerializer.Deserialize<ArtificialLife.Observation.SessionDescriptor[]>(http.GetStringAsync(host.Endpoint + "/sessions").GetAwaiter().GetResult(), ArtificialLife.Observation.ObservationProtocol.Json) ?? []); } catch (HttpRequestException) { } Console.WriteLine(JsonSerializer.Serialize(available, PackageCatalog.Json)); return 0; }
         if (a.ContainsKey("--session")) return SessionCommand(operation, a);
@@ -161,7 +161,7 @@ public static class WorldCommands
                 string heartbeat = Path.Combine(root, "heartbeat.json");
                 File.Delete(heartbeat);
                 var arguments = new List<string> { "world", "worker", "--directory", root };
-                foreach (var key in new[] { "--steps", "--checkpoint-seconds", "--validation-seconds", "--probation-steps", "--checkpoint", "--trajectory", "--speed" })
+                foreach (var key in new[] { "--steps", "--checkpoint-seconds", "--validation-seconds", "--probation-steps", "--checkpoint", "--trajectory", "--speed", "--observation-copy" })
                     if (a.TryGetValue(key, out var value)) { arguments.Add(key); arguments.Add(value); }
                 using var child = StartCli(arguments.ToArray());
                 var startup = Stopwatch.StartNew();
@@ -262,11 +262,14 @@ public static class WorldCommands
         }
         catch (Exception ex) { File.WriteAllText(Path.Combine(output, "error.txt"), ex.ToString()); return 1; }
     }
-    private static void WriteObservation(string path, RuntimeSession runtime, string? operation, string[] checkpoints, double rate, double step)
+    private static WorldObservation WriteObservation(string path, RuntimeSession runtime, string? operation, string[] checkpoints, double rate, double step)
     {
         var frame = runtime.Snapshot();
-        WorldCheckpoint.Atomic(path, new WorldObservation(frame, runtime.Options.Mode, runtime.Packages.ToArray(), runtime.Options.PackageRoot,
-            operation, runtime.Fault, checkpoints, rate, step, runtime.SystemMilliseconds, runtime.CaptureMetrics(message => Log(Path.GetDirectoryName(path)!, "metric-error", message), frame)));
+        var observation = new WorldObservation(frame, runtime.Options.Mode, runtime.Packages.ToArray(), runtime.Options.PackageRoot,
+            operation, runtime.Fault, checkpoints, rate, step, runtime.SystemMilliseconds, runtime.CaptureMetrics(message => Log(Path.GetDirectoryName(path)!, "metric-error", message), frame),
+            Environment.GetEnvironmentVariable("LIVE_WORLD_SESSION"));
+        WorldCheckpoint.Atomic(path, observation);
+        return observation;
     }
     private static int Worker(string root, Dictionary<string, string> a)
     {
@@ -300,6 +303,8 @@ public static class WorldCommands
         long probationEnd = recovery.Pending is null ? long.MaxValue : live.Age + probation;
         double stepMs = 0; long initialAge = live.Age;
         string observation = Path.Combine(root, "observation.json");
+        string? observationCopy = a.GetValueOrDefault("--observation-copy");
+        bool observationCopyFailed = false;
         var captures = new Dictionary<string, Task>();
         void Complete(string file, WorldCommand command, bool accepted, string message, string? artifact = null)
         {
@@ -434,7 +439,28 @@ public static class WorldCommands
                 if (timer.Elapsed.TotalSeconds >= nextObservation)
                 {
                     nextObservation = timer.Elapsed.TotalSeconds + 1;
-                    WriteObservation(observation, live, updating?.Id, new[] { recovery.Current, recovery.Previous, recovery.Pending }.OfType<string>().Distinct().ToArray(), (live.Age - initialAge) / Math.Max(0.001, timer.Elapsed.TotalSeconds), stepMs);
+                    var snapshot = WriteObservation(observation, live, updating?.Id, new[] { recovery.Current, recovery.Previous, recovery.Pending }.OfType<string>().Distinct().ToArray(), (live.Age - initialAge) / Math.Max(0.001, timer.Elapsed.TotalSeconds), stepMs);
+                    if (observationCopy is not null)
+                    {
+                        try
+                        {
+                            WorldCheckpoint.Atomic(observationCopy, new
+                            {
+                                schemaVersion = 1, observedAt = DateTimeOffset.UtcNow, mode = snapshot.Mode.ToString(),
+                                status = snapshot.Fault is null ? "running" : "faulted", sessionId = snapshot.SessionId,
+                                age = snapshot.Frame.Age, revision = snapshot.Frame.Revision,
+                                entityCount = snapshot.Frame.Entities.Count + (snapshot.Frame.HasAgent ? 1 : 0),
+                                modules = snapshot.Packages.Select(p => new { id = p.Id, version = p.Version }),
+                                metrics = snapshot.Metrics
+                            });
+                            observationCopyFailed = false;
+                        }
+                        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+                        {
+                            if (!observationCopyFailed) Console.Error.WriteLine($"Observation copy failed: {ex.Message}");
+                            observationCopyFailed = true;
+                        }
+                    }
                     WorldCheckpoint.Atomic(Path.Combine(root, "heartbeat.json"), new { At = DateTimeOffset.UtcNow, live.Age, ProcessId = Environment.ProcessId });
                 }
                 if (timer.Elapsed.TotalSeconds >= nextSave) { Save(); Prune(root, recovery); nextSave = timer.Elapsed.TotalSeconds + Positive(a, "--checkpoint-seconds", 30); }

@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param([Parameter(Mandatory=$true)][string]$Description, [string]$Id='', [string]$Version='',
-      [string]$OutputRoot='artifacts/packages', [switch]$NoBuild, [string]$Cli='')
+      [string]$OutputRoot='artifacts/packages', [switch]$NoBuild, [switch]$LogicOnly, [string]$Cli='')
 . (Join-Path $PSScriptRoot 'common.ps1')
 Initialize-Dotnet
 $descriptionPath=[IO.Path]::GetFullPath($Description)
@@ -23,6 +23,11 @@ $published=@()
 foreach ($definition in $packages) {
     $manifest=$definition.manifest
     if ($Version) { $manifest.version=$Version }
+    if ($LogicOnly) {
+        foreach ($key in @('presentationAssembly', 'presentationType', 'presentationHash', 'presentationOrder', 'visuals')) {
+            $null = $manifest.Remove($key)
+        }
+    }
     foreach ($value in @($manifest.id,$manifest.version)) {
         if ($value -notmatch '^[A-Za-z0-9][A-Za-z0-9._-]*$' -or $value -in @('.','..')) { throw 'Invalid package identity.' }
     }
@@ -37,7 +42,7 @@ foreach ($definition in $packages) {
         if ($file.Name -eq $manifest.assembly) { $manifest.logicHash=$hash } else { $manifest.logicFiles[$file.Name]=$hash }
     }
     $manifest.presentationFiles=@{}
-    if ($definition.ContainsKey('files')) {
+    if (!$LogicOnly -and $definition.ContainsKey('files')) {
         foreach ($entry in $definition.files.GetEnumerator()) {
             $destination=[IO.Path]::GetFullPath((Join-Path $stage $entry.Key))
             if (!$destination.StartsWith($stage+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)) { throw 'Asset path escapes package.' }
@@ -46,7 +51,7 @@ foreach ($definition in $packages) {
             $manifest.presentationFiles[$entry.Key]=(Get-FileHash -LiteralPath $destination).Hash
         }
     }
-    if ($definition.ContainsKey('visualPack')) {
+    if (!$LogicOnly -and $definition.ContainsKey('visualPack')) {
         $pack=$definition.visualPack
         if ($pack.file -ne [IO.Path]::GetFileName($pack.file)) { throw 'PCK file must be a simple file name.' }
         & (Join-Path $PSScriptRoot 'pack-visuals.ps1') -Source (Join-Path $sourceRoot $pack.source) -Output (Join-Path $stage $pack.file) -Prefix ($manifest.id+'/'+$manifest.version) | Out-Null

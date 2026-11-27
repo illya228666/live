@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([switch]$NoBuild, [switch]$Headless, [string]$Version = '1.0.0', [string]$OutputRoot = 'artifacts/packages')
+param([switch]$NoBuild, [switch]$Headless, [switch]$LogicOnly, [string]$Version = '1.0.0', [string]$OutputRoot = 'artifacts/packages')
 . (Join-Path $PSScriptRoot 'common.ps1')
 Initialize-Dotnet
 $packageOutput = if ([IO.Path]::IsPathRooted($OutputRoot)) { $OutputRoot } else { Join-Path $RepoRoot $OutputRoot }
@@ -17,7 +17,7 @@ $runtimeDefinitions = @(
     @{ Id='wildlife'; Project='Wildlife'; Type='RuntimeWildlife'; Schemas=@{'wildlife.boar'=1}; Provides=@('wildlife','safety'); Requires=@('vision.appearance','motivation'); Renderer='BoarPresentation'; PresentationProject='ArtificialLife.Modules.Wildlife.Presentation.Godot'; Order=75; Assets=@{'assets/boar.png'='assets/wildlife/boar.png'} }
 )
 $legacyDefaults = Get-Content -LiteralPath (Join-Path $RepoRoot 'configs/default.json') -Raw | ConvertFrom-Json
-if (!$NoBuild) { Invoke-Dotnet build src/ArtificialLife.Presentation.Godot -c Release --verbosity quiet }
+if (!$NoBuild -and !$LogicOnly) { Invoke-Dotnet build src/ArtificialLife.Presentation.Godot -c Release --verbosity quiet }
 foreach ($definition in $runtimeDefinitions) {
     $projectName = 'ArtificialLife.Modules.' + $definition.Project
     if (!$NoBuild) { Invoke-Dotnet build ('src/' + $projectName) -c Release --verbosity quiet }
@@ -38,7 +38,7 @@ foreach ($definition in $runtimeDefinitions) {
     if ($definition.Id -eq 'movement') { $manifest.visuals=@(@{key='agent';component='movement.heading';color='68dfbe';layer=100;pulse=$true}) }
     if ($definition.Id -eq 'food') { $manifest.visuals=@(@{key='apple';component='food.apple';color='ef6672';layer=50;scale=0.8}) }
     if ($definition.Id -eq 'wildlife') { $manifest.visuals=@(@{key='boar';component='wildlife.boar';sprite='assets/boar.png';scale=0.1;layer=75;bindings=@(@{property='rotation';component='wildlife.boar';field='heading'})}) }
-    if ($definition.ContainsKey('Renderer') -and !$manifest.Contains('visuals')) {
+    if (!$LogicOnly -and $definition.ContainsKey('Renderer') -and !$manifest.Contains('visuals')) {
         $rendererProject = if ($definition.ContainsKey('PresentationProject')) { $definition.PresentationProject } else { 'ArtificialLife.Presentation.Godot' }
         if (!$NoBuild -and $definition.ContainsKey('PresentationProject')) { Invoke-Dotnet build ('src/' + $rendererProject) -c Release --verbosity quiet }
         $rendererFile = $rendererProject + '.dll'

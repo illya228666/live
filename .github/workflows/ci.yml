@@ -2,7 +2,12 @@ name: build-and-test
 
 on:
   push:
+    paths-ignore: ['**/*.md', 'docs/**']
   pull_request:
+    paths-ignore: ['**/*.md', 'docs/**']
+  workflow_dispatch:
+  schedule:
+    - cron: '31 3 * * 1'
 
 permissions:
   contents: read
@@ -18,12 +23,13 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
         with:
-          global-json-file: global.json
+          dotnet-version: '10.0.402'
       - name: Restore dependencies
         run: dotnet restore ArtificialLife.sln
       - name: Build domain, CLI, tests and Godot C# adapter
         run: dotnet build ArtificialLife.sln -c Release --no-restore
-      - name: Package runtime modules
-        run: ./tools/package.ps1 -NoBuild
-      - name: Run tests
-        run: dotnet test --project tests/ArtificialLife.Tests -c Release --no-build --report-xunit-trx --report-xunit-trx-filename tests.trx
+      - name: Run clean-checkout tests
+        run: |
+          $env:LIVE_DOTNET = (Get-Command dotnet).Source
+          $full = '${{ github.event_name }}' -in @('schedule', 'workflow_dispatch')
+          ./tools/test.ps1 -CleanCheckout -Fast:(!$full)

@@ -1,0 +1,20 @@
+[Unit]
+Description=Apply published GitHub Live module releases
+After=network-online.target live-world.service systemd-tmpfiles-setup.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=live
+Group=live
+SupplementaryGroups=live-signal
+UMask=0027
+StateDirectory=live
+WorkingDirectory=/var/lib/live
+ExecStart=/usr/bin/python3 /opt/live/deploy/live_deploy.py reconcile
+TimeoutStartSec=300
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/live /run/live-inbox

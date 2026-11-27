@@ -1,0 +1,11 @@
+[Unit]
+Description=Check GitHub for Live releases at startup and every ten minutes
+
+[Timer]
+OnBootSec=1min
+OnCalendar=*:0/10
+AccuracySec=1s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

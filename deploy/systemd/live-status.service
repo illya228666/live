@@ -1,0 +1,23 @@
+[Unit]
+Description=MyPocketWorld read-only HTTP origin
+After=network.target systemd-tmpfiles-setup.service
+
+[Service]
+User=live-web
+Group=live-web
+SupplementaryGroups=live-observe live-signal
+UMask=0007
+EnvironmentFile=/etc/live/status.env
+LoadCredential=webhook:/etc/live/webhook.secret
+ExecStart=/usr/bin/python3 /opt/live/deploy/status_api.py
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+InaccessiblePaths=/var/lib/live
+ReadWritePaths=/run/live-inbox
+
+[Install]
+WantedBy=multi-user.target
