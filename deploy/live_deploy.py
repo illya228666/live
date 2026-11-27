@@ -4,11 +4,12 @@ import fcntl
 import json
 import os
 import re
+import shutil
 import subprocess
 import tarfile
 import tempfile
 import time
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from release_lib import TAG, asset, fetch_manifest, latest_tag, run, write_json
 
@@ -22,6 +23,24 @@ def read_json(path):
     return json.loads(path.read_text())
 
 
+def extract_host(archive, directory):
+    with tarfile.open(archive) as bundle:
+        for entry in bundle:
+            name = PurePosixPath(entry.name)
+            if not name.parts or name.parts[0] != "host" or ".." in name.parts:
+                raise ValueError("Unexpected path in Host archive")
+            path = directory.joinpath(*name.parts)
+            if entry.isdir():
+                path.mkdir(mode=0o755, parents=True, exist_ok=True)
+            elif entry.isfile():
+                path.parent.mkdir(mode=0o755, parents=True, exist_ok=True)
+                with bundle.extractfile(entry) as source, path.open("xb") as target:
+                    shutil.copyfileobj(source, target)
+                path.chmod(0o755 if entry.mode & 0o111 else 0o644)
+            else:
+                raise ValueError("Host archive must contain regular files and directories")
+
+
 def bootstrap(manifest, scratch):
     if (WORLD / "recovery.json").exists():
         raise RuntimeError("World exists. Host replacement requires a checkpoint and planned switch")
@@ -33,8 +52,7 @@ def bootstrap(manifest, scratch):
     if not binary.is_file():
         archive = asset(name, release["asset"], scratch, release["sha256"])
         with tempfile.TemporaryDirectory(dir=HOST, prefix=".host-") as directory:
-            with tarfile.open(archive) as bundle:
-                bundle.extractall(directory, filter="data")
+            extract_host(archive, Path(directory))
             (Path(directory) / "host").rename(HOST / name)
     catalog = STATE / "bootstrap-packages"
     run("chown", "live:live", catalog.parent)
