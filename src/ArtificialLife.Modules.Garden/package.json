@@ -32,14 +32,17 @@
     },
     {
       "manifest": {
-        "id": "pollination", "version": "1.0.0", "apiVersion": 1, "supportsWorldOnly": true,
+        "id": "pollination", "version": "1.1.0", "apiVersion": 1, "supportsWorldOnly": true,
         "entryType": "ArtificialLife.Modules.Garden.RuntimePollination",
         "provides": ["pollination"], "requires": ["flora", "grazing", "vision.appearance"],
-        "schemas": {"pollination.moth": 1, "pollination.bloom": 1}, "stateSchemaVersion": 1, "settings": {},
+        "schemas": {"pollination.moth": 2, "pollination.bloom": 1}, "stateSchemaVersion": 2, "settings": {},
         "visuals": [
           {"key": "moth", "component": "pollination.moth", "scene": "res://@id@/@version@/moth.tscn", "sprite": "assets/moth-sprite.png", "layer": 80, "color": "f2d5a3",
             "browser": {"label": "Мотылёк", "slot": "body", "size": 2.7},
             "bindings": [{"property": "rotation", "component": "pollination.moth", "field": "heading"}]},
+          {"key": "moth-cargo", "component": "pollination.moth", "layer": 79, "color": "86e9d4",
+            "browser": {"primitive": "glow", "size": 5.4, "only": true},
+            "bindings": [{"property": "alpha", "component": "pollination.moth", "field": "cargo", "scale": 25}]},
           {"key": "bloom", "component": "pollination.bloom", "scene": "res://@id@/@version@/bloom.tscn", "layer": 58,
             "bindings": [{"property": "alpha", "component": "pollination.bloom", "field": "glow"}]}
         ]

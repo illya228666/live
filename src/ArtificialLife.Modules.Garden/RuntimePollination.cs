@@ -7,11 +7,11 @@ public sealed class RuntimePollination : IRuntimeModule
 {
     private const string Moth = "pollination.moth", Bloom = "pollination.bloom";
     private const int Population = 6;
-    private const double FlightSpeed = 6, VisitRadius = 1.5, Fertilization = 0.18;
+    private const double FlightSpeed = 6, VisitRadius = 1.5, PickupMass = 0.04;
 
     public void Register(ModuleBuilder builder)
     {
-        builder.Components.Add(new(Moth, 1, (_, _) => false, (_, _, _) => { }));
+        builder.Components.Add(new(Moth, 2, (_, _) => false, (_, _, _) => { }));
         builder.Components.Add(new(Bloom, 1, (_, e) => e.Components.ContainsKey("flora.plant"), (_, _, data) => data.Write("glow", 0.0)));
         builder.Observations.Register("vision.appearance.moth.v1");
         builder.Systems.Add(new("pollination.fly", Update, ["grazing.feed"]));
@@ -19,22 +19,42 @@ public sealed class RuntimePollination : IRuntimeModule
             KeyValuePair.Create("moths", (double)frame.Entities.Count(e => e.Components.ContainsKey(Moth))),
             KeyValuePair.Create("visits", (double)frame.ModuleState["pollination"].Read<long>("visits")),
             KeyValuePair.Create("fertilizations", (double)frame.ModuleState["pollination"].Read<long>("fertilizations")),
-            KeyValuePair.Create("recoveryAdded", frame.ModuleState["pollination"].Read<double>("recoveryAdded")) });
+            KeyValuePair.Create("recoveryAdded", frame.ModuleState["pollination"].Read<double>("recoveryAdded")),
+            KeyValuePair.Create("cargoInitial", frame.ModuleState["pollination"].Read<double>("cargoInitial")),
+            KeyValuePair.Create("cargoCollected", frame.ModuleState["pollination"].Read<double>("cargoCollected")),
+            KeyValuePair.Create("cargoDeposited", frame.ModuleState["pollination"].Read<double>("cargoDeposited")),
+            KeyValuePair.Create("cargoOnBoard", frame.Entities.Sum(e => e.Components.TryGetValue(Moth, out var data) ? data.Read<double>("cargo") : 0)) });
     }
 
     public void Migrate(RuntimeWorld world, ModuleManifest? previous)
     {
-        world.State("pollination");
+        var state = world.State("pollination");
+        if (state.Version == 2) return;
+        double initialCargo = 0;
+        foreach (var moth in world.Entities.Where(e => e.Components.ContainsKey(Moth)))
+        {
+            var data = moth.Require(Moth);
+            // Legacy collection already deducted this mass from the donor.
+            double cargo = data.Read<bool>("pollen") ? PickupMass : 0;
+            data.Write("cargo", cargo);
+            data.Values.Remove("pollen");
+            data.Version = 2;
+            initialCargo += cargo;
+        }
+        state.Write("cargoInitial", initialCargo);
+        state.Write("cargoCollected", 0.0);
+        state.Write("cargoDeposited", 0.0);
+        state.Version = 2;
         if (previous is not null) return;
         var plants = world.Entities.Where(e => e.Components.ContainsKey("flora.plant")).ToArray();
         for (int i = 0; i < Population; i++)
         {
             var position = plants.Length > 0 ? plants[(int)(world.Random("pollination") * plants.Length)].Position : new Position(world.Options.Width / 2, world.Options.Height / 2);
             var moth = world.CreateEntity(position);
-            moth.Components[Moth] = new();
+            moth.Components[Moth] = new() { Version = 2 };
             moth.Require(Moth).Write("target", 0L);
             moth.Require(Moth).Write("lastFlower", 0L);
-            moth.Require(Moth).Write("pollen", false);
+            moth.Require(Moth).Write("cargo", 0.0);
             moth.Require(Moth).Write("restInSeconds", i * 0.4);
             moth.Require(Moth).Write("heading", world.Random("pollination") * Math.Tau);
             moth.Components["vision.appearance"] = new();
@@ -52,16 +72,16 @@ public sealed class RuntimePollination : IRuntimeModule
         foreach (var moth in world.Entities.Where(e => e.Components.ContainsKey(Moth)))
         {
             var data = moth.Require(Moth);
+            double cargo = data.Read<double>("cargo");
             double rest = Math.Max(0, data.Read<double>("restInSeconds") - dt);
             data.Write("restInSeconds", rest);
             if (rest > 0 || plants.Length == 0) continue;
             var target = plants.FirstOrDefault(e => e.Id == data.Read<long>("target"));
             if (target is null)
             {
-                bool pollen = data.Read<bool>("pollen");
                 long last = data.Read<long>("lastFlower");
                 var candidates = plants.Where(e => plants.Length == 1 || e.Id != last).ToArray();
-                target = candidates.MinBy(e => (pollen ? e.Require("flora.plant").Read<double>("biomass") : -e.Require("flora.plant").Read<double>("biomass"))
+                target = candidates.MinBy(e => (cargo > 0 ? e.Require("flora.plant").Read<double>("biomass") : -e.Require("flora.plant").Read<double>("biomass"))
                     + e.Position.DistanceTo(moth.Position) * 0.001 + world.Random("pollination") * 0.04)!;
                 data.Write("target", target.Id);
             }
@@ -75,19 +95,23 @@ public sealed class RuntimePollination : IRuntimeModule
             double biomass = plantData.Read<double>("biomass");
             var state = world.State("pollination");
             state.Write("visits", state.Read<long>("visits") + 1);
-            if (data.Read<bool>("pollen") && biomass < 0.9)
+            double added = biomass < 0.9 ? Math.Min(cargo, 1 - biomass) : 0;
+            if (added > 0)
             {
-                double added = Math.Min(Fertilization, 1 - biomass);
                 plantData.Write("biomass", biomass + added);
+                data.Write("cargo", cargo - added);
                 state.Write("fertilizations", state.Read<long>("fertilizations") + 1);
                 state.Write("recoveryAdded", state.Read<double>("recoveryAdded") + added);
-                data.Write("pollen", false);
+                state.Write("cargoDeposited", state.Read<double>("cargoDeposited") + added);
                 target.Require(Bloom).Write("glow", 1.0);
             }
-            else if (!data.Read<bool>("pollen") && biomass >= 0.75)
+            else if (cargo == 0 && biomass >= 0.75)
             {
-                plantData.Write("biomass", biomass - 0.04);
-                data.Write("pollen", true);
+                double remaining = biomass - PickupMass;
+                double collected = biomass - remaining;
+                plantData.Write("biomass", remaining);
+                data.Write("cargo", collected);
+                state.Write("cargoCollected", state.Read<double>("cargoCollected") + collected);
                 target.Require(Bloom).Write("glow", 0.5);
             }
             data.Write("lastFlower", target.Id); data.Write("target", 0L); data.Write("restInSeconds", 2.5);
