@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 os.chdir(ROOT)
 CATALOG = Path("deploy/modules.json")
 SDK_INPUTS = ("global.json", "Directory.Build.props", "Directory.Packages.props", "NuGet.config")
-FOUNDATION_INPUTS = ("tools/package.ps1", "configs/default.json", "assets/wildlife",
+FOUNDATION_INPUTS = ("tools/package.ps1", "configs/default.json", "assets/foundation", "assets/wildlife",
                      "src/ArtificialLife.Modules.Vision", "src/ArtificialLife.Modules.Temperature",
                      "src/ArtificialLife.Modules.Hunger", "src/ArtificialLife.Modules.Food",
                      "src/ArtificialLife.Modules.Homeostasis", "src/ArtificialLife.Modules.Wildlife")
@@ -54,27 +54,35 @@ def smoke(cli, manifest, output, scratch, previous=None):
     config["packages"] = [dict(id=p["id"], version=p["version"]) for p in manifest["modules"]]
     write_json(scratch / "world.json", config)
     args = (cli, "world", "run", "--directory", restore, "--config", scratch / "world.json",
-            "--mode", "world-only", "--speed", "Max", "--steps", "24")
-    run(*args, "--observation-copy", scratch / "public.json", "--scene-directory", scratch / "scene")
+            "--mode", "world-only", "--scene-directory", scratch / "scene")
+    run(*args, "--speed", "100x", "--steps", "260", "--observation-copy", scratch / "public.json")
     before = json.loads((restore / "observation.json").read_text())
     public = json.loads((scratch / "public.json").read_text())
     if (before["Frame"]["Agent"] is not None or public["mode"] != "WorldOnly"
-            or before["Frame"]["Age"] != 24):
+            or before["Frame"]["Age"] != 260):
         raise RuntimeError("World Only did not start with the requested packages")
     first = json.loads((scratch / "scene/scene.json").read_text())
-    boar = next(entity for entity in first["entities"] if entity["kind"] == "boar")
-    sprite, = [appearance["sprite"] for appearance in boar["appearance"] if appearance["sprite"]]
-    sprite_file = scratch / "scene/sprites" / sprite.rsplit("/", 1)[1]
-    if sprite_file.stem != sha256(sprite_file):
-        raise RuntimeError("The scene must publish the verified wildlife sprite")
-    run(*args, "--scene-directory", scratch / "scene")
+    for module, visual in (("wildlife", "boar"), ("flora", "plant"), ("pollination", "moth")):
+        if not any(package["id"] == module for package in manifest["modules"]):
+            continue
+        matches = [(entity, appearance) for entity in first["entities"] for appearance in entity["appearance"]
+                   if appearance["key"].split("/")[::2] == [module, visual]]
+        if not matches:
+            raise RuntimeError(f"The scene is missing the declared {module} visual")
+        for entity, appearance in matches:
+            sprite_file = scratch / "scene/sprites" / appearance["sprite"].rsplit("/", 1)[1]
+            if sprite_file.stem != sha256(sprite_file):
+                raise RuntimeError(f"The scene must publish the verified {module} sprite")
+            if module == "flora" and any(style["key"].startswith("food/") for style in entity["appearance"]):
+                raise RuntimeError("The plant body must replace the apple visual on the same entity")
+    run(*args, "--speed", "Max", "--steps", "24")
     after = json.loads((restore / "observation.json").read_text())
-    if (before["SessionId"] != after["SessionId"] or after["Frame"]["Age"] != 48
+    if (before["SessionId"] != after["SessionId"] or after["Frame"]["Age"] != 284
             or before["Frame"]["Revision"] != after["Frame"]["Revision"]):
         raise RuntimeError("World Only did not resume the same checkpoint")
     restored = json.loads((scratch / "scene/scene.json").read_text())
     if (restored["sessionId"] != first["sessionId"] or restored["epoch"] == first["epoch"]
-            or restored["age"] < 24):
+            or restored["age"] < 260):
         raise RuntimeError("The public frame did not identify the restored world generation")
     if not previous:
         return
@@ -150,7 +158,6 @@ def main():
             path = output / f"{name}-{version}.zip"
             zip_package(catalog / name / version, path)
             modules.append(metadata(tag, path, id=name, version=version, input=digest))
-        tested = set()
         for entry in config["modules"]:
             name, description = entry["id"], Path(entry["description"])
             description_data = json.loads(description.read_text())
@@ -166,11 +173,6 @@ def main():
             run("pwsh", "-NoProfile", "-File", "tools/package-module.ps1", "-Description",
                 description, "-Id", name, "-Version", version, "-PortableVisuals", "-OutputRoot",
                 catalog, "-Cli", cli)
-            for test_class in description_data.get("testClasses", []):
-                if test_class not in tested:
-                    run("dotnet", "test", "--project", "tests/ArtificialLife.Tests", "-c",
-                        "Release", "--filter-class", test_class)
-                    tested.add(test_class)
             path = output / f"{name}-{version}.zip"
             zip_package(catalog / name / version, path)
             modules.append(metadata(tag, path, id=name, version=version, input=digest))

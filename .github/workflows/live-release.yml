@@ -1,41 +1,54 @@
-name: Live release
+name: Live CI/CD
+
 on:
   push:
-    branches: [master]
-    paths:
-      - "src/**"
-      - "configs/default.json"
-      - "configs/world-only.json"
-      - "assets/wildlife/**"
-      - "deploy/**"
-      - "tools/common.ps1"
-      - "tools/package*.ps1"
-      - "tools/versions.json"
-      - "Directory.*.props"
-      - "NuGet.config"
-      - "global.json"
-      - ".github/workflows/live-release.yml"
+    paths-ignore: ['**/*.md', 'docs/**']
+  pull_request:
+    paths-ignore: ['**/*.md', 'docs/**']
   workflow_dispatch:
+  schedule:
+    - cron: '31 3 * * 1'
 
 concurrency:
-  group: live-release-master
+  group: live-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
   contents: read
 
+env:
+  DOTNET_NOLOGO: '1'
+  DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+
 jobs:
-  publish:
-    if: github.ref == 'refs/heads/master'
+  verify:
+    name: Build and test on Windows
+    runs-on: windows-2025
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
+        env:
+          DOTNET_INSTALL_DIR: ${{ runner.temp }}/live-sdk
+        with:
+          dotnet-version: '10.0.402'
+      - run: dotnet build ArtificialLife.sln -c Release
+      - name: Run clean-checkout tests
+        env:
+          LIVE_EVENT: ${{ github.event_name }}
+        run: |
+          $env:LIVE_DOTNET = Join-Path $env:DOTNET_ROOT 'dotnet.exe'
+          $full = $env:LIVE_EVENT -in @('schedule', 'workflow_dispatch')
+          ./tools/test.ps1 -CleanCheckout -Fast:(!$full) -NoBuild
+
+  prepare:
+    name: Test browser and prepare Linux artifacts
     runs-on: ubuntu-24.04
-    timeout-minutes: 18
-    permissions:
-      contents: write
-      id-token: write
-      attestations: write
-    env:
-      DOTNET_NOLOGO: '1'
-      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+    timeout-minutes: 15
+    outputs:
+      release: ${{ steps.build.outputs.ready }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -47,24 +60,50 @@ jobs:
         with:
           dotnet-version: '10.0.402'
       - id: build
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LIVE_PUBLISH: ${{ github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
         run: |
           node --test deploy/tests/*.test.mjs
           export LIVE_DOTNET="$DOTNET_ROOT/dotnet"
           test "$(dotnet --version)" = 10.0.402
-          python3 deploy/build_release.py --output "$RUNNER_TEMP/live-release" --sequence "$GITHUB_RUN_NUMBER"
+          args=()
+          if [[ "$LIVE_PUBLISH" != 'true' ]]; then args+=(--smoke-only); fi
+          python3 deploy/build_release.py --output "$RUNNER_TEMP/live-release" --sequence "$GITHUB_RUN_NUMBER" "${args[@]}"
           if test -f "$RUNNER_TEMP/live-release/live-manifest.json"; then
             echo "ready=true" >> "$GITHUB_OUTPUT"
           fi
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - if: steps.build.outputs.ready == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: live-release
+          path: ${{ runner.temp }}/live-release/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 1
+
+  publish:
+    name: Attest and publish the verified release
+    needs: [verify, prepare]
+    if: success() && needs.prepare.outputs.release == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: live-release
+          path: ${{ runner.temp }}/live-release
       - id: attest
-        if: steps.build.outputs.ready == 'true'
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
         with:
           subject-path: ${{ runner.temp }}/live-release/live-manifest.json
-      - if: steps.build.outputs.ready == 'true'
-        env:
+      - env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           LIVE_ATTESTATION: ${{ steps.attest.outputs.bundle-path }}
         run: |
           directory="$RUNNER_TEMP/live-release"

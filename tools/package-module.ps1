@@ -31,7 +31,7 @@ foreach ($definition in $packages) {
         }
         if ($manifest.ContainsKey('visuals')) {
             $manifest.visuals = @($manifest.visuals | Where-Object {
-                !$_.ContainsKey('scene') -or ($_.ContainsKey('sprite') -and $_.sprite -match '\.(png|webp)$')
+                $_.ContainsKey('browser') -or !$_.ContainsKey('scene') -or ($_.ContainsKey('sprite') -and $_.sprite -match '\.(png|webp)$')
             })
             foreach ($visual in $manifest.visuals) {
                 foreach ($field in @('scene', 'animation', 'frames', 'framesPerSecond', 'pulse')) {

@@ -1,10 +1,10 @@
 [CmdletBinding()]
-param()
+param([switch]$NoBuild)
 . (Join-Path $PSScriptRoot 'common.ps1')
 Initialize-Dotnet
 $target = Join-Path $RepoRoot 'artifacts/packages/wildlife/1.1.0/module.json'
 if (!(Test-Path -LiteralPath $target)) {
-    & (Join-Path $PSScriptRoot 'package-wildlife.ps1') -Version '1.1.0'
+    & (Join-Path $PSScriptRoot 'package-wildlife.ps1') -Version '1.1.0' -NoBuild:$NoBuild
 } else {
     $manifest = Get-Content -LiteralPath $target -Raw | ConvertFrom-Json
     $binary = Join-Path $RepoRoot 'src/ArtificialLife.Modules.Wildlife/bin/Release/net10.0/ArtificialLife.Modules.Wildlife.dll'

@@ -100,8 +100,12 @@ public sealed record RuntimeFrame(double Width, double Height, long Age, double 
 
 public sealed record ModuleDependency(string Id, string Version);
 public sealed record VisualBinding(string Property, string Component, string Field, double Scale = 1, double Offset = 0);
+public sealed record BrowserVisualDefinition(string? Label = null, string? Slot = null,
+    string Primitive = "disc", double Size = 3, bool Only = false);
 public sealed record VisualDefinition(string Key, string Component)
 {
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public BrowserVisualDefinition? Browser { get; init; }
     public string? Scene { get; init; }
     public string? Sprite { get; init; }
     public string? Animation { get; init; }

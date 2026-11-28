@@ -24,10 +24,26 @@ in the modules array. The builder uses the package's declared test classes
 and keeps prior versions of unchanged modules. Foundation packages ship as a
 group because food has exact-version dependencies on hunger and vision. The
 deployed catalogue includes portable visuals declared in `visuals` and `files`.
-Use a loose PNG or WebP sprite and the existing rotation, scale, alpha and
-visibility bindings. A Godot scene can declare a loose sprite alongside its
-scene path. The browser receives a marker for entities without a portable
-visual. Godot and PCK generation are outside the server build.
+Use a loose PNG or WebP sprite and declare it in the package files. Add a
+`browser` block to the visual for its legend label, world-unit size, optional
+slot, and primitive. A Godot scene can declare a loose sprite alongside its
+scene path. Godot and PCK generation are outside the server build.
+
+```json
+"browser": {"label": "Растение", "slot": "body", "size": 3.8}
+```
+
+The matching visual with the highest layer wins within a slot on each
+entity. Use the same slot to replace a base appearance and omit it for
+decorations that should stack. A slot also honors an explicitly hidden
+winner. Visuals can use rotation, scale, alpha, visibility and size bindings.
+`disc` and `glow` are built-in primitives. `only: true` marks a
+browser-only visual. A missing raster falls back to its declared primitive.
+`/api/scene` version 2 exposes resolved appearances and labels.
+
+The Live CI/CD workflow runs the Windows suite and Linux package/scene
+checks in parallel. The publish job takes the artifacts from that same run
+once both jobs have passed.
 
 The release manifest describes a cumulative desired set of modules. Each
 package references its original immutable release asset. The published
@@ -51,6 +67,10 @@ pipeline. An accepted command is provisional until probation has completed.
   current checkpoint, test it in an isolated copy under the candidate Host, then
   switch the pin and start the same world directory. Keep the previous Host for
   recovery.
+- For the first scene v2 rollout, pause reconciliation until the new Host is
+  running. The old Host can read the legacy manifest fields while checkpointing
+  the newer package may lose the new browser fields. Re-enable the timer and
+  webhook path after the switch, then reconcile to apply the visual packages.
 - Restore backups into a separate guest with its network disconnected while
   checking the snapshot and active packages. Reattach the public route only
   after deciding which instance is authoritative.

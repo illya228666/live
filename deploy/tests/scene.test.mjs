@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { compatible, position, rotation } from "../web/scene.mjs";
+import { compatible, legendItems, position, rotation, visibleAppearances } from "../web/scene.mjs";
 
 const frame = { sessionId: "world", epoch: "worker-a", revision: 1, sequence: 5, age: 15, width: 100, height: 100 };
 
@@ -19,4 +19,11 @@ test("interpolate movement and wrap angles without drawing a teleport trail", ()
   assert.deepEqual(position(entity, before, .5, 25), { id: "1", x: 12, y: 16 });
   assert.equal(position(entity, before, .5, 10), entity);
   assert.ok(Math.abs(rotation(3.1, -3.1, .5) - Math.PI) < 1e-6);
+});
+
+test("an arbitrary module can supply a legend entry and hide its own appearance", () => {
+  const style = { label: "Мох", color: "#38a788", visible: true, scale: 1, alpha: 1 };
+  assert.deepEqual(legendItems([{ appearance: [style] }, { appearance: [style] }]), [["Мох", "#38a788"]]);
+  assert.deepEqual(legendItems([{ appearance: [{ ...style, visible: false }] }]), []);
+  assert.equal(visibleAppearances({ appearance: [] })[0].primitive, "disc");
 });

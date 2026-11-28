@@ -30,9 +30,9 @@ internal sealed class PublicScenePublisher(string directory)
                 sequence = 0;
             }
             lastAge = frame.Age;
-            var entities = frame.Entities.Select(entity => Project(entity, false)).ToList();
-            if (frame.HasAgent) entities.Add(Project(frame.Agent, true));
-            var scene = new PublicScene(1, DateTimeOffset.UtcNow, live.Fault is null ? "running" : "faulted",
+            var entities = frame.Entities.Select(Project).ToList();
+            if (frame.HasAgent) entities.Add(Project(frame.Agent));
+            var scene = new PublicScene(2, DateTimeOffset.UtcNow, live.Fault is null ? "running" : "faulted",
                 Environment.GetEnvironmentVariable("LIVE_WORLD_SESSION"), epoch, ++sequence, frame.Age, frame.Revision,
                 frame.Width, frame.Height, [.. entities]);
             // This replaceable projection needs atomic visibility but requires no durable checkpoint.
@@ -65,7 +65,7 @@ internal sealed class PublicScenePublisher(string directory)
         {
             if (visual is null || string.IsNullOrEmpty(visual.Component) || string.IsNullOrEmpty(visual.Key)) continue;
             // A Godot scene may declare a loose raster as its portable counterpart.
-            if (visual.Scene is not null && visual.Sprite is null) continue;
+            if (visual.Scene is not null && visual.Sprite is null && visual.Browser is null) continue;
             string? url = null;
             if (visual.Sprite is string path &&
                 PortableSprite.Read(package.Directory, path, package.Manifest.PresentationFiles) is { } sprite &&
@@ -82,23 +82,28 @@ internal sealed class PublicScenePublisher(string directory)
         }
         previous = referenced;
         referenced = names;
-        visuals = next;
+        visuals = next.OrderByDescending(v => v.Visual.Layer).ThenBy(v => v.Key, StringComparer.Ordinal).ToList();
     }
 
-    private PublicEntity Project(EntitySnapshot entity, bool agent)
+    private PublicEntity Project(EntitySnapshot entity)
     {
-        var components = entity.Components;
-        string kind = agent ? "agent" : components.ContainsKey("temperature.emitter") ? "heat"
-            : components.ContainsKey("wildlife.boar") ? "boar" : components.ContainsKey("food.apple") ? "apple" : "object";
-        double? heat = kind == "heat" ? Read(entity, "temperature.emitter", "radius") : null;
-        return new(entity.Id.ToString(CultureInfo.InvariantCulture), entity.Position.X, entity.Position.Y, kind, heat,
-            visuals.Where(v => components.ContainsKey(v.Visual.Component)).Select(v =>
-                Resolve(entity, v.Key, v.Visual, v.Sprite)).ToArray());
+        var slots = new HashSet<string>(StringComparer.Ordinal);
+        var appearance = new List<PublicAppearance>();
+        foreach (var visual in visuals)
+        {
+            if (!entity.Components.ContainsKey(visual.Visual.Component)) continue;
+            if (visual.Visual.Browser?.Slot is { Length: > 0 } slot && !slots.Add(slot)) continue;
+            appearance.Add(Resolve(entity, visual.Key, visual.Visual, visual.Sprite));
+        }
+        return new(entity.Id.ToString(CultureInfo.InvariantCulture), entity.Position.X, entity.Position.Y, [.. appearance]);
     }
 
     private static PublicAppearance Resolve(EntitySnapshot entity, string key, VisualDefinition visual, string? sprite)
     {
-        double rotation = 0, scale = double.IsFinite(visual.Scale) ? Math.Clamp(visual.Scale, 0, 8) : 1, alpha = 1;
+        var browser = visual.Browser;
+        double size = browser is null ? 3 : PositiveSize(browser.Size);
+        double rotation = 0, alpha = 1;
+        double scale = browser is null && double.IsFinite(visual.Scale) ? Math.Clamp(visual.Scale, 0, 8) : 1;
         bool visible = true;
         foreach (var binding in visual.Bindings ?? [])
         {
@@ -112,12 +117,16 @@ internal sealed class PublicScenePublisher(string directory)
                 case "scale": scale = Math.Clamp(value, 0, 8); break;
                 case "alpha": alpha = Math.Clamp(value, 0, 1); break;
                 case "visible": visible = value != 0; break;
+                case "size" when browser is not null: size = PositiveSize(value); break;
             }
         }
         string color = visual.Color?.TrimStart('#') ?? "";
         if (color.Length != 6 || !color.All(char.IsAsciiHexDigit)) color = "9DB5AB";
-        return new(key, sprite, "#" + color, Math.Clamp(visual.Layer, -4096, 4096), rotation, scale, alpha, visible);
+        return new(key, sprite, "#" + color, Math.Clamp(visual.Layer, -4096, 4096), browser?.Label,
+            browser?.Primitive == "glow" ? "glow" : "disc", browser is null ? null : size, rotation, scale, alpha, visible);
     }
+
+    private static double PositiveSize(double size) => double.IsFinite(size) ? Math.Clamp(size, .01, 1024) : 3;
 
     private static double? Read(EntitySnapshot entity, string component, string field)
     {

@@ -1,0 +1,32 @@
+{
+  "movement": [
+    {
+      "key": "agent", "component": "movement.heading", "color": "68dfbe", "layer": 100, "pulse": true,
+      "browser": {"label": "Обитатель", "slot": "body", "size": 2.6}
+    }
+  ],
+  "temperature": [
+    {
+      "key": "heat-field", "component": "temperature.emitter", "color": "f0b368", "layer": 0,
+      "browser": {"primitive": "glow", "size": 60, "only": true},
+      "bindings": [{"property": "size", "component": "temperature.emitter", "field": "radius", "scale": 3.6}]
+    },
+    {
+      "key": "heat-source", "component": "temperature.emitter", "color": "f0b368", "layer": 1,
+      "browser": {"label": "Источник тепла", "slot": "body", "size": 1.5, "only": true}
+    }
+  ],
+  "food": [
+    {
+      "key": "apple", "component": "food.apple", "color": "ef6672", "layer": 50, "scale": 0.8,
+      "browser": {"label": "Яблоко", "slot": "body", "size": 1.2}
+    }
+  ],
+  "wildlife": [
+    {
+      "key": "boar", "component": "wildlife.boar", "sprite": "assets/boar.png", "color": "b69a83", "layer": 75, "scale": 0.1,
+      "browser": {"label": "Кабан", "slot": "body", "size": 4.4},
+      "bindings": [{"property": "rotation", "component": "wildlife.boar", "field": "heading"}]
+    }
+  ]
+}

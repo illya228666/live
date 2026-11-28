@@ -5,7 +5,7 @@ public sealed record PublicScene(int SchemaVersion, DateTimeOffset ObservedAt, s
     string? SessionId, string Epoch, long Sequence, long Age, long Revision, double Width, double Height,
     PublicEntity[] Entities);
 
-public sealed record PublicEntity(string Id, double X, double Y, string Kind, double? HeatRadius, PublicAppearance[] Appearance);
+public sealed record PublicEntity(string Id, double X, double Y, PublicAppearance[] Appearance);
 
-public sealed record PublicAppearance(string Key, string? Sprite, string Color, int Layer,
+public sealed record PublicAppearance(string Key, string? Sprite, string Color, int Layer, string? Label, string Primitive, double? Size,
     double Rotation, double Scale, double Alpha, bool Visible);

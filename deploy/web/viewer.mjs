@@ -1,4 +1,4 @@
-import { compatible, POLL_MS, position, rotation } from "./scene.mjs";
+import { compatible, legendItems, POLL_MS, position, rotation, visibleAppearances } from "./scene.mjs";
 
 const canvas = document.querySelector("#world");
 const context = canvas.getContext("2d");
@@ -7,7 +7,7 @@ const label = document.querySelector("#connection-label");
 const empty = document.querySelector("#empty");
 const age = document.querySelector("#age");
 const count = document.querySelector("#count");
-const other = document.querySelector("#other");
+const legend = document.querySelector("#legend");
 const last = document.querySelector("#last-observation");
 const numbers = new Intl.NumberFormat("ru");
 const time = new Intl.DateTimeFormat("ru", { timeStyle: "medium" });
@@ -24,6 +24,23 @@ let scheduled = 0;
 let pending = false;
 let surface = { width: 0, height: 0 };
 let groundSize = "";
+let legendKey = "";
+
+function updateLegend(entities) {
+  const entries = legendItems(entities);
+  const key = JSON.stringify(entries);
+  if (legendKey === key) return;
+  legendKey = key;
+  legend.replaceChildren(...entries.map(([name, color]) => {
+    const entry = document.createElement("li");
+    const dot = document.createElement("span");
+    dot.className = "mark";
+    dot.setAttribute("aria-hidden", "true");
+    dot.style.backgroundColor = color;
+    entry.append(dot, document.createTextNode(name));
+    return entry;
+  }));
+}
 
 function connectionStatus(state) {
   if (connection.dataset.state !== state) {
@@ -43,7 +60,7 @@ async function poll() {
     const response = await fetch("/api/scene", { cache: "no-store", signal: AbortSignal.timeout(4000) });
     if (!response.ok) throw new Error("Scene unavailable");
     const next = await response.json();
-    if (next.schemaVersion !== 1 || next.status !== "running") throw new Error("Unsupported scene");
+    if (next.schemaVersion !== 2 || next.status !== "running") throw new Error("Unsupported scene");
     if (!frame || frame.epoch !== next.epoch || frame.sessionId !== next.sessionId || frame.sequence !== next.sequence) {
       const same = connection.dataset.state === "live" && compatible(frame, next);
       previous = same ? new Map(frame.entities.map(entity => [entity.id, entity])) : new Map();
@@ -52,7 +69,7 @@ async function poll() {
       started = performance.now();
       age.textContent = numbers.format(frame.age);
       count.textContent = numbers.format(frame.entities.length);
-      other.hidden = !frame.entities.some(entity => entity.kind === "object" || entity.kind === "agent");
+      updateLegend(frame.entities);
       empty.hidden = true;
     }
     failures = 0;
@@ -113,22 +130,25 @@ function paintGround(width, height) {
   }
 }
 
-function marker(entity, color, scale) {
-  const radius = (entity.kind === "heat" ? 5.2 : entity.kind === "apple" ? 4 : 4.5) * scale;
+function marker(color, radius) {
   context.fillStyle = "#07130c91";
   context.beginPath();
   context.ellipse(1, 2.5, radius + 1, radius * .7, 0, 0, Math.PI * 2);
   context.fill();
-  context.fillStyle = entity.kind === "apple" ? "#d96d55" : color;
+  context.fillStyle = color;
   context.beginPath();
   context.arc(0, 0, radius, 0, Math.PI * 2);
   context.fill();
-  if (entity.kind === "apple") {
-    context.fillStyle = "#9cba80";
-    context.beginPath();
-    context.ellipse(1, -radius, 2.1 * scale, 1.2 * scale, -.5, 0, Math.PI * 2);
-    context.fill();
-  }
+}
+
+function radialGlow(color, radius) {
+  const glow = context.createRadialGradient(0, 0, 0, 0, 0, radius);
+  glow.addColorStop(0, color + "80");
+  glow.addColorStop(.23, color + "44");
+  glow.addColorStop(.62, color + "21");
+  glow.addColorStop(1, color + "00");
+  context.fillStyle = glow;
+  context.fillRect(-radius, -radius, radius * 2, radius * 2);
 }
 
 function draw(now) {
@@ -145,6 +165,9 @@ function draw(now) {
   const progress = connection.dataset.state !== "live" || reducedMotion.matches ? 1 : Math.min(1, (now - started) / duration);
   context.save();
   context.translate((width - mapWidth) / 2, (height - mapHeight) / 2);
+  context.beginPath();
+  context.rect(0, 0, mapWidth, mapHeight);
+  context.clip();
   paintGround(mapWidth, mapHeight);
   context.drawImage(ground, 0, 0, mapWidth, mapHeight);
   const renders = [];
@@ -153,40 +176,29 @@ function draw(now) {
     const current = position(entity, before, progress, Math.min(frame.width, frame.height) / 4);
     const x = current.x * unit;
     const y = current.y * unit;
-    if (entity.kind === "heat") {
-      const radius = Math.min(Math.max((entity.heatRadius ?? 10) * 1.8 * unit, 8), Math.max(mapWidth, mapHeight));
-      const glow = context.createRadialGradient(x, y, 0, x, y, radius);
-      glow.addColorStop(0, "#f5b26280");
-      glow.addColorStop(.23, "#e4a15644");
-      glow.addColorStop(.62, "#c98b4421");
-      glow.addColorStop(1, "#d6a05a00");
-      context.fillStyle = glow;
-      context.fillRect(0, 0, mapWidth, mapHeight);
-    }
-    const fallback = { key: "", visible: true, layer: 0, scale: 1, rotation: 0, alpha: 1,
-      color: entity.kind === "heat" ? "#f0b368" : entity.kind === "boar" ? "#b69a83" : "#9db5ab" };
-    for (const appearance of (entity.appearance.length ? entity.appearance : [fallback])) {
-      if (!appearance.visible || appearance.scale === 0 || appearance.alpha === 0) continue;
-      const oldRotation = current === entity && before && Math.hypot(entity.x - before.x, entity.y - before.y) > Math.min(frame.width, frame.height) / 4
-        ? undefined : before?.appearance.find(item => item.key === appearance.key)?.rotation;
-      renders.push({ entity, appearance, x, y, angle: rotation(oldRotation, appearance.rotation, progress) });
+    for (const appearance of visibleAppearances(entity)) {
+      const oldRotation = current === entity ? undefined : before?.appearance.find(item => item.key === appearance.key)?.rotation;
+      renders.push({ appearance, x, y, angle: rotation(oldRotation, appearance.rotation, progress) });
     }
   }
-  for (const { entity, appearance, x, y, angle } of renders.sort((a, b) => a.appearance.layer - b.appearance.layer)) {
+  for (const { appearance, x, y, angle } of renders.sort((a, b) => a.appearance.layer - b.appearance.layer)) {
     context.save();
     context.translate(x, y);
     context.rotate(angle);
     context.globalAlpha = appearance.alpha;
     const sprite = spriteFor(appearance.sprite);
-    if (sprite) {
+    const size = appearance.size == null ? null : appearance.size * unit * appearance.scale;
+    if (appearance.primitive === "glow") {
+      radialGlow(appearance.color, Math.max(1, Math.min((size ?? 16) / 2, Math.max(mapWidth, mapHeight))));
+    } else if (sprite) {
       const ratio = sprite.naturalWidth / sprite.naturalHeight;
-      const widest = Math.min(Math.max(sprite.naturalWidth, sprite.naturalHeight) * appearance.scale * layoutScale,
+      const widest = Math.min(size ?? Math.max(sprite.naturalWidth, sprite.naturalHeight) * appearance.scale * layoutScale,
         Math.min(mapWidth, mapHeight) * .7);
       const spriteWidth = ratio >= 1 ? widest : widest * ratio;
       const spriteHeight = ratio >= 1 ? widest / ratio : widest;
       context.drawImage(sprite, -spriteWidth / 2, -spriteHeight / 2, spriteWidth, spriteHeight);
     } else {
-      marker(entity, appearance.color, markerScale * Math.min(appearance.sprite ? 1 : appearance.scale, 4));
+      marker(appearance.color, Math.min(28, Math.max(1.5, (size ?? 9 * markerScale * Math.min(appearance.sprite ? 1 : appearance.scale, 4)) / 2)));
     }
     context.restore();
   }

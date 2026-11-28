@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([string]$Version='1.0.0', [string]$OutputRoot='artifacts/packages')
+param([string]$Version='1.0.0', [string]$OutputRoot='artifacts/packages', [switch]$NoBuild)
 . (Join-Path $PSScriptRoot 'common.ps1')
 Initialize-Dotnet
 if ($Version -notmatch '^[A-Za-z0-9][A-Za-z0-9._-]*$') { throw 'Invalid wildlife package version.' }
@@ -8,8 +8,10 @@ $wildlifeDestination = Join-Path $wildlifeRoot ('wildlife/' + $Version)
 if (Test-Path -LiteralPath $wildlifeDestination) { throw "Published package already exists: $wildlifeDestination. Choose a new version." }
 $wildlifeLogic = 'ArtificialLife.Modules.Wildlife'
 $wildlifeView = 'ArtificialLife.Modules.Wildlife.Presentation.Godot'
-Invoke-Dotnet build ('src/' + $wildlifeLogic) -c Release --verbosity quiet
-Invoke-Dotnet build ('src/' + $wildlifeView) -c Release --verbosity quiet
+if (!$NoBuild) {
+    Invoke-Dotnet build ('src/' + $wildlifeLogic) -c Release --verbosity quiet
+    Invoke-Dotnet build ('src/' + $wildlifeView) -c Release --verbosity quiet
+}
 $wildlifeStage = Join-Path $wildlifeRoot ('wildlife/.staging-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path (Join-Path $wildlifeStage 'assets') -Force | Out-Null
 foreach ($wildlifeProject in @($wildlifeLogic, $wildlifeView)) {

@@ -18,7 +18,7 @@ public sealed class PresentationHost(Node2D canvas, Rect2 viewport) : IRuntimePr
         {
             foreach (var package in packages.OrderBy(p => p.Manifest.PresentationOrder).ThenBy(p => p.Manifest.Id, StringComparer.Ordinal))
             {
-                if (package.Manifest.PresentationAssembly is null && package.Manifest.Visuals.Length == 0) continue;
+                if (package.Manifest.PresentationAssembly is null && !package.Manifest.Visuals.Any(v => v.Browser?.Only != true)) continue;
                 try { var loaded = new LoadedPresentation(package, canvas, viewport, frame); prepared.Add(loaded); }
                 catch (Exception ex) { LastError = ex.Message; GD.PushWarning("Presentation fallback: " + ex.Message); }
             }
@@ -70,7 +70,7 @@ public sealed class PresentationHost(Node2D canvas, Rect2 viewport) : IRuntimePr
         public LoadedPresentation(PresentationPackage package, Node2D canvas, Rect2 viewport, RuntimeFrame frame)
         {
             Context = new(canvas, viewport, frame.Width, frame.Height, package.Directory, package.Manifest);
-            if (package.Manifest.Visuals.Length > 0)
+            if (package.Manifest.Visuals.Any(v => v.Browser?.Only != true))
             {
                 Reference = new(new object());
                 var items = new List<IGodotPresentation>();

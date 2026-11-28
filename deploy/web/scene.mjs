@@ -1,5 +1,25 @@
 export const POLL_MS = 250;
 
+const marker = Object.freeze({
+  key: "", visible: true, layer: 0, scale: 1, rotation: 0, alpha: 1,
+  color: "#9db5ab", primitive: "disc", label: "Другие объекты",
+});
+
+export function visibleAppearances(entity) {
+  const styles = entity.appearance.length ? entity.appearance : [marker];
+  return styles.filter(style => style.visible && style.scale > 0 && style.alpha > 0);
+}
+
+export function legendItems(entities) {
+  const items = new Map();
+  for (const entity of entities) {
+    for (const style of visibleAppearances(entity)) {
+      if (style.label && !items.has(style.label)) items.set(style.label, style.color);
+    }
+  }
+  return [...items];
+}
+
 export function compatible(previous, next) {
   return previous && previous.sessionId === next.sessionId && previous.epoch === next.epoch
     && previous.revision === next.revision && next.sequence > previous.sequence

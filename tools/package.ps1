@@ -17,6 +17,7 @@ $runtimeDefinitions = @(
     @{ Id='wildlife'; Project='Wildlife'; Type='RuntimeWildlife'; Schemas=@{'wildlife.boar'=1}; Provides=@('wildlife','safety'); Requires=@('vision.appearance','motivation'); Renderer='BoarPresentation'; PresentationProject='ArtificialLife.Modules.Wildlife.Presentation.Godot'; Order=75; Assets=@{'assets/boar.png'='assets/wildlife/boar.png'} }
 )
 $legacyDefaults = Get-Content -LiteralPath (Join-Path $RepoRoot 'configs/default.json') -Raw | ConvertFrom-Json
+$visualDeclarations = Get-Content -LiteralPath (Join-Path $RepoRoot 'assets/foundation/visuals.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 if (!$NoBuild -and !$LogicOnly) { Invoke-Dotnet build src/ArtificialLife.Presentation.Godot -c Release --verbosity quiet }
 foreach ($definition in $runtimeDefinitions) {
     $projectName = 'ArtificialLife.Modules.' + $definition.Project
@@ -35,10 +36,16 @@ foreach ($definition in $runtimeDefinitions) {
     foreach ($field in @('Provides','Requires','Dependencies')) { if ($definition.ContainsKey($field)) { $manifest[$field] = $definition[$field] } }
     if ($manifest.Contains('Dependencies')) { foreach ($dependency in $manifest.dependencies) { $dependency.version = $Version } }
     if ($definition.ContainsKey('Settings')) { $manifest.settings = $legacyDefaults.($definition.Settings) }
-    if ($definition.Id -eq 'movement') { $manifest.visuals=@(@{key='agent';component='movement.heading';color='68dfbe';layer=100;pulse=$true}) }
-    if ($definition.Id -eq 'food') { $manifest.visuals=@(@{key='apple';component='food.apple';color='ef6672';layer=50;scale=0.8}) }
-    if ($definition.Id -eq 'wildlife') { $manifest.visuals=@(@{key='boar';component='wildlife.boar';sprite='assets/boar.png';scale=0.1;layer=75;bindings=@(@{property='rotation';component='wildlife.boar';field='heading'})}) }
-    if (!$LogicOnly -and $definition.ContainsKey('Renderer') -and !$manifest.Contains('visuals')) {
+    $declaredVisuals = $visualDeclarations.PSObject.Properties[$definition.Id]
+    $hasGodotVisual = $false
+    if ($null -ne $declaredVisuals) {
+        $manifest.visuals = $declaredVisuals.Value
+        $hasGodotVisual = @($declaredVisuals.Value | Where-Object {
+            $browser = $_.PSObject.Properties['browser']
+            !$browser -or !$browser.Value -or !$browser.Value.PSObject.Properties['only'] -or !$browser.Value.only
+        }).Count -gt 0
+    }
+    if (!$LogicOnly -and $definition.ContainsKey('Renderer') -and !$hasGodotVisual) {
         $rendererProject = if ($definition.ContainsKey('PresentationProject')) { $definition.PresentationProject } else { 'ArtificialLife.Presentation.Godot' }
         if (!$NoBuild -and $definition.ContainsKey('PresentationProject')) { Invoke-Dotnet build ('src/' + $rendererProject) -c Release --verbosity quiet }
         $rendererFile = $rendererProject + '.dll'

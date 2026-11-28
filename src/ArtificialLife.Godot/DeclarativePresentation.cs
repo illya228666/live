@@ -14,12 +14,14 @@ public sealed class DeclarativePresentation : IGodotPresentation
     private readonly System.Diagnostics.Stopwatch animationClock = System.Diagnostics.Stopwatch.StartNew();
     private readonly Dictionary<(string, long), double> appeared = [];
     private readonly Dictionary<Node2D, double> disappearing = [];
+    private VisualDefinition[] visuals = [];
     public void Prepare(GodotPresentationContext context, RuntimeFrame initial)
     {
         this.context = context;
+        visuals = context.Manifest.Visuals.Where(v => v.Browser?.Only != true).ToArray();
         foreach (var file in context.Manifest.PresentationFiles.Keys.Where(f => f.EndsWith(".pck", StringComparison.OrdinalIgnoreCase)))
             if (!ProjectSettings.LoadResourcePack(PackageCatalog.FileWithin(context.PackageDirectory, file), false)) throw new IOException("Cannot load visual resource pack.");
-        foreach (var visual in context.Manifest.Visuals.Where(v => v.Sprite is not null))
+        foreach (var visual in visuals.Where(v => v.Sprite is not null && v.Scene is null))
         {
             if (visual.Sprite!.StartsWith("res://", StringComparison.Ordinal))
                 textures[visual.Key] = ResourceLoader.Load<Texture2D>(visual.Sprite) ?? throw new IOException("Missing packed sprite.");
@@ -42,7 +44,7 @@ public sealed class DeclarativePresentation : IGodotPresentation
             else item.Key.SelfModulate = new Color(1, 1, 1, alpha);
         }
         var alive = new HashSet<(string, long)>();
-        foreach (var visual in context.Manifest.Visuals)
+        foreach (var visual in visuals)
         foreach (var entity in frame.Entities.Append(frame.Agent).Where(e => e is not null && e.Components.ContainsKey(visual.Component)))
         {
             var key = (visual.Key, entity.Id); alive.Add(key);
